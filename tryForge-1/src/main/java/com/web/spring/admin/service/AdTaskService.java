@@ -28,4 +28,8 @@ public class AdTaskService {
 	public String insertTask(Task ins) {
 		return dao.insertTask(ins)>0?"업무배정완료":"업무배정실패";
 	}
+	// 맴버키에 맞는 업무리스트 출력
+	public List<Task> taskList(int member_key){
+		return dao.taskList(member_key);
+	}
 }

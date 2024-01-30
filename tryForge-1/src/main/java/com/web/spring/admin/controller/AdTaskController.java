@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.web.spring.admin.service.AdTaskService;
 import com.web.spring.vo.MemberSch;
@@ -27,12 +28,18 @@ public class AdTaskController {
 	@RequestMapping("task")
 	public String test(MemberSch sch, Model d ) {
 		d.addAttribute("memList",service.schTaskMem(sch));
-		return "adTask/insertTask";
+		return "adTask/task";
 	}
 	
 	@RequestMapping("insertTask")
 	public String insertTask(Task ins, Model d) {
 		d.addAttribute("insMsg",service.insertTask(ins));
+		return "pageJsonReport";
+	}
+	
+	@RequestMapping("taskList")
+	public String taskList(@RequestParam("member_key")int member_key, Model d) {
+		d.addAttribute("taskList",service.taskList(member_key));
 		return "pageJsonReport";
 	}
 }

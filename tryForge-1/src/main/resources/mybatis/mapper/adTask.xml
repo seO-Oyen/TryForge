@@ -3,7 +3,11 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.web.spring.admin.dao.AdTaskDao">
-
+	<resultMap type = "task" id="taskRst">
+		<result column = "task_key" property = "id"/>
+		<result column = "task_type" property = "type"/>
+	</resultMap>
+	
 	<select id="schTaskMem" resultType="memberSch" parameterType="memberSch">
 		SELECT m.member_key ,m.member_name, m.member_email, tm.ROLE, p.title, p.start_date, p.end_date, p.project_key
 		FROM MEMBER m 
@@ -13,6 +17,7 @@
 			WHERE m.MEMBER_NAME LIKE '%'||#{member_name}||'%' 
 			AND p.title LIKE '%'||#{title}||'%' ORDER BY m.MEMBER_KEY
 	</select>
+	
 	<!-- 업무할당 -->
 	<insert id="insertTask" parameterType="task">
 		INSERT INTO task 
@@ -23,4 +28,10 @@
 		 FLOOR(to_DATE (#{end_date},'YYYY-MM-DD')-to_DATE(#{start_date},'YYYY-MM-DD')), 0,
 		 'task','요청',#{detail})
 	</insert>
+	
+	<select id="taskList" resultMap="taskRst">
+	    SELECT t.*
+	    FROM task t
+	    WHERE (status = '요청' OR status = '진행중') AND MEMBER_KEY = #{member_key}
+	</select>
 </mapper>
