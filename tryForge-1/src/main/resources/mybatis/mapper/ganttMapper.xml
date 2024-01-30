@@ -22,17 +22,7 @@
 		INNER JOIN member m ON t.member_key = m.member_key
 		WHERE t.PROJECT_KEY = 'PJ-0'
 	</select>
-	
-<!-- 
-	<select id="getTask" resultMap="taskRst">
-		SELECT task_key, text, 
-		to_char(start_date, 'YYYY-MM-DD') start_date, 
-		to_char(end_date, 'YYYY-MM-DD') end_date,
-		duration, progress, parent, task_type, status, task_rollup, hide_bar, task_open
-		FROM TASK
-		WHERE PROJECT_KEY = 'PJ-0'
-	</select>
- -->
+
 	<select id="getTaskDep" resultMap="taskDepRst">
 		SELECT * FROM TASK_DEPENDENCY
 	</select>
