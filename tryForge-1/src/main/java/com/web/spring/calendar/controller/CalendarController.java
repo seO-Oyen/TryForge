@@ -17,32 +17,32 @@ public class CalendarController {
 	@Autowired(required = false)
 	private CalendarService service;
 	
-	@GetMapping("calendar.do")
+	@GetMapping("calendar")
 	public String calendar() {
 		return "project/calendar";
 	}
 	
-	@GetMapping("getCalendar.do")
+	@GetMapping("getCalendar")
 	public String getCalendar(Model d) {
 		d.addAttribute("cal", service.getCalendar());
 		return "pageJsonReport";
 	}
 	
-	@PostMapping("insertCalendar.do")
+	@PostMapping("insertCalendar")
 	public String insertCalendar(Calendar ins, Model d) {
 		d.addAttribute("msg", service.insertCalendar(ins));
 		d.addAttribute("cal", service.getCalendar());
 		return "pageJsonReport";
 	}
 	
-	@PostMapping("updateCalendar.do")
+	@PostMapping("updateCalendar")
 	public String updateCalendar(Calendar upt, Model d) {
 		d.addAttribute("msg", service.updateCalendar(upt));
 		d.addAttribute("cal", service.getCalendar());
 		return "pageJsonReport";
 	}
 	
-	@PostMapping("deleteCalendar.do")
+	@PostMapping("deleteCalendar")
 	public String deleteCalendar(@RequestParam("calendar_key") int calendar_key, Model d) {
 		d.addAttribute("msg", service.deleteCalendar(calendar_key));
 		d.addAttribute("cal", service.getCalendar());

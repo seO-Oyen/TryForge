@@ -15,7 +15,7 @@
 //	@Autowired(required = false)
 //	private UploadService service;
 //	
-//	@PostMapping("upload.do")
+//	@PostMapping("upload")
 //	public String upload(FileStorage file, Model d) {
 //		d.addAttribute("msg", service.uploadFile(file));
 //		return "/project/fileStorage";
