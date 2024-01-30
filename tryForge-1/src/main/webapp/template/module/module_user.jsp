@@ -51,7 +51,7 @@ $(document).ready(function(){
 	var sessId = "${loginMem.member_id}"
 	if(sessId==""){
 		alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
-		location.href="${path}/login.do"
+		location.href="${path}/login"
 	} else if ("${loginMem.member_role}" != "") {
 		$("#admin").css("display", "")
 		$("#sidebar").css("height", "175px")
@@ -93,7 +93,7 @@ $(document).ready(function(){
 						<a class="dropdown-item">
 							<i class="typcn typcn-cog-outline text-primary"></i> 마이페이지
 						</a> 
-						<a class="dropdown-item" href="${path}/login.do"> 
+						<a class="dropdown-item" href="${path}/login"> 
 							<i class="typcn typcn-eject text-primary"></i> 로그아웃
 						</a>
 					</div>
@@ -453,7 +453,7 @@ $(document).ready(function(){
 			<nav class="sidebar" id="sidebar" style="height: 130px; min-height: auto;">
 				<ul class="nav">
 					<li class="nav-item">
-						<a class="nav-link" href="${path}/userIndex.do">
+						<a class="nav-link" href="${path}/userIndex">
 							<i class="typcn typcn-device-desktop menu-icon"></i> <span
 							class="menu-title">메인화면</span>
 							<!-- <div class="badge badge-danger">new</div> -->
@@ -483,7 +483,7 @@ $(document).ready(function(){
 						</div> -->
 					</li>
 					<li class="nav-item" id="admin" style="display: none;">
-						<a class="nav-link" href="${path}/adMain.do">
+						<a class="nav-link" href="${path}/adMain">
 							<i class="mdi mdi-account-convert" style="width:20px;height:20px;"></i>
 							<span class="menu-title">관리자페이지</span>
 							<!-- <i class="menu-arrow"></i> -->

@@ -34,10 +34,10 @@
 	if(id != "") {
 		if(sessId != ""  && role == ""){
 			alert("로그인 성공\n메인페이지로 이동")
-			location.href="${path}/userIndex.do"
+			location.href="${path}/userIndex"
 		} else if(sessId != "" && role != "") {
 			alert("로그인 성공\n관리자페이지로 이동")
-			location.href = "${path}/adMain.do"
+			location.href = "${path}/adMain"
 		} else{
 			alert("로그인 실패\n다시 로그인하세요")
 		}
@@ -81,7 +81,7 @@
 									<a href="#" class="auth-link text-black">비밀번호 찾기</a>
 								</div>
 								<div class="text-center mt-4 font-weight-light">
-									 <a href="register.do"
+									 <a href="register"
 										class="text-primary">계정이 없으신가요?</a>
 								</div>
 							</form>

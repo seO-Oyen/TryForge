@@ -9,7 +9,7 @@
 <script>
 function goDash(projectKey) {
 	alert("프로젝트 키 : " + projectKey)
-	location.href = "${path}/tryForge/dashboard.do"
+	location.href = "${path}/dashboard"
 }
 </script>
 		<!-- main 대시보드 내용 -->
