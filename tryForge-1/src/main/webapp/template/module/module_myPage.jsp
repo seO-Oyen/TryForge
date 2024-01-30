@@ -52,12 +52,18 @@ $(document).ready(function(){
 	if(sessId==""){
 		alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
 		location.href="${path}/login"
-	} else if ("${loginMem.member_role}" != "") {
-		$("#admin").css("display", "")
-		$("#sidebar").css("height", "175px")
 	}
 })
 </script>
+<style>
+.sidebar {
+	height: 180px;
+	min-height: auto;
+}
+.sidebar-icon-only .sidebar{
+	height: 190px;
+}
+</style>
 </head>
 <body>
 	<div class="container-scroller">
@@ -450,12 +456,12 @@ $(document).ready(function(){
 			<!-- 사이드바 -->
 			<!-- partial -->
 			<!-- partial:partials/_sidebar.html -->
-			<nav class="sidebar" id="sidebar" style="height: 130px; min-height: auto;">
+			<nav class="sidebar" id="sidebar" style="">
 				<ul class="nav">
 					<li class="nav-item">
-						<a class="nav-link" href="${path}/userIndex">
+						<a class="nav-link" href="${path}/myPage">
 							<i class="typcn typcn-device-desktop menu-icon"></i> <span
-							class="menu-title">메인화면</span>
+							class="menu-title">마이페이지</span>
 							<!-- <div class="badge badge-danger">new</div> -->
 					</a></li>
 					
@@ -463,7 +469,7 @@ $(document).ready(function(){
 						<a class="nav-link" data-toggle="collapse" 
 							href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
 							<i class="typcn typcn-document-text menu-icon"></i>
-							<span class="menu-title">업무현황</span>
+							<span class="menu-title">메모</span>
 							<!-- 메뉴 옆 +기호 -->
 							<!-- <i class="menu-arrow"></i> -->
 						</a>
@@ -482,10 +488,11 @@ $(document).ready(function(){
 							</ul>
 						</div> -->
 					</li>
-					<li class="nav-item" id="admin" style="display: none;">
-						<a class="nav-link" href="${path}/adMain">
-							<i class="mdi mdi-account-convert" style="width:20px;height:20px;"></i>
-							<span class="menu-title">관리자페이지</span>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="collapse" 
+							href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+							<i class="typcn mdi mdi-account-convert menu-icon"></i>
+							<span class="menu-title">채팅</span>
 							<!-- <i class="menu-arrow"></i> -->
 						</a>
 					</li>
