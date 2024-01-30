@@ -38,8 +38,13 @@ public class AdTaskController {
 	}
 	
 	@RequestMapping("taskList")
-	public String taskList(@RequestParam("member_key")int member_key, Model d) {
-		d.addAttribute("taskList",service.taskList(member_key));
+	public String taskList(Task t,@RequestParam("member_key")int member_key, Model d) {
+		d.addAttribute("getTask",service.taskList(member_key));
+		return "pageJsonReport";
+	}
+	@RequestMapping("uptTask")
+	public String uptTask(Task upt, Model d) {
+		d.addAttribute("uptMsg",service.uptTask(upt));
 		return "pageJsonReport";
 	}
 }

@@ -32,8 +32,8 @@
 }
 </style>
 <script>
-		var selectedMemberKeys = [];
 	$(document).ready(function() {
+		var selectedMemberKeys = [];
 
 		$("#clsBtn").click(function() {
 			$("#myModal form")[0].reset()
@@ -75,15 +75,12 @@
 		});
 
 		$("#regBtn").click(function() {
-			// 선택한 구성원의 배열값 넣기
 			event.preventDefault();
-			// Validate the input
-		    if (!emptyCheck()) {
-		        // 만약 유효성 검사에서 실패하면, 더 이상의 처리를 중단
+			// 공백 유효성 체크
+			if (!emptyCheck()) {
 		        return;
 		    }
 			getAllMemberKeys();
-			
 			$.ajax({
 				// 등록 controller 호출
 				url : "${path}/insertAll",
@@ -100,8 +97,6 @@
 						$("#clsBtn").click();
 						window.location.reload();
 					});
-					
-					
 				},
 				error : function(err) {
 					console.log(err)
@@ -110,7 +105,6 @@
 		})
 
 	});
-
 	function schMem() {
 		$.ajax({
 			url : "${path}/schMem",
@@ -130,10 +124,8 @@
 							html += "<td>" + member.end_date+ "</td>";
 							html += "</tr>";
 							}else{
-								html += "<tr ondblclick='selectMem("
-									+ member.member_key + ", \""
-									+ member.member_name + "\", \""
-									+ member.member_email + "\")' > ";
+								var member_key = member.member_key; 
+								html += "<tr ondblclick='selectMem(\"" + member_key + "\", \"" + member.member_name + "\", \"" + member.member_email + "\")' > ";
 							html += "<td>" + member.member_name + "</td>";
 							html += "<td>" + member.member_email + "</td>";
 							html += "<td style='text-align: center;'>·</td>";
@@ -143,9 +135,9 @@
 							html += "</tr>";
 							}
 						});
-
+		           
 				$("#addMem").html(html);
-				selectedMemberKeys.push(member_key);
+                selectedMemberKeys.push(member.member_key);
 			},
 			error : function(err) {
 				console.log(err);
@@ -154,6 +146,12 @@
 	}
 
 	function selectMem(member_key, member_name, member_email) {
+		//console.log("Member Key Type:", typeof member.member_key);
+		console.log("Selected Member Key:", member_key);
+	    console.log("Member Name:", member_name);
+	    console.log("Member Email:", member_email);
+	 
+	    
 		var row = "<tr data-member-key='" + member_key + "'>";
 		row += "<td>" + member_name + "</td>";
 		row += "<td>" + member_email + "</td>";
@@ -167,7 +165,6 @@
 		// 삭제 버튼이 속한 행을 찾아서 삭제
 		var row = $(buttonElement).closest("tr");
 		var member_key = row.data("member-key");
-		// 해당 member_key를 가진 행을 찾아서 삭제
 		row.remove();
 	}
 
@@ -178,8 +175,7 @@
 
 	function getAllMemberKeys() {
 		var member_key = [];
-
-		// 모든 tr 요소를 선택하고 각각의 data-member-key 값을 가져와 배열에 추가
+		
 		$("#selectMem tr").each(function() {
 			var memberKey = $(this).data("member-key");
 			member_key.push(memberKey);
@@ -234,6 +230,7 @@
 				$("#regBtn").hide()
 				$("#uptBtn").show()
 				$("#detailBtn").show()
+				
 				$("#delBtn").click(function() {
 					Swal.fire({
 						title : '삭제',

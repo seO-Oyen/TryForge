@@ -32,4 +32,8 @@ public class AdTaskService {
 	public List<Task> taskList(int member_key){
 		return dao.taskList(member_key);
 	}
+	// 업무키의 제목, 상세설명 변경
+	public String uptTask(Task upt) {
+		return dao.uptTask(upt)>0?"수정 완료":"수정 실패";
+	}
 }

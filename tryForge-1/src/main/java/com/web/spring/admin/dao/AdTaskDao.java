@@ -17,4 +17,5 @@ public interface AdTaskDao {
 	List<String> getTitle();
 	int insertTask(Task ins);
 	List<Task> taskList(@Param("member_key")int member_key);
+	int uptTask(Task upt);
 }

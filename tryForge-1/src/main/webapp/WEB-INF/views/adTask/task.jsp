@@ -33,6 +33,10 @@
 </style>
 <script>
 	$(document).ready(function() {
+		$("#uptBtn").click(function(){
+	        uptTask();
+	    });
+		
 		$("#clsBtn").click(function() {
 			$("#myModal form")[0].reset()
 
@@ -82,27 +86,46 @@
 	}
 
 	function taskList(member_key) {
-	    alert(member_key);
 	    $.ajax({
-	        url: "${path}/taskList?member_key=" + member_key,
+	        url: "${path}/taskList?member_key="+member_key,
 	        dataType: "json",
 	        success: function (data) {
-	            var tlist = data.taskList;
-	            var row = "";
-	            $(tlist).each(function (idx, task) {
-	                row += "<tr>";
-	                row += "<td><input name='text' type='text' class='form-control' value='" + task.text + "'></td>";
-	                row += "<td><input name='text' type='text' class='form-control' value='" + task.detail + "'></td>";
-	                row += "<td><button type='button' class='btn btn-danger delBtn'>삭제</button></td>";
-	                row += "</tr>";
-	            });
-	            $("#taskTable tbody").html(row);
-	            $("#myModal02").modal('show');
+	                var tlist = data.getTask;
+	                var memberName = $("#memname").data("member-name");
+	                $("#myModal02 [name=member_name]").val(memberName);
+	                var row = "";
+	                $(tlist).each(function (idx, task) {
+	                    row += "<tr>";
+	                    row += "<input name='id' type='hidden' value='" + task.id+ "'>";
+	                    row += "<td><input name='text' type='text' class='form-control' value='" + task.text + "'></td>";
+	                    row += "<td><input name='detail' type='text' class='form-control' value='" + task.detail + "'></td>";
+	                    row += "<td><button type='button' class='btn btn-danger delBtn'>삭제</button></td>";
+	                    row += "<td><button type='button' class='btn btn-' data-task-key='task.id' style='background-color: #007FFF; color: white;'>수정</button></td>";
+	                    row += "</tr>";
+	                });
+	                $("#taskTable").html(row);
+	                $("#myModal02").modal('show');
+	                var 
+
 	        },
-	        error:function(err){
-	        	console.log(err)
+	        error: function (err) {
+	            console.log(err)
 	        }
 	    });
+	}
+	
+	function uptTask(key){
+		alert($("#modalFrm02").serialize())
+		$.ajax({
+			url:"${path}/uptTask?id="+key,
+			dataType:"json",
+			success:function(data){
+				alert(data.uptMsg)
+			},
+			error:function(err){
+				console.log(err)
+			}
+		})
 	}
 </script>
 
@@ -141,12 +164,15 @@
 								<thead>
 									<tr>
 										<th>구성원정보</th>
+										<th>이메일</th>
+										<th>참여중인 프로젝트</th>
+										<th></th>
 									</tr>
 								</thead>
 								<tbody>
 									<c:forEach var="mlist" items="${memList}">
     									<tr ondblclick='taskList("${mlist.member_key}")'>
-											<td>${mlist.member_name}</td>
+											<td id="memname" data-member-name="${mlist.member_name}">${mlist.member_name}</td>
 											<td>${mlist.member_email}</td>
 											<td>${mlist.title}</td>
 											<td>
@@ -246,13 +272,13 @@
 
 
 <!-- 업무정보 모달창 -->
-<div class="modal" id="myModal02">
-	<div class="modal-dialog">
-		<div class="modal-content">
+<div class="modal fade" id="myModal02" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-xl"> <!-- modal-lg를 사용하거나 원하는 크기를 직접 지정할 수 있습니다. -->
+        <div class="modal-content">
 
 			<!-- Modal Header -->
 			<div class="modal-header">
-				<h2 class="modal-title">New Task</h2>
+				<h2 class="modal-title">Task Information</h2>
 
 				<button type="button" class="close" data-dismiss="modal" id="xBtn02">×</button>
 			</div>
@@ -268,7 +294,7 @@
 			<form class="forms-sample" id="modalFrm02">
 				<input type="hidden" name="member_key" /> <input type="hidden"
 					name="project_key" />
-				<div class="form-group">
+				<div class="form-group" style="width:80%; margin-left:10%;">
 					<label for="exampleInputUsername1">이름</label> <input
 						name="member_name" readonly type="text" class="form-control"
 						id="mname" placeholder="member name">
@@ -281,7 +307,7 @@
 							<tr>
 								<th>업무이름</th>
 								<th>업무설명</th>
-								<th>.</th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody id="taskTable">		
@@ -296,8 +322,6 @@
 			<!-- Modal footer -->
 			<div class="modal-footer">
 				<div class="mx-auto">
-					<button type="button" class="btn btn-" id="regBtn02" onclick=""
-						style="background-color: #007FFF; color: white;">수정</button>
 					<button type="button" class="btn btn-danger" data-dismiss="modal"
 						id="clsBtn02">닫기</button>
 				</div>
