@@ -43,7 +43,7 @@ $(document).ready(function(){
 	var result = "${insertResult}"
 	if(result != "" && result == "true") {
 		alert("가입완료\n로그인창으로 이동합니다.")
-		location.href = "${path}/login.do"
+		location.href = "${path}/login"
 	} else if (result != "" && result == "false") {
 		alert("가입 실패")
 	}
@@ -72,7 +72,7 @@ $(document).ready(function(){
 			return false;
 		}
 		$.ajax({
-			url : "${path}/idCheck.do",
+			url : "${path}/idCheck",
 			type : "GET",
 			data : {
 				userId: userIdVal
@@ -201,7 +201,7 @@ function register() {
 						id="regBtn" value="회원가입" />
 				</div>
                 <div class="text-center mt-4 font-weight-light">
-                  이미 계정이 있으신가요? <a href="login.do" class="text-primary">로그인</a>
+                  이미 계정이 있으신가요? <a href="login" class="text-primary">로그인</a>
                 </div>
               </form>
             </div>

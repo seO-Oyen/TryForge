@@ -25,7 +25,7 @@ public class MemberController {
 	private MemberService memberService;
 
 	// 로그인 창 띄우기
-	@GetMapping("login.do")
+	@GetMapping("login")
 	public String login(HttpSession session) {
 		// 기존 session이 있다면 삭제
 		if (session.getAttribute("loginMem") != null) {
@@ -37,7 +37,7 @@ public class MemberController {
 	}
 
 	// 로그인 기능
-	@PostMapping("login.do")
+	@PostMapping("login")
 	public String memberLogin(Member member, HttpSession session) {
 		Member loginMember = memberService.loginMember(member);
 
@@ -51,14 +51,14 @@ public class MemberController {
 	}
 	
 	// 회원가입 창 띄우기
-	@GetMapping("register.do")
+	@GetMapping("register")
 	public String registerPage() {
 		
 		return "user/register";
 	}
 	
 	// 회원가입
-	@PostMapping("register.do")
+	@PostMapping("register")
 	public String register(Member member, Model d) {
 		
 		// 회원가입 성공 여부
@@ -68,7 +68,7 @@ public class MemberController {
 	}
 	
 	// 아이디 중복체크
-	@GetMapping("idCheck.do")
+	@GetMapping("idCheck")
 	public String idCheck(
 			@RequestParam("userId") String userId, Model d) {
 		if (memberService.checkId(userId)) {
@@ -82,7 +82,7 @@ public class MemberController {
 	}
 	
 	// 유저 초대 창
-	@GetMapping("insertUser.do")
+	@GetMapping("insertUser")
 	public String insertUser(Model d) {
 		List<InviteMember> inviteList = memberService.inviteMemberList();
 		List<Member> memberList = new ArrayList<Member>();

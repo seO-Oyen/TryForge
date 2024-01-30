@@ -51,9 +51,7 @@ $(document).ready(function(){
 	var sessId = "${loginMem.member_id}"
 	if(sessId==""){
 		alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
-		location.href="${path}/login.do"
-	} else if ("${loginMem.member_role}" != "") {
-		$("#admin").css("display", "")
+		location.href="${path}/login"
 	}
 })
 </script>
@@ -66,11 +64,11 @@ $(document).ready(function(){
 			<!-- 왼쪽 상단 로고 -->
 			<div class="navbar-brand-wrapper d-flex justify-content-center" style="background:white;">
 				<div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100" >
-					<a class="navbar-brand brand-logo" href="${path}/userIndex.do" >
+					<a class="navbar-brand brand-logo" href="${path}/userIndex" >
 					<img src="${path}/template/images/try_forge01.jpg" alt="logo" style="width:100%"/>
 					<!-- <span>TryForge</span> -->
 					</a> 
-					<a class="navbar-brand brand-logo-mini" href="${path}/userIndex.do">
+					<a class="navbar-brand brand-logo-mini" href="${path}/userIndex">
 					<img src="${path}/template/images/try_logo.jpg" alt="logo" style="width:100%;"/></a>
 					<button class="navbar-toggler navbar-toggler align-self-center"
 						type="button" data-toggle="minimize" style="color:black; margin-left:10px;">
@@ -92,7 +90,7 @@ $(document).ready(function(){
 						<a class="dropdown-item">
 							<i class="typcn typcn-cog-outline text-primary"></i> 마이페이지
 						</a> 
-						<a class="dropdown-item" href="${path}/login.do"> 
+						<a class="dropdown-item" href="${path}/login"> 
 							<i class="typcn typcn-eject text-primary"></i> 로그아웃
 						</a>
 					</div>
@@ -450,7 +448,7 @@ $(document).ready(function(){
 			<nav class="sidebar sidebar-offcanvas" id="sidebar">
 				<ul class="nav">
 					<li class="nav-item">
-						<a class="nav-link" href="${path}/dashboard.do">
+						<a class="nav-link" href="${path}/dashboard">
 							<i class="typcn mdi mdi-collage menu-icon"></i> <span
 							class="menu-title">대시보드</span>
 							<!-- <div class="badge badge-danger">new</div> -->
@@ -481,7 +479,7 @@ $(document).ready(function(){
 					</li>
 					
 					<li class="nav-item">
-					<a class="nav-link" href="${path}/gantt.do" > 
+					<a class="nav-link" href="${path}/gantt" > 
 						<i class="typcn mdi mdi-chart-gantt menu-icon"></i> 
 							<span class="menu-title">간트차트</span>
 							<!-- <i class="menu-arrow"></i> -->
@@ -495,7 +493,7 @@ $(document).ready(function(){
 						</div> -->
 					</li>
 					<li class="nav-item">
-					<a class="nav-link" href="${path}/calendar.do" >
+					<a class="nav-link" href="${path}/calendar" >
 						<i class="typcn mdi mdi-calendar menu-icon"></i>
 						<span class="menu-title">캘린더</span>
 						<!-- <i class="menu-arrow"></i> -->
@@ -557,9 +555,9 @@ $(document).ready(function(){
 						</div> -->
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="${path}/file.do" >
+						<a class="nav-link" href="${path}/file" >
 							<i class="typcn mdi mdi-folder-google-drive menu-icon"></i>
-							<span class="menu-title">파일저장소</span>
+							<span class="menu-title">공유보관함</span>
 							<!-- <i class="menu-arrow"></i> -->
 						</a>
 						<!-- <div class="collapse" id="error">
@@ -570,13 +568,6 @@ $(document).ready(function(){
 									href="pages/samples/error-500.jsp"> 500 </a></li>
 							</ul>
 						</div> -->
-					</li>
-					<li class="nav-item" id="admin" style="display: none;">
-						<a class="nav-link" href="${path}/adMain.do">
-							<i class="mdi mdi-account-convert" style="width:20px;height:20px;"></i>
-							<span class="menu-title">관리자페이지</span>
-							<!-- <i class="menu-arrow"></i> -->
-						</a>
 					</li>
 				</ul>
 			</nav>
