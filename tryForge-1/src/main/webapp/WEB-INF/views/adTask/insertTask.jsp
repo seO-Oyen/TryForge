@@ -55,9 +55,17 @@ function insTask(){
 		dataType:"json",
 		data:$("#modalFrm").serialize(),
 		success:function(data){
-			var insMsg = data.insMsg
-			if(insMsg != null){
-				alert(insMsg)
+			var insMsg = data.insMsg;
+			if (insMsg != null) {
+				Swal.fire({
+					title : insMsg,
+					text : ' ',
+					icon : 'success',
+				}).then(function() {
+					$("#clsBtn").click();
+					window.location.reload();
+				});
+
 			}
 		},
 		error:function(err){

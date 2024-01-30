@@ -3,6 +3,7 @@ package com.web.spring.admin.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.web.spring.admin.service.AdProjectService;
 import com.web.spring.vo.Member;
+import com.web.spring.vo.MemberSch;
 import com.web.spring.vo.Project;
 import com.web.spring.vo.Team;
 import com.web.spring.vo.Team_Member;
@@ -27,11 +29,11 @@ public class AdProjectController {
 	}
 	
 	// ajax 전체 사원리스트 출력 및 검색
-	@RequestMapping("schMem")
-	public String schMem(@RequestParam(value="member_name", defaultValue = "")String member_name, Model d) {
-	    d.addAttribute("memList", service.schMem(member_name));
-	    return "pageJsonReport";
-	}
+		@RequestMapping("schMem")
+		public String schMem(@RequestParam(value="member_name", defaultValue = "")String member_name, Model d) {
+		    d.addAttribute("memList", service.schMem(member_name));
+		    return "pageJsonReport";
+		}
 	
 	// 프로젝트 생성, 팀 생성, 팀원 등록, 팀 구성원수 변경 
 	@RequestMapping("insertAll")

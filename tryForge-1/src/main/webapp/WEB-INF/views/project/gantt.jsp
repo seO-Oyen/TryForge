@@ -337,7 +337,7 @@ gantt.attachEvent("onAfterTaskDelete", function(id){
  */
  /*
  gantt.ajax.get({
-	    url: "${pageContext.request.contextPath}/getGantt.do",
+	    url: "${pageContext.request.contextPath}/getGantt",
 	    //headers: {
 	     //   "Authorization": "Token YOUR_AUTH_TOKEN"
 	    //}
@@ -352,7 +352,7 @@ gantt.attachEvent("onAfterTaskDelete", function(id){
 	}); 
 */ 
 gantt.init("gantt_here"); // 간트 로딩 
-gantt.load("${pageContext.request.contextPath}/getGantt.do"); 
+gantt.load("${pageContext.request.contextPath}/getGantt"); 
 //gantt.parse(tasks); // task 로딩
 </script> 
 			<!-- 풋터 -->

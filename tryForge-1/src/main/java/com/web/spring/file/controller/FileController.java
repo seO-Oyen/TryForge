@@ -15,7 +15,7 @@ public class FileController {
 	@Autowired(required = false)
 	private FileService service;
 	
-	@GetMapping("file.do")
+	@GetMapping("file")
 	public String upload(FileStorage file, Model d) {
 		d.addAttribute("fList", service.FileList(file));
 		return "/project/fileStorage";

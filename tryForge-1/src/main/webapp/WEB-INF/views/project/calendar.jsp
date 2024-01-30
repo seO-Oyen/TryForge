@@ -102,17 +102,17 @@ $(document).ready(function() {
 		},
 		eventDrop : function(arg){
 			addForm(arg.event)
-			ajaxFunc("updateCalendar.do", "post")
+			ajaxFunc("updateCalendar", "post")
 		},
 		eventResize : function(arg){
 			addForm(arg.event)
-			ajaxFunc("updateCalendar.do", "post")
+			ajaxFunc("updateCalendar", "post")
 		},
 		editable : true,
 		dayMaxEvents : true, // allow "more" link when too many events
 		events : function(info, successCallback, failureCallBack) {
 			$.ajax({
-				url : "${pageContext.request.contextPath}/getCalendar.do",
+				url : "${pageContext.request.contextPath}/getCalendar",
 				dataType : "json",
 				success : function(data) {
 					console.log(data.cal)
@@ -132,16 +132,16 @@ $(document).ready(function() {
 	calendar.render();
 
 	$("#regBtn").click(function() {
-		ajaxFunc("insertCalendar.do", "post")
+		ajaxFunc("insertCalendar", "post")
 	})
 	$("#uptBtn").click(function(){
 		if(confirm("수정하시겠습니까?")){
-			ajaxFunc("updateCalendar.do", "post")
+			ajaxFunc("updateCalendar", "post")
 		}
 	})
 	$("#delBtn").click(function(){
 		if(confirm("삭제하시겠습니까?")){
-			ajaxFunc("deleteCalendar.do", "post")
+			ajaxFunc("deleteCalendar", "post")
 		}
 	})
 	

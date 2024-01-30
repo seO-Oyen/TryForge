@@ -11,7 +11,7 @@
 		var msg = "${msg}"
 		if(msg!=""){
 			alert(msg);
-			location.href="${pageContext.request.contextPath}/file.do"
+			location.href="${pageContext.request.contextPath}/file"
 		}		
 	});
 </script>
@@ -68,7 +68,7 @@
 			<div class="col-xl-6 grid-margin stretch-card flex-column" style = "flex: 0 0 100%; max-width: 100%;">
 			    <div class="d-flex justify-content-between mb-4 align-items-center">
 			        <h5 class="mb-2 text-titlecase" style="font-size : 28px;">파일저장소</h5>
-			        	<form method="post" enctype="multipart/form-data" action="upload.do">
+			        	<form method="post" enctype="multipart/form-data" action="upload">
 			        		<button type="button" id="uploadBtn" class="btn btn-success">업로드</button>
 			    			<input type="file" id="fileInput" name="files" multiple="multiple" style="display: none;" />
 			    		</form>
@@ -110,7 +110,7 @@ document.querySelector("#fileInput").addEventListener('change', function(){
 
 function download(fname){
 	if( confirm(fname+" 다운로드 하시겠습니까?")){
-		location.href="${pageContext.request.contextPath}/download.do?fname="+fname
+		location.href="${pageContext.request.contextPath}/download?fname="+fname
 	}
 }
 </script>			

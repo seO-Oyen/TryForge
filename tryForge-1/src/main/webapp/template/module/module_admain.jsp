@@ -442,7 +442,7 @@ $(document).ready(function(){
 			<!-- partial:partials/_sidebar.html -->
 			<nav class="sidebar sidebar-offcanvas" id="sidebar">
 				<ul class="nav">
-					<li class="nav-item"><a class="nav-link" href="${path}/projList.do">
+					<li class="nav-item"><a class="nav-link" href="${path}/projList">
 							<i class="mdi mdi-airplay" style="width:20px;height:20px;"></i> <span
 							class="menu-title">프로젝트관리</span>
 							<!-- <div class="badge badge-danger">new</div> -->
@@ -468,10 +468,23 @@ $(document).ready(function(){
 						</div> -->
 					</li>
 					<li class="nav-item">
-					<a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false"
-						aria-controls="charts">
+					<a class="nav-link" href="${path}/task"> 
+		                        <i class="mdi mdi-file-export" style="width:20px;height:20px;"></i>
+							<span class="menu-title">업무할당관리</span>
+							<!-- <i class="menu-arrow"></i> -->
+					</a>
+						<!-- <div class="collapse" id="form-elements">
+							<ul class="nav flex-column sub-menu">
+								<li class="nav-item"><a class="nav-link"
+									href="pages/forms/basic_elements.jsp">Basic Elements</a>
+								</li>
+							</ul>
+						</div> -->
+					</li>
+					<li class="nav-item">
+					<a class="nav-link" href="#charts">
 						<i class="mdi mdi-checkbox-marked-circle" style="width:20px;height:20px;"></i>
-						<span class="menu-title">현황관리</span>
+						<span class="menu-title">업무현황관리</span>
 						<!-- <i class="menu-arrow"></i> -->
 					</a>
 						<!-- <div class="collapse" id="charts">
@@ -483,10 +496,9 @@ $(document).ready(function(){
 						</div> -->
 					</li>
 					<li class="nav-item">
-					<a class="nav-link" data-toggle="collapse" href="#tables" aria-expanded="false"
-						aria-controls="tables">
+					<a class="nav-link" href="#tables">
 						<i class="mdi mdi-file-check" ></i>
-						<span class="menu-title">업무보고관리</span>
+						<span class="menu-title">결재관리</span>
 						<!-- <i class="menu-arrow"></i> -->
 					</a>
 						<!-- <div class="collapse" id="tables">
@@ -498,8 +510,7 @@ $(document).ready(function(){
 						</div> -->
 					</li>
 					<li class="nav-item">
-					<a class="nav-link" data-toggle="collapse" aria-expanded="false"
-						aria-controls="icons" onclick="location.href='${path}/noticeList.do'">
+					<a class="nav-link" href="${path}/noticeList">
 						<i class="mdi mdi-tooltip-text" style="width:20px;height:20px;"></i>
 						<span class="menu-title">공지사항관리</span>
 						<!-- <i class="menu-arrow"></i> -->
@@ -529,7 +540,7 @@ $(document).ready(function(){
 								</li>
 							</ul>
 						</div> --></li>
-					<li class="nav-item"><a class="nav-link" href="${path}/insertUser.do">
+					<li class="nav-item"><a class="nav-link" href="${path}/insertUser">
 						<i class="mdi mdi-account-multiple-plus"
 							style="width: 20px; height: 20px;"></i> <span class="menu-title">사용자 초대</span>
 						</a>
@@ -538,7 +549,7 @@ $(document).ready(function(){
 						
 						
 					<li class="nav-item"><a class="nav-link"
-						href="${path}/userIndex.do"" > <i
+						href="${path}/userIndex" > <i
 							class="mdi mdi-account-convert"
 							style="width: 20px; height: 20px;"></i> <span class="menu-title">일반유저페이지</span>
 							<!-- <i class="menu-arrow"></i> -->

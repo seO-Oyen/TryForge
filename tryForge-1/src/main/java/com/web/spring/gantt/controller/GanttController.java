@@ -13,12 +13,12 @@ public class GanttController {
 	@Autowired(required = false)
 	private GanttService service;
 	
-	@GetMapping("gantt.do")
+	@GetMapping("gantt")
 	public String Gantt() {
 		return "project/gantt";
 	}
 	
-	@GetMapping("getGantt.do")
+	@GetMapping("getGantt")
 	public String getGantt(Model d) {
 		d.addAttribute("data", service.getTask());
 		d.addAttribute("links", service.getTaskDep());
