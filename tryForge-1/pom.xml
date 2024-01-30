@@ -48,7 +48,7 @@
 			<scope>provided</scope>
 		</dependency>
 		<!--여기까지 붙여넣기-->
-<!-- reload -->
+		<!-- reload -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
