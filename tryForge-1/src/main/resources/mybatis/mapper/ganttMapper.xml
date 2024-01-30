@@ -8,6 +8,7 @@
 		<result column = "task_type" property = "type"/>
 		<result column = "task_rollup" property = "rollup"/>
 		<result column = "task_open" property = "open"/>
+		<result column = "member_name" property = "owner"/>
 	</resultMap>
 	<resultMap type = "task_dep" id="taskDepRst">
 		<result column = "dependency_key" property = "id"/>
@@ -16,6 +17,18 @@
 		<result column = "dependency_type" property = "type"/>
 	</resultMap>
 	<select id="getTask" resultMap="taskRst">
+		SELECT t.*, m.member_name
+		FROM task t
+		INNER JOIN member m ON t.member_key = m.member_key
+		WHERE t.PROJECT_KEY = 'PJ-0'
+	</select>
+	
+	<insert id="insPJtoTask" parameterType="task">
+	    INSERT INTO TASK (task_key, member_key, project_key, text, start_date, end_date, progress, parent, task_type, status, task_rollup, hide_bar, task_open, detail)
+	    VALUES (task_seq.nextval, #{member_key}, 'PJ-'||project_seq.currval, #{text}, TO_DATE(#{start_date}, 'YYYY-MM-DD'), TO_DATE(#{end_date}, 'YYYY-MM-DD'), 0, 0, 'project', #{status}, 0, 0, 1, #{detail})
+	</insert>
+<!-- 
+	<select id="getTask" resultMap="taskRst">
 		SELECT task_key, text, 
 		to_char(start_date, 'YYYY-MM-DD') start_date, 
 		to_char(end_date, 'YYYY-MM-DD') end_date,
@@ -23,7 +36,7 @@
 		FROM TASK
 		WHERE PROJECT_KEY = 'PJ-0'
 	</select>
-
+ -->
 	<select id="getTaskDep" resultMap="taskDepRst">
 		SELECT * FROM TASK_DEPENDENCY
 	</select>
