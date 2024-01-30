@@ -24,7 +24,7 @@
 	
 	<!-- 사원 검색 출력 -->
 	<select id="schMem" resultType="memberSch" parameterType="String">
-		SELECT m.member_name, m.member_email, tm.ROLE, p.title, p.start_date, p.end_date
+		SELECT m.member_name, m.member_email, tm.ROLE, p.title, p.start_date, p.end_date, m.member_key
 		FROM MEMBER m 
 			LEFT JOIN TEAM_MEMBER tm ON tm.MEMBER_KEY  = m.MEMBER_KEY
 			LEFT JOIN TEAM t ON t.team_key = tm.TEAM_KEY 
@@ -37,7 +37,10 @@
 	    INSERT INTO PROJECT (project_key, title, detail, status, start_date, end_date)
 	    VALUES ('PJ-' || project_seq.nextval, #{title}, #{detail}, '진행중', TO_DATE(#{start_date}, 'YYYY-MM-DD'), TO_DATE(#{end_date}, 'YYYY-MM-DD'))
 	</insert>
-	
+	<insert id="insPJtoTask" parameterType="project">
+	    INSERT INTO TASK (task_key, project_key, text, start_date, end_date, progress, parent, task_type, status, task_rollup, hide_bar, task_open, detail)
+	    VALUES (task_seq.nextval, 'PJ-'||project_seq.currval, #{title}, TO_DATE(#{start_date}, 'YYYY-MM-DD'), TO_DATE(#{end_date}, 'YYYY-MM-DD'), 0, 0, 'project', '진행중', 0, 0, 1, #{detail})
+	</insert>
 	<!-- 팀입력 -->
 	<insert id="insertTeam" parameterType="team">
 		INSERT INTO TEAM (team_key, team_name, project_key, project_cnt)

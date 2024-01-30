@@ -14,9 +14,17 @@ public class Task {
 	private String status;
 	private boolean rollup;
 	private boolean hide_bar;
+	private boolean open;
 	private String detail;
+	private String owner;
+	public Task() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public Task(int id, int member_key, String project_key, String text, String start_date, String end_date,
-			int duration, double progress, int parent, String type, String status, boolean rollup, boolean hide_bar) {
+			int duration, double progress, int parent, String type, String status, boolean rollup, boolean hide_bar,
+			boolean open, String detail, String owner) {
+		super();
 		this.id = id;
 		this.member_key = member_key;
 		this.project_key = project_key;
@@ -30,9 +38,9 @@ public class Task {
 		this.status = status;
 		this.rollup = rollup;
 		this.hide_bar = hide_bar;
-	}
-	public Task() {
-		// TODO Auto-generated constructor stub
+		this.open = open;
+		this.detail = detail;
+		this.owner = owner;
 	}
 	public int getId() {
 		return id;
@@ -112,11 +120,23 @@ public class Task {
 	public void setHide_bar(boolean hide_bar) {
 		this.hide_bar = hide_bar;
 	}
+	public boolean isOpen() {
+		return open;
+	}
+	public void setOpen(boolean open) {
+		this.open = open;
+	}
 	public String getDetail() {
 		return detail;
 	}
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
-	
+	public String getOwner() {
+		return owner;
+	}
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+
 }
