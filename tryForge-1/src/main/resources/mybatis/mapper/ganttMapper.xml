@@ -7,6 +7,7 @@
 		<result column = "task_key" property = "id"/>
 		<result column = "task_type" property = "type"/>
 		<result column = "task_rollup" property = "rollup"/>
+		<result column = "task_open" property = "open"/>
 	</resultMap>
 	<resultMap type = "task_dep" id="taskDepRst">
 		<result column = "dependency_key" property = "id"/>
@@ -18,7 +19,7 @@
 		SELECT task_key, text, 
 		to_char(start_date, 'YYYY-MM-DD') start_date, 
 		to_char(end_date, 'YYYY-MM-DD') end_date,
-		duration, progress, parent, task_type, status, task_rollup, hide_bar
+		duration, progress, parent, task_type, status, task_rollup, hide_bar, task_open
 		FROM TASK
 		WHERE PROJECT_KEY = 'PJ-0'
 	</select>
