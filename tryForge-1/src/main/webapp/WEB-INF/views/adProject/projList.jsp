@@ -32,8 +32,8 @@
 }
 </style>
 <script>
-	$(document).ready(function() {
 		var selectedMemberKeys = [];
+	$(document).ready(function() {
 
 		$("#clsBtn").click(function() {
 			$("#myModal form")[0].reset()

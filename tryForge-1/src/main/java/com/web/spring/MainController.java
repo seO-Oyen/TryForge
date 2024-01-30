@@ -27,7 +27,7 @@ public class MainController {
 	@Autowired(required = false)
 	private MemberService memberService;
 
-	// http://localhost:1112/index.do
+	// http://localhost:1112/adMain
 	@GetMapping("index")
 	public String indexPage() {
 
