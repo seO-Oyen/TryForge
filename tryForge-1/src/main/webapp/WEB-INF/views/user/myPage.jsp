@@ -65,6 +65,7 @@ $(document).ready(function() {
 	})
 })
 
+// 비밀번호 확인
 function chkPwd() {
 	$.ajax({
 		
@@ -93,7 +94,8 @@ function chkPwd() {
 									data-toggle="modal" data-target="#myModal" data-member-key="${loginMem.member_key}">비밀번호 수정
 								</button>
 								<button type="button"
-									class="btn btn-secondary btn-md btn-icon-text">개인정보 수정
+									class="btn btn-secondary btn-md btn-open" id="changeInfo"
+									data-toggle="modal" data-target="#myModal" data-member-key="${loginMem.member_key}">개인정보 수정
 								</button>
 							</div>
 						</div>

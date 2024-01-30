@@ -89,4 +89,11 @@ public class MemberService {
 		return msg;
 	}
 	 * */
+	
+	// 비밀번호 확인
+	public boolean chkPwd(String memKey, String pwd) {
+		
+		
+		return false;
+	}
 }
