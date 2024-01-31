@@ -86,5 +86,19 @@
 		from member
 		where member_key = #{memberKey}
 	</select>
+	
+	<select id="checkPwd" parameterType="String" resultType="int">
+		SELECT count(*)
+		FROM MEMBER
+		WHERE member_key = #{member_key}
+			AND member_pwd = #{pwd}
+	</select>
+	
+	<update id="changeUserInfo" parameterType="String">
+		UPDATE MEMBER
+		SET MEMBER_NAME = #{name},
+			member_id = #{id}
+		WHERE MEMBER_KEY = #{memKey}
+	</update>
 
 </mapper>

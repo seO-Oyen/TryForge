@@ -89,4 +89,22 @@ public class MemberService {
 		return msg;
 	}
 	 * */
+	
+	// 비밀번호 확인
+	public boolean chkPwd(String memKey, String pwd) {
+		if (memberDao.checkPwd(memKey, pwd) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	// 유저정보 수정
+	public boolean changeUserInfo(String name, String id, String memKey) {
+		if (memberDao.changeUserInfo(name, id, memKey) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

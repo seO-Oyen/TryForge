@@ -3,6 +3,7 @@ package com.web.spring.member.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.web.spring.vo.InviteMember;
 import com.web.spring.vo.Member;
@@ -31,4 +32,10 @@ public interface MemberDao {
 	
 	// 유저 key로 유저 찾기
 	Member getMeber(int memberKey);
+	
+	// 비밀번호 확인
+	int checkPwd(@Param("member_key") String memKey, @Param("pwd") String pwd);
+	
+	int changeUserInfo(@Param("name") String name, @Param("id") String id, 
+			@Param("memKey") String memKey);
 }
