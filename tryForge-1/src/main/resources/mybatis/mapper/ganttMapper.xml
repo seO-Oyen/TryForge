@@ -6,7 +6,6 @@
 	<resultMap type = "task" id="taskRst">
 		<result column = "task_key" property = "id"/>
 		<result column = "task_type" property = "type"/>
-		<result column = "task_rollup" property = "rollup"/>
 		<result column = "task_open" property = "open"/>
 		<result column = "member_name" property = "owner"/>
 	</resultMap>
@@ -19,12 +18,14 @@
 	<select id="getTask" resultMap="taskRst">
 		SELECT t.*, m.member_name
 		FROM task t
-		INNER JOIN member m ON t.member_key = m.member_key
-		WHERE t.PROJECT_KEY = 'PJ-0'
+		left JOIN member m ON t.member_key = m.member_key
+		WHERE t.PROJECT_KEY = 'PJ-126'
 	</select>
 
+	<select id="taskDetail" resultMap="taskRst">
+		SELECT * FROM TASK WHERE TASK_KEY = #{id}
+	</select>
 	<select id="getTaskDep" resultMap="taskDepRst">
 		SELECT * FROM TASK_DEPENDENCY
 	</select>
 </mapper>
-
