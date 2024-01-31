@@ -21,12 +21,12 @@
 	<!-- 업무할당 -->
 	<insert id="insertTask" parameterType="task">
 		INSERT INTO task 
-		(task_key, MEMBER_KEY, PROJECT_KEY, text, START_DATE, END_DATE, DURATION, PROGRESS, TASK_TYPE, STATUS, detail, parent, task_rollup, hide_bar, task_open)
+		(task_key, MEMBER_KEY, PROJECT_KEY, text, START_DATE, END_DATE, DURATION, PROGRESS, TASK_TYPE, STATUS, detail, parent, hide_bar, task_open, confirm)
 		VALUES
 		(TASK_SEQ.NEXTVAL, #{member_key}, #{project_key} , #{text},
 		 to_DATE(#{start_date},'YYYY-MM-DD'), to_DATE (#{end_date},'YYYY-MM-DD'),
 		 FLOOR(to_DATE (#{end_date},'YYYY-MM-DD')-to_DATE(#{start_date},'YYYY-MM-DD')), 0,
-		 'task','요청',#{detail},1,0,0,1)
+		 'task','진행중',#{detail},1,0,1,0)
 	</insert>
 	<!-- 업무 출력 -->
 	<select id="taskList" resultMap="taskRst">
@@ -38,4 +38,8 @@
 	<update id="uptTask" parameterType="task">
 		UPDATE task SET text = #{text} , detail = #{detail} WHERE task_key = #{id}
 	</update>
+	<!-- 업무 삭제 -->
+	<delete id="delTask" parameterType="int">
+		DELETE FROM TASK WHERE task_key = #{id}
+	</delete>
 </mapper>

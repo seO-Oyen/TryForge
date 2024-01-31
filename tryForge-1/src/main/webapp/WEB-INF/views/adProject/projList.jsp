@@ -27,8 +27,10 @@
 }
 
 #searchResults {
-	height: 150px;
+	height: 300px !important;
 	overflow-y: auto;
+    margin-left: 3%;
+    width:100%;
 }
 </style>
 <script>
@@ -532,7 +534,7 @@
 						<div class="col-12" id="bottom">
 							<input type="text" class="form-control mb-2" name="member_name"
 								placeholder="검색">
-							<div id="searchResults" style="height: 150px; overflow-y: auto;">
+							<div id="searchResults" style="height: 300px; overflow-y: auto;">
 								<table class="table table-hover">
 									<tbody id="addMem">
 									</tbody>
@@ -541,7 +543,7 @@
 						</div>
 						<!-- 위: 선택한 구성원 -->
 						<div class="col-12 mb-2" id="top">
-							<div id="selectMember" style="height: 200px; overflow-y: auto;">
+							<div id="selectMember" style="height: 200px; overflow-y: auto; width:100%; margin-left: 3%;">
 								<input type="hidden" name="member_key" value=""
 									id="hiddenMemberKey">
 								<table class="table table-hover">

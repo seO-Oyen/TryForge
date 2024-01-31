@@ -2,6 +2,7 @@ package com.web.spring.admin.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +36,9 @@ public class AdTaskService {
 	// 업무키의 제목, 상세설명 변경
 	public String uptTask(Task upt) {
 		return dao.uptTask(upt)>0?"수정 완료":"수정 실패";
+	}
+	// 해당 업무키 삭제
+	public String delTask(int id) {
+		return dao.delTask(id)>0?"삭제 성공":"삭제 실패";
 	}
 }

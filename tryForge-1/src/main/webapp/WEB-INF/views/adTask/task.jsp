@@ -30,13 +30,26 @@
 	height: 150px;
 	overflow-y: auto;
 }
+
+.text02{
+	border: 1px solid #f3f3f3;
+    font-weight: 400;
+    font-size: 0.875rem;
+    height: 2.875rem
+}
+.detail02{
+	border: 1px solid #f3f3f3;
+    font-weight: 400;
+    font-size: 0.875rem;
+    height: 2.875rem
+}
 </style>
 <script>
 	$(document).ready(function() {
-		$("#uptBtn").click(function(){
-	        uptTask();
-	    });
-		
+		$("#uptBtn").click(function() {
+			uptTask(taskId);
+		});
+
 		$("#clsBtn").click(function() {
 			$("#myModal form")[0].reset()
 
@@ -45,8 +58,17 @@
 			$("#myModal form")[0].reset()
 
 		})
+		$("#clsBtn02").click(function() {
+			$("#modalFrm02")[0].reset()
+
+		})
+		$("#xBtn02").click(function() {
+			$("#modalFrm02")[0].reset()
+
+		})
 		// 동적으로 생성된 버튼에 대한 이벤트 처리
 		$(document).on('click', '.btn-open', function() {
+			//$("#modalFrm")[0].reset()
 			var memberName = $(this).data("member-name");
 			var memberKey = $(this).data("member-key");
 			var projectKey = $(this).data("project-key");
@@ -86,46 +108,118 @@
 	}
 
 	function taskList(member_key) {
-	    $.ajax({
-	        url: "${path}/taskList?member_key="+member_key,
-	        dataType: "json",
-	        success: function (data) {
-	                var tlist = data.getTask;
-	                var memberName = $("#memname").data("member-name");
-	                $("#myModal02 [name=member_name]").val(memberName);
-	                var row = "";
-	                $(tlist).each(function (idx, task) {
-	                    row += "<tr>";
-	                    row += "<input name='id' type='hidden' value='" + task.id+ "'>";
-	                    row += "<td><input name='text' type='text' class='form-control' value='" + task.text + "'></td>";
-	                    row += "<td><input name='detail' type='text' class='form-control' value='" + task.detail + "'></td>";
-	                    row += "<td><button type='button' class='btn btn-danger delBtn'>삭제</button></td>";
-	                    row += "<td><button type='button' class='btn btn-' data-task-key='task.id' style='background-color: #007FFF; color: white;'>수정</button></td>";
-	                    row += "</tr>";
-	                });
-	                $("#taskTable").html(row);
-	                $("#myModal02").modal('show');
-	                var 
+		var selectedRow = $(".member-row[data-member-key='" + member_key + "']");
+		var memberName = selectedRow.find(".memname").data("member-name");
+		console.log(selectedRow.length);
+		console.log(selectedRow.find(".memname").length);
+		console.log(selectedRow.find(".memname"));
+		$
+				.ajax({
+					url : "${path}/taskList?member_key=" + member_key,
+					dataType : "json",
+					success : function(data) {
+						var tlist = data.getTask;
+						$("#modalFrm02 [name=member_name]").val(memberName);
 
-	        },
-	        error: function (err) {
-	            console.log(err)
-	        }
-	    });
+						var row = "";
+						$(tlist)
+								.each(
+										function(idx, task) {
+											if (task.id != null) {
+
+												row += "<tr class='task_row' data-task-key='"+ task.id+"'>";
+												row += "<td><input name='text' class='text02' type='text' value='" + task.text + "'></td>";
+												row += "<td><input name='detail' class='detail02' type='text' value='" + task.detail + "'></td>";
+												row += "<td>" + task.status
+														+ "</td>";
+												row += "<td><button type='button' class='btn btn-' onclick=uptTask("
+														+ task.id
+														+ ") style='background-color: #007FFF; color: white;'>수정</button></td>";
+												row += "<td><button type='button' class='btn btn-danger delBtn' onclick=delTask("
+														+ task.id
+														+ ")>삭제</button></td>";
+												row += "</tr>";
+											} else {
+												row = "할당 업무 없음";
+											}
+										});
+						$("#taskTable").html(row);
+						$("#myModal02").modal('show');
+
+					},
+					error : function(err) {
+						console.log(err)
+					}
+				});
 	}
-	
-	function uptTask(key){
-		alert($("#modalFrm02").serialize())
+
+	function uptTask(taskId) {
+		var taskRow = $(".task_row[data-task-key='" + taskId + "']");
+		var textval = taskRow.find(".text02").val();
+		var detailval = taskRow.find(".detail02").val();
+
 		$.ajax({
-			url:"${path}/uptTask?id="+key,
-			dataType:"json",
-			success:function(data){
-				alert(data.uptMsg)
+			url : "${path}/uptTask",
+			dataType : "json",
+			data : {
+				id : taskId,
+				text : textval,
+				detail : detailval
 			},
-			error:function(err){
+			success : function(data) {
+				var uptMsg = data.uptMsg
+				if (uptMsg != null) {
+					Swal.fire({
+						title : uptMsg,
+						text : ' ',
+						icon : 'success',
+					}).then(function() {
+						$("#clsBtn02").click();
+						window.location.reload();
+					});
+
+				}
+			},
+			error : function(err) {
 				console.log(err)
 			}
 		})
+	}
+
+	function delTask(id) {
+	    Swal.fire({
+	        title: '삭제',
+	        text: '해당 업무를 삭제하시겠습니까?',
+	        icon: 'question',
+	        showCancelButton: true,
+	        confirmButtonText: '확인',
+	        cancelButtonText: '취소',
+	    }).then(function(result) {
+	        if (result.isConfirmed) {
+	            // 사용자가 확인을 눌렀을 때의 로직
+	            $.ajax({
+	                url: "${path}/delTask",
+	                data: "id=" + id,
+	                dataType: "json",
+	                success: function(data) {
+	                    var delMsg = data.delMsg;
+	                    if (delMsg != null) {
+	                        Swal.fire({
+	                            title: delMsg,
+	                            text: ' ',
+	                            icon: 'success',
+	                        }).then(function() {
+	                            $("#clsBtn02").click();
+	                            window.location.reload();
+	                        });
+	                    }
+	                },
+	                error: function(err) {
+	                    console.log(err);
+	                }
+	            });
+	        }
+	    });
 	}
 </script>
 
@@ -170,9 +264,10 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="mlist" items="${memList}">
-    									<tr ondblclick='taskList("${mlist.member_key}")'>
-											<td id="memname" data-member-name="${mlist.member_name}">${mlist.member_name}</td>
+									<c:forEach var="mlist" items="${memList}" varStatus="sts">
+										<tr class="member-row" data-member-key="${mlist.member_key}"
+											ondblclick='taskList("${mlist.member_key}")'>
+											<td class="memname" data-member-name="${mlist.member_name}">${mlist.member_name}</td>
 											<td>${mlist.member_email}</td>
 											<td>${mlist.title}</td>
 											<td>
@@ -272,9 +367,11 @@
 
 
 <!-- 업무정보 모달창 -->
-<div class="modal fade" id="myModal02" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-    <div class="modal-dialog modal-xl"> <!-- modal-lg를 사용하거나 원하는 크기를 직접 지정할 수 있습니다. -->
-        <div class="modal-content">
+<div class="modal fade" id="myModal02" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<!-- modal-lg를 사용하거나 원하는 크기를 직접 지정할 수 있습니다. -->
+		<div class="modal-content">
 
 			<!-- Modal Header -->
 			<div class="modal-header">
@@ -294,7 +391,7 @@
 			<form class="forms-sample" id="modalFrm02">
 				<input type="hidden" name="member_key" /> <input type="hidden"
 					name="project_key" />
-				<div class="form-group" style="width:80%; margin-left:10%;">
+				<div class="form-group" style="width: 80%; margin-left: 10%;">
 					<label for="exampleInputUsername1">이름</label> <input
 						name="member_name" readonly type="text" class="form-control"
 						id="mname" placeholder="member name">
@@ -307,10 +404,11 @@
 							<tr>
 								<th>업무이름</th>
 								<th>업무설명</th>
+								<th>진행상태</th>
 								<th></th>
 							</tr>
 						</thead>
-						<tbody id="taskTable">		
+						<tbody id="taskTable">
 						</tbody>
 					</table>
 				</div>
