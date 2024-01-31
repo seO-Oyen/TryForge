@@ -245,7 +245,7 @@ gantt.config.lightbox.project_sections=[
     {name:"description", height:100, map_to:"text", type:"textarea", focus:true},
     {name:"time",        height:72, map_to:"auto", type:"duration"}
 ];
-gantt.config.show_rollup_tasks = true;
+
 gantt.config.lightbox.milestone_sections = [
     {name: "description", height: 70, map_to: "text", type: "textarea", focus: true},
     {name: "rollup", type: "checkbox", map_to: "rollup"},
@@ -463,7 +463,7 @@ gantt.load("${pageContext.request.contextPath}/getGantt");
 		<!-- page-body-wrapper ends -->
 	</div>
 	<!-- container-scroller -->
-	
+
 </body>
 
 </html>
