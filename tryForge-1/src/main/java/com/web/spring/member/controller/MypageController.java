@@ -47,5 +47,19 @@ public class MypageController {
 		
 		return ResponseEntity.ok(result);
 	}
+	
+	@PostMapping("changePwd")
+	public ResponseEntity<Boolean> changePwd(
+				@RequestParam("memKey") String memKey,
+				@RequestParam("pwd") String pwd
+			) {
+		boolean result = memService.changePwd(memKey, pwd);
+		/*if (result) {
+			Member loginMember = memService.getMember(memKey);
+			session.setAttribute("loginMem", loginMember);
+		}*/
+		
+		return ResponseEntity.ok(result);
+	}
 
 }

@@ -100,5 +100,11 @@
 			member_id = #{id}
 		WHERE MEMBER_KEY = #{memKey}
 	</update>
+	
+	<update id="changePwd" parameterType="String">
+		UPDATE MEMBER
+		SET MEMBER_PWD = #{pwd}
+		WHERE MEMBER_KEY = #{memKey}
+	</update>
 
 </mapper>
