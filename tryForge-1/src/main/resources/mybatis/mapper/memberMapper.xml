@@ -93,5 +93,12 @@
 		WHERE member_key = #{member_key}
 			AND member_pwd = #{pwd}
 	</select>
+	
+	<update id="changeUserInfo" parameterType="String">
+		UPDATE MEMBER
+		SET MEMBER_NAME = #{name},
+			member_id = #{id}
+		WHERE MEMBER_KEY = #{memKey}
+	</update>
 
 </mapper>

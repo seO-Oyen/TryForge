@@ -230,7 +230,16 @@ function saveInfo() {
 			dataType : "json",
 			success : function(data) {
 				if (data) {
-					console.log("수정성공")
+					Swal.fire({
+						position: "center-center",
+						title: "수정 성공",
+						text: "마이페이지로 돌아갑니다.",
+						showConfirmButton: false,
+						icon: "success",
+						timer: 1500
+					}).then((result) => {
+						location.href = "${path}/myPage"
+					})
 				} else {
 					console.log("수정 실패")
 				}

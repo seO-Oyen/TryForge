@@ -35,4 +35,7 @@ public interface MemberDao {
 	
 	// 비밀번호 확인
 	int checkPwd(@Param("member_key") String memKey, @Param("pwd") String pwd);
+	
+	int changeUserInfo(@Param("name") String name, @Param("id") String id, 
+			@Param("memKey") String memKey);
 }

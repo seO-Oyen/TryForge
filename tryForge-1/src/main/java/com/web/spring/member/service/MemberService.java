@@ -98,4 +98,13 @@ public class MemberService {
 			return false;
 		}
 	}
+	
+	// 유저정보 수정
+	public boolean changeUserInfo(String name, String id, String memKey) {
+		if (memberDao.changeUserInfo(name, id, memKey) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.web.spring.member.service.MemberService;
+import com.web.spring.vo.Member;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class MypageController {
@@ -33,13 +36,16 @@ public class MypageController {
 	public ResponseEntity<Boolean> changeMemInfo(
 				@RequestParam("name") String memName,
 				@RequestParam("memberId") String memId,
-				@RequestParam("memKey") String memKey
+				@RequestParam("memKey") int memKey,
+				HttpSession session
 			) {
-		System.out.println(memName);
-		System.out.println(memId);
-		System.out.println(memKey);
+		boolean result = memService.changeUserInfo(memName, memId, Integer.toString(memKey));
+		if (result) {
+			Member loginMember = memService.getMember(memKey);
+			session.setAttribute("loginMem", loginMember);
+		}
 		
-		return ResponseEntity.ok(true);
+		return ResponseEntity.ok(result);
 	}
 
 }
