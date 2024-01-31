@@ -53,7 +53,40 @@ $(document).ready(function(){
 		alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
 		location.href="${path}/login"
 	}
+	function updateNavigation(){
+		var currentPage = window.location.pathname;
+
+		var Title = document.querySelector('.navbar-nav h3');
+		switch (currentPage) {
+			case '/dashboard':
+				Title.textContent = 'DashBoard';
+				break;
+			case '/calendar':
+				Title.textContent = 'Calendar';
+				break;
+			case '/notice':
+				Title.textContent = 'Notice';
+				break;
+			case '/task':
+				Title.textContent = 'Task';
+				break;
+			case '/taskreport':
+				Title.textContent = 'Task Report';
+				break;
+			case '/risk':
+				Title.textContent = 'Risk';
+				break;
+			case '/file':
+				Title.textContent = 'Shared File';
+				break;
+			default:
+				break;
+		}
+	}
+
+	updateNavigation();
 })
+
 </script>
 </head>
 <body>
@@ -204,13 +237,15 @@ $(document).ready(function(){
 			<div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
 				<ul class="navbar-nav mr-lg-2">
 					<li class="nav-item ml-0">
-						<h4 class="mb-0">Dashboard</h4>
+						<h3 class="mb-0">GanttChart</h3>
+
 					</li>
 					<li class="nav-item">
 						<div class="d-flex align-items-baseline">
-							<p class="mb-0">Home</p>
-							<i class="typcn typcn-chevron-right"></i>
-							<p class="mb-0">Main Dahboard</p>
+							<i class="typcn typcn-chevron-right" style="font-size:23px;"></i>
+							<p class="mb-0" style="font-size: 20px; margin-left: 10px;">현재 프로젝트&nbsp; : &nbsp;TryForge</p>
+
+
 						</div>
 					</li>
 				</ul>
