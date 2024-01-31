@@ -18,4 +18,9 @@ public class TaskController {
 		d.addAttribute("getTask",service.getTask());
 		return "project/userTask";
 	}
+	@GetMapping("uptConfirm")
+	public String uptConfirm(@RequestParam("id")int id, Model d){
+		d.addAttribute("uptMsg",service.uptConfirm(id));
+		return "pageJsonReport";
+	}
 }

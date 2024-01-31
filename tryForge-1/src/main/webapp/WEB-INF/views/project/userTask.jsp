@@ -26,21 +26,38 @@
 	height: 150px;
 	overflow-y: auto;
 }
+
 </style>
 <script>
 	$(document).ready(function() {
-
 	})
+
+	function uptConfirm(id){
+	    $.ajax({
+	    url:"${path}/uptConfirm",
+	    data:"id="+id,
+	    dataType:"json",
+	    success:function(data){
+	        var uptMsg = data.uptMsg
+	        if(uptMsg!=null){
+	            alert(uptMsg)
+	        }
+	    },
+	    error:function(err){
+	        console.log(err)
+	    }
+	    })
+	}
 </script>
 <div class="main-panel">
 	<div class="content-wrapper">
 		<div class="row">
-			<!-- 진행중인 프로젝트 -->
+			<!-- 새 업무 -->
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-body">
 						<h4 class="card-title">New Task</h4>
-						<!-- 진행중인 프로젝트 테이블 -->
+						<!-- 새 업무 테이블 -->
 						<div class="table-responsive"
 							style="width: 95%; margin-left: 4%; max-height: 2000px; overflow-x: auto;">
 							<table class="table table-hover" style="width: 100%;">
@@ -83,14 +100,14 @@
 				</div>
 			</div>
 
-			<!-- 진행중인 프로젝트 end -->
+			<!-- 새 업무 end -->
 
-			<!-- 완료된 프로젝트 -->
+			<!-- 진행중인 업무 -->
 			<div class="col-md-12" style="margin-top: 3%;">
 				<div class="card">
 					<div class="card-body">
 						<h4 class="card-title">Ongoing Task</h4>
-						<!-- 완료된 프로젝트 테이블 -->
+						<!-- 진행중인 업무 테이블 -->
 						<div class="table-responsive"
 							style="width: 95%; margin-left: 4%; max-height: 2000px; overflow-x: auto;">
 							<table class="table table-hover" style="width: 100%;">
@@ -108,7 +125,7 @@
 										<c:if
 											test="${tlist.member_key == loginMem.member_key && tlist.confirm == 1}">
 
-											<tr class="member-row" data-member-key="${tlist.id}">
+											<tr class="task-row" data-member-key="${tlist.id}">
 												<td>${tlist.text}</td>
 												<td>${tlist.start_date}</td>
 												<td>${tlist.end_date}</td>
@@ -132,7 +149,7 @@
 					</div>
 				</div>
 			</div>
-			<!-- 완료된 프로젝트 end -->
+			<!-- 진행중인 업무 end -->
 		</div>
 
 		<!-- The Modal -->
@@ -150,19 +167,12 @@
 					<!-- Modal body -->
 					<div class="modal-body">
 						<div style="display: flex;">
-							<h3 id=proTitle>업무 할당</h3>
+							<h3 id=proTitle>새 업무</h3>
 
 						</div>
 
 					</div>
 					<form class="forms-sample" id="modalFrm">
-						<input type="hidden" name="member_key" /> <input type="hidden"
-							name="project_key" />
-						<div class="form-group">
-							<label for="exampleInputUsername1">이름</label> <input
-								name="member_name" readonly type="text" class="form-control"
-								id="mname" placeholder="member name">
-						</div>
 						<div class="form-group">
 							<label for="exampleInputUsername1">업무이름</label> <input
 								name="text" type="text" class="form-control" id=""
@@ -186,9 +196,9 @@
 					<!-- Modal footer -->
 					<div class="modal-footer">
 						<div class="mx-auto">
-							<button type="button" class="btn btn-" id="regBtn"
+							<button type="button" class="btn btn-" id="confirmBtn"
 								onclick="insTask()"
-								style="background-color: #007FFF; color: white;">할당</button>
+								style="background-color: #007FFF; color: white;">확인완료</button>
 
 							<button type="button" class="btn btn-danger" data-dismiss="modal"
 								id="clsBtn">닫기</button>

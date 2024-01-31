@@ -17,5 +17,8 @@ public class TaskService {
 	public List<Task> getTask(){
 		return dao.getTask();
 	}
-	
+	// 업무 확인
+	public String uptConfirm(int id){
+		return dao.uptConfirm(id)>0?"업무 확인 완료":"업무 확인 에러";
+	}
 }
