@@ -234,7 +234,7 @@ gantt.config.lightbox.sections=[
 */
 gantt.config.lightbox.sections = [
 	{name: "description", height: 47, map_to: "text", type: "textarea", focus: true},
-	{name: "type", height: 40, map_to: "type", type: "typeselect"},
+	// {name: "type", height: 40, map_to: "type", type: "typeselect"},
 	{name: "owner", height: 40, map_to: "owner", type: "select", options: users},
 	{name: "time",map_to: "auto", type: "time", time_format:["%Y","%m","%d"]},
 	{name: "detail", height: 47, map_to: "detail", type: "textarea"}, // 'detail'이 텍스트 정보를 포함한다고 가정.
@@ -245,15 +245,14 @@ gantt.config.lightbox.project_sections=[
     {name:"description", height:100, map_to:"text", type:"textarea", focus:true},
     {name:"time",        height:72, map_to:"auto", type:"duration"}
 ];
-
+/*
 gantt.config.lightbox.milestone_sections = [
     {name: "description", height: 70, map_to: "text", type: "textarea", focus: true},
-    {name: "rollup", type: "checkbox", map_to: "rollup"},
     {name: "hide_bar", type: "checkbox", map_to: "hide_bar"},
     {name: "type", height: 44, type: "typeselect", map_to: "type"},
     {name: "time", type: "duration", map_to: "auto"}
 ];
-
+*/
 /*
 gantt.config.lightbox.sections = [
     {name:"description", height:38, map_to:"desc", type:"textarea",focus:true},
@@ -343,6 +342,7 @@ function ajaxFunc(url, type){
 	})
 }
 */
+/*
 // 오른쪽에 텍스트 추가하는 기능인데. milestone에 대해서만 작동하도록 구성(무슨 마일스톤인지 알아보기 쉽도록)
 gantt.templates.rightside_text = function(start, end, task){
     if(task.type === "milestone"){
@@ -350,6 +350,8 @@ gantt.templates.rightside_text = function(start, end, task){
     }
     return "";
 };
+마일스톤 안쓸거라 일단 주석
+ */
 /*
 gantt.attachEvent("onAfterTaskAdd", function(id, item){
 	gantt.ajax.post({
@@ -358,13 +360,13 @@ gantt.attachEvent("onAfterTaskAdd", function(id, item){
 			text:item.text,
 			start_date:item.start_date,
 			end_date:item.end_date,
-			duration:item.duration
-			progress:item.progress
-			parent:item.parent
-			type:item.type
-			rollup:item.rollup
-			open:item.open
-			detail:item.detail
+			duration:item.duration,
+			progress:item.progress,
+			parent:item.parent,
+			// type:item.type,
+			// rollup:item.rollup,
+			// open:item.open,
+			detail:item.detail,
 		}
 
 			}).then(function(response){
@@ -375,6 +377,7 @@ gantt.attachEvent("onAfterTaskAdd", function(id, item){
 			});
 });
 */
+
 /*
 gantt.attachEvent("onAfterLinkAdd", function(id, link){
     gantt.ajax.post("/addDependency", link)
