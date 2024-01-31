@@ -317,6 +317,7 @@
 
 			</div>
 			<form class="forms-sample" id="modalFrm">
+				<input type="hidden" name="assignor" value="${loginMem.member_name}"/>
 				<input type="hidden" name="member_key" /> <input type="hidden"
 					name="project_key" />
 				<div class="form-group">

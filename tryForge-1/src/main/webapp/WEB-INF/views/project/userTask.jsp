@@ -4,11 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="path" value="${pageContext.request.contextPath }"/> --%>
-<jsp:include page="${path}/template/module/module_admain.jsp"
-	flush="true" />
+<jsp:include page="${path}/template/module/module_main.jsp" flush="true" />
 <style>
 #myModal .modal-dialog {
 	max-width: 50%; /* 모달의 최대 너비를 80%로 설정 */
@@ -33,7 +29,7 @@
 </style>
 <script>
 	$(document).ready(function() {
-	
+
 	})
 </script>
 
@@ -43,57 +39,51 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-body">
-						<h4 class="card-title">Task Management</h4>
+						<h4 class="card-title">New Task</h4>
 						<!-- 요청된 업무 확인 -->
-						<form id="frm01">
-							<div style="display: flex;">
-								<div class="form-group" style="margin-left: 8%; width: 10%;">
-									<select class="js-example-basic-single w-100" name="title"
-										id="stitle"
-										style="border: 1px solid #f3f3f3; font-weight: 400; font-size: 0.875rem; height: 2.875rem;">
-										<option value=" ">전체</option>
-										<c:forEach var="title" items="${title}">
-											<option>${title}</option>
-										</c:forEach>
-									</select>
-									<script type="text/javascript">
-										$("[name=title]").val("${task.title}")
-									</script>
-								</div>
-								<input type="text" class="form-control mb-2" name="member_name"
-									placeholder="사원명 검색" style="width: 54%; margin-left: 10px;">
-								<button type="submit" class="btn btn-" id="regBtn"
-									style="background-color: #007FFF; color: white; margin-left: 5%; height: 2.875rem;">검색</button>
-							</div>
-						</form>
+
 						<div class="table-responsive"
 							style="width: 95%; margin-left: 4%; max-height: 2000px; overflow-x: auto;">
 							<table class="table table-hover" style="width: 100%;">
 								<thead>
 									<tr>
-										<th>구성원정보</th>
-										<th>이메일</th>
-										<th>참여중인 프로젝트</th>
+										<th>업무명</th>
+										<th>업무시작일</th>
+										<th>업무종료일</th>
+										<th>전달자</th>
 										<th></th>
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="mlist" items="${memList}" varStatus="sts">
-										<tr class="member-row" data-member-key="${mlist.member_key}"
-											ondblclick='taskList("${mlist.member_key}")'>
-											<td class="memname" data-member-name="${mlist.member_name}">${mlist.member_name}</td>
-											<td>${mlist.member_email}</td>
-											<td>${mlist.title}</td>
-											<td>
-												<button type="button" class="btn btn-open"
-													data-toggle="modal" data-target="#myModal"
-													data-member-name="${mlist.member_name}"
-													data-member-key="${mlist.member_key}"
-													data-project-key="${mlist.project_key}"
-													style="background-color: #007FFF; color: white;">업무할당
-												</button>
-											</td>
-										</tr>
+									<c:forEach var="tlist" items="${getTask}" varStatus="sts">
+										<c:out value="${tlist.type}" />
+										<!-- 로그로 출력 -->
+										<c:out value="${tlist.member_key}" />
+										<!-- 로그로 출력 -->
+										<c:out value="${tlist.confirm}" />
+										<!-- 로그로 출력 -->
+										<c:choose>
+											<c:when
+												test="${tlist.type == 'task' && tlist.member_key == loginMem.member_key && tlist.confirm == 0}">
+												<tr class="member-row" data-member-key="${tlist.id}">
+													<td>${tlist.text}</td>
+													<td>${tlist.start_date}</td>
+													<td>${tlist.end_date}</td>
+													<td>${tlist.assignor}</td>
+													<td>
+														<button type="button" class="btn btn-open"
+															style="background-color: #007FFF; color: white;">
+															리스크등록</button>
+													</td>
+												</tr>
+											</c:when>
+											<c:otherwise>
+												<tr>
+													<td>새로운 업무가 없습니다.</td>
+
+												</tr>
+											</c:otherwise>
+										</c:choose>
 									</c:forEach>
 								</tbody>
 							</table>

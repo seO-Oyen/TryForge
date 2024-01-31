@@ -25,13 +25,6 @@
 	margin-right: 3%; /* 입력 요소 오른쪽 여백 조절 */
 	margin-left: 3%; /* 입력 요소 왼쪽 여백 조절 */
 }
-
-#searchResults {
-	height: 300px !important;
-	overflow-y: auto;
-    margin-left: 3%;
-    width:100%;
-}
 </style>
 <script>
 	$(document).ready(function() {
@@ -80,8 +73,8 @@
 			event.preventDefault();
 			// 공백 유효성 체크
 			if (!emptyCheck()) {
-		        return;
-		    }
+				return;
+			}
 			getAllMemberKeys();
 			$.ajax({
 				// 등록 controller 호출
@@ -108,52 +101,72 @@
 
 	});
 	function schMem() {
-		$.ajax({
-			url : "${path}/schMem",
-			data : $("#modalFrm").serialize(),
-			dataType : "json",
-			success : function(data) {
-				var memList = data.memList;
-				var html = "";
-				$(memList).each(
-						function(idx, member) {
-							if(member.title!=null){
-							html += "<tr> ";
-							html += "<td>" + member.member_name + "</td>";
-							html += "<td>" + member.member_email + "</td>";
-							html += "<td>" + member.title + "</td>";
-							html += "<td>" + member.start_date+ "</td>";
-							html += "<td>" + member.end_date+ "</td>";
-							html += "</tr>";
-							}else{
-								var member_key = member.member_key; 
-								html += "<tr ondblclick='selectMem(\"" + member_key + "\", \"" + member.member_name + "\", \"" + member.member_email + "\")' > ";
-							html += "<td>" + member.member_name + "</td>";
-							html += "<td>" + member.member_email + "</td>";
-							html += "<td style='text-align: center;'>·</td>";
-							html += "<td style='text-align: center;'>·</td>";
-							html += "<td style='text-align: center;'>·</td>";
-							
-							html += "</tr>";
-							}
-						});
-		           
-				$("#addMem").html(html);
-                selectedMemberKeys.push(member.member_key);
-			},
-			error : function(err) {
-				console.log(err);
-			}
-		});
+		$
+				.ajax({
+					url : "${path}/schMem",
+					data : $("#modalFrm").serialize(),
+					dataType : "json",
+					success : function(data) {
+						var memList = data.memList;
+						var html = "";
+						$(memList)
+								.each(
+										function(idx, member) {
+											if (member.title != null) {
+												html += "<tr> ";
+												html += "<td>"
+														+ member.member_name
+														+ "</td>";
+												html += "<td>"
+														+ member.member_email
+														+ "</td>";
+												html += "<td>" + member.title
+														+ "</td>";
+												html += "<td>"
+														+ member.start_date
+														+ "</td>";
+												html += "<td>"
+														+ member.end_date
+														+ "</td>";
+												html += "</tr>";
+											} else {
+												var member_key = member.member_key;
+												html += "<tr ondblclick='selectMem(\""
+														+ member_key
+														+ "\", \""
+														+ member.member_name
+														+ "\", \""
+														+ member.member_email
+														+ "\")' > ";
+												html += "<td>"
+														+ member.member_name
+														+ "</td>";
+												html += "<td>"
+														+ member.member_email
+														+ "</td>";
+												html += "<td style='text-align: center;'>·</td>";
+												html += "<td style='text-align: center;'>·</td>";
+												html += "<td style='text-align: center;'>·</td>";
+
+												html += "</tr>";
+											}
+										});
+
+						$("#addMem").html(html);
+						selectedMemberKeys.push(member.member_key);
+					},
+					error : function(err) {
+						console.log(err);
+					}
+				});
 	}
 
 	function selectMem(member_key, member_name, member_email) {
 		//console.log("Member Key Type:", typeof member.member_key);
 		console.log("Selected Member Key:", member_key);
-	    console.log("Member Name:", member_name);
-	    console.log("Member Email:", member_email);
-	 
-	    
+		console.log("Member Name:", member_name);
+		console.log("Member Email:", member_email);
+
 		var row = "<tr data-member-key='" + member_key + "'>";
 		row += "<td>" + member_name + "</td>";
 		row += "<td>" + member_email + "</td>";
@@ -177,7 +190,7 @@
 
 	function getAllMemberKeys() {
 		var member_key = [];
-		
+
 		$("#selectMem tr").each(function() {
 			var memberKey = $(this).data("member-key");
 			member_key.push(memberKey);
@@ -232,7 +245,7 @@
 				$("#regBtn").hide()
 				$("#uptBtn").show()
 				$("#detailBtn").show()
-				
+
 				$("#delBtn").click(function() {
 					Swal.fire({
 						title : '삭제',
@@ -357,27 +370,28 @@
 			}
 		})
 	}
-	
-	function emptyCheck(){
-		
+
+	function emptyCheck() {
+
 		var title = $("#modalFrm [name='title']").val();
-	    var teamName = $("#modalFrm [name='team_name']").val();
-	    var startDate = $("#modalFrm [name='start_date']").val();
-	    var endDate = $("#modalFrm [name='end_date']").val();
-	    var detail = $("#modalFrm [name='detail']").val();
+		var teamName = $("#modalFrm [name='team_name']").val();
+		var startDate = $("#modalFrm [name='start_date']").val();
+		var endDate = $("#modalFrm [name='end_date']").val();
+		var detail = $("#modalFrm [name='detail']").val();
 
-	    if (title.trim() === "" || teamName.trim() === "" || startDate === "" || endDate === "" || detail.trim() === "") {
-	        // Use SweetAlert2 for a more visually appealing alert
-	        Swal.fire({
-	            icon: 'warning',
-	            title: '입력 오류',
-	            text: '모든 입력칸을 채워주세요',
-	            confirmButtonColor: '#007FFF',
-	        });
-	        return false; 
-	    }
+		if (title.trim() === "" || teamName.trim() === "" || startDate === ""
+				|| endDate === "" || detail.trim() === "") {
+			// Use SweetAlert2 for a more visually appealing alert
+			Swal.fire({
+				icon : 'warning',
+				title : '입력 오류',
+				text : '모든 입력칸을 채워주세요',
+				confirmButtonColor : '#007FFF',
+			});
+			return false;
+		}
 
-	    return true; 
+		return true;
 	}
 </script>
 <div class="main-panel">
@@ -503,6 +517,7 @@
 
 			</div>
 			<form class="forms-sample" id="modalFrm">
+			<input type="hidden" name="creater" value="${loginMem.member_key}"/>
 				<div class="form-group">
 					<label for="exampleInputUsername1">프로젝트 타이틀</label> <input
 						name="title" type="text" class="form-control" id=""
@@ -534,7 +549,8 @@
 						<div class="col-12" id="bottom">
 							<input type="text" class="form-control mb-2" name="member_name"
 								placeholder="검색">
-							<div id="searchResults" style="height: 300px; overflow-y: auto;">
+							<div id="searchResults"
+								style="line-height: 300px; overflow-y: auto; margin-left: 3%; width: 100%;">
 								<table class="table table-hover">
 									<tbody id="addMem">
 									</tbody>
@@ -543,7 +559,8 @@
 						</div>
 						<!-- 위: 선택한 구성원 -->
 						<div class="col-12 mb-2" id="top">
-							<div id="selectMember" style="height: 200px; overflow-y: auto; width:100%; margin-left: 3%;">
+							<div id="selectMember"
+								style="height: 200px; overflow-y: auto; width: 100%; margin-left: 3%;">
 								<input type="hidden" name="member_key" value=""
 									id="hiddenMemberKey">
 								<table class="table table-hover">
