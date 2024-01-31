@@ -92,8 +92,10 @@ public class MemberService {
 	
 	// 비밀번호 확인
 	public boolean chkPwd(String memKey, String pwd) {
-		
-		
-		return false;
+		if (memberDao.checkPwd(memKey, pwd) > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
