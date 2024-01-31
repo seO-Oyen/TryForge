@@ -38,7 +38,7 @@
 	    VALUES ('PJ-' || project_seq.nextval, #{title}, #{detail}, '진행중', TO_DATE(#{start_date}, 'YYYY-MM-DD'), TO_DATE(#{end_date}, 'YYYY-MM-DD'))
 	</insert>
 	<insert id="insPJtoTask" parameterType="project">
-	    INSERT INTO TASK (task_key, project_key, text, start_date, end_date, progress, parent, task_type, status, task_rollup, task_open, detail)
+	    INSERT INTO TASK (task_key, project_key, text, start_date, end_date, progress, parent, task_type, status, hide_bar, task_open, detail)
 	    VALUES (task_seq.nextval, 'PJ-'||project_seq.currval, #{title}, TO_DATE(#{start_date}, 'YYYY-MM-DD'), TO_DATE(#{end_date}, 'YYYY-MM-DD'), 0, 0, 'project', '진행중', 0, 1, #{detail})
 	</insert>
 	<!-- 팀입력 -->
