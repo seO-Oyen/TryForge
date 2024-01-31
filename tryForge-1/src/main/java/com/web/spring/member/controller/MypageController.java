@@ -30,9 +30,16 @@ public class MypageController {
 	}
 	
 	@PostMapping("userInfo") 
-	public boolean changeMemInfo() {
+	public ResponseEntity<Boolean> changeMemInfo(
+				@RequestParam("name") String memName,
+				@RequestParam("memberId") String memId,
+				@RequestParam("memKey") String memKey
+			) {
+		System.out.println(memName);
+		System.out.println(memId);
+		System.out.println(memKey);
 		
-		return false;
+		return ResponseEntity.ok(true);
 	}
 
 }

@@ -134,11 +134,11 @@ function chkPwd() {
 								<div id="userEmail">${loginMem.member_email}</div>
 								
 								<button type="button"
-									class="btn btn-md mr-3 btn-open" id="changePwd" style="color: white; background-color: #7FBFFF;"
+									class="btn btn-md mr-3 btn-open" id="changePwd" style="color: white; background-color: #198CFF;"
 									data-toggle="modal" data-target="#myModal" data-member-key="${loginMem.member_key}">비밀번호 수정
 								</button>
 								<button type="button"
-									class="btn btn-md btn-open" id="changeInfo" style="color: #7FBFFF; border: 1px solid #7FBFFF;"
+									class="btn btn-md btn-open" id="changeInfo" style="color: #198CFF; border: 1px solid #198CFF;"
 									data-toggle="modal" data-target="#myModal" data-member-key="${loginMem.member_key}">개인정보 수정
 								</button>
 							</div>

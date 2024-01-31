@@ -44,8 +44,8 @@
 	padding-right: 10px;
 	width: 122px; 
 	margin-left: 10px;
-	background-color: #7FBFFF;
-	border: 1px solid #7FBFFF;
+	background-color: #198CFF;
+	border: 1px solid #198CFF;
 }
 </style>
 <script>
@@ -70,6 +70,7 @@ $(document).ready(function() {
 		})
 	})
 	
+	// 안에 내용이 변경되면 버튼 활성화 + 무조건 체크해야되게
 	$("[name=member_id]").keyup(function() {
 		if ($("[name=member_id]").val() == "${loginMem.member_id}") {
 			$("#idchecked").val("true")
@@ -157,6 +158,89 @@ $(document).ready(function() {
 	
 })
 
+// 수정 저장
+function saveInfo() {
+	var userNameVal = $("[name=userName]").val()
+	var userIdVal = $("[name=member_id]").val()
+	
+	// 수정 사항이 없다면 한번 확인
+	if (userIdVal == "${loginMem.member_id}" && userNameVal == "${loginMem.member_name}") {
+		Swal.fire({
+			title: "변경사항이 없습니다",
+			text: "변경된 내용이 없습니다.\n마이페이지로 돌아가겠습니까?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "마이페이지",
+			cancelButtonText : "취소"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				location.href = "${path}/myPage"
+			}
+		});
+	} else {
+		if (userNameVal == "") {
+			const Toast = Swal.mixin({
+			    toast: true,
+			    position: 'top-end',
+			    showConfirmButton: false,
+			    timer: 2000,
+			    timerProgressBar: true,
+			    didOpen: (toast) => {
+			        toast.addEventListener('mouseenter', Swal.stopTimer)
+			        toast.addEventListener('mouseleave', Swal.resumeTimer)
+			    }
+			})
+			
+			Toast.fire({
+			    icon: 'error',
+			    title: '이름을 입력해주세요.'
+			})
+			return false;
+		}
+		if ($("#idchecked").val() == 'false') {
+			const Toast = Swal.mixin({
+			    toast: true,
+			    position: 'top-end',
+			    showConfirmButton: false,
+			    timer: 2000,
+			    timerProgressBar: true,
+			    didOpen: (toast) => {
+			        toast.addEventListener('mouseenter', Swal.stopTimer)
+			        toast.addEventListener('mouseleave', Swal.resumeTimer)
+			    }
+			})
+			
+			Toast.fire({
+			    icon: 'error',
+			    title: '아이디 중복체크를 해주세요.'
+			})
+			return false;
+		}
+		
+		$.ajax({
+			url: "${path}/userInfo",
+			type : "POST",
+			data : {
+				name : userNameVal,
+				memberId : userIdVal,
+				memKey : "${loginMem.member_key}"
+			},
+			dataType : "json",
+			success : function(data) {
+				if (data) {
+					console.log("수정성공")
+				} else {
+					console.log("수정 실패")
+				}
+			}
+		})
+		
+	}
+	
+}
+
 
 </script>
 <div class="main-panel">
@@ -170,7 +254,7 @@ $(document).ready(function() {
 								<img src="${path}/template/images/faces/face5.jpg" alt="profile" id ="profile"/>
 								
 								<div style="color: #4CA5FF; margin-top: 10px; font-weight: bold;">이름</div>
-								<input id="userName" value="${loginMem.member_name}" autocomplete="off" />
+								<input id="userName" value="${loginMem.member_name}" autocomplete="off" name="userName" />
 								
 								<div style="color: #4CA5FF; margin-top: 20px; font-weight: bold;">아이디</div>
 								<input id="userId" name="member_id" value="${loginMem.member_id}" autocomplete="off" />
@@ -183,8 +267,8 @@ $(document).ready(function() {
 								<br>
 								
 								<button type="button"
-									class="btn btn-md mr-3 btn-open btn-primary" id="changePwd" style="color: white; background-color: #7FBFFF; border: 1px solid #7FBFFF;"
-									data-toggle="modal" data-target="#myModal" data-member-key="${loginMem.member_key}">저장
+									class="btn btn-md mr-3 btn-open btn-primary" id="changePwd" onclick="saveInfo()"
+									style="color: white; background-color: #198CFF; border: 1px solid #198CFF;">저장
 								</button>
 							</div>
 						</div>
