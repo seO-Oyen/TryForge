@@ -29,7 +29,19 @@
 
 </style>
 <script>
+
+	// <c:set var="formattedStartDate" value="${fn:substring(plist.start_date, 0, 10)}" />
+	// <td><c:out value="${formattedStartDate}" /></td>
 	$(document).ready(function() {
+		$("#uptBtn").click(function() {
+			uptTask(taskId);
+		});
+
+		$("#clsBtn").click(function() {
+			$("#myModal form")[0].reset()
+
+		})
+
 	})
 
 	function uptConfirm(id){
@@ -47,6 +59,22 @@
 	        console.log(err)
 	    }
 	    })
+	}
+
+	function openDetail(id){
+		$.ajax({
+			url:"",
+			data:"id="+id,
+			dataType:"json",
+			success:function (data){
+
+			},
+			error:function (err){
+				console.log(err)
+			}
+		})
+
+		$("#myModal").modal('show');
 	}
 </script>
 <div class="main-panel">
@@ -125,7 +153,7 @@
 										<c:if
 											test="${tlist.member_key == loginMem.member_key && tlist.confirm == 1}">
 
-											<tr class="task-row" data-member-key="${tlist.id}">
+											<tr class="task-row" data-member-key="${tlist.id}" ondblclick="openDetail()">
 												<td>${tlist.text}</td>
 												<td>${tlist.start_date}</td>
 												<td>${tlist.end_date}</td>
@@ -175,22 +203,19 @@
 					<form class="forms-sample" id="modalFrm">
 						<div class="form-group">
 							<label for="exampleInputUsername1">업무이름</label> <input
-								name="text" type="text" class="form-control" id=""
-								placeholder="title">
+								name="text" type="text" class="form-control" placeholder="title">
 						</div>
 						<div class="form-group">
 							<label for="exampleTextarea1">상세내용</label>
-							<textarea class="form-control" id="" rows="4" name="detail"></textarea>
+							<textarea class="form-control"  rows="4" name="detail"></textarea>
 						</div>
 						<div class="form-group">
 							<label for="exampleInputPassword1">업무 시작일</label> <input
-								name="start_date" type="date" class="form-control" id=""
-								placeholder="startDate">
+								name="start_date" type="date" class="form-control" placeholder="startDate">
 						</div>
 						<div class="form-group">
-							<label for="exampleInputConfirmPassword1">업무 종료일</label> <input
-								name="end_date" type="date" class="form-control" id=""
-								placeholder="endDate">
+							<label for="exampleInputConfirmPassword1">업무 종료일</label>
+							<input name="end_date" type="date" class="form-control" placeholder="endDate">
 						</div>
 					</form>
 					<!-- Modal footer -->
