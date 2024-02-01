@@ -54,8 +54,8 @@ $(document).ready(function(){
 	if(sessId==""){
 		alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
 		location.href="${path}/login"
-		if(projectKey==""){
-			alert("참여중인 프로젝트가 없습니다")
+		if(sessId!="" && projectKey==""){
+			alert("참여중인 프로젝트가 없습니다.")
 			location.href="${path}/userIndex"
 		}
 	}
