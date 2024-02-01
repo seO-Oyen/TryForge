@@ -24,7 +24,7 @@ public class FileController {
 	}
 
 	@GetMapping("file")
-	public String upload(FileStorage file, Model d, HttpSession session) {
+	public String FileList(FileStorage file, Model d, HttpSession session) {
 		Project project = getProject(session);
 		if(project != null) {
 			file.setProject_key(project.getProject_key());

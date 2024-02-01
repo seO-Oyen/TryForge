@@ -9,7 +9,8 @@ import com.web.spring.vo.FileStorage;
 
 @Mapper
 public interface FileDao {
-	@Select("SELECT * FROM FILE_STORAGE WHERE PROJECT_KEY= #{project_key} ORDER BY UPLOAD_TIME DESC")
+	@Select("SELECT * FROM FILE_STORAGE WHERE PROJECT_KEY= #{project_key} " +
+			"ORDER BY UPLOAD_TIME DESC")
 	List<FileStorage> getFileList(FileStorage file);
 	//#{project_key}
 }

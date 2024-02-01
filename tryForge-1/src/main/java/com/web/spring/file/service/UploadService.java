@@ -27,17 +27,15 @@ private String path;
 		MultipartFile[] mpfs = upload.getFiles();
 		
 		if(mpfs!=null && mpfs.length>0) {
-			
 			try {
 				for(MultipartFile mpf:mpfs) {
 				
 					String originfname = mpf.getOriginalFilename(); // 이름추출
 					String fname = UUID.randomUUID().toString();
 
-					String ftype = mpf.getContentType(); // image/jpeg 형식으로 추출
+					String ftype = mpf.getContentType(); // image/jpeg 형식 추출
 					long fsizeByte = mpf.getSize(); // 파일크기 추출(byte)
-					
-					// 확장자만 추출
+
 					String extension = "";
 					if(ftype!=null) {
 						int idx = ftype.lastIndexOf('/'); // '/'의 순서 저장
@@ -45,8 +43,6 @@ private String path;
 							extension = ftype.substring(idx + 1);
 						}
 					}
-					
-					
 					double fsizeMB = (double)fsizeByte / (1024 * 1024); // byte --> mb
 					
 					String fsize; // 0.01보다 작으면 kb로 표현
@@ -56,11 +52,11 @@ private String path;
 					} else {
 						fsize = String.format("%.2f MB", fsizeMB);
 					}
-					
-					
+
 					// File 경로 지정해서 MultipartFile에 담긴 파일 저장
 					mpf.transferTo(new File(path+fname));
-					chk += dao.uploadFile(new FileStorage(fname, path, extension, fsize, upload.getProject_key(), upload.getMember_key(), originfname));
+					chk += dao.uploadFile(new FileStorage(fname, path, extension, fsize,
+							upload.getProject_key(), upload.getMember_key(), originfname));
 				}
 			} catch (IllegalStateException e) {
 				System.out.println("#파일업로드 예외1:"+e.getMessage());
