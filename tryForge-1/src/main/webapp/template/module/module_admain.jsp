@@ -50,7 +50,7 @@ $(document).ready(function(){
 	var sessId = "${loginMem.member_id}"
 	if(sessId==""){
 		alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
-		location.href="${path}/login.do"
+		location.href="${path}/login"
 	} else if ("${loginMem.member_role}" != "") {
 		$("#admin").css("display", "")
 	}
@@ -65,7 +65,7 @@ $(document).ready(function(){
 			<!-- 왼쪽 상단 로고 -->
 			<div class="navbar-brand-wrapper d-flex justify-content-center" style="background:white;">
 				<div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100" >
-					<a class="navbar-brand brand-logo" href="${path}/adMain.do" >
+					<a class="navbar-brand brand-logo" href="${path}/adMain" >
 					<img src="${path}/template/images/try_forge01.jpg" alt="logo" style="width:100%"/>
 					<!-- <span>TryForge</span> -->
 					</a> 
@@ -88,8 +88,9 @@ $(document).ready(function(){
 					</a>
 					<div class="dropdown-menu dropdown-menu-right navbar-dropdown"
 						aria-labelledby="profileDropdown">
-						<a class="dropdown-item"> <i class="typcn typcn-cog-outline text-primary"></i> 마이페이지
-						</a> 
+						<a class="dropdown-item" href="${path}/myPage">
+                     <i class="typcn typcn-cog-outline text-primary"></i> 마이페이지
+                  </a> 
 						<a class="dropdown-item"> 
 							<i class="typcn typcn-eject text-primary"></i> 로그아웃
 						</a>

@@ -1,22 +1,24 @@
 package com.web.spring.vo;
 
 public class Task {
-	private int id;
-	private int member_key;
-	private String project_key;
-	private String text;
-	private String start_date;
-	private String end_date;
-	private int duration;
-	private double progress;
-	private int parent;
-	private String type;
-	private String status;
-	private boolean rollup;
-	private boolean hide_bar;
-	private boolean open;
-	private String detail;
-	private String owner;
+	private int id; // 업무키
+	private int member_key; // 업무할당자(member_key)
+	private String project_key; // 프로젝트 키
+	private String text; // 업무이름
+	private String start_date; // 업무시작일
+	private String end_date; // 업무종료일
+	private int duration; // 진행기간
+	private double progress; // 진행률
+	private int parent; // 간트용
+	private String type; // 프로젝트 or 업무
+	private String status; // 진행상태 : 진행중 / 완료
+	private boolean rollup; // 간트용
+	private boolean hide_bar; // 간트용
+	private boolean open; // 간트용
+	private String detail; // 상세설명
+	private String owner; // 업무 배정자
+	private String assignor; // 업무할당자 이름
+	private String confirm; // 확인여부
 	public Task() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -138,5 +140,18 @@ public class Task {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
-
+	public String getAssignor() {
+		return assignor;
+	}
+	public void setAssignor(String assignor) {
+		this.assignor = assignor;
+	}
+	public String getConfirm() {
+		return confirm;
+	}
+	public void setConfirm(String confirm) {
+		this.confirm = confirm;
+	}
+	
+	
 }
