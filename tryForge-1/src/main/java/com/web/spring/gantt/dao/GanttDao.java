@@ -11,6 +11,7 @@ import com.web.spring.vo.Task_Dependency;
 @Mapper
 public interface GanttDao {
 	List<Task> getTask();
-	
+
+	Task taskDetail();
 	List<Task_Dependency> getTaskDep();
 }

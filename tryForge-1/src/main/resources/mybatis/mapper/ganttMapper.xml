@@ -25,6 +25,7 @@
 	<select id="taskDetail" resultMap="taskRst">
 		SELECT * FROM TASK WHERE TASK_KEY = #{id}
 	</select>
+
 	<select id="getTaskDep" resultMap="taskDepRst">
 		SELECT * FROM TASK_DEPENDENCY
 	</select>
