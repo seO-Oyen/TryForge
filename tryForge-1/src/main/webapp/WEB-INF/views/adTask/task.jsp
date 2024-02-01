@@ -122,8 +122,7 @@
                 $("#modalFrm02 [name=member_name]").val(memberName);
 
                 var row = "";
-                $(tlist)
-                    .each(
+                $(tlist).each(
                         function (idx, task) {
                             if (task.id != null) {
 
@@ -154,6 +153,7 @@
     }
 
     function uptTask(taskId) {
+    	// forEach를 이용해 다중 열의 선택된 행의 데이터 가져오기
         var taskRow = $(".task_row[data-task-key='" + taskId + "']");
         var textval = taskRow.find(".text02").val();
         var detailval = taskRow.find(".detail02").val();
@@ -234,16 +234,22 @@
                         <form id="frm01">
                             <div style="display: flex;">
                                 <div class="form-group" style="margin-left: 8%; width: 10%;">
-                                    <select class="js-example-basic-single w-100" name="title"
-                                            id="stitle"
+                                    <select class="js-example-basic-single w-100" name="title" id="stitle"
                                             style="border: 1px solid #f3f3f3; font-weight: 400; font-size: 0.875rem; height: 2.875rem;">
                                         <option value=" ">전체</option>
                                         <c:forEach var="title" items="${title}">
                                             <option>${title}</option>
                                         </c:forEach>
                                     </select>
+
                                     <script type="text/javascript">
-                                        $("[name=title]").val("${task.title}")
+                                        $(document).ready(function() {
+                                            var taskTitle = "${task.text}";
+
+                                            if (taskTitle.trim() !== "") {
+                                                $("[name=title]").val(taskTitle);
+                                            }
+                                        });
                                     </script>
                                 </div>
                                 <input type="text" class="form-control mb-2" name="member_name"

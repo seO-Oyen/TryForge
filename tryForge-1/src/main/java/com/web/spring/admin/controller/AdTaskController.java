@@ -56,4 +56,9 @@ public class AdTaskController {
 		d.addAttribute("delMsg",service.delTask(id));
 		return "pageJsonReport";
 	}
+	@RequestMapping("test")
+	public String test(){
+		return "adTask/taskManage";
+	}
+
 }
