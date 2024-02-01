@@ -32,8 +32,7 @@ private String path;
 				for(MultipartFile mpf:mpfs) {
 				
 					String originfname = mpf.getOriginalFilename(); // 이름추출
-					String uniqueID = UUID.randomUUID().toString();
-					String fname = originfname + "_" + uniqueID;
+					String fname = UUID.randomUUID().toString();
 
 					String ftype = mpf.getContentType(); // image/jpeg 형식으로 추출
 					long fsizeByte = mpf.getSize(); // 파일크기 추출(byte)
