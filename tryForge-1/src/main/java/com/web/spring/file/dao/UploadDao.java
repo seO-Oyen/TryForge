@@ -9,6 +9,6 @@ import com.web.spring.vo.FileStorage;
 public interface UploadDao {
 	// 파일업로드
 	@Insert("INSERT INTO file_storage VALUES \r\n"
-			+ "(file_storage_SEQ.nextVal, 'pj-0', #{fname}, #{path}, #{ftype}, #{fsize}, sysdate, 0)")
+			+ "(file_storage_SEQ.nextVal, #{project_key}, #{fname}, #{path}, #{ftype}, #{fsize}, sysdate, #{member_key}, #{originfname})")
 	int uploadFile(FileStorage upload);
 }
