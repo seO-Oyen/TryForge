@@ -37,22 +37,25 @@
 	border-radius: 10px;
 }
 
-#myModal .modal-dialog {
+.modal .modal-dialog {
 	max-width: 30%; /* 모달의 최대 너비를 80%로 설정 */
 }
 
 /* 입력 요소 여백 조절 */
-#myModal .form-group {
+.modal .form-group {
 	margin-bottom: 15px; /* 각 입력 요소 아래 여백 조절 */
 	margin-left: 3%;
 	margin-right: 8%;
 }
 
-#myModal .form-control {
+.modal .form-control {
 	margin-right: 3%; /* 입력 요소 오른쪽 여백 조절 */
 	margin-left: 3%; /* 입력 요소 왼쪽 여백 조절 */
 }
 
+#pwdModal input {
+	margin : 10px;
+}
 </style>
 <script>
 $(document).ready(function() {
@@ -63,6 +66,43 @@ $(document).ready(function() {
 		
 		// 모달 열기
 		$("#myModal").modal('show');
+	})
+	
+	$("#pwdChangeFrm [name=memberPwd]").keyup(function() {
+		if ($("#pwdChangeFrm [name=memberPwd]").val() == '') {
+			$("#pwdComent").html('')
+			$("#pwdchecked").val("false")
+			return false
+		}
+		
+		if ($("[name=passwordChk]").val() == $("[name=memberPwd]").val()) {
+			$("#pwdComent").html("비밀번호가 일치합니다.")
+			$("#pwdComent").css("color", "green")
+			$("#changeBtn").attr("disabled", false)
+		} else {
+			if ($("[name=passwordChk]").val() != '') {
+				$("#pwdComent").html("비밀번호가 일치하지 않습니다.")
+				$("#changeBtn").attr("disabled", true)
+				$("#pwdComent").css("color", "red")
+			}
+		}
+	})
+	
+	$("#pwdChangeFrm [name=passwordChk]").keyup(function() {
+		if ($("#pwdChangeFrm [name=passwordChk]").val() == '') {
+			$("#pwdComent").html('')
+			$("#changeBtn").attr("disabled", true)
+			return false
+		}
+		if ($("[name=passwordChk]").val() == $("[name=memberPwd]").val()) {
+			$("#pwdComent").html("비밀번호가 일치합니다.")
+			$("#pwdComent").css("color", "green")
+			$("#changeBtn").attr("disabled", false)
+		} else {
+			$("#pwdComent").html("비밀번호가 일치하지 않습니다.")
+			$("#changeBtn").attr("disabled", true)
+			$("#pwdComent").css("color", "red")
+		}
 	})
 })
 
@@ -99,7 +139,7 @@ function chkPwd() {
 					if (btnType == 'changeInfo') {
 						location.href="${path}/userInfo"
 					} else if (btnType == 'changePwd') {
-						console.log("비번 수정")
+						$("#pwdModal").modal('show');
 					}
 				})
 			} else {
@@ -107,6 +147,74 @@ function chkPwd() {
 					title : "비밀번호가 일치하지 않습니다",
 					text : '다시한번 확인해주세요',
 					icon : 'error',
+				})
+			}
+		},
+		error : function(err) {
+			console.log(err)
+		}
+	})
+}
+
+// 비밀번호 수정
+function changePwd() {
+	var memKeyVal = "${loginMem.member_key}"
+	var pwdVal = $("[name=memberPwd]").val()
+	
+	// 기존 비밀번호와 일치시
+	$.ajax({
+		url : "${path}/chkPwd",
+		type : "GET",
+		data : {
+			memKey : memKeyVal,
+			pwd : pwdVal
+		},
+		dataType : "json",
+		success : function(data) {
+			if (data) {
+				Swal.fire({
+					title : "기존 비밀번호와 일치합니다.",
+					text : '기존 비밀번호와 다르게 설정해주세요.',
+					icon : 'warning'
+				}).then(function() {
+					$("#pwdComent").html("기존 비밀번호와 다르게 설정해주세요.")
+					$("#changeBtn").attr("disabled", true)
+					$("#pwdComent").css("color", "red")
+				})
+			} else {
+				updatePwd()
+			}
+		},
+		error : function(err) {
+			console.log(err)
+		}
+	})
+
+}
+
+function updatePwd() {
+	var memKeyVal = "${loginMem.member_key}"
+	var pwdVal = $("[name=memberPwd]").val()
+	
+	$.ajax({
+		url : "${path}/changePwd",
+		type : "POST",
+		data : {
+			memKey : memKeyVal,
+			pwd : pwdVal
+		},
+		dataType : "json",
+		success : function(data) {
+			if (data) {
+				Swal.fire({
+					position: "center-center",
+					title : "수정 성공",
+					text : '',
+					showConfirmButton: false,
+					icon: "success",
+					timer: 1500
+				}).then((result) => {
+					location.href = "${path}/myPage"
 				})
 			}
 		},
@@ -178,6 +286,44 @@ function chkPwd() {
 				<div class="mx-auto">
 					<button type="button" class="btn btn-" id="regBtn" onclick="chkPwd()"
 						style="background-color: #007FFF; color: white;">확인</button>
+					
+					<button type="button" class="btn btn-danger" data-dismiss="modal"
+						id="clsBtn">닫기</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<!-- 비밀번호 수정 모달 -->		
+<div class="modal" id="pwdModal" style="margin-top: 200px; margin-left: 125px;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<h5 class="modal-title">비밀번호 수정</h5>
+
+				<button type="button" class="close" data-dismiss="modal" id="xBtn">×</button>
+			</div>
+			
+			<!-- Modal body -->
+			<form class="forms-sample" id="pwdChangeFrm">
+				<div class="form-group">
+					<label for="exampleInputUsername1">수정할 비밀번호를 입력해주세요</label> 
+					<div id="pwdComent"></div>
+					<input type="password" class="form-control form-control-lg" id="password" name="memberPwd" placeholder="수정할 비밀번호">
+					<input type="password" class="form-control form-control-lg" id="passwordChk" name="passwordChk" placeholder="비밀번호 확인">
+				</div>
+			</form>
+
+
+			<!-- Modal footer -->
+			<div class="modal-footer">
+				<div class="mx-auto">
+					<button type="button" disabled class="btn btn-" id="changeBtn" onclick="changePwd()"
+						style="background-color: #007FFF; color: white;">변경</button>
 					
 					<button type="button" class="btn btn-danger" data-dismiss="modal"
 						id="clsBtn">닫기</button>

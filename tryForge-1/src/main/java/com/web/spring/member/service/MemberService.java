@@ -107,4 +107,13 @@ public class MemberService {
 			return false;
 		}
 	}
+	
+	// 비번 수정
+	public boolean changePwd(String memKey, String pwd) {
+		if (memberDao.changePwd(memKey, pwd) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
