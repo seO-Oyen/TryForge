@@ -3,7 +3,11 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.web.spring.admin.dao.AdTaskDao">
-
+	<resultMap type = "task" id="taskRst">
+		<result column = "task_key" property = "id"/>
+		<result column = "task_type" property = "type"/>
+	</resultMap>
+	
 	<select id="schTaskMem" resultType="memberSch" parameterType="memberSch">
 		SELECT m.member_key ,m.member_name, m.member_email, tm.ROLE, p.title, p.start_date, p.end_date, p.project_key
 		FROM MEMBER m 
@@ -13,14 +17,29 @@
 			WHERE m.MEMBER_NAME LIKE '%'||#{member_name}||'%' 
 			AND p.title LIKE '%'||#{title}||'%' ORDER BY m.MEMBER_KEY
 	</select>
+	
 	<!-- 업무할당 -->
 	<insert id="insertTask" parameterType="task">
 		INSERT INTO task 
-		(task_key, MEMBER_KEY, PROJECT_KEY, text, START_DATE, END_DATE, DURATION, PROGRESS, TASK_TYPE, STATUS, detail)
+		(task_key, MEMBER_KEY, PROJECT_KEY, text, START_DATE, END_DATE, DURATION, PROGRESS, TASK_TYPE, STATUS, detail, parent, hide_bar, task_open, confirm, assignor)
 		VALUES
 		(TASK_SEQ.NEXTVAL, #{member_key}, #{project_key} , #{text},
 		 to_DATE(#{start_date},'YYYY-MM-DD'), to_DATE (#{end_date},'YYYY-MM-DD'),
 		 FLOOR(to_DATE (#{end_date},'YYYY-MM-DD')-to_DATE(#{start_date},'YYYY-MM-DD')), 0,
-		 'task','요청',#{detail})
+		 'task','진행중',#{detail},1,0,1,0,#{assignor})
 	</insert>
+	<!-- 업무 출력 -->
+	<select id="taskList" resultMap="taskRst">
+	    SELECT DISTINCT t.*
+	    FROM task t
+	    WHERE (status = '요청' OR status = '진행중') AND MEMBER_KEY = #{member_key}
+	</select>
+	<!-- 업무 제목, 상세설명 수정 -->
+	<update id="uptTask" parameterType="task">
+		UPDATE task SET text = #{text} , detail = #{detail} WHERE task_key = #{id}
+	</update>
+	<!-- 업무 삭제 -->
+	<delete id="delTask" parameterType="int">
+		DELETE FROM TASK WHERE task_key = #{id}
+	</delete>
 </mapper>
