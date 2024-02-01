@@ -38,4 +38,7 @@ public interface MemberDao {
 	
 	int changeUserInfo(@Param("name") String name, @Param("id") String id, 
 			@Param("memKey") String memKey);
+	
+	// 비번 수정
+	int changePwd(@Param("memKey") String memKey, @Param("pwd") String pwd);
 }
