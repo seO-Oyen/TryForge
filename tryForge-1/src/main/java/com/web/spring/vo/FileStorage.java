@@ -57,7 +57,8 @@ public class FileStorage {
 		this.project_key = project_key;
 	}
 
-	public FileStorage(String fname, String path, String ftype, String fsize, String project_key, int member_key) {
+	public FileStorage(String file_key, String fname, String path, String ftype, String fsize, String project_key, int member_key) {
+		this.file_key = file_key;
 		this.fname = fname;
 		this.path = path;
 		this.ftype = ftype;

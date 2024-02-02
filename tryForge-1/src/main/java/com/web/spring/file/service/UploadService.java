@@ -49,12 +49,12 @@ private String path;
 					} else {
 						fsize = String.format("%.2f MB", fsizeMB);
 					}
-
-
-					chk += dao.uploadFile(new FileStorage(fname, path, extension, fsize,
-							upload.getProject_key(), upload.getMember_key()));
 					// File 경로 지정해서 MultipartFile에 담긴 파일 저장
-					mpf.transferTo(new File(path+dao.getFileKey()));
+					String fkey = "FILE-"+dao.getFileSeq();
+
+					mpf.transferTo(new File(path+fkey));
+					chk += dao.uploadFile(new FileStorage(fkey, fname, path, extension, fsize,
+							upload.getProject_key(), upload.getMember_key()));
 				}
 			} catch (IllegalStateException e) {
 				System.out.println("#파일업로드 예외1:"+e.getMessage());
