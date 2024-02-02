@@ -109,23 +109,19 @@
     }
 
     function taskList(member_key) {
+       // 선택한 열의 해당하는 데이터 가져오기
         var selectedRow = $(".member-row[data-member-key='" + member_key + "']");
         var memberName = selectedRow.find(".memname").data("member-name");
-        console.log(selectedRow.length);
-        console.log(selectedRow.find(".memname").length);
-        console.log(selectedRow.find(".memname"));
         $.ajax({
             url: "${path}/taskList?member_key=" + member_key,
             dataType: "json",
             success: function (data) {
                 var tlist = data.getTask;
                 $("#modalFrm02 [name=member_name]").val(memberName);
-
                 var row = "";
                 $(tlist).each(
                         function (idx, task) {
                             if (task.id != null) {
-
                                 row += "<tr class='task_row' data-task-key='" + task.id + "'>";
                                 row += "<td><input name='text' class='text02' type='text' value='" + task.text + "'></td>";
                                 row += "<td><input name='detail' class='detail02' type='text' value='" + task.detail + "'></td>";
@@ -153,7 +149,7 @@
     }
 
     function uptTask(taskId) {
-    	// forEach를 이용해 다중 열의 선택된 행의 데이터 가져오기
+    	// forEach를 이용해 출력된 다중 열의 선택된 행의 데이터 가져오기
         var taskRow = $(".task_row[data-task-key='" + taskId + "']");
         var textval = taskRow.find(".text02").val();
         var detailval = taskRow.find(".detail02").val();

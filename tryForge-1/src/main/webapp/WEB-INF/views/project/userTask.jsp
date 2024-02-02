@@ -74,16 +74,17 @@
                 $("#modalFrm [name=start_date]").val(formattedStartDate)
                 $("#modalFrm  [name=end_date]").val(formateedendtDate)
                 if (detail.confirm === '1' || detail.confirm === 1) {
+                    // 확인여부 확인해 확인한 업무 모달창 구성
                     $("#confirmBtn").hide();
                     $("#proTitle").text("진행중인 업무")
                     $(".modal-title").text("Ongoing Task")
                 } else {
+                    // 확인여부 확인해 새 업무 할당시 모달창 구성
                     $("#confirmBtn").show();
                     $("#proTitle").text("새 업무")
                     $(".modal-title").text("New Task")
                 }
                 $("#myModal").modal('show');
-
                 $("#confirmBtn").click(function () {
                     uptConfirm(id)
                 })
@@ -198,8 +199,8 @@
                                 </thead>
                                 <tbody>
                                 <c:forEach var="tlist" items="${getTask}" varStatus="sts">
+                                    <!--세션값 비교 와 확인여부 확인 조건문-->
                                     <c:if test="${tlist.member_key == loginMem.member_key && tlist.confirm == 1}">
-
                                         <tr class="task-row" data-member-key="${tlist.id}"
                                             ondblclick='openDetail("${tlist.id}")'>
                                             <td>${tlist.text}</td>
@@ -218,6 +219,7 @@
                                             </td>
                                         </tr>
                                     </c:if>
+                                    <!-- 업무가 없는 사용자의 경우 출력-->
                                     <c:if test="${empty getTask}">
                                         <tr>
                                             <td>진행중인 업무가 없습니다.</td>

@@ -2,15 +2,13 @@ package com.web.spring.admin.service;
 
 import java.util.List;
 
-import com.web.spring.gantt.dao.GanttDao;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.web.spring.admin.dao.AdTaskDao;
+import com.web.spring.gantt.dao.GanttDao;
 import com.web.spring.vo.MemberSch;
 import com.web.spring.vo.Task;
-
 
 @Service
 public class AdTaskService {
@@ -45,13 +43,22 @@ public class AdTaskService {
     public String uptTask(Task upt) {
         return dao.uptTask(upt) > 0 ? "수정 완료" : "수정 실패";
     }
-
     // 해당 업무키 삭제
     public String delTask(int id) {
         return dao.delTask(id) > 0 ? "삭제 성공" : "삭제 실패";
     }
-    // 확인 미확인 갯수 출력
-    public int unConfirm(){return dao.unConfirm();}
-    public int confirm(){return dao.Confirm();}
+    // 총, 완료, 확인, 미확인 차트용 갯수출력
+    public int unConfirm(){
+        System.out.println(dao.unConfirmCnt());
+        return dao.unConfirmCnt();}
+    public int confirm(){
+        System.out.println(dao.confirmCnt());
+        return dao.confirmCnt();
+    }
+    public int completedTaskCnt(){
+        System.out.println(dao.completedTaskCnt());
+        return dao.completedTaskCnt();
+    }
+    public int allTaskCnt(){return dao.allTaskCnt();}
 
 }
