@@ -1,5 +1,8 @@
 package com.web.spring.gantt.controller;
 
+import com.web.spring.vo.Project;
+import com.web.spring.vo.Task;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,22 +17,36 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class GanttController {
 	@Autowired(required = false)
 	private GanttService service;
-	
+
+	private Project getProject(HttpSession session) {
+		if(session.getAttribute("loginMem") != null && session.getAttribute("projectMem") != null) {
+			return (Project)session.getAttribute("projectMem");
+		}
+		return null;
+	}
 	@GetMapping("gantt")
-	public String Gantt() {
+	public String Gantt(Model d, HttpSession session) {
+		Project project = getProject(session);
+		if(project != null) {
+			d.addAttribute("memList", service.getTaskMem(project.getProject_key()));
+		}
 		return "project/gantt";
 	}
 	
 	@GetMapping("getGantt")
-	public String getGantt(Model d) {
-		d.addAttribute("data", service.getTask());
-		d.addAttribute("links", service.getTaskDep());
+	public String getGantt(Model d, HttpSession session) {
+		Project project = getProject(session);
+		if(project != null) {
+			d.addAttribute("data", service.getTask(project.getProject_key()));
+			d.addAttribute("links", service.getTaskDep(project.getProject_key()));
+		}
 		return "pageJsonReport";
 	}
 
-	@PostMapping("addTask")
-	public ResponseEntity<?> addTask(){
-		return ResponseEntity.ok("task");
+	@PostMapping("insTask")
+	public String insertTask(Task ins, Model d){
+		d.addAttribute("msg", service.insertTask(ins));
+		return "pageJsonReport";
 	}
 	
 	

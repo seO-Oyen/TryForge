@@ -2,6 +2,7 @@ package com.web.spring.gantt.service;
 
 import java.util.List;
 
+import com.web.spring.vo.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +16,20 @@ public class GanttService {
 	@Autowired(required = false)
 	private GanttDao dao;
 	
-	public List<Task> getTask(){
-		return dao.getTask();
+	public List<Task> getTask(String project_key){
+		return dao.getTask(project_key);
 	}
 	
-	public List<Task_Dependency> getTaskDep(){
-		return dao.getTaskDep();
+	public List<Task_Dependency> getTaskDep(String project_key){
+		return dao.getTaskDep(project_key);
+	}
+
+	public List<Task> getTaskMem(String project_key) {
+		return dao.getTaskMem(project_key);
+	}
+
+	public String insertTask(Task ins) {
+		return dao.insertTask(ins)>0?"등록성공":"등록실패";
 	}
 	
 	

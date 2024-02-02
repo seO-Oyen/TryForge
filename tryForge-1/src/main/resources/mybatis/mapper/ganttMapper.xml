@@ -19,7 +19,7 @@
 		SELECT t.*, m.member_name
 		FROM task t
 		left JOIN member m ON t.member_key = m.member_key
-		WHERE t.PROJECT_KEY = 'PJ-126'
+		WHERE t.PROJECT_KEY = #{project_key}
 	</select>
 
 	<select id="taskDetail" resultMap="taskRst">
@@ -27,6 +27,20 @@
 	</select>
 
 	<select id="getTaskDep" resultMap="taskDepRst">
-		SELECT * FROM TASK_DEPENDENCY
+		SELECT * FROM TASK_DEPENDENCY WHERE PROJECT_KEY = #{project_key}
 	</select>
+
+	<select id="getTaskMem" resultMap="taskRst">
+		SELECT m.member_key ,m.member_name, p.start_date, p.end_date, p.project_key
+		FROM MEMBER m
+				 INNER JOIN TEAM_MEMBER tm ON tm.MEMBER_KEY  = m.MEMBER_KEY
+				 INNER JOIN TEAM t ON t.team_key = tm.TEAM_KEY
+				 INNER JOIN PROJECT p ON p.project_key = t.PROJECT_KEY
+		WHERE p.PROJECT_KEY = #{project_key}
+	</select>
+	
+	<insert id="insertTask" parameterType="task">
+
+
+	</insert>
 </mapper>

@@ -217,12 +217,11 @@ gantt.config.date_grid = "%m월%d일"; // 좌측컬럼 date 형식 모양변경
     // 포맷된 시작일과 완료일을 반환합니다
 //    return dateFormat(start) + " - " + dateFormat(end);
 //}; 
+var users = [];
+<c:forEach var="mem" items="${memList}">
+	users.push({key: "${mem.owner}", label: "${mem.owner}"});
+</c:forEach>
 
-var users = [
-    {key:"마길동", label: "마길동"},
-    {key:"김철수", label: "김철수"},
-    // key 에 member_key 또는 member_name 이 오면 될거 같고. label 에 member_name 으로
-];
 // 라이트박스 섹션 속성 설정
 /*
 gantt.config.lightbox.sections=[
@@ -237,8 +236,8 @@ gantt.config.lightbox.sections = [
 	// {name: "type", height: 40, map_to: "type", type: "typeselect"},
 	{name: "owner", height: 40, map_to: "owner", type: "select", options: users},
 	{name: "time",map_to: "auto", type: "time", time_format:["%Y","%m","%d"]},
-	{name: "detail", height: 47, map_to: "detail", type: "textarea"}, // 'detail'이 텍스트 정보를 포함한다고 가정.
-	{name: "hide_bar", type: "checkbox", map_to: "hide_bar"}
+	{name: "detail", height: 47, map_to: "detail", type: "textarea"} // 'detail'이 텍스트 정보를 포함한다고 가정.
+	// {name: "hide_bar", type: "checkbox", map_to: "hide_bar"}
 	// 필요에 따라 더 많은 섹션을 추가할 수 있습니다.
 ];
 gantt.config.lightbox.project_sections=[
@@ -352,7 +351,7 @@ gantt.templates.rightside_text = function(start, end, task){
 };
 마일스톤 안쓸거라 일단 주석
  */
-/*
+
 gantt.attachEvent("onAfterTaskAdd", function(id, item){
 	gantt.ajax.post({
 		url:"${path}/addTask",
@@ -376,7 +375,8 @@ gantt.attachEvent("onAfterTaskAdd", function(id, item){
 
 			});
 });
-*/
+
+
 
 /*
 gantt.attachEvent("onAfterLinkAdd", function(id, link){
