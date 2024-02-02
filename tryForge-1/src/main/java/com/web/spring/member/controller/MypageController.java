@@ -61,5 +61,11 @@ public class MypageController {
 		
 		return ResponseEntity.ok(result);
 	}
+	
+	@GetMapping("chatHome")
+	public String chatHome() {
+		
+		return "chat/chattingHome";
+	}
 
 }
