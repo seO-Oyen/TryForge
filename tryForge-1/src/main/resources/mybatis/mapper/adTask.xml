@@ -40,6 +40,6 @@
 	</update>
 	<!-- 업무 삭제 -->
 	<delete id="delTask" parameterType="int">
-		DELETE FROM TASK WHERE task_key = #{id}
+		DELETE FROM TASK WHERE task_key = #{id} and ASSIGNOR=#{ASSIGNOR}
 	</delete>
 </mapper>

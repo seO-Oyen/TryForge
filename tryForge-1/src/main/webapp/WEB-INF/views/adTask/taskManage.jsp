@@ -4,9 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="path" value="${pageContext.request.contextPath }"/> --%>
 <jsp:include page="${path}/template/module/module_admain.jsp"
              flush="true"/>
 <style>
@@ -47,59 +44,126 @@
 </style>
 <script>
     $(document).ready(function () {
+        var totalTasks = 0;
+        var task1 = 0;
+        var task2 = 0;
+        var task3 = 0;
+
+        function drawChart() {
+            var ratio1 = (task1 / totalTasks) * 100;
+            var ratio2 = (task2 / totalTasks) * 100;
+            var ratio3 = (task3 / totalTasks) * 100;
+
+            var doughnutPieData = {
+                labels: ["미확인", "진행중", "완료"],
+                datasets: [{
+                    data: [ratio1, ratio2, ratio3],
+                    backgroundColor: ["#FFB6C1", "#4CA5FF", "#BDC3C7"],
+                }]
+            };
+
+            var doughnutPieOptions = {
+                responsive: true,
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            };
+
+            if ($("#pieChart").length) {
+                var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+                var pieChart = new Chart(pieChartCanvas, {
+                    type: 'pie',
+                    data: doughnutPieData,
+                    options: doughnutPieOptions
+                });
+            }
+        }
+
+        // Ajax 요청
+        $.ajax({
+            url: "${path}/taskChart",
+            dataType: "json",
+            success: function (data) {
+                totalTasks = data.allCnt;
+                task1 = data.unConfCnt;
+                task2 = data.confCnt;
+                task3 = data.finCnt;
+                $("#task01").text(task1+"개")
+                $("#task02").text(task2+"개")
+                $("#task03").text(task3+"개")
+
+                drawChart();
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
     });
 </script>
 
 <div class="main-panel">
     <div class="content-wrapper">
         <div class="row">
-            <div class="col-md-4 grid-margin stretch-card">
+            <div style="display: flex; margin-left: 3%;" >
+            <!-- 업무 현황 -->
+            <div class="col-lg-4 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <div
-                                class="d-flex align-items-center justify-content-between justify-content-md-center justify-content-xl-between flex-wrap mb-4">
+                        <h4 class="card-title">업무 현황</h4>
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!--미확인 업무-->
+            <div class="col-mg-4 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between justify-content-md-center justify-content-xl-between flex-wrap mb-4">
                             <div>
-                                <p class="mb-2 text-md-center text-lg-left">Total
-                                    Expenses</p>`
-                                <h1 class="mb-0">8742</h1>
+                                <p class="mb-2 text-md-center text-lg-left">미확인업무</p>
+                                <h1 class="mb-0" id="task01"></h1>
                             </div>
-                            <i class="typcn typcn-briefcase icon-xl text-secondary"></i>
+                            <i class="mdi mdi-clipboard-outline icon-xl text-secondary"></i>
                         </div>
                         <canvas id="expense-chart" height="80"></canvas>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 grid-margin stretch-card">
+            <!--진행중인 업무-->
+            <div class="col-mg-4 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
                         <div
                                 class="d-flex align-items-center justify-content-between justify-content-md-center justify-content-xl-between flex-wrap mb-4">
                             <div>
-                                <p class="mb-2 text-md-center text-lg-left">Total Budget</p>
-                                <h1 class="mb-0">47,840</h1>
+                                <p class="mb-2 text-md-center text-lg-left">진행중인 업무</p>
+                                <h1 class="mb-0" id="task02"></h1>
                             </div>
-                            <i class="typcn typcn-chart-pie icon-xl text-secondary"></i>
+                            <i class="mdi mdi-clipboard-text icon-xl text-secondary"></i>
                         </div>
-                        <canvas id="budget-chart" height="80"></canvas>
+                        <canvas id="budget-chart" height="80" style="visibility: hidden;"></canvas>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 grid-margin stretch-card">
+            <!--완료 업무-->
+            <div class="col-mg-4 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
                         <div
                                 class="d-flex align-items-center justify-content-between justify-content-md-center justify-content-xl-between flex-wrap mb-4">
                             <div>
-                                <p class="mb-2 text-md-center text-lg-left">Total Balance</p>
-                                <h1 class="mb-0">$7,243</h1>
+                                <p class="mb-2 text-md-center text-lg-left">완료된 업무</p>
+                                <h1 class="mb-0" id="task03"></h1>
                             </div>
-                            <i class="typcn typcn-clipboard icon-xl text-secondary"></i>
+                            <i class="mdi mdi-clipboard-check icon-xl text-secondary"></i>
                         </div>
                         <canvas id="balance-chart" height="80"></canvas>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </div>
 

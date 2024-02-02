@@ -40,6 +40,7 @@
     <script src="${path}/template/js/template.js"></script>
     <script src="${path}/template/js/settings.js"></script>
     <script src="${path}/template/js/todolist.js"></script>
+
     <!-- endinject -->
     <!-- Custom js for this page-->
     <script src="${path}/template/js/dashboard.js"></script>
@@ -70,7 +71,7 @@
                         break;
                     case '/task':
                         titleElement.text('Task')
-                        detailElement.text('관리자페이지  >  업무관리')
+                        detailElement.text('관리자페이지  >  업무할당관리')
                         break;
                     case '/noticeList':
                         titleElement.text('Notice')
@@ -95,6 +96,10 @@
                     case '/deleteNotice':
                         titleElement.text('Notice')
                         detailElement.text('관리자페이지  >  공지사항삭제')
+                        break;
+                    case '/taskManage':
+                        titleElement.text('Task')
+                        detailElement.text('관리자페이지  >  업무현황관리')
                         break;
                     default:
                         break;
@@ -541,7 +546,7 @@
                     </div> -->
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#charts">
+                    <a class="nav-link" href="${path}/taskManage">
                         <i class="tpycn mdi mdi-checkbox-marked-circle menu-icon"></i>
                         <span class="menu-title">업무현황관리</span>
                         <!-- <i class="menu-arrow"></i> -->
