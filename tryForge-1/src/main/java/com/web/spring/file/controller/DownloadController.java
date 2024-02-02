@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class DownloadController {
 	@RequestMapping("download")
-	public String download(@RequestParam("fname") String fname, @RequestParam("originfname") String originfname, Model d) {
-		d.addAttribute("downloadFile", fname);
-		d.addAttribute("originFileName", originfname);
+	public String download(@RequestParam("fname") String fname, @RequestParam("file_key") String file_key, Model d) {
+		d.addAttribute("downloadFile", file_key);
+		d.addAttribute("fname", fname);
 		return "downloadViewer";
 	}
 }

@@ -26,15 +26,15 @@ public class DownloadViewer extends AbstractView {
 		String fileName = (String)model.get("downloadFile");
 		File file = new File(path+fileName);
 
-		String originFileName = (String)model.get("originFileName");
-		originFileName = URLEncoder.encode(originFileName, "utf-8").replaceAll("\\+"," ");
+		String fname = (String)model.get("fname");
+		fname = URLEncoder.encode(fname, "utf-8").replaceAll("\\+"," ");
 //		파일전송용 contentType
 		res.setContentType("application/download;charset=utf-8");
 //		파일 길이 설정
 		res.setContentLengthLong(file.length());
 
 //		파일명 지정(Content-Disposition),
-		res.setHeader("Content-Disposition", "attachment;filename=\""+originFileName+"\"");
+		res.setHeader("Content-Disposition", "attachment;filename=\""+fname+"\"");
 //		binary 데이터 처리(Content-Transfer_Encoding)
 		res.setHeader("Content-Transfer-Encoding", "binary");
 //		파일을 FileInputStream에 탑제

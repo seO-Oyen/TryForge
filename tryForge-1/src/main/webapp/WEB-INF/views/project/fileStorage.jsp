@@ -86,11 +86,11 @@
 									<img src="${pageContext.request.contextPath}${file.iconPath}" alt ="${file.ftype}"class="file-image">
 								</div>
 								<div>
-									<h4 title="${file.originfname}" class="file-title">${file.originfname}</h4>
+									<h4 title="${file.fname}" class="file-title">${file.fname}</h4>
 								</div>
 								<div class="file-info-container">
 								    <h4 title="${file.fsize}" class="file-size">${file.fsize}</h4>
-								    <i class="mdi mdi-download fdown" onclick = "download('${file.fname}', '${file.originfname}')"></i>
+								    <i class="mdi mdi-download fdown" onclick = "download('${file.file_key}', '${file.fname}')"></i>
 								</div>
 							</div>
 						</div>
@@ -110,9 +110,9 @@ document.querySelector("#fileInput").addEventListener('change', function(){
 	$("form").submit()
 })
 
-function download(fname, originfname){
-	if( confirm(originfname+" 다운로드 하시겠습니까?")){
-		location.href="${pageContext.request.contextPath}/download?fname="+fname+"&originfname="+originfname;
+function download(file_key, fname){
+	if( confirm(fname+" 다운로드 하시겠습니까?")){
+		location.href="${pageContext.request.contextPath}/download?file_key="+file_key+"&fname="+fname;
 	}
 }
 </script>			

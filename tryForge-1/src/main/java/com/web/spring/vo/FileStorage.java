@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.web.multipart.MultipartFile;
 
 public class FileStorage {
+	private String file_key;
 	private String fname;
 	private String path;
 	private String ftype;
@@ -14,14 +15,13 @@ public class FileStorage {
 	private MultipartFile[] files;
 	private int member_key;
 	private String project_key;
-	private String originfname;
 
-	public String getOriginfname() {
-		return originfname;
+	public String getFile_key() {
+		return file_key;
 	}
 
-	public void setOriginfname(String originfname) {
-		this.originfname = originfname;
+	public void setFile_key(String file_key) {
+		this.file_key = file_key;
 	}
 
 	public int getMember_key() {
@@ -44,7 +44,8 @@ public class FileStorage {
 		// TODO Auto-generated constructor stub
 	}
 
-	public FileStorage(String fname, String path, String ftype, String fsize, Date upload_time, String iconPath, MultipartFile[] files, int member_key, String project_key, String originfname) {
+	public FileStorage(String file_key, String fname, String path, String ftype, String fsize, Date upload_time, String iconPath, MultipartFile[] files, int member_key, String project_key) {
+		this.file_key = file_key;
 		this.fname = fname;
 		this.path = path;
 		this.ftype = ftype;
@@ -54,17 +55,15 @@ public class FileStorage {
 		this.files = files;
 		this.member_key = member_key;
 		this.project_key = project_key;
-		this.originfname = originfname;
 	}
 
-	public FileStorage(String fname, String path, String ftype, String fsize, String project_key, int member_key, String originfname) {
+	public FileStorage(String fname, String path, String ftype, String fsize, String project_key, int member_key) {
 		this.fname = fname;
 		this.path = path;
 		this.ftype = ftype;
 		this.fsize = fsize;
 		this.member_key = member_key;
 		this.project_key = project_key;
-		this.originfname = originfname;
 	}
 
 	public String getIconPath() {
