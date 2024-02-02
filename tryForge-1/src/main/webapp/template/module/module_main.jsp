@@ -3,6 +3,7 @@
     %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="path" value="${pageContext.request.contextPath }"/>
 <fmt:requestEncoding value="utf-8"/>     
 <!DOCTYPE html>
@@ -49,10 +50,16 @@
 <script>
 $(document).ready(function(){
 	var sessId = "${loginMem.member_id}"
+	var projectKey = "${projectMem.project_key}"
 	if(sessId==""){
 		alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
 		location.href="${path}/login"
+		if(sessId!="" && projectKey==""){
+			alert("참여중인 프로젝트가 없습니다.")
+			location.href="${path}/userIndex"
+		}
 	}
+
 	function updateNavigation(){
 		var currentPage = window.location.pathname;
 
@@ -242,9 +249,10 @@ $(document).ready(function(){
 					</li>
 					<li class="nav-item">
 						<div class="d-flex align-items-baseline">
+							<C:if test="${not empty projectMem.project_key}">
 							<i class="typcn typcn-chevron-right" style="font-size:23px;"></i>
-							<p class="mb-0" style="font-size: 20px; margin-left: 10px;">현재 프로젝트&nbsp; : &nbsp;TryForge</p>
-
+							<p class="mb-0" style="font-size: 20px; margin-left: 10px;">현재 프로젝트&nbsp; : &nbsp;"${projectMem.title}"</p>
+							</C:if>
 
 						</div>
 					</li>

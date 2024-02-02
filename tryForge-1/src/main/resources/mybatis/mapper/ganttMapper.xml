@@ -6,7 +6,8 @@
 	<resultMap type = "task" id="taskRst">
 		<result column = "task_key" property = "id"/>
 		<result column = "task_type" property = "type"/>
-		<result column = "task_rollup" property = "rollup"/>
+		<result column = "task_open" property = "open"/>
+		<result column = "member_name" property = "owner"/>
 	</resultMap>
 	<resultMap type = "task_dep" id="taskDepRst">
 		<result column = "dependency_key" property = "id"/>
@@ -15,16 +16,17 @@
 		<result column = "dependency_type" property = "type"/>
 	</resultMap>
 	<select id="getTask" resultMap="taskRst">
-		SELECT task_key, text, 
-		to_char(start_date, 'YYYY-MM-DD') start_date, 
-		to_char(end_date, 'YYYY-MM-DD') end_date,
-		duration, progress, parent, task_type, status, task_rollup, hide_bar
-		FROM TASK
-		WHERE PROJECT_KEY = 'PJ-0'
+		SELECT t.*, m.member_name
+		FROM task t
+		left JOIN member m ON t.member_key = m.member_key
+		WHERE t.PROJECT_KEY = 'PJ-126'
+	</select>
+
+	<select id="taskDetail" resultMap="taskRst">
+		SELECT * FROM TASK WHERE TASK_KEY = #{id}
 	</select>
 
 	<select id="getTaskDep" resultMap="taskDepRst">
 		SELECT * FROM TASK_DEPENDENCY
 	</select>
 </mapper>
-

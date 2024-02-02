@@ -1,75 +1,123 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"
-    %>
+         pageEncoding="UTF-8"
+%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="path" value="${pageContext.request.contextPath }"/>
-<fmt:requestEncoding value="utf-8"/>     
+<fmt:requestEncoding value="utf-8"/>
 <!DOCTYPE html>
 <html>
 
 <head>
-<!-- Required meta tags -->
-<meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="shortcut icon" type="image/x-icon" href="${path}/template/images/logo_backDelete.png">
-<title>TryForge</title>
-<!-- base:css -->
-<link rel="stylesheet" href="${path}/template/vendors/typicons/typicons.css">
-<link rel="stylesheet" href="${path}/template/vendors/css/vendor.bundle.base.css">
-<!-- endinject -->
-<!-- plugin css for this page -->
-<!-- End plugin css for this page -->
-<!-- inject:css -->
-<link rel="stylesheet" href="${path}/template/css/vertical-layout-light/style.css">
-  <link rel="shortcut icon" href="../../images/favicon.png" />
-  
-<link rel="stylesheet" href="${path}/template/vendors/mdi/css/materialdesignicons.min.css"/>
-<link rel="stylesheet" href="${path}/template/alert/sweetalert2.min.css">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/x-icon" href="${path}/template/images/logo_backDelete.png">
+    <title>TryForge</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="${path}/template/vendors/typicons/typicons.css">
+    <link rel="stylesheet" href="${path}/template/vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="${path}/template/css/vertical-layout-light/style.css">
+    <link rel="shortcut icon" href="../../images/favicon.png"/>
 
-<!-- base:js -->
-<script src="${path}/template/vendors/js/vendor.bundle.base.js"></script>
-<!-- endinject -->
-<!-- Plugin js for this page-->
-<script src="${path}/template/vendors/chart.js/Chart.min.js"></script>
-<!-- End plugin js for this page-->
-<!-- inject:js -->
-<script src="${path}/template/js/off-canvas.js"></script>
-<script src="${path}/template/js/hoverable-collapse.js"></script>
-<script src="${path}/template/js/template.js"></script>
-<script src="${path}/template/js/settings.js"></script>
-<script src="${path}/template/js/todolist.js"></script>
-<!-- endinject -->
-<!-- Custom js for this page-->
-<script src="${path}/template/js/dashboard.js"></script>
-<script src="${path}/template/alert/sweetalert2.min.js"></script>
-<!-- End custom js for this page-->
-<script>
-$(document).ready(function(){
-	var sessId = "${loginMem.member_id}"
-	if(sessId==""){
-		alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
-		location.href="${path}/login.do"
-	} else if ("${loginMem.member_role}" != "") {
-		$("#admin").css("display", "")
-	}
-})
-</script>
+    <link rel="stylesheet" href="${path}/template/vendors/mdi/css/materialdesignicons.min.css"/>
+    <link rel="stylesheet" href="${path}/template/alert/sweetalert2.min.css">
+
+    <!-- base:js -->
+    <script src="${path}/template/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page-->
+    <script src="${path}/template/vendors/chart.js/Chart.min.js"></script>
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
+    <script src="${path}/template/js/off-canvas.js"></script>
+    <script src="${path}/template/js/hoverable-collapse.js"></script>
+    <script src="${path}/template/js/template.js"></script>
+    <script src="${path}/template/js/settings.js"></script>
+    <script src="${path}/template/js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="${path}/template/js/dashboard.js"></script>
+    <script src="${path}/template/alert/sweetalert2.min.js"></script>
+    <!-- End custom js for this page-->
+    <script>
+        $(document).ready(function () {
+            var sessId = "${loginMem.member_id}"
+            if (sessId == "") {
+                alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
+                location.href = "${path}/login"
+            } else if ("${loginMem.member_role}" != "") {
+                $("#admin").css("display", "")
+            }
+            function updateNavigation() {
+                var currentPage = window.location.pathname;
+                var titleElement = $('.navbar-menu-wrapper #titleText');
+                var detailElement = $('#detailText');
+
+                switch (currentPage) {
+                    case '/adMain':
+                        titleElement.text('Adminmain')
+                        detailElement.text('관리자페이지  >  메인페이지')
+                        break;
+                    case '/projList':
+                        titleElement.text('Project')
+                        detailElement.text('관리자페이지  >  프로젝트관리')
+                        break;
+                    case '/task':
+                        titleElement.text('Task')
+                        detailElement.text('관리자페이지  >  업무관리')
+                        break;
+                    case '/noticeList':
+                        titleElement.text('Notice')
+                        detailElement.text('관리자페이지  >  공지사항조회')
+                        break;
+                    case '/getNotice':
+                        titleElement.text('Notice')
+                        detailElement.text('관리자페이지  >  공지사항상세')
+                        break;
+                    case '/insertNotice':
+                        titleElement.text('Notice')
+                        detailElement.text('관리자페이지  >  공지사항등록')
+                        break;
+                    case '/updateNoticeFrm':
+                        titleElement.text('Notice')
+                        detailElement.text('관리자페이지  >  공지사항수정')
+                        break;
+                    case '/updateNotice':
+                        titleElement.text('Notice')
+                        detailElement.text('관리자페이지  >  공지사항수정')
+                        break;
+                    case '/deleteNotice':
+                        titleElement.text('Notice')
+                        detailElement.text('관리자페이지  >  공지사항삭제')
+                        break;
+                    default:
+                        break;
+                }
+            }
+            updateNavigation();
+        })
+
+    </script>
 </head>
 <body>
-	<div class="container-scroller">
+<div class="container-scroller">
 		<!-- partial:partials/_navbar.html -->
 		<!-- 상단바 -->
 		<nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="border-bottom:none;" >
 			<!-- 왼쪽 상단 로고 -->
 			<div class="navbar-brand-wrapper d-flex justify-content-center" style="background:white;">
 				<div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100" >
-					<a class="navbar-brand brand-logo" href="${path}/adMain.do" >
+					<a class="navbar-brand brand-logo" href="${path}/adMain" >
 					<img src="${path}/template/images/try_forge01.jpg" alt="logo" style="width:100%"/>
 					<!-- <span>TryForge</span> -->
 					</a> 
-					<a class="navbar-brand brand-logo-mini" href="index.jsp">
+					<a class="navbar-brand brand-logo-mini" href="${path}/adMain">
 					<img src="${path}/template/images/try_logo.jpg" alt="logo" style="width:100%;"/></a>
 					<button class="navbar-toggler navbar-toggler align-self-center"
 						type="button" data-toggle="minimize" style="color:black; margin-left:10px;">
@@ -562,18 +610,17 @@ $(document).ready(function(){
 			</nav>
 			
 			<script>
-  // 현재 날짜를 가져오는 함수
-  function getCurrentDate() {
-    var currentDate = new Date();
-    var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    var month = monthNames[currentDate.getMonth()];
-    var day = currentDate.getDate();
+			// 현재 날짜를 가져오는 함수
+			function getCurrentDate() {
+				var currentDate = new Date();
+				var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+				var month = monthNames[currentDate.getMonth()];
+				var day = currentDate.getDate();
+				return month + ' ' + day;
+			}
 
-    return month + ' ' + day;
-  }
-
-  // 페이지 로딩 시 현재 날짜로 업데이트
-  document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById('currentDate').innerText = 'Today: ' + getCurrentDate();
-  });
-</script>
+            // 페이지 로딩 시 현재 날짜로 업데이트
+            document.addEventListener("DOMContentLoaded", function () {
+                document.getElementById('currentDate').innerText = 'Today: ' + getCurrentDate();
+            });
+        	</script>

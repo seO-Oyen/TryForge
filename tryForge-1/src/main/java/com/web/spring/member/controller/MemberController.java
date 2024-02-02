@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +31,10 @@ public class MemberController {
 		// 기존 session이 있다면 삭제
 		if (session.getAttribute("loginMem") != null) {
 			session.removeAttribute("loginMem");
-			System.out.println("세션삭제");
+			if(session.getAttribute("projectMem") != null){
+				session.removeAttribute("projectMem");
+				System.out.println("세션(멤버&프로젝트) 삭제");
+			}
 		}
 
 		return "user/login";
@@ -97,18 +101,19 @@ public class MemberController {
 		return "user/insertUser";
 	}
 	
-//	@PostMapping("insertUser.do")
-//	public String mailSend(@RequestParam("receiver") String receiver, Model d, HttpSession session) {
-//		MailSender mailVo = new MailSender();
-//		Member sendMem = (Member)session.getAttribute("loginMem");
-//		mailVo.setReceiver(receiver);
-//		mailVo.setTitle("TryForge에 초대합니다.");
-//		
-//		mailVo.setContent(sendMem.getMember_name() + "님이 초대하셨습니다."
-//				+ "\n아래링크를 눌러 가입해주세요.\n\nhttp://211.63.89.67:1111/tryForge/register.do");
-//		memberService.sendMail(mailVo, sendMem);
-//		
-//		return "redirect:/insertUser.do";
-//	}
+	@PostMapping("insertUser")
+	public String mailSend(@RequestParam("receiver") String receiver, Model d, HttpSession session) {
+		MailSender mailVo = new MailSender();
+		Member sendMem = (Member)session.getAttribute("loginMem");
+		mailVo.setReceiver(receiver);
+		mailVo.setTitle("TryForge에 초대합니다.");
+		
+		mailVo.setContent(sendMem.getMember_name() + "님이 초대하셨습니다."
+				+ "\n아래링크를 눌러 가입해주세요.\n\nhttp://211.63.89.67:1111/tryForge/register");
+		d.addAttribute("msg", memberService.sendMail(mailVo, sendMem).equals("메일 발송 성공"));
+		
+		return "redirect:/insertUser";
+		
+	}
 
 }

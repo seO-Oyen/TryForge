@@ -2,6 +2,7 @@ package com.web.spring.file.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +31,10 @@ private String path;
 			try {
 				for(MultipartFile mpf:mpfs) {
 				
-					String fname = mpf.getOriginalFilename(); // 이름추출
+					String originfname = mpf.getOriginalFilename(); // 이름추출
+					String uniqueID = UUID.randomUUID().toString();
+					String fname = originfname + "_" + uniqueID;
+
 					String ftype = mpf.getContentType(); // image/jpeg 형식으로 추출
 					long fsizeByte = mpf.getSize(); // 파일크기 추출(byte)
 					
@@ -57,7 +61,7 @@ private String path;
 					
 					// File 경로 지정해서 MultipartFile에 담긴 파일 저장
 					mpf.transferTo(new File(path+fname));
-					chk += dao.uploadFile(new FileStorage(fname, path, extension, fsize));
+					chk += dao.uploadFile(new FileStorage(fname, path, extension, fsize, upload.getProject_key(), upload.getMember_key(), originfname));
 				}
 			} catch (IllegalStateException e) {
 				System.out.println("#파일업로드 예외1:"+e.getMessage());

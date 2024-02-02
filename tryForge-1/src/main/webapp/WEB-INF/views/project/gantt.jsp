@@ -14,7 +14,18 @@
 }
 .gantt_cal_light { /* 라이트박스 속성 변경 */
 	width: 40% !important;
-	height: auto !important; 
+	height: auto !important;
+}
+.gantt_cal_light_wide .gantt_section_time { /* 날짜 세로 조정 */
+	height:auto !important;
+	align-items: center;
+	display: flex;
+}
+.gantt_cal_light_wide .gantt_wrap_section { /* 라이트박스 테두리 제거 */
+	border: none !important;
+}
+.gantt_cal_light_wide .gantt_cal_lsection {
+	text-align: center;
 }
 .gantt_delete_btn_set { /* 라이트박스 삭제버튼 속성 변경 */
 	display: inline-block !important;
@@ -41,8 +52,8 @@
 .gantt_save_btn_set { /* 라이트박스 저장버튼 속성 변경 */
 	display: inline-block !important;
 	color: #fff !important; 
-	background-color: #3b86d1 !important;
-	border-color : #3b86d1 !important; 
+	background-color: #007fff !important;
+	border-color : #007fff !important;
 }
 .gantt_save_btn_set:hover {
 	color: #fff !important; 
@@ -56,23 +67,28 @@
     text-align: center !important;
     vertical-align: middle !important;
 }
-
+div.gantt_cal_light .gantt_cal_ltitle .gantt_title {
+	font-size: 25px;
+}
 /* 왼쪽 그리드 컬럼명 중앙 정렬 */
 .gantt_grid_head_cell {
     text-align: center !important;
     vertical-align: middle !important;
 }
-
+/* 라이트박스 기간 설정 */
+.div.gantt_cal_light .gantt_section_time select, div.gantt_cal_light select {
+	margin-right: 5px;
+}
 /* 왼쪽 그리드 컬럼 데이터 중앙 정렬 */
 .gantt_cell, .gantt_task_cell {
     text-align: center !important;
     vertical-align: middle !important;
 }
-/*
+
 .gantt_grid_head_cell.gantt_grid_head_add.gantt_last_cell {
     display: none !important; 
-} // 맨 위 추가항목 삭제 스타일
-*/
+}
+
 </style>
 <div id='gantt_here' style="width:100%; height:100%; margin-left:20px; margin-right:20px;"class="main-panel">
 
@@ -93,7 +109,7 @@ gantt.i18n.setLocale({
         day_short: ["일", "월", "화", "수", "목", "금", "토"]
     },
     labels: {
-        new_task: "새로운 작업",
+        new_task: "새로운 업무",
         icon_save: "저장",
         icon_cancel: "취소",
         icon_details: "세부사항",
@@ -104,12 +120,13 @@ gantt.i18n.setLocale({
         gantt_delete_btn: "삭제",
         confirm_closing: "", // 변경사항이 손실될 수 있습니다. 계속하시겠습니까?
         confirm_deleting: "작업이 영구적으로 삭제됩니다. 계속하시겠습니까?",
-        section_description: "설명",
-        section_time: "기간",
+        section_description: "업무명",
+        section_time: "업무기간",
         section_type: "유형",
         section_owner: "담당자",
         section_rollup: "롤업",
         section_hide_bar: "바 숨기기",
+		section_detail: "업무설명",
         /* grid columns */
         column_wbs: "WBS",
         column_text: "작업 이름",
@@ -207,26 +224,35 @@ var users = [
     // key 에 member_key 또는 member_name 이 오면 될거 같고. label 에 member_name 으로
 ];
 // 라이트박스 섹션 속성 설정
+/*
 gantt.config.lightbox.sections=[
     {name:"description", height:100, map_to:"text", type:"textarea", focus:true},
     {name: "type", height: 44, map_to: "type", type: "typeselect"},
     {name:"owner",       height:44, map_to:"owner", type:"select", options:users},
     {name:"time",        height:72, map_to:"auto", type:"duration", time_format:["%Y","%m","%d"]}
 ];
- 
+*/
+gantt.config.lightbox.sections = [
+	{name: "description", height: 47, map_to: "text", type: "textarea", focus: true},
+	// {name: "type", height: 40, map_to: "type", type: "typeselect"},
+	{name: "owner", height: 40, map_to: "owner", type: "select", options: users},
+	{name: "time",map_to: "auto", type: "time", time_format:["%Y","%m","%d"]},
+	{name: "detail", height: 47, map_to: "detail", type: "textarea"}, // 'detail'이 텍스트 정보를 포함한다고 가정.
+	{name: "hide_bar", type: "checkbox", map_to: "hide_bar"}
+	// 필요에 따라 더 많은 섹션을 추가할 수 있습니다.
+];
 gantt.config.lightbox.project_sections=[
     {name:"description", height:100, map_to:"text", type:"textarea", focus:true},
     {name:"time",        height:72, map_to:"auto", type:"duration"}
-];	
-
+];
+/*
 gantt.config.lightbox.milestone_sections = [
     {name: "description", height: 70, map_to: "text", type: "textarea", focus: true},
-    {name: "rollup", type: "checkbox", map_to: "rollup"},
     {name: "hide_bar", type: "checkbox", map_to: "hide_bar"},
     {name: "type", height: 44, type: "typeselect", map_to: "type"},
     {name: "time", type: "duration", map_to: "auto"}
 ];
-
+*/
 /*
 gantt.config.lightbox.sections = [
     {name:"description", height:38, map_to:"desc", type:"textarea",focus:true},
@@ -248,9 +274,9 @@ gantt.templates.date_scale = function(date){
     return formatFunc(date);
 };
 gantt.templates.lightbox_header = function(start, end, task) {
-    // 날짜를 원하는 포맷으로 변경 (예: dd MM yyyy)
-    var dateFormat = gantt.date.date_to_str("%Y년 %M %d일 ");
-    return dateFormat(start) + " - " + dateFormat(end) + task.text;
+    /* 날짜를 원하는 포맷으로 변경 (예: dd MM yyyy)
+    var dateFormat = gantt.date.date_to_str("%Y년 %M %d일 "); dateFormat(start) + " - " + dateFormat(end) +  <- 리턴값에 있어도되는요소*/
+	return task.text;
 }; 
 // 마일스톤 템플릿 정의
 gantt.templates.milestone_class = function(start, end, task){
@@ -316,6 +342,7 @@ function ajaxFunc(url, type){
 	})
 }
 */
+/*
 // 오른쪽에 텍스트 추가하는 기능인데. milestone에 대해서만 작동하도록 구성(무슨 마일스톤인지 알아보기 쉽도록)
 gantt.templates.rightside_text = function(start, end, task){
     if(task.type === "milestone"){
@@ -323,7 +350,60 @@ gantt.templates.rightside_text = function(start, end, task){
     }
     return "";
 };
+마일스톤 안쓸거라 일단 주석
+ */
 /*
+gantt.attachEvent("onAfterTaskAdd", function(id, item){
+	gantt.ajax.post({
+		url:"${path}/addTask",
+		data:{
+			text:item.text,
+			start_date:item.start_date,
+			end_date:item.end_date,
+			duration:item.duration,
+			progress:item.progress,
+			parent:item.parent,
+			// type:item.type,
+			// rollup:item.rollup,
+			// open:item.open,
+			detail:item.detail,
+		}
+
+			}).then(function(response){
+
+			})
+			.catch(function(error){
+
+			});
+});
+*/
+
+/*
+gantt.attachEvent("onAfterLinkAdd", function(id, link){
+    gantt.ajax.post("/addDependency", link)
+        .then(function(response) {
+            // 성공적으로 추가되었을 때의 처리
+        })
+        .catch(function(error) {
+            // 오류 처리
+        });
+});
+{
+    id: link.id,          // 종속성 고유 ID
+    source: link.source,  // 시작 작업 ID
+    target: link.target,  // 종료 작업 ID
+    type: link.type       // 종속성 유형 (예: 0 - 종료-시작, 1 - 시작-시작 등)
+}
+gantt.attachEvent("onAfterLinkDelete", function(id, link){
+    gantt.ajax.post("/deleteDependency", {id: link.id})
+        .then(function(response) {
+            // 성공적으로 삭제되었을 때의 처리
+        })
+        .catch(function(error) {
+            // 오류 처리
+        });
+});
+
 gantt.attachEvent("onAfterTaskAdd", function(id, item){
     // Ajax 요청으로 서버에 업무 추가
 });
@@ -386,7 +466,7 @@ gantt.load("${pageContext.request.contextPath}/getGantt");
 		<!-- page-body-wrapper ends -->
 	</div>
 	<!-- container-scroller -->
-	
+
 </body>
 
 </html>

@@ -96,9 +96,6 @@ $(document).ready(function(){
 					</a>
 					<div class="dropdown-menu dropdown-menu-right navbar-dropdown"
 						aria-labelledby="profileDropdown">
-						<a class="dropdown-item" href="${path}/myPage">
-							<i class="typcn typcn-cog-outline text-primary"></i> 마이페이지
-						</a> 
 						<a class="dropdown-item" href="${path}/login"> 
 							<i class="typcn typcn-eject text-primary"></i> 로그아웃
 						</a>
