@@ -95,12 +95,11 @@ div.gantt_cal_light .gantt_cal_ltitle .gantt_title {
 <div>
 
 <script type="text/javascript">
-//기존 로케일 설정 유지
 gantt.setWorkTime({ day: 6, hours: false }); // 토요일
 gantt.setWorkTime({ day: 0, hours: false }); // 일요일
 gantt.config.duration_unit = "day"; // duration (기간) 쪽 단위 지정 hour 로 할 경우 시간단위로 조절가능
 gantt.config.work_time = true; // 워크타임 적용(주말은 기간 합산 X)
-// locale 설정 적용
+// locale 설정 적용(지역에 맞게 번역설정)
 gantt.i18n.setLocale({
     date: {
         month_full: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
@@ -173,12 +172,10 @@ gantt.i18n.setLocale({
         resources_filter_label: "빈 항목 숨기기"
     }
 });
+// 실제 표현되는 날짜 단위설정과 휴일설정
 gantt.config.scales = [
     {unit: "month", step: 1, format: "%Y년 %m월"}, // 월 단위 설정, 포맷 변경
-//    {unit: "week", step: 1, format: function (date) {
-//        return "Week #" + gantt.date.getWeek(date); // 주 단위 설정, 포맷 변경
-//    }},
-	{unit: "day", step: 1, format: "%d %D", css: function(date) {
+	{unit: "day", step: 1, format: "%d %D", css: function(date) { // day 포맷 및 휴일설정
 	    if(!gantt.isWorkTime({ date: date, unit: "day"})){
 	        var day = date.getDay();
 	        if(day === 6){
@@ -192,34 +189,26 @@ gantt.config.scales = [
 
 // 기존 설정들 유지
 show_empty_state = true;
-gantt.config.start_date = new Date(2024, 0, 1); // 시작일 나중에 프로젝트 기간으로 넣어야됨
-gantt.config.end_date = new Date(2024, 11, 31); // 종료일
-gantt.config.autosize = "y"; // 사이즈 자동조절( 아래쪽에 스크롤바 올라옴 )
-// 날짜 포맷 변경 
-gantt.templates.format_date = function(date){
-	return date.toISOString();
-}; // ISO 형식으로 날짜 포맷은 해보긴했음
+// project에 대한 시작일과 종료일 (task 테이블에 저장된 값 불러옴)
+gantt.config.start_date = new Date("${date.start_date}");
+gantt.config.end_date = new Date("${date.end_date}+1");
+gantt.config.autosize = "y"; // 간트차트 사이즈 자동조절
+
+// 간트차트에서 YYYY-MM-DD 형식으로 출력하기 위함.
 gantt.config.date_format = "%Y-%m-%d";
-gantt.config.date_grid = "%m월%d일"; // 좌측컬럼 date 형식 모양변경 
+// 좌측컬럼 date 형식 포맷
+gantt.config.date_grid = "%m월%d일";
 
-// 기존 스케일 설정 삭제 또는 주석 처리
-// gantt.config.scale_unit = "month";
-// gantt.config.date_scale = "%Y년 %m월";
-
-// 기존 서브스케일 설정 삭제 또는 주석 처리
-// gantt.config.subscales = [
-//    {unit:"day", step:1, date:"%d %l"} 
-// ];
-//gantt.templates.task_time = function(start, end, task) {
+gantt.templates.task_time = function(start, end, task) {
    // 날짜 포맷을 정의합니다 (예: "%Y년 %m월 %d일")
-//    var dateFormat = gantt.date.date_to_str("%Y년 %m월 %d일");
-    
+    var dateFormat = gantt.date.date_to_str("%Y년 %m월 %d일");
+
     // 포맷된 시작일과 완료일을 반환합니다
-//    return dateFormat(start) + " - " + dateFormat(end);
-//}; 
+    return dateFormat(start) + " - " + dateFormat(end);
+};
 var users = [];
 <c:forEach var="mem" items="${memList}">
-	users.push({key: "${mem.owner}", label: "${mem.owner}"});
+	users.push({key: "${mem.member_key}", label: "${mem.owner}"});
 </c:forEach>
 
 // 라이트박스 섹션 속성 설정
@@ -236,36 +225,15 @@ gantt.config.lightbox.sections = [
 	// {name: "type", height: 40, map_to: "type", type: "typeselect"},
 	{name: "owner", height: 40, map_to: "owner", type: "select", options: users},
 	{name: "time",map_to: "auto", type: "time", time_format:["%Y","%m","%d"]},
-	{name: "detail", height: 47, map_to: "detail", type: "textarea"} // 'detail'이 텍스트 정보를 포함한다고 가정.
+	{name: "detail", height: 47, map_to: "detail", type: "textarea"} //
 	// {name: "hide_bar", type: "checkbox", map_to: "hide_bar"}
-	// 필요에 따라 더 많은 섹션을 추가할 수 있습니다.
 ];
 gantt.config.lightbox.project_sections=[
     {name:"description", height:100, map_to:"text", type:"textarea", focus:true},
     {name:"time",        height:72, map_to:"auto", type:"duration"}
 ];
-/*
-gantt.config.lightbox.milestone_sections = [
-    {name: "description", height: 70, map_to: "text", type: "textarea", focus: true},
-    {name: "hide_bar", type: "checkbox", map_to: "hide_bar"},
-    {name: "type", height: 44, type: "typeselect", map_to: "type"},
-    {name: "time", type: "duration", map_to: "auto"}
-];
-*/
-/*
-gantt.config.lightbox.sections = [
-    {name:"description", height:38, map_to:"desc", type:"textarea",focus:true},
-    {name:"details",     height:38, map_to:"text", type:"textarea"}, 
-    {name:"time",        height:72, map_to:"auto", type:"duration"}
-];
- */
 
-// gantt.config.bar_height = 30; 간트 작업 바 세로크기
 gantt.config.scale_height = 50;
-
-//gantt.templates.task_text = function(start, end, task){
-//    return task.name + " (" + task.duration + " days)";
-//};
 
 // 날짜 형식 템플릿 정의
 gantt.templates.date_scale = function(date){
@@ -353,12 +321,16 @@ gantt.templates.rightside_text = function(start, end, task){
  */
 
 gantt.attachEvent("onAfterTaskAdd", function(id, item){
+	var dateFormat = gantt.date.date_to_str("%Y-%m-%d");
+	var startDate = dateFormat(item.start_date);
+	var endDate = dateFormat(item.end_date);
 	gantt.ajax.post({
-		url:"${path}/addTask",
+		url:"${path}/insTask",
 		data:{
 			text:item.text,
-			start_date:item.start_date,
-			end_date:item.end_date,
+			member_key:item.owner,
+			start_date:startDate,
+			end_date:endDate,
 			duration:item.duration,
 			progress:item.progress,
 			parent:item.parent,
@@ -369,7 +341,15 @@ gantt.attachEvent("onAfterTaskAdd", function(id, item){
 		}
 
 			}).then(function(response){
+				var ownerName = users.find(function(user){
+					return user.key == item.owner;
+				}).label
 
+				if(ownerName) {
+					var task = gantt.getTask(id);
+					task.owner = ownerName;
+					gantt.updateTask(id);
+				}
 			})
 			.catch(function(error){
 

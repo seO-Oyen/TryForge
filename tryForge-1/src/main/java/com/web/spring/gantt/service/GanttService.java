@@ -2,7 +2,6 @@ package com.web.spring.gantt.service;
 
 import java.util.List;
 
-import com.web.spring.vo.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +25,10 @@ public class GanttService {
 
 	public List<Task> getTaskMem(String project_key) {
 		return dao.getTaskMem(project_key);
+	}
+
+	public Task getProjectPeriod(String project_key) {
+		return dao.getProjectPeriod(project_key);
 	}
 
 	public String insertTask(Task ins) {

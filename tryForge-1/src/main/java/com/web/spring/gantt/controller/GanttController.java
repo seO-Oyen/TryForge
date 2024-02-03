@@ -4,7 +4,6 @@ import com.web.spring.vo.Project;
 import com.web.spring.vo.Task;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,11 +27,12 @@ public class GanttController {
 	public String Gantt(Model d, HttpSession session) {
 		Project project = getProject(session);
 		if(project != null) {
+			d.addAttribute("date", service.getProjectPeriod(project.getProject_key()));
 			d.addAttribute("memList", service.getTaskMem(project.getProject_key()));
 		}
 		return "project/gantt";
 	}
-	
+
 	@GetMapping("getGantt")
 	public String getGantt(Model d, HttpSession session) {
 		Project project = getProject(session);
@@ -44,10 +44,12 @@ public class GanttController {
 	}
 
 	@PostMapping("insTask")
-	public String insertTask(Task ins, Model d){
-		d.addAttribute("msg", service.insertTask(ins));
+	public String insertTask(Task ins, Model d, HttpSession session){
+		Project project = getProject(session);
+		if(project != null) {
+			ins.setProject_key(project.getProject_key());
+			d.addAttribute("msg", service.insertTask(ins));
+		}
 		return "pageJsonReport";
 	}
-	
-	
 }
