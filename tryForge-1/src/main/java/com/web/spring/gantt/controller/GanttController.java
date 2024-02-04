@@ -63,4 +63,11 @@ public class GanttController {
 		}
 		return "pageJsonReport";
 	}
+	// 업무수정
+	@PostMapping("uptTask")
+	public String updateTask(Task upt, Model d) {
+		d.addAttribute("msg", service.updateTask(upt));
+
+		return "pageJsonReport";
+	}
 }

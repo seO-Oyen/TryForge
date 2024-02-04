@@ -38,5 +38,9 @@ public class GanttService {
 		return dao.insertTaskDep(ins)>0?"등록성공":"등록실패";
 	}
 
+	public String updateTask(Task upt) {
+		return dao.updateTask(upt)>0?"업데이트 성공":"업데이트 실패";
+	}
+
 	
 }

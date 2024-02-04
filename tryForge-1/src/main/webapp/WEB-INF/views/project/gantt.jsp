@@ -21,8 +21,30 @@
 			text: text,
 		});
 	}
+
+	function confirmMsg(title, text, icon, onConfirm, onCancel) {
+		Swal.fire({
+			title: title,
+			text: text,
+			icon: icon,
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: '승인',
+			cancelButtonText: '취소'
+		}).then((result) => {
+			if(result.isConfirmed && typeof onConfirm === 'function') {
+				onConfirm();
+			} else if(result.dismiss === Swal.DismissReason.cancel && typeof onCancel === 'function') {
+				onCancel();
+			}
+		});
+	}
 </script>
 <style>
+.swal2-container {
+	z-index: 999999 !important; /* 예시 값입니다. 실제로는 라이트박스의 z-index보다 높게 설정해야 합니다. */
+}
 .saturday {
     background-color: #f0f8ff; /* 토요일 */
 }
@@ -264,6 +286,13 @@ gantt.config.columns=[
     {name:"owner",      label:"담당자", align: "center", width:70 },
     {name:"add",        label:"", width:44 }
 ];
+
+function findMemberKeyByLabel(label) {
+	var user = users.find(function(user){
+		return user.label === label;
+	});
+	return user? user.key:null; // user가 있다면 user.key를 반환, 없다면 null 반환
+}
 // 실제로 데이터를 넣어야 할 task 쪽.
 /*
 color 속성 추가 가능
@@ -271,56 +300,93 @@ label 속성은 높음 중간 낮음 이런식으로 작업 우선순위 표현�
 parrent 중요함. 부모속성.
 progressColor <- 진행상태 나타내는 색상
 */
-/*
-
-	    // 종속성 나타내는 링크 
-	    // source : 시작 테스크 id, target : 종료 테스크 id, type : 연결선 유형
-	    // id 끼리 연결 한 다음에 이게 무슨 타입인지 넣어주면 됨
-	    // 0 : Finish to Start (FS)
-	    // 1 : Start to Start (SS)
-	    // 2 : Finish to Finish (FF)
-	    // 3 : Start to Finish (SF)
-	    links: [
-//	    	{id: 1, source: 1, target: 2, type: "0"}	    	
-	    ]
-	};
-*/
-// 라이트박스 save 시 유효성 검증 + 오류메세지 출력
-gantt.attachEvent("onLightboxSave", function(id, task, is_new){
-	if (!task.text || !task.detail) {
-		gantt.hideLightbox();
-		if(is_new) {
-			gantt.deleteTask(id);
+// 새 작업일 때 삭제버튼 숨기기처리
+gantt.attachEvent("onLightbox", function(id) {
+	var task = gantt.getTask(id);
+	var deleteButton = document.querySelector(".gantt_delete_btn_set");
+	// 새로운 작업의 경우, 삭제 버튼 숨기기
+	if (task.$new) {
+		if (deleteButton) {
+			deleteButton.style.setProperty('display', 'none', 'important');
 		}
-		errorMsg('경고!', '업무명과 업무설명은 반드시 입력해야 합니다.');
-
-		return false; // 작업 추가 취소
+	} else {
+		// 기존 작업의 경우, 삭제 버튼을 다시 표시
+		if (deleteButton) {
+			deleteButton.style.setProperty('display', '', 'important');
+		}
 	}
-	return true; // 작업 추가 계속
 });
+// 라이트박스 save 시 유효성 검증 + 오류메세지 출력
+gantt.attachEvent("onLightboxSave", function(id, task) {
+	if (!task.text || !task.detail) {
+		errorMsg('경고!', '업무명과 업무설명은 반드시 입력해야 합니다.');
+		return false; // 작업 추가를 취소하지만, 라이트박스는 열린 상태로 유지합니다.
+	}
+	return true; // 입력값이 유효할 경우, 작업 추가를 계속합니다.
+});
+// 라이트박스 삭제이벤트
+gantt.attachEvent("onLightboxDelete", function(id) {
+	confirmMsg(
+			'삭제하시겠습니까?',
+			'업무가 영구적으로 삭제됩니다.',
+			'error',
+			function() {
+				gantt.deleteTask(id);
+				successMsg('삭제 성공!', '업무가 성공적으로 삭제되었습니다.')
+				gantt.hideLightbox();
+			},
+			function() {
+			}
+	);
+	return false;
+})
+/*
+// 라이트박스 취소이벤트 <<--포기.............. 취소누르면 동시에 값까지 지워짐 너무복잡함
+gantt.attachEvent("onLightboxCancel", function(id, is_new) {
+	// 라이트박스를 숨깁니다.
+	if(!is_new) {
+		gantt.hideLightbox();
+		confirmMsg(
+				'취소하시겠습니까?',
+				'수정사항은 저장되지 않습니다.',
+				'warning',
+				function() {
+				},
+				function() {
+					gantt.showLightbox(id);
+				}
+		);
+	}
+	return false;
+});
+ */
+
+// 업무추가
 gantt.attachEvent("onAfterTaskAdd", function(id, item){
+	var member_key = findMemberKeyByLabel(item.owner);
+	// DB에 추가할 업무 날짜양식
 	var dateFormat = gantt.date.date_to_str("%Y-%m-%d");
 	var startDate = dateFormat(item.start_date);
 	var endDate = dateFormat(item.end_date);
 	gantt.ajax.post({
 		url:"${path}/insTask",
-		data:{
-			text:item.text,
-			member_key:item.owner,
-			start_date:startDate,
-			end_date:endDate,
-			duration:item.duration,
-			progress:item.progress,
-			parent:item.parent,
+		data: {
+			text: item.text,
+			member_key: member_key,
+			start_date: startDate,
+			end_date: endDate,
+			duration: item.duration,
+			progress: item.progress,
+			parent: item.parent,
 			// type:item.type,
 			// rollup:item.rollup,
 			// open:item.open,
-			detail:item.detail,
+			detail: item.detail,
 		}
-
 			}).then(function(response){
+				// 추가 후 유저이름으로 매칭해서 출력
 				var ownerName = users.find(function(user){
-					return user.key == item.owner;
+					return user.key === item.owner;
 				}).label
 
 				if(ownerName) {
@@ -345,6 +411,43 @@ gantt.attachEvent("onAfterLinkAdd", function(id, link){
 			});
 });
 
+gantt.attachEvent("onAfterTaskUpdate", function(id, item){
+	var member_key = findMemberKeyByLabel(item.owner);
+	var dateFormat = gantt.date.date_to_str("%Y-%m-%d");
+	var startDate = dateFormat(item.start_date);
+	var endDate = dateFormat(item.end_date);
+	gantt.ajax.post({
+		url:"${path}/uptTask",
+		data: {
+			id: item.id,
+			text: item.text,
+			member_key: member_key,
+			start_date: startDate,
+			end_date: endDate,
+			duration: item.duration,
+			progress: item.progress,
+			//parent: item.parent,
+			detail: item.detail,
+		}
+	}).then(function(response){
+		// 추가 후 유저이름으로 매칭해서 출력
+		/*
+		var ownerName = users.find(function(user){
+			return user.key === member_key;
+		}).label
+
+		if(ownerName) {
+			var task = gantt.getTask(id);
+			task.owner = ownerName;
+			gantt.updateTask(id);
+		}
+		 */
+		successMsg('업무 업데이트 성공!', '업무가 성공적으로 업데이트 되었습니다.');
+	})
+		.catch(function(error){
+			errorMsg('업무할당 실패', '에러메세지 : '+error);
+		});
+});
 /*
 
 {

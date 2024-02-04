@@ -58,4 +58,16 @@
 		INSERT INTO TASK_DEPENDENCY VALUES
 			(TASK_DEP_SEQ.nextval, #{source}, #{target}, #{type}, #{project_key})
 	</insert>
+
+	<update id="updateTask" parameterType="task">
+		UPDATE TASK
+			SET MEMBER_KEY = #{member_key},
+			    TEXT = #{text},
+			    START_DATE = to_date(#{start_date}, 'YYYY-MM-DD'),
+			    END_DATE = to_date(#{end_date}, 'YYYY-MM-DD'),
+			    DURATION = #{duration},
+			    PROGRESS = #{progress},
+			    DETAIL = #{detail}
+			WHERE TASK_KEY = #{id}
+	</update>
 </mapper>

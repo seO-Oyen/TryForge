@@ -23,4 +23,6 @@ public interface GanttDao {
 
 	int insertTask(Task ins);
 	int insertTaskDep(Task_Dependency ins);
+
+	int updateTask(Task upt);
 }
