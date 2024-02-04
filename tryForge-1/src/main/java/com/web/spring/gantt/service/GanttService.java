@@ -34,6 +34,9 @@ public class GanttService {
 	public String insertTask(Task ins) {
 		return dao.insertTask(ins)>0?"등록성공":"등록실패";
 	}
-	
+	public String insertTaskDep(Task_Dependency ins) {
+		return dao.insertTaskDep(ins)>0?"등록성공":"등록실패";
+	}
+
 	
 }

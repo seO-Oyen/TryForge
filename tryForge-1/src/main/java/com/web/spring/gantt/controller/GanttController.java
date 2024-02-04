@@ -2,6 +2,7 @@ package com.web.spring.gantt.controller;
 
 import com.web.spring.vo.Project;
 import com.web.spring.vo.Task;
+import com.web.spring.vo.Task_Dependency;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,13 +43,23 @@ public class GanttController {
 		}
 		return "pageJsonReport";
 	}
-
+	// 업무할당
 	@PostMapping("insTask")
-	public String insertTask(Task ins, Model d, HttpSession session){
+	public String insertTask(Task ins, Model d, HttpSession session) {
 		Project project = getProject(session);
 		if(project != null) {
 			ins.setProject_key(project.getProject_key());
 			d.addAttribute("msg", service.insertTask(ins));
+		}
+		return "pageJsonReport";
+	}
+	// 업무종속성할당
+	@PostMapping("insTaskDep")
+	public String insertTaskDep(Task_Dependency ins, Model d, HttpSession session) {
+		Project project = getProject(session);
+		if(project != null) {
+			ins.setProject_key(project.getProject_key());
+			d.addAttribute("msg", service.insertTaskDep(ins));
 		}
 		return "pageJsonReport";
 	}
