@@ -45,6 +45,8 @@
     <!-- Custom js for this page-->
     <script src="${path}/template/js/dashboard.js"></script>
     <script src="${path}/template/alert/sweetalert2.min.js"></script>
+   <!--chart.js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
     <!-- End custom js for this page-->
     <script>
         $(document).ready(function () {
