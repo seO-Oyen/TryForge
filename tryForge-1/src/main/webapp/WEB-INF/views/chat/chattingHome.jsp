@@ -9,12 +9,21 @@
 	/* background-color: white; */
 }
 
+.chatScrean {
+	/* margin: 0 auto; */
+	
+}
+
 .chat {
-	border: 1px solid;
+	/* border: 1px solid; */
+	text-align: left;
 }
 
 .${loginMem.member_id} {
-	color: yellow;
+	/* color: red; */
+	/* border: 1px solid; */
+	width: auto;
+	text-align: right;
 }
 
 .sendMsg {
@@ -63,12 +72,19 @@
 					class="d-flex justify-content-between align-items-center mb-2">
 					<p class="mb-0">채팅 내용</p>
 				</div>
-				<div class="chat ${loginMem.member_id}">안녕</div>
-				<div class="chat">방가루</div>
+				
+				<div class="chatScrean" >
+					<div class="${loginMem.member_id}">안녕</div>
+					
+				</div>
+				<div class="chatScrean">
+					<div class="chat">방가루티비? 어쩔티비?</div>
+				</div>
 				<div class="form-group" style="display: flex;">
 					<input class="typeahead sendMsg" />
 					<input type="button" class="btn btn-info" value="전송">
 				</div>
+				
 			</div>
 		</div>
 	</div>
