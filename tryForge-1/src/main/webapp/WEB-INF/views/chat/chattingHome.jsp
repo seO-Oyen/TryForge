@@ -35,6 +35,44 @@
 	display:inline-block;
 }
 </style>
+
+<script>
+$(document).ready(function(){
+	var idVal = "${loginMem.member_name}"
+	wsocket = new WebSocket(
+		"ws:localhost:1111/ws/chat"	
+	)
+	
+	wsocket.onopen = function(evt){
+		console.log(evt)
+		
+		wsocket.send(idVal+"님 접속하셨습니다!")
+	}
+	wsocket.onmessage = function(evt){
+		// 서버에서 push 접속한 모든 client에 전송..
+		revMsg(evt.data) // 메시지 처리 공통 함수 정의				
+	}
+})
+
+function revMsg(msg){
+	var calName = "chat"
+	var msgArr = msg.split(":")
+	console.log(msgArr)
+	if ("${loginMem.member_id}" == msgArr[0]){
+		calName = "${loginMem.member_id}"
+	}
+	var msgObj = $("<div></div>").text(msg).attr("class",
+			calName)
+			
+	$("#chatScrean").append(msgObj)
+}
+
+function sendMsg(){
+	wsocket.send("${loginMem.member_id}" + ":"+$("#sendMsg").val())
+	$("#sendMsg").val("")
+}
+
+</script>
 <div class="main-panel">
 <div class="content-wrapper">
 <div class="col-md-12">
@@ -73,16 +111,12 @@
 					<p class="mb-0">채팅 내용</p>
 				</div>
 				
-				<div class="chatScrean" >
-					<div class="${loginMem.member_id}">안녕</div>
+				<div id="chatScrean" >
 					
 				</div>
-				<div class="chatScrean">
-					<div class="chat">방가루티비? 어쩔티비?</div>
-				</div>
 				<div class="form-group" style="display: flex;">
-					<input class="typeahead sendMsg" />
-					<input type="button" class="btn btn-info" value="전송">
+					<input class="typeahead sendMsg" id="sendMsg" />
+					<input type="button" class="btn btn-info" value="전송" onclick="sendMsg()">
 				</div>
 				
 			</div>
