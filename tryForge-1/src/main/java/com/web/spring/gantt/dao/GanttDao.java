@@ -22,7 +22,11 @@ public interface GanttDao {
 	Task getProjectPeriod(@Param("project_key") String project_key);
 
 	int insertTask(Task ins);
+
 	int insertTaskDep(Task_Dependency ins);
 
-	int updateTask(Task upt);
+	int updateTaskLightbox(Task upt);
+	int updateTaskDragDrop(Task upt);
+	int updateProject(Task upt);
+	int deleteTask(Task del);
 }

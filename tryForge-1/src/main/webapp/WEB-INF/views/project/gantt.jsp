@@ -13,7 +13,26 @@
 			text: text,
 		});
 	}
+	function toastMsg(icon, title, text) {
+		const Toast = Swal.mixin({
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
+			timer: 3000,
+			timerProgressBar: true,
+			onOpen: (toast) => {
+				toast.addEventListener('mouseenter', Swal.stopTimer);
+				toast.addEventListener('mouseleave', Swal.resumeTimer);
+			}
 
+		})
+
+		Toast.fire({
+			icon: icon,
+			title: title,
+			text: text
+		});
+	}
 	function errorMsg(title, text) {
 		Swal.fire({
 			icon: 'error',
@@ -247,8 +266,10 @@ gantt.templates.task_time = function(start, end) {
 };
 // 프로젝트 참여중인 멤버리스트 불러와서 담당자로 선택할 수 있도록 설정
 var users = [];
+var dataUsers = [];
 <c:forEach var="mem" items="${memList}">
-	users.push({key: "${mem.member_key}", label: "${mem.owner}"});
+	users.push({key: "${mem.owner}", label: "${mem.owner}"});
+	dataUsers.push("${mem.member_key}");
 </c:forEach>
 
 // task 라이트박스 섹션
@@ -303,6 +324,7 @@ progressColor <- 진행상태 나타내는 색상
 // 새 작업일 때 삭제버튼 숨기기처리
 gantt.attachEvent("onLightbox", function(id) {
 	var task = gantt.getTask(id);
+	console.log(task.owner)
 	var deleteButton = document.querySelector(".gantt_delete_btn_set");
 	// 새로운 작업의 경우, 삭제 버튼 숨기기
 	if (task.$new) {
@@ -318,6 +340,19 @@ gantt.attachEvent("onLightbox", function(id) {
 });
 // 라이트박스 save 시 유효성 검증 + 오류메세지 출력
 gantt.attachEvent("onLightboxSave", function(id, task) {
+	var selectControl = gantt.getLightboxSection('owner').control;
+
+	// 현재 선택된 option의 index 가져오기
+	var selectedIndex = selectControl.selectedIndex;
+
+	// selectedIndex를 사용하여 dataUsers 배열에서 매핑된 값을 가져옴
+	if(selectedIndex > -1 && selectedIndex < dataUsers.length) {
+		var selectedUserKey = dataUsers[selectedIndex];
+		console.log(selectedUserKey)
+		task.selectedUserKey = selectedUserKey;
+		// 여기에서 selectedUserKey를 사용하여 필요한 작업 수행
+		// 예: 서버로 데이터 전송, task 객체에 추가 정보 설정 등
+	}
 	if (!task.text || !task.detail) {
 		errorMsg('경고!', '업무명과 업무설명은 반드시 입력해야 합니다.');
 		return false; // 작업 추가를 취소하지만, 라이트박스는 열린 상태로 유지합니다.
@@ -331,74 +366,65 @@ gantt.attachEvent("onLightboxDelete", function(id) {
 			'업무가 영구적으로 삭제됩니다.',
 			'error',
 			function() {
-				gantt.deleteTask(id);
-				successMsg('삭제 성공!', '업무가 성공적으로 삭제되었습니다.')
-				gantt.hideLightbox();
+				gantt.ajax.post({
+					url: "${path}/delTask",
+					data: {
+						id: id
+					}
+				}).then(function(response) {
+					gantt.deleteTask(id);
+					successMsg('삭제 성공!', '업무가 성공적으로 삭제되었습니다.');
+					gantt.hideLightbox();
+
+				}).catch(function(error) {
+					errorMsg('삭제 실패!', '업무 삭제 중 에러가 발생했습니다.');
+					console.error('Error:', error);
+				})
 			},
 			function() {
+				errorMsg('삭제 실패!', '업무 삭제에 실패했습니다.');
 			}
 	);
 	return false;
 })
-/*
-// 라이트박스 취소이벤트 <<--포기.............. 취소누르면 동시에 값까지 지워짐 너무복잡함
-gantt.attachEvent("onLightboxCancel", function(id, is_new) {
-	// 라이트박스를 숨깁니다.
-	if(!is_new) {
-		gantt.hideLightbox();
-		confirmMsg(
-				'취소하시겠습니까?',
-				'수정사항은 저장되지 않습니다.',
-				'warning',
-				function() {
-				},
-				function() {
-					gantt.showLightbox(id);
-				}
-		);
-	}
-	return false;
-});
- */
 
 // 업무추가
 gantt.attachEvent("onAfterTaskAdd", function(id, item){
-	var member_key = findMemberKeyByLabel(item.owner);
+	console.log("Add실행")
 	// DB에 추가할 업무 날짜양식
 	var dateFormat = gantt.date.date_to_str("%Y-%m-%d");
 	var startDate = dateFormat(item.start_date);
 	var endDate = dateFormat(item.end_date);
-	gantt.ajax.post({
-		url:"${path}/insTask",
-		data: {
-			text: item.text,
-			member_key: member_key,
-			start_date: startDate,
-			end_date: endDate,
-			duration: item.duration,
-			progress: item.progress,
-			parent: item.parent,
-			// type:item.type,
-			// rollup:item.rollup,
-			// open:item.open,
-			detail: item.detail,
-		}
-			}).then(function(response){
-				// 추가 후 유저이름으로 매칭해서 출력
-				var ownerName = users.find(function(user){
-					return user.key === item.owner;
-				}).label
+		gantt.ajax.post({
+			url:"${path}/insTask",
+			data: {
+				text: item.text,
+				member_key: item.selectedUserKey,
+				start_date: startDate,
+				end_date: endDate,
+				duration: item.duration,
+				progress: item.progress,
+				parent: item.parent,
+				// type:item.type,
+				// rollup:item.rollup,
+				// open:item.open,
+				detail: item.detail,
+			}
+		}).then(function(response){
+			//console.log(response)
+			successMsg('업무할당 성공!', item.owner+' 에게 업무를 할당하였습니다.');
+			gantt.load("${pageContext.request.contextPath}/getGantt");
 
-				if(ownerName) {
-					var task = gantt.getTask(id);
-					task.owner = ownerName;
-					gantt.updateTask(id);
-				}
-				successMsg('업무할당 성공!', task.owner+'에게 업무를 할당하였습니다.');
-			})
-			.catch(function(error){
-				errorMsg('업무할당 실패', '에러메세지 : '+error);
-			});
+			var responseData = JSON.parse(response.responseText);
+			var newTaskId = responseData.task.id;
+			//console.log("새 ID"+newTaskId)
+			//item.id = newTaskId;
+			//console.log(id);
+			gantt.changeTaskId(id, newTaskId);
+
+		}).catch(function(error){
+			errorMsg('업무할당 실패', '에러메세지 : '+error);
+		})
 });
 
 gantt.attachEvent("onAfterLinkAdd", function(id, link){
@@ -410,43 +436,72 @@ gantt.attachEvent("onAfterLinkAdd", function(id, link){
 				errorMsg('종속성 부여 실패', '에러메세지 : '+error);
 			});
 });
-
 gantt.attachEvent("onAfterTaskUpdate", function(id, item){
-	var member_key = findMemberKeyByLabel(item.owner);
 	var dateFormat = gantt.date.date_to_str("%Y-%m-%d");
 	var startDate = dateFormat(item.start_date);
 	var endDate = dateFormat(item.end_date);
-	gantt.ajax.post({
-		url:"${path}/uptTask",
-		data: {
-			id: item.id,
-			text: item.text,
-			member_key: member_key,
-			start_date: startDate,
-			end_date: endDate,
-			duration: item.duration,
-			progress: item.progress,
-			//parent: item.parent,
-			detail: item.detail,
+	console.log("Update실행")
+	console.log(item.owner)
+	console.log(item.id);
+	if(item.type === 'project'){
+		gantt.ajax.post({
+			url:"${path}/uptTask",
+			data: {
+				id: item.id,
+				member_key: -10,
+				//text: item.text,
+				//start_date: startDate,
+				//end_date: endDate,
+				//duration: item.duration,
+				progress: item.progress,
+				//parent: item.parent,
+				//detail: item.detail,
+			}
+		}).then(function(response){
+			// 추가 후 유저이름으로 매칭해서 출력
+				successMsg('업무 업데이트 성공!', '업무가 성공적으로 업데이트 되었습니다.');
+		})
+				.catch(function(error){
+					// errorMsg('업무할당 실패', '에러메세지 : '+error);
+				});
+	}else if(item.type === "task"){
+		if(item.selectedUserKey) {
+			gantt.ajax.post({
+				url:"${path}/uptTask",
+				data: {
+					id: item.id,
+					member_key: item.selectedUserKey,
+					text: item.text,
+					start_date: startDate,
+					end_date: endDate,
+					duration: item.duration,
+					progress: item.progress,
+					detail: item.detail,
+				}
+			}).then(function(response){
+				successMsg('업무 업데이트 성공!', '업무가 성공적으로 업데이트 되었습니다.');
+				delete item.selectedUserKey;
+			}).catch(function(error){
+				errorMsg('업무 업데이트 실패', '에러메세지 : '+error);
+			});
+		}else{
+			gantt.ajax.post({
+				url:"${path}/uptTask",
+				data: {
+					id: id,
+					member_key: -1,
+					start_date: startDate,
+					end_date: endDate,
+					duration: item.duration,
+					progress: item.progress,
+				}
+			}).then(function(response){
+				toastMsg('success', '업무 업데이트 성공!', '업무가 성공적으로 업데이트 되었습니다.');
+			}).catch(function(error){
+				errorMsg('업무 업데이트 실패', '에러메세지 : '+error);
+			});
 		}
-	}).then(function(response){
-		// 추가 후 유저이름으로 매칭해서 출력
-		/*
-		var ownerName = users.find(function(user){
-			return user.key === member_key;
-		}).label
-
-		if(ownerName) {
-			var task = gantt.getTask(id);
-			task.owner = ownerName;
-			gantt.updateTask(id);
-		}
-		 */
-		successMsg('업무 업데이트 성공!', '업무가 성공적으로 업데이트 되었습니다.');
-	})
-		.catch(function(error){
-			errorMsg('업무할당 실패', '에러메세지 : '+error);
-		});
+	}
 });
 /*
 
@@ -465,34 +520,7 @@ gantt.attachEvent("onAfterLinkDelete", function(id, link){
             // 오류 처리
         });
 });
-
-gantt.attachEvent("onAfterTaskAdd", function(id, item){
-    // Ajax 요청으로 서버에 업무 추가
-});
-gantt.attachEvent("onAfterTaskUpdate", function(id, item){
-    // Ajax 요청으로 서버에 업무 수정
-});
-gantt.attachEvent("onAfterTaskDelete", function(id){
-    // Ajax 요청으로 서버에 업무 삭제
-}); 
- 
  */
- /*
- gantt.ajax.get({
-	    url: "${pageContext.request.contextPath}/getGantt",
-	    //headers: {
-	     //   "Authorization": "Token YOUR_AUTH_TOKEN"
-	    //}
-	}).then(function (xhr) {
-	    // 서버 응답을 JSON 형식으로 파싱
-	    var data = JSON.parse(xhr.responseText);
-	    // Gantt 차트에 데이터 로드
-	    gantt.parse(data);
-	}).catch(function (error) {
-	    // 오류 처리
-	    console.error("Error loading data: ", error);
-	}); 
-*/ 
 gantt.init("gantt_here"); // 간트 로딩 
 gantt.load("${pageContext.request.contextPath}/getGantt"); 
 //gantt.parse(tasks); // task 로딩

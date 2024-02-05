@@ -49,7 +49,7 @@ public class GanttController {
 		Project project = getProject(session);
 		if(project != null) {
 			ins.setProject_key(project.getProject_key());
-			d.addAttribute("msg", service.insertTask(ins));
+			d.addAttribute("id", service.insertTask(ins));
 		}
 		return "pageJsonReport";
 	}
@@ -67,7 +67,12 @@ public class GanttController {
 	@PostMapping("uptTask")
 	public String updateTask(Task upt, Model d) {
 		d.addAttribute("msg", service.updateTask(upt));
+		return "pageJsonReport";
+	}
 
+	@PostMapping("delTask")
+	public String deleteTask(Task del) {
+		service.deleteTask(del);
 		return "pageJsonReport";
 	}
 }

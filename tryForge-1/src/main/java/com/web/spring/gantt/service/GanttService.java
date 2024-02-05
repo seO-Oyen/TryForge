@@ -30,17 +30,23 @@ public class GanttService {
 	public Task getProjectPeriod(String project_key) {
 		return dao.getProjectPeriod(project_key);
 	}
-
-	public String insertTask(Task ins) {
-		return dao.insertTask(ins)>0?"등록성공":"등록실패";
+	public int insertTask(Task ins) {
+		return dao.insertTask(ins);
 	}
 	public String insertTaskDep(Task_Dependency ins) {
 		return dao.insertTaskDep(ins)>0?"등록성공":"등록실패";
 	}
 
-	public String updateTask(Task upt) {
-		return dao.updateTask(upt)>0?"업데이트 성공":"업데이트 실패";
+	public int updateTask(Task upt) {
+		if(upt.getMember_key()==-10) {
+			return dao.updateProject(upt);
+		}else if(upt.getMember_key()==-1){
+			return dao.updateTaskDragDrop(upt);
+		}else {
+			return dao.updateTaskLightbox(upt);
+		}
 	}
-
-	
+	public int deleteTask(Task del) {
+		return dao.deleteTask(del);
+	}
 }
