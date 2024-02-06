@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <jsp:include page="${path}/template/module/module_myPage.jsp"
 	flush="true" />
@@ -38,7 +41,7 @@
 
 <script>
 $(document).ready(function(){
-	var idVal = "${loginMem.member_name}"
+	/* var idVal = "${loginMem.member_name}"
 	wsocket = new WebSocket(
 		"ws:localhost:1111/ws/chat"	
 	)
@@ -51,7 +54,7 @@ $(document).ready(function(){
 	wsocket.onmessage = function(evt){
 		// 서버에서 push 접속한 모든 client에 전송..
 		revMsg(evt.data) // 메시지 처리 공통 함수 정의				
-	}
+	} */
 })
 
 function revMsg(msg){
@@ -89,15 +92,17 @@ function sendMsg(){
 				<table class="table table-hover"
 					style="width: 95%; margin-left: 4%;">
 					<thead>
-						
+						<tr>
+						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>이름</td>
-						</tr>
-						<tr>
-							<td>이름</td>
-						</tr>
+						<c:forEach var="chat" items="${chatList}">
+							<tr>
+								<td>${chat.key}</td>
+								<td>${chat.value}</td>
+								<%-- <td>${chat.last_message}</td> --%>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 			</div>

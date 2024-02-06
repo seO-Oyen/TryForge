@@ -9,7 +9,6 @@ import com.web.spring.vo.InviteMember;
 import com.web.spring.vo.Member;
 import com.web.spring.vo.Project;
 
-
 @Mapper
 public interface MemberDao {
 
