@@ -38,6 +38,8 @@ public class ChatHandler extends TextWebSocketHandler{
 		// 접속시 접속자 정보에 아이디와 소켓세션 저장
 		System.out.println(member.getMember_id()+"님 소켓 서버에 접속했습니다.");
 		
+		CLIENTS.put(member.getMember_id(), session);
+		
 		// 테스트
 		System.out.println("현재 접속자");
 		for(WebSocketSession ws: CLIENTS.values()) {
@@ -47,7 +49,6 @@ public class ChatHandler extends TextWebSocketHandler{
 			System.out.println(mem.getMember_name());
 		}
 		
-		CLIENTS.put(member.getMember_id(), session);
 		
 	}
 	
@@ -57,8 +58,7 @@ public class ChatHandler extends TextWebSocketHandler{
 		// TODO Auto-generated method stub
 		super.handleTextMessage(session, message);
 		// 발송한 메시지
-		System.out.println(session.getId()+"님이 보낸 메시지:"+
-			message.getPayload());
+		System.out.println(session.getId()+"님이 보낸 메시지:" + message.getPayload());
 		// 소켓 서버에 접속한 사람들
 		for(WebSocketSession ws: CLIENTS.values()) {
 			Map map = (Map)ws.getAttributes();

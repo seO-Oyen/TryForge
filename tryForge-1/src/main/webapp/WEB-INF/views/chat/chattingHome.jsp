@@ -78,7 +78,7 @@ function sendMsg(){
 <div class="col-md-12">
 <div class="row">
 
-	<div class="col-md-3 grid-margin stretch-card">
+	<div class="col-12 grid-margin stretch-card">
 		<div class="card">
 			<div class="card-body d-flex flex-column justify-content-between">
 				<div
@@ -103,7 +103,7 @@ function sendMsg(){
 			</div>
 		</div>
 	</div>
-	<div class="col-md-9 grid-margin stretch-card">
+	<!-- <div class="col-md-9 grid-margin stretch-card">
 		<div class="card">
 			<div class="card-body d-flex flex-column justify-content-between">
 				<div
@@ -121,7 +121,7 @@ function sendMsg(){
 				
 			</div>
 		</div>
-	</div>
+	</div> -->
 </div>
 
 </div>

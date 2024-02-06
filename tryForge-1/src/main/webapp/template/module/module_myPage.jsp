@@ -489,8 +489,7 @@ $(document).ready(function(){
 						</div> -->
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" data-toggle="collapse" 
-							href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+						<a class="nav-link"  href="${path}/chatHome">
 							<i class="typcn mdi mdi-account-convert menu-icon"></i>
 							<span class="menu-title">채팅</span>
 							<!-- <i class="menu-arrow"></i> -->
