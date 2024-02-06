@@ -3,6 +3,7 @@ package com.web.spring.member.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.web.spring.member.dao.MemberDao;
@@ -11,14 +12,18 @@ import com.web.spring.vo.MailSender;
 import com.web.spring.vo.Member;
 import com.web.spring.vo.Project;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMessage.RecipientType;
 
 @Service
 public class MemberService {
 
 	@Autowired(required = false)
 	private MemberDao memberDao;
-	//@Autowired(required = false)
-	//private JavaMailSender sender;
+	@Autowired(required = false)
+	private JavaMailSender sender;
 
 	// 로그인
 	public Member loginMember(Member member) {
@@ -64,7 +69,6 @@ public class MemberService {
 	}
 	
 	// 메일 발송
-	/*
 	public String sendMail(MailSender email, Member sendMem) {
 		String msg = "";
 		
@@ -88,7 +92,7 @@ public class MemberService {
 		
 		return msg;
 	}
-	 * */
+	  
 	
 	// 비밀번호 확인
 	public boolean chkPwd(String memKey, String pwd) {
