@@ -5,7 +5,76 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="${path}/template/module/module_main.jsp" flush="true" />
+<script>
+	function updateTaskOpenStatus(id, isOpen) {
+		gantt.ajax.post({
+			url:"${path}/uptTaskOpenStatus",
+			data: {
+				id: id,
+				open: isOpen,
+			}
+		}).then(function(response){
+			var msg = isOpen?"하위업무 표시.":"하위업무 숨김."
+			toastMsg('success', msg);
+		}).catch(function(error){
+			errorMsg('업무 숨김처리 실패', '에러메세지 : '+error);
+		})
+	}
+	function successMsg(title, text) {
+		Swal.fire({
+			icon: 'success',
+			title: title,
+			text: text,
+		});
+	}
+	function toastMsg(icon, title, text) {
+		const Toast = Swal.mixin({
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
+			timer: 3000,
+			timerProgressBar: true,
+			didOpen: (toast) => {
+				toast.addEventListener('mouseenter', Swal.stopTimer);
+				toast.addEventListener('mouseleave', Swal.resumeTimer);
+			}
+		})
+		Toast.fire({
+			icon: icon,
+			title: title,
+			text: text
+		});
+	}
+	function errorMsg(title, text) {
+		Swal.fire({
+			icon: 'error',
+			title: title,
+			text: text,
+		});
+	}
+	function confirmMsg(title, text, icon, onConfirm, onCancel) {
+		Swal.fire({
+			title: title,
+			text: text,
+			icon: icon,
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: '승인',
+			cancelButtonText: '취소'
+		}).then((result) => {
+			if(result.isConfirmed && typeof onConfirm === 'function') {
+				onConfirm();
+			} else if(result.dismiss === Swal.DismissReason.cancel && typeof onCancel === 'function') {
+				onCancel();
+			}
+		});
+	}
+</script>
 <style>
+.swal2-container {
+	z-index: 999999 !important; /* swalert2 최상단에 보이게끔 */
+}
 .saturday {
     background-color: #f0f8ff; /* 토요일 */
 }
@@ -93,14 +162,22 @@ div.gantt_cal_light .gantt_cal_ltitle .gantt_title {
 <div id='gantt_here' style="width:100%; height:100%; margin-left:20px; margin-right:20px;"class="main-panel">
 
 <div>
-
 <script type="text/javascript">
-//기존 로케일 설정 유지
+const userRole = "${loginMem.member_role}"
+const memberKey = "${loginMem.member_key}"
+const creater = "${projectMem.creater}"
+
+if(userRole === 'ADM' || memberKey === creater) {
+	gantt.config.readonly = false;
+} else {
+	gantt.config.readonly = true;
+}
+
 gantt.setWorkTime({ day: 6, hours: false }); // 토요일
 gantt.setWorkTime({ day: 0, hours: false }); // 일요일
-gantt.config.duration_unit = "day"; // duration (기간) 쪽 단위 지정 hour 로 할 경우 시간단위로 조절가능
-gantt.config.work_time = true; // 워크타임 적용(주말은 기간 합산 X)
-// locale 설정 적용
+gantt.config.duration_unit = "day";
+gantt.config.work_time = true; // 워크타임 적용
+// locale 적용
 gantt.i18n.setLocale({
     date: {
         month_full: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
@@ -118,7 +195,7 @@ gantt.i18n.setLocale({
         gantt_save_btn: "저장",
         gantt_cancel_btn: "취소",
         gantt_delete_btn: "삭제",
-        confirm_closing: "", // 변경사항이 손실될 수 있습니다. 계속하시겠습니까?
+        confirm_closing: "",
         confirm_deleting: "작업이 영구적으로 삭제됩니다. 계속하시겠습니까?",
         section_description: "업무명",
         section_time: "업무기간",
@@ -173,11 +250,9 @@ gantt.i18n.setLocale({
         resources_filter_label: "빈 항목 숨기기"
     }
 });
+// 날짜 단위설정과 휴일설정
 gantt.config.scales = [
-    {unit: "month", step: 1, format: "%Y년 %m월"}, // 월 단위 설정, 포맷 변경
-//    {unit: "week", step: 1, format: function (date) {
-//        return "Week #" + gantt.date.getWeek(date); // 주 단위 설정, 포맷 변경
-//    }},
+    {unit: "month", step: 1, format: "%Y년 %m월"},
 	{unit: "day", step: 1, format: "%d %D", css: function(date) {
 	    if(!gantt.isWorkTime({ date: date, unit: "day"})){
 	        var day = date.getDay();
@@ -190,250 +265,247 @@ gantt.config.scales = [
 	}}
 ];
 
-// 기존 설정들 유지
+// 기존 설정 유지
 show_empty_state = true;
-gantt.config.start_date = new Date(2024, 0, 1); // 시작일 나중에 프로젝트 기간으로 넣어야됨
-gantt.config.end_date = new Date(2024, 11, 31); // 종료일
-gantt.config.autosize = "y"; // 사이즈 자동조절( 아래쪽에 스크롤바 올라옴 )
-// 날짜 포맷 변경 
-gantt.templates.format_date = function(date){
-	return date.toISOString();
-}; // ISO 형식으로 날짜 포맷은 해보긴했음
+gantt.config.start_date = new Date("${date.start_date}");
+gantt.config.end_date = new Date("${date.end_date}+1");
+gantt.config.autosize = "y";
 gantt.config.date_format = "%Y-%m-%d";
-gantt.config.date_grid = "%m월%d일"; // 좌측컬럼 date 형식 모양변경 
 
-// 기존 스케일 설정 삭제 또는 주석 처리
-// gantt.config.scale_unit = "month";
-// gantt.config.date_scale = "%Y년 %m월";
+gantt.config.date_grid = "%M %d일";
 
-// 기존 서브스케일 설정 삭제 또는 주석 처리
-// gantt.config.subscales = [
-//    {unit:"day", step:1, date:"%d %l"} 
-// ];
-//gantt.templates.task_time = function(start, end, task) {
-   // 날짜 포맷을 정의합니다 (예: "%Y년 %m월 %d일")
-//    var dateFormat = gantt.date.date_to_str("%Y년 %m월 %d일");
-    
-    // 포맷된 시작일과 완료일을 반환합니다
-//    return dateFormat(start) + " - " + dateFormat(end);
-//}; 
+gantt.templates.task_time = function(start, end) {
+   // 날짜 포맷을 정의
+    var dateFormat = gantt.date.date_to_str("%Y년 %m월 %d일");
+    return dateFormat(start) + " - " + dateFormat(end);
+};
+var users = [];
+var dataUsers = [];
+<c:forEach var="mem" items="${memList}">
+	users.push({key: "${mem.owner}", label: "${mem.owner}"});
+	dataUsers.push("${mem.member_key}");
+</c:forEach>
 
-var users = [
-    {key:"마길동", label: "마길동"},
-    {key:"김철수", label: "김철수"},
-    // key 에 member_key 또는 member_name 이 오면 될거 같고. label 에 member_name 으로
-];
-// 라이트박스 섹션 속성 설정
-/*
-gantt.config.lightbox.sections=[
-    {name:"description", height:100, map_to:"text", type:"textarea", focus:true},
-    {name: "type", height: 44, map_to: "type", type: "typeselect"},
-    {name:"owner",       height:44, map_to:"owner", type:"select", options:users},
-    {name:"time",        height:72, map_to:"auto", type:"duration", time_format:["%Y","%m","%d"]}
-];
-*/
+// task 라이트박스
 gantt.config.lightbox.sections = [
 	{name: "description", height: 47, map_to: "text", type: "textarea", focus: true},
-	// {name: "type", height: 40, map_to: "type", type: "typeselect"},
 	{name: "owner", height: 40, map_to: "owner", type: "select", options: users},
 	{name: "time",map_to: "auto", type: "time", time_format:["%Y","%m","%d"]},
-	{name: "detail", height: 47, map_to: "detail", type: "textarea"}, // 'detail'이 텍스트 정보를 포함한다고 가정.
-	{name: "hide_bar", type: "checkbox", map_to: "hide_bar"}
-	// 필요에 따라 더 많은 섹션을 추가할 수 있습니다.
+	{name: "detail", height: 47, map_to: "detail", type: "textarea"}
 ];
+// project 라이트박스
 gantt.config.lightbox.project_sections=[
-    {name:"description", height:100, map_to:"text", type:"textarea", focus:true},
-    {name:"time",        height:72, map_to:"auto", type:"duration"}
+    {name:"detail", height:100, map_to:"detail", type:"textarea"}
 ];
-/*
-gantt.config.lightbox.milestone_sections = [
-    {name: "description", height: 70, map_to: "text", type: "textarea", focus: true},
-    {name: "hide_bar", type: "checkbox", map_to: "hide_bar"},
-    {name: "type", height: 44, type: "typeselect", map_to: "type"},
-    {name: "time", type: "duration", map_to: "auto"}
-];
-*/
-/*
-gantt.config.lightbox.sections = [
-    {name:"description", height:38, map_to:"desc", type:"textarea",focus:true},
-    {name:"details",     height:38, map_to:"text", type:"textarea"}, 
-    {name:"time",        height:72, map_to:"auto", type:"duration"}
-];
- */
 
-// gantt.config.bar_height = 30; 간트 작업 바 세로크기
 gantt.config.scale_height = 50;
-
-//gantt.templates.task_text = function(start, end, task){
-//    return task.name + " (" + task.duration + " days)";
-//};
-
-// 날짜 형식 템플릿 정의
 gantt.templates.date_scale = function(date){
     var formatFunc = gantt.date.date_to_str("%d %l");
     return formatFunc(date);
 };
 gantt.templates.lightbox_header = function(start, end, task) {
-    /* 날짜를 원하는 포맷으로 변경 (예: dd MM yyyy)
-    var dateFormat = gantt.date.date_to_str("%Y년 %M %d일 "); dateFormat(start) + " - " + dateFormat(end) +  <- 리턴값에 있어도되는요소*/
 	return task.text;
-}; 
-// 마일스톤 템플릿 정의
-gantt.templates.milestone_class = function(start, end, task){
-    if(task.type === gantt.config.types.milestone){
-        return "milestone"; 
-    }
-    return "";
 };
-
+// 왼쪽 컬럼
 gantt.config.columns=[
-    {name:"text",       label:"업무명",  tree:true, width:200 }, // 업무명 너비를 200px로 설정
+    {name:"text",       label:"업무명",  tree:true, width:180 },
     {name:"start_date", label:"시작일", align: "center", width:80 },
-    {name:"duration",   label:"기간",   align: "center", width:60 },
-    {name:"owner",      label:"담당자", align: "center", width:100 },
+    {name:"duration",   label:"기간",   align: "center", width:40 },
+    {name:"owner",      label:"담당자", align: "center", width:70 },
     {name:"add",        label:"", width:44 }
 ];
-
-// gantt.config.calendar_property = "calendar_id"; // 이거는 작업 태스크에서 서로 다른 속성의 달력을 사용하기 위해 보통 씀
-// ex) 일주일이 어떤건 5일, 어떤건 6일 이런식으로?? 하루 시간도 10~19시 이런느낌으로
-
-// 실제로 데이터를 넣어야 할 task 쪽.
-/*
-color 속성 추가 가능
-label 속성은 높음 중간 낮음 이런식으로 작업 우선순위 표현가능
-parrent 중요함. 부모속성.
-progressColor <- 진행상태 나타내는 색상
-
- 
-*/
-/*
-var tasks = {
-	    data:[
-	    	// 프로젝트 타입은 duration 필요 없음. open <- true 라고 하면 처음 켰을때 하위업무들 다 뜸
-	    	// 마일스톤은 스타트데이트만. 프로젝트는 진행과정(progress)만
-	    	// duration 또한 프로젝트랑 마일스톤은 없어도 되는듯?
-//		    {id:8, text:"tryForge", type:gantt.config.types.project, progress:0.6, open:true}, 
-//		    {id:2, text:"업무1", start_date:"2024-01-07", type:gantt.config.types.task,  duration:7, progress:0.3, parent:1},
-//	        {id:3, text:"테스트기한", start_date:"2024-02-01", type:gantt.config.types.milestone, parent:1, rollup: true, hide_bar: true},
-//	        {id:7, text:"업무2", start_date:"2024-01-15", type:gantt.config.types.project, parent:1} 
-	        // 더 많은 태스크...
-	    ],
-	    // 종속성 나타내는 링크 
-	    // source : 시작 테스크 id, target : 종료 테스크 id, type : 연결선 유형
-	    // id 끼리 연결 한 다음에 이게 무슨 타입인지 넣어주면 됨
-	    // 0 : Finish to Start (FS)
-	    // 1 : Start to Start (SS)
-	    // 2 : Finish to Finish (FF)
-	    // 3 : Start to Finish (SF)
-	    links: [
-//	    	{id: 1, source: 1, target: 2, type: "0"}	    	
-	    ]
-	};
-*/
-/*
-function ajaxFunc(url, type){
-	$.ajax({
-		type : type,
-		url : "${pageContext.request.contextPath}/"+url,
-		dataType : "json",
-		success : function(data){
-			gantt.json.parse(data);		
+// 새 작업일 때 삭제버튼 숨기기처리
+gantt.attachEvent("onLightbox", function(id) {
+	var task = gantt.getTask(id);
+	var deleteButton = document.querySelector(".gantt_delete_btn_set");
+	// 새로운 작업 또는 프로젝트 삭제 버튼 숨기기
+	if (task.$new || task.type === 'project') {
+		if (deleteButton) {
+			deleteButton.style.setProperty('display', 'none', 'important');
 		}
-	})
-}
-*/
-/*
-// 오른쪽에 텍스트 추가하는 기능인데. milestone에 대해서만 작동하도록 구성(무슨 마일스톤인지 알아보기 쉽도록)
-gantt.templates.rightside_text = function(start, end, task){
-    if(task.type === "milestone"){
-    	return task.text;
-    }
-    return "";
-};
-마일스톤 안쓸거라 일단 주석
- */
-/*
+	} else {
+		// 기존 작업 삭제 버튼을 다시 표시
+		if (deleteButton) {
+			deleteButton.style.setProperty('display', '', 'important');
+		}
+	}
+});
+// 라이트박스 save
+gantt.attachEvent("onLightboxSave", function(id, task) {
+	if(task.type!=='project') {
+		var selectControl = gantt.getLightboxSection('owner').control;
+		// 현재 선택된 option의 index 가져오기
+		var selectedIndex = selectControl.selectedIndex;
+		if(selectedIndex > -1 && selectedIndex < dataUsers.length) {
+			var selectedUserKey = dataUsers[selectedIndex];
+			task.selectedUserKey = selectedUserKey; // task객체에 userkey 할당
+		}
+	}
+	if (!task.text || !task.detail) {
+		errorMsg('경고!', '업무명과 업무설명은 반드시 입력해야 합니다.');
+		return false;
+	}
+	return true; // 입력값 유효 시 작업 추가 계속
+});
+// 라이트박스 삭제이벤트
+gantt.attachEvent("onLightboxDelete", function(id) {
+	confirmMsg(
+			'삭제하시겠습니까?',
+			'업무가 영구적으로 삭제됩니다.(하위포함)',
+			'error',
+			function() {
+				gantt.ajax.post({
+					url: "${path}/delTask",
+					data: {
+						id: id
+					}
+				}).then(function(response) {
+					gantt.deleteTask(id);
+					successMsg('삭제 성공!', '업무가 성공적으로 삭제되었습니다.');
+					gantt.hideLightbox();
+				}).catch(function(error) {
+					errorMsg('삭제 실패!', '에러메세지 : '+error);
+				})
+			},
+			function() {
+				errorMsg('삭제 취소!', '업무 삭제를 취소하였습니다.');
+			}
+	);
+	return false;
+})
+
+// 업무추가
 gantt.attachEvent("onAfterTaskAdd", function(id, item){
-	gantt.ajax.post({
-		url:"${path}/addTask",
-		data:{
-			text:item.text,
-			start_date:item.start_date,
-			end_date:item.end_date,
-			duration:item.duration,
-			progress:item.progress,
-			parent:item.parent,
-			// type:item.type,
-			// rollup:item.rollup,
-			// open:item.open,
-			detail:item.detail,
-		}
+	var dateFormat = gantt.date.date_to_str("%Y-%m-%d");
+	var startDate = dateFormat(item.start_date);
+	var endDate = dateFormat(item.end_date);
+		gantt.ajax.post({
+			url:"${path}/insTask",
+			data: {
+				text: item.text,
+				member_key: item.selectedUserKey,
+				start_date: startDate,
+				end_date: endDate,
+				duration: item.duration,
+				progress: item.progress,
+				parent: item.parent,
+				detail: item.detail,
+			}
+		}).then(function(response){
+			successMsg('업무할당 성공!', item.owner+' 에게 업무를 할당하였습니다.');
+			gantt.load("${pageContext.request.contextPath}/getGantt");
 
-			}).then(function(response){
+			var responseData = JSON.parse(response.responseText);
+			var newTaskId = responseData.task.id;
+			gantt.changeTaskId(id, newTaskId);
 
+		}).catch(function(error){
+			errorMsg('업무할당 실패', '에러메세지 : '+error);
+		})
+});
+
+gantt.attachEvent("onAfterLinkAdd", function(id, link){
+	gantt.ajax.post("${path}/insTaskDep", link)
+			.then(function(response) {
+				toastMsg('success', '업무 종속성 부여 성공!');
 			})
-			.catch(function(error){
-
+			.catch(function(error) {
+				errorMsg('종속성 부여 실패', '에러메세지 : '+error);
 			});
 });
-*/
 
-/*
-gantt.attachEvent("onAfterLinkAdd", function(id, link){
-    gantt.ajax.post("/addDependency", link)
-        .then(function(response) {
-            // 성공적으로 추가되었을 때의 처리
-        })
-        .catch(function(error) {
-            // 오류 처리
-        });
+gantt.attachEvent("onLinkDblClick", function (id){
+	confirmMsg(
+			'업무 종속성 삭제',
+			'이 종속성을 삭제하시겠습니까?',
+			'error',
+			function(){
+				gantt.deleteLink(id);
+			},
+			function(){
+
+			}
+	);
+	return false;
 });
-{
-    id: link.id,          // 종속성 고유 ID
-    source: link.source,  // 시작 작업 ID
-    target: link.target,  // 종료 작업 ID
-    type: link.type       // 종속성 유형 (예: 0 - 종료-시작, 1 - 시작-시작 등)
-}
+
 gantt.attachEvent("onAfterLinkDelete", function(id, link){
-    gantt.ajax.post("/deleteDependency", {id: link.id})
-        .then(function(response) {
-            // 성공적으로 삭제되었을 때의 처리
-        })
-        .catch(function(error) {
-            // 오류 처리
-        });
+	gantt.ajax.post("${path}/delTaskDep", link)
+			.then(function(response) {
+				successMsg('업무 종속성 삭제 성공!');
+			})
+			.catch(function(error) {
+				errorMsg('종속성 삭제 실패', '에러메세지 : '+error);
+			});
+})
+
+gantt.attachEvent("onAfterTaskUpdate", function(id, item){
+	var dateFormat = gantt.date.date_to_str("%Y-%m-%d");
+	var startDate = dateFormat(item.start_date);
+	var endDate = dateFormat(item.end_date);
+	if(item.type === 'project'){
+		gantt.ajax.post({
+			url:"${path}/uptTask",
+			data: {
+				id: item.id,
+				member_key: -10,
+				progress: item.progress,
+				detail: item.detail,
+			}
+		}).then(function(response){
+				successMsg('업무 업데이트 성공!', '업무가 성공적으로 업데이트 되었습니다.');
+		}).catch(function(error){
+			errorMsg('업무할당 실패', '에러메세지 : '+error);
+		});
+	}else if(item.type === "task"){
+		if(item.selectedUserKey) {
+			gantt.ajax.post({
+				url:"${path}/uptTask",
+				data: {
+					id: item.id,
+					member_key: item.selectedUserKey,
+					text: item.text,
+					start_date: startDate,
+					end_date: endDate,
+					duration: item.duration,
+					progress: item.progress,
+					detail: item.detail,
+				}
+			}).then(function(response){
+				successMsg('업무 업데이트 성공!', '업무가 성공적으로 업데이트 되었습니다.');
+				delete item.selectedUserKey;
+			}).catch(function(error){
+				errorMsg('업무 업데이트 실패', '에러메세지 : '+error);
+			});
+		}else{
+			gantt.ajax.post({
+				url:"${path}/uptTask",
+				data: {
+					id: id,
+					member_key: -1,
+					start_date: startDate,
+					end_date: endDate,
+					duration: item.duration,
+					progress: item.progress,
+				}
+			}).then(function(response){
+				toastMsg('success', '업무 업데이트 성공!');
+			}).catch(function(error){
+				errorMsg('업무 업데이트 실패', '에러메세지 : '+error);
+			});
+		}
+	}
 });
 
-gantt.attachEvent("onAfterTaskAdd", function(id, item){
-    // Ajax 요청으로 서버에 업무 추가
+gantt.attachEvent("onTaskOpened", function (id){
+	updateTaskOpenStatus(id, true);
 });
-gantt.attachEvent("onAfterTaskUpdate", function(id, item){
-    // Ajax 요청으로 서버에 업무 수정
+gantt.attachEvent("onTaskClosed", function (id){
+	updateTaskOpenStatus(id, false);
 });
-gantt.attachEvent("onAfterTaskDelete", function(id){
-    // Ajax 요청으로 서버에 업무 삭제
-}); 
- 
- */
- /*
- gantt.ajax.get({
-	    url: "${pageContext.request.contextPath}/getGantt",
-	    //headers: {
-	     //   "Authorization": "Token YOUR_AUTH_TOKEN"
-	    //}
-	}).then(function (xhr) {
-	    // 서버 응답을 JSON 형식으로 파싱
-	    var data = JSON.parse(xhr.responseText);
-	    // Gantt 차트에 데이터 로드
-	    gantt.parse(data);
-	}).catch(function (error) {
-	    // 오류 처리
-	    console.error("Error loading data: ", error);
-	}); 
-*/ 
-gantt.init("gantt_here"); // 간트 로딩 
-gantt.load("${pageContext.request.contextPath}/getGantt"); 
-//gantt.parse(tasks); // task 로딩
+
+gantt.init("gantt_here");
+gantt.load("${pageContext.request.contextPath}/getGantt");
 </script> 
 			<!-- 풋터 -->
 			<!-- content-wrapper ends -->  

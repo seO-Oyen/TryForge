@@ -35,10 +35,10 @@
 	<update id="updateCalendar" parameterType="calendar">
 	UPDATE CALENDAR
 		SET title = #{title},
-			start1 = 
+			start1 =
 			to_date(#{start},
 					'YYYY-MM-DD"T"HH24:MI:SS"+09:00"'),
-			end1 = 
+			end1 =
 			to_date(#{end},
 					'YYYY-MM-DD"T"HH24:MI:SS"+09:00"'),
 			detail = #{detail},
