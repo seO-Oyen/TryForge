@@ -40,12 +40,12 @@
 	<!--모달창 : 해당 프로젝트 담당자별 업무 진척도-->
 	<!--해당하는 걸로 출력시킬까, 표클릭하면 select로 해당 프로젝트를 보게할까...-->
 	<!--일단 담당자별로 묶어서 해당 사원의 전체 진척도 백분율-->
-	<select id="taskProgressBypeople" resultMap="taskRst" parameterType="String">
+	<select id="taskProgressBypeople" resultMap="taskRst">
 		SELECT ta.member_key, AVG(ta.PROGRESS) AS progress, m.MEMBER_NAME
 		FROM task ta
 				 JOIN member m ON ta.member_key = m.MEMBER_KEY
 		WHERE ta.PROJECT_KEY = #{project_key} AND task_type = 'task'
-		GROUP BY ta.member_key, m.MEMBER_NAME;
+		GROUP BY ta.member_key, m.MEMBER_NAME
 	</select>
 </mapper>
 

@@ -229,17 +229,15 @@
             data: "project_key=" + key,
             dataType: "json",
             success: function (ownerdata) {
-                console.log(ownerdata.taskProgressByOwner)
+            	 console.log(ownerdata);  
                 var ownerName=[];
                 var ownerProgress=[];
-                $(ownerdata.taskProgressByOwner).each(function (idx, item) {
+                $(ownerdata.taskProgressBypeople).each(function (idx, item) {
                     console.log(item.owner)
                     console.log(item.progress * 100)
                     ownerName.push(item.owner);
                     ownerProgress.push(item.progress * 100);
                 });
-
-
                 const ctx05 = document.getElementById('ownerPercent').getContext('2d');
                 const myChart = new Chart(ctx05, {
                     type: 'horizontalBar',
@@ -248,6 +246,7 @@
                         datasets: [{
                             label: '# of Votes',
                             data: ownerProgress,
+                            barPercentage: 0.25,
                             backgroundColor: [
                                 'rgba(255, 99, 132, 0.2)',
                                 'rgba(54, 162, 235, 0.2)',
@@ -269,11 +268,14 @@
                     },
                     options: {
                         scales: {
-                            y: {
-                                beginAtZero: true
-                            }
+                            xAxes: [{
+                                ticks: {
+                                    suggestedMin: 0,
+                                    suggestedMax: 100
+                                }
+                            }]
                         }
-                    },
+                    }
 
                 });
             },

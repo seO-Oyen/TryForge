@@ -41,7 +41,7 @@ public class AdDashBoardController {
     // 프로젝트 + 담당자별 업무 진행률
     @GetMapping("ownerProgress")
     public String ownerProgress(@RequestParam("project_key")String project_key, Model d){
-        d.addAttribute("taskProgressByOwner",service.taskProgressBypeople(project_key));
+        d.addAttribute("taskProgressBypeople",service.taskProgressBypeople(project_key));
         return "pageJsonReport";
     }
 }
