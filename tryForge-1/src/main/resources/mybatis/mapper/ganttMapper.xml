@@ -15,18 +15,89 @@
 		<result column = "end_target" property = "target"/>
 		<result column = "dependency_type" property = "type"/>
 	</resultMap>
+	<!-- 프로젝트 별 업무목록 가져오기 -->
 	<select id="getTask" resultMap="taskRst">
 		SELECT t.*, m.member_name
 		FROM task t
 		left JOIN member m ON t.member_key = m.member_key
-		WHERE t.PROJECT_KEY = 'PJ-126'
+		WHERE t.PROJECT_KEY = #{project_key}
 	</select>
-
+	<!-- 관리자페이지 업무 상세보기 -->
 	<select id="taskDetail" resultMap="taskRst">
 		SELECT * FROM TASK WHERE TASK_KEY = #{id}
 	</select>
-
+	<!-- Task 종속성 가져오기 -->
 	<select id="getTaskDep" resultMap="taskDepRst">
-		SELECT * FROM TASK_DEPENDENCY
+		SELECT * FROM TASK_DEPENDENCY WHERE PROJECT_KEY = #{project_key}
 	</select>
+	<!-- 업무할당을 위해 해당 프로젝트 참여중인 인원 목록 출력(관리자제외) -->
+	<select id="getTaskMem" resultMap="taskRst">
+		SELECT m.member_key ,m.member_name, p.start_date, p.end_date, p.project_key
+		FROM MEMBER m
+				 INNER JOIN TEAM_MEMBER tm ON tm.MEMBER_KEY  = m.MEMBER_KEY
+				 INNER JOIN TEAM t ON t.team_key = tm.TEAM_KEY
+				 INNER JOIN PROJECT p ON p.project_key = t.PROJECT_KEY
+		WHERE p.PROJECT_KEY = #{project_key}
+	</select>
+	<select id="getProjectPeriod" resultType="task">
+		SELECT START_DATE, END_DATE FROM TASK
+		WHERE PROJECT_KEY = #{project_key}
+		AND TASK_TYPE = 'project'
+	</select>
+	<!-- 간트차트에서 업무 insert 처리 -->
+	<insert id="insertTask" parameterType="task">
+		INSERT INTO TASK (TASK_KEY, MEMBER_KEY, PROJECT_KEY, TEXT, START_DATE,
+						  END_DATE, DURATION, PROGRESS, PARENT, TASK_TYPE, STATUS,
+						  HIDE_BAR, TASK_OPEN, DETAIL, CONFIRM)
+		values( task_seq.nextval, #{member_key}, #{project_key}, #{text},
+				to_date(#{start_date},'YYYY-MM-DD'), to_date(#{end_date},'YYYY-MM-DD'),
+				#{duration}, #{progress}, #{parent}, 'task', '진행중', 0, 1, #{detail}, 0)
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT task_seq.currval FROM DUAL
+		</selectKey>
+	</insert>
+	<!-- 간트차트에서 업무 종속성 insert 처리 -->
+	<insert id="insertTaskDep" parameterType="task_dep">
+		INSERT INTO TASK_DEPENDENCY VALUES
+			(TASK_DEP_SEQ.nextval, #{source}, #{target}, #{type}, #{project_key})
+	</insert>
+
+	<update id="updateTaskLightbox" parameterType="task">
+		UPDATE TASK
+			SET TEXT = #{text},
+			    MEMBER_KEY = #{member_key},
+			    START_DATE = to_date(#{start_date}, 'YYYY-MM-DD'),
+			    END_DATE = to_date(#{end_date}, 'YYYY-MM-DD'),
+			    DURATION = #{duration},
+			    PROGRESS = #{progress},
+			    DETAIL = #{detail}
+			WHERE TASK_KEY = #{id}
+	</update>
+	<update id="updateTaskDragDrop" parameterType="task">
+		UPDATE TASK
+			SET START_DATE = to_date(#{start_date}, 'YYYY-MM-DD'),
+				END_DATE = to_date(#{end_date}, 'YYYY-MM-DD'),
+				DURATION = #{duration},
+				PROGRESS = #{progress}
+			WHERE TASK_KEY = #{id}
+	</update>
+	<update id="updateProject" parameterType="task">
+		UPDATE TASK
+			SET PROGRESS = #{progress},
+			    DETAIL = #{detail}
+			WHERE TASK_KEY = #{id}
+	</update>
+	<update id="updateTaskOpenStatus" parameterType="task">
+		UPDATE TASK
+			SET TASK_OPEN = #{open}
+			WHERE TASK_KEY = #{id}
+	</update>
+	<delete id="deleteTask" parameterType="task">
+		DELETE FROM TASK
+			WHERE TASK_KEY = #{id}
+	</delete>
+	<delete id="deleteTaskDep" parameterType="task_dep">
+		DELETE FROM TASK_DEPENDENCY
+			WHERE DEPENDENCY_KEY = #{id}
+	</delete>
 </mapper>
