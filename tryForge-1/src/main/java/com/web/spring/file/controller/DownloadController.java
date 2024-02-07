@@ -1,6 +1,5 @@
 package com.web.spring.file.controller;
 
-import com.web.spring.vo.FileStorage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;

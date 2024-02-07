@@ -1,5 +1,6 @@
 package com.web.spring.file.controller;
 
+import com.web.spring.SessionService;
 import com.web.spring.vo.Project;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +16,11 @@ import com.web.spring.vo.FileStorage;
 public class FileController {
 	@Autowired(required = false)
 	private FileService service;
-
-	private Project getProject(HttpSession session) {
-		if(session.getAttribute("loginMem") != null && session.getAttribute("projectMem") != null) {
-			return (Project)session.getAttribute("projectMem");
-		}
-		return null;
-	}
-
+	@Autowired(required = false)
+	private SessionService sessionService;
 	@GetMapping("file")
 	public String FileList(FileStorage file, Model d, HttpSession session) {
-		Project project = getProject(session);
+		Project project = sessionService.getProject(session);
 		if(project != null) {
 			file.setProject_key(project.getProject_key());
 			d.addAttribute("fList", service.FileList(file));
