@@ -15,5 +15,7 @@
 		<typeAlias alias="dashboard" type="com.web.spring.vo.DashBoard"/>
 		<typeAlias alias="inviteMember" type="com.web.spring.vo.InviteMember"/>
 		<typeAlias alias="memberSch" type="com.web.spring.vo.MemberSch"/>
+		<typeAlias alias="file" type="com.web.spring.vo.FileStorage"/>
+		<typeAlias alias="approve" type="com.web.spring.vo.Approval"/>
 	</typeAliases>
 </configuration>

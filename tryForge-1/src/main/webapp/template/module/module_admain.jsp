@@ -45,6 +45,8 @@
     <!-- Custom js for this page-->
     <script src="${path}/template/js/dashboard.js"></script>
     <script src="${path}/template/alert/sweetalert2.min.js"></script>
+   <!--chart.js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
     <!-- End custom js for this page-->
     <script>
         $(document).ready(function () {
@@ -100,6 +102,10 @@
                     case '/taskManage':
                         titleElement.text('Task')
                         detailElement.text('관리자페이지  >  업무현황관리')
+                        break;
+                    case '/adUser':
+                        titleElement.text('UserManage')
+                        detailElement.text('관리자페이지  >  사용자관리')
                         break;
                     default:
                         break;
@@ -515,8 +521,7 @@
 
 
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false"
-                       aria-controls="form-elements">
+                    <a class="nav-link"  href="${path}/adUser">
 
                         <i class="tpycn mdi mdi-account-check menu-icon"></i>
 

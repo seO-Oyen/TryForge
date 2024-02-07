@@ -12,10 +12,45 @@
 	flush="true" />
 
 <script>
-	var msg = "${msg}"
+	/* var msg = "${msg}"
 	if (msg != "") {
-		alert(msg)
-	}
+		if (msg == "메일 발송 성공") {
+			const Toast = Swal.mixin({
+			    toast: true,
+			    position: 'top-end',
+			    showConfirmButton: false,
+			    timer: 2000,
+			    timerProgressBar: true,
+			    didOpen: (toast) => {
+			        toast.addEventListener('mouseenter', Swal.stopTimer)
+			        toast.addEventListener('mouseleave', Swal.resumeTimer)
+			    }
+			})
+			
+			Toast.fire({
+			    icon: 'success',
+			    title: msg
+			})
+		} else {
+			const Toast = Swal.mixin({
+			    toast: true,
+			    position: 'top-end',
+			    showConfirmButton: false,
+			    timer: 2000,
+			    timerProgressBar: true,
+			    didOpen: (toast) => {
+			        toast.addEventListener('mouseenter', Swal.stopTimer)
+			        toast.addEventListener('mouseleave', Swal.resumeTimer)
+			    }
+			})
+			
+			Toast.fire({
+			    icon: 'error',
+			    title: "메일 발송 실패",
+			    text : msg
+			})
+		}
+	} */
 
 	$(document).ready(function() {
 		$("[name=receiver]").keypress(function(e){
@@ -25,15 +60,34 @@
 		})
 		
 		$("#inviteBtn").click(function() {
+			console.log("클릭")
 			mailSend()
 		})
 	})
 	
 	function mailSend() {
 		if ($("[name=receiver]").val() != "") {
+			const Toast = Swal.mixin({
+			    toast: true,
+			    position: 'top-end',
+			    showConfirmButton: false,
+			    timer: 1000,
+			    timerProgressBar: true,
+			    didOpen: (toast) => {
+			        toast.addEventListener('mouseenter', Swal.stopTimer)
+			        toast.addEventListener('mouseleave', Swal.resumeTimer)
+			    }
+			})
+			
+			Toast.fire({
+			    icon: 'success',
+			    title: '메일 발송 성공'
+			})
 			$("form").attr("method", "post")
-			$("form").attr("onsubmit", "return ture;")
+			$("form").attr("onsubmit", "return true;")
 			$("form").submit()
+			
+			
 		} else {
 			alert("보내는 사람의 메일을 입력해주세요.")
 			$("[name=receiver]").focus()
