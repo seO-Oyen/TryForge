@@ -24,6 +24,7 @@ public class GanttController {
 		}
 		return null;
 	}
+	// 프로젝트 시작/종료일과 프로젝트 참여중인 멤버리스트 출력
 	@GetMapping("gantt")
 	public String Gantt(Model d, HttpSession session) {
 		Project project = getProject(session);
@@ -33,7 +34,7 @@ public class GanttController {
 		}
 		return "project/gantt";
 	}
-
+	// 프로젝트 키로 task 정보와 taskDep 정보 검색 후 전달
 	@GetMapping("getGantt")
 	public String getGantt(Model d, HttpSession session) {
 		Project project = getProject(session);
@@ -69,10 +70,19 @@ public class GanttController {
 		d.addAttribute("msg", service.updateTask(upt));
 		return "pageJsonReport";
 	}
-
+	@PostMapping("uptTaskOpenStatus")
+	public String updateTaskOpenStatus(Task upt, Model d) {
+		d.addAttribute("msg", service.updateTaskOpenStatus(upt));
+		return "pageJsonReport";
+	}
 	@PostMapping("delTask")
 	public String deleteTask(Task del) {
 		service.deleteTask(del);
+		return "pageJsonReport";
+	}
+	@PostMapping("delTaskDep")
+	public String deleteTaskDep(Task_Dependency del) {
+		service.deleteTaskDep(del);
 		return "pageJsonReport";
 	}
 }

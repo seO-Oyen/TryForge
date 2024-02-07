@@ -86,8 +86,17 @@
 			SET PROGRESS = #{progress}
 			WHERE TASK_KEY = #{id}
 	</update>
+	<update id="updateTaskOpenStatus" parameterType="task">
+		UPDATE TASK
+			SET TASK_OPEN = #{open}
+			WHERE TASK_KEY = #{id}
+	</update>
 	<delete id="deleteTask" parameterType="task">
 		DELETE FROM TASK
 			WHERE TASK_KEY = #{id}
+	</delete>
+	<delete id="deleteTaskDep" parameterType="task_dep">
+		DELETE FROM TASK_DEPENDENCY
+			WHERE DEPENDENCY_KEY = #{id}
 	</delete>
 </mapper>

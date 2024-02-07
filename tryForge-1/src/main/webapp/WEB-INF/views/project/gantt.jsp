@@ -6,6 +6,22 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="${path}/template/module/module_main.jsp" flush="true" />
 <script>
+
+	function updateTaskOpenStatus(id, isOpen, taskName) {
+		gantt.ajax.post({
+			url:"${path}/uptTaskOpenStatus",
+			data: {
+				id: id,
+				open: isOpen,
+			}
+		}).then(function(response){
+			var msg = isOpen?"하위업무 표시.":"하위업무 숨김."
+			toastMsg('success', msg);
+		}).catch(function(error){
+			errorMsg('업무 숨김처리 실패', '에러메세지 : '+error);
+		})
+	}
+
 	function successMsg(title, text) {
 		Swal.fire({
 			icon: 'success',
@@ -152,6 +168,16 @@ div.gantt_cal_light .gantt_cal_ltitle .gantt_title {
 
 <div>
 <script type="text/javascript">
+
+	const userRole = "${loginMem.member_role}"
+	const memberKey = "${loginMem.member_key}"
+	const creater = "${projectMem.creater}"
+if(userRole === 'ADM' || memberKey === creater) {
+	gantt.config.readonly = false;
+} else {
+	gantt.config.readonly = true;
+}
+
 gantt.setWorkTime({ day: 6, hours: false }); // 토요일
 gantt.setWorkTime({ day: 0, hours: false }); // 일요일
 gantt.config.duration_unit = "day"; // duration (기간) 쪽 단위 지정 hour 로 할 경우 시간단위로 조절가능
@@ -264,7 +290,8 @@ gantt.templates.task_time = function(start, end) {
     // 포맷된 시작일과 완료일을 반환합니다
     return dateFormat(start) + " - " + dateFormat(end);
 };
-// 프로젝트 참여중인 멤버리스트 불러와서 담당자로 선택할 수 있도록 설정
+// gantt.config.readonly = true; 사용자권한 구현 예정 *****
+// 프로젝트 참여중인 멤버리스트 불러와서 배열에 따라 key mapping(key/label 에 각각 다른값 넣어놨더니 매핑시키기 힘들어서..)
 var users = [];
 var dataUsers = [];
 <c:forEach var="mem" items="${memList}">
@@ -275,17 +302,13 @@ var dataUsers = [];
 // task 라이트박스 섹션
 gantt.config.lightbox.sections = [
 	{name: "description", height: 47, map_to: "text", type: "textarea", focus: true},
-	// {name: "type", height: 40, map_to: "type", type: "typeselect"},
 	{name: "owner", height: 40, map_to: "owner", type: "select", options: users},
 	{name: "time",map_to: "auto", type: "time", time_format:["%Y","%m","%d"]},
 	{name: "detail", height: 47, map_to: "detail", type: "textarea"}
-	// {name: "hide_bar", type: "checkbox", map_to: "hide_bar"}
 ];
-
 // project 눌렀을 때 뜨는 섹션인데 이건 프로젝트에 대한 정보가 보이도록 설정해야할듯 (수정..불가능하게?) 수정여부는 나중에 결정
 gantt.config.lightbox.project_sections=[
-    {name:"description", height:100, map_to:"text", type:"textarea", focus:true},
-    {name:"time",        height:72, map_to:"auto", type:"duration"}
+    {name:"detail", height:100, map_to:"detail", type:"textarea"}
 ];
 
 // 차트 바 길이
@@ -301,33 +324,19 @@ gantt.templates.lightbox_header = function(start, end, task) {
 };
 // 왼쪽 컬럼
 gantt.config.columns=[
-    {name:"text",       label:"업무명",  tree:true, width:180 }, // 업무명 너비를 200px로 설정
+    {name:"text",       label:"업무명",  tree:true, width:180 },
     {name:"start_date", label:"시작일", align: "center", width:80 },
     {name:"duration",   label:"기간",   align: "center", width:40 },
     {name:"owner",      label:"담당자", align: "center", width:70 },
     {name:"add",        label:"", width:44 }
 ];
-
-function findMemberKeyByLabel(label) {
-	var user = users.find(function(user){
-		return user.label === label;
-	});
-	return user? user.key:null; // user가 있다면 user.key를 반환, 없다면 null 반환
-}
-// 실제로 데이터를 넣어야 할 task 쪽.
-/*
-color 속성 추가 가능
-label 속성은 높음 중간 낮음 이런식으로 작업 우선순위 표현가능
-parrent 중요함. 부모속성.
-progressColor <- 진행상태 나타내는 색상
-*/
 // 새 작업일 때 삭제버튼 숨기기처리
 gantt.attachEvent("onLightbox", function(id) {
 	var task = gantt.getTask(id);
 	console.log(task.owner)
 	var deleteButton = document.querySelector(".gantt_delete_btn_set");
-	// 새로운 작업의 경우, 삭제 버튼 숨기기
-	if (task.$new) {
+	// 새로운 작업 또는 프로젝트 일 때, 삭제 버튼 숨기기
+	if (task.$new || task.type === 'project') {
 		if (deleteButton) {
 			deleteButton.style.setProperty('display', 'none', 'important');
 		}
@@ -340,18 +349,15 @@ gantt.attachEvent("onLightbox", function(id) {
 });
 // 라이트박스 save 시 유효성 검증 + 오류메세지 출력
 gantt.attachEvent("onLightboxSave", function(id, task) {
-	var selectControl = gantt.getLightboxSection('owner').control;
-
+	var selectControl = gantt.getLightboxSection('owner').control; // owner 속성 안의 select문을 유저가 선택한 값과 함께 가져옴
 	// 현재 선택된 option의 index 가져오기
 	var selectedIndex = selectControl.selectedIndex;
-
+	console.log(selectedIndex)
 	// selectedIndex를 사용하여 dataUsers 배열에서 매핑된 값을 가져옴
 	if(selectedIndex > -1 && selectedIndex < dataUsers.length) {
 		var selectedUserKey = dataUsers[selectedIndex];
 		console.log(selectedUserKey)
-		task.selectedUserKey = selectedUserKey;
-		// 여기에서 selectedUserKey를 사용하여 필요한 작업 수행
-		// 예: 서버로 데이터 전송, task 객체에 추가 정보 설정 등
+		task.selectedUserKey = selectedUserKey; // task객체에 userkey 할당
 	}
 	if (!task.text || !task.detail) {
 		errorMsg('경고!', '업무명과 업무설명은 반드시 입력해야 합니다.');
@@ -363,7 +369,7 @@ gantt.attachEvent("onLightboxSave", function(id, task) {
 gantt.attachEvent("onLightboxDelete", function(id) {
 	confirmMsg(
 			'삭제하시겠습니까?',
-			'업무가 영구적으로 삭제됩니다.',
+			'업무가 영구적으로 삭제됩니다.(하위포함)',
 			'error',
 			function() {
 				gantt.ajax.post({
@@ -382,7 +388,7 @@ gantt.attachEvent("onLightboxDelete", function(id) {
 				})
 			},
 			function() {
-				errorMsg('삭제 실패!', '업무 삭제에 실패했습니다.');
+				errorMsg('삭제 취소!', '업무 삭제를 취소하였습니다.');
 			}
 	);
 	return false;
@@ -430,12 +436,38 @@ gantt.attachEvent("onAfterTaskAdd", function(id, item){
 gantt.attachEvent("onAfterLinkAdd", function(id, link){
 	gantt.ajax.post("${path}/insTaskDep", link)
 			.then(function(response) {
-				successMsg('업무 종속성 부여 성공!');
+				toastMsg('success', '업무 종속성 부여 성공!');
 			})
 			.catch(function(error) {
 				errorMsg('종속성 부여 실패', '에러메세지 : '+error);
 			});
 });
+
+gantt.attachEvent("onLinkDblClick", function (id, link){
+	confirmMsg(
+			'업무 종속성 삭제',
+			'이 종속성을 삭제하시겠습니까?',
+			'error',
+			function(){
+				gantt.deleteLink(id);
+			},
+			function(){
+
+			}
+	);
+	return false;
+});
+
+gantt.attachEvent("onAfterLinkDelete", function(id, link){
+	gantt.ajax.post("${path}/delTaskDep", link)
+			.then(function(response) {
+				successMsg('업무 종속성 삭제 성공!');
+			})
+			.catch(function(error) {
+				errorMsg('종속성 삭제 실패', '에러메세지 : '+error);
+			});
+})
+
 gantt.attachEvent("onAfterTaskUpdate", function(id, item){
 	var dateFormat = gantt.date.date_to_str("%Y-%m-%d");
 	var startDate = dateFormat(item.start_date);
@@ -496,12 +528,19 @@ gantt.attachEvent("onAfterTaskUpdate", function(id, item){
 					progress: item.progress,
 				}
 			}).then(function(response){
-				toastMsg('success', '업무 업데이트 성공!', '업무가 성공적으로 업데이트 되었습니다.');
+				toastMsg('success', '업무 업데이트 성공!');
 			}).catch(function(error){
 				errorMsg('업무 업데이트 실패', '에러메세지 : '+error);
 			});
 		}
 	}
+});
+
+gantt.attachEvent("onTaskOpened", function (id){
+	updateTaskOpenStatus(id, true);
+});
+gantt.attachEvent("onTaskClosed", function (id){
+	updateTaskOpenStatus(id, false);
 });
 /*
 

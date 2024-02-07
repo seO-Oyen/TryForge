@@ -46,7 +46,13 @@ public class GanttService {
 			return dao.updateTaskLightbox(upt);
 		}
 	}
+	public int updateTaskOpenStatus(Task upt) {
+		return dao.updateTaskOpenStatus(upt);
+	}
 	public int deleteTask(Task del) {
 		return dao.deleteTask(del);
+	}
+	public int deleteTaskDep(Task_Dependency del) {
+		return dao.deleteTaskDep(del);
 	}
 }

@@ -28,5 +28,7 @@ public interface GanttDao {
 	int updateTaskLightbox(Task upt);
 	int updateTaskDragDrop(Task upt);
 	int updateProject(Task upt);
+	int updateTaskOpenStatus(Task upt);
 	int deleteTask(Task del);
+	int deleteTaskDep(Task_Dependency del);
 }
