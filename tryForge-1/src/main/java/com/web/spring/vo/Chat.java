@@ -14,6 +14,14 @@ public class Chat {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public Chat(int chatlist_key, int sender_key, String chat_detail, Date send_time) {
+		super();
+		this.chatlist_key = chatlist_key;
+		this.sender_key = sender_key;
+		this.chat_detail = chat_detail;
+		this.send_time = send_time;
+	}
+
 	public Chat(int chat_key, int chatlist_key, int sender_key, String chat_detail, Date send_time) {
 		super();
 		this.chat_key = chat_key;

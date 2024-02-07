@@ -49,39 +49,47 @@ $(document).ready(function(){
 		"ws:localhost:1111/ws/chat"	
 	)
 	
-	wsocket.onopen = function(evt){
-		console.log(evt)
-		
-		wsocket.send(idVal+"님 접속하셨습니다!")
-	}
 	wsocket.onmessage = function(evt){
 		// 서버에서 push 접속한 모든 client에 전송..
 		revMsg(evt.data) // 메시지 처리 공통 함수 정의				
 	}
+	
+	var startChat = setInterval(function() {
+		$.ajax({
+			url : "${path}/chatSave",
+			type : "POST",
+			dataType : "json",
+			success : function(data) {
+				console.log(data)
+			},
+			error : function(err) {
+				console.log(err)
+			}
+		})
+	}, 180000)
 })
 
 function revMsg(msg){
 	var calName = "chat"
-	var msgArr = msg.split(":")
+	var msgArr = msg.split("/")
 	console.log(msgArr)
 	if ("${loginMem.member_id}" == msgArr[0]){
 		calName = "${loginMem.member_id}"
+	} else {
+		var sendMem = $("<div class='chat text-muted'></div>").text(msgArr[1])
+		$("#chatScrean").append(sendMem)
 	}
-	var msgObj = $("<div></div>").text(msg).attr("class",
+	
+	var msgObj = $("<div></div>").text(msgArr[2]).attr("class",
 			calName)
 			
+	
 	$("#chatScrean").append(msgObj)
 }
 
 function sendMsg(){
-	wsocket.send("${loginMem.member_id}" + ":"+$("#sendMsg").val())
+	wsocket.send("${loginMem.member_id}" + "/" + "${loginMem.member_name}" + "/" + $("#sendMsg").val())
 	$("#sendMsg").val("")
-}
-
-function clickList(listKey) {
-	alert("채팅방으로 이동합니다. " + listKey)
-	location.href="${path}/chat/" + listKey
-	
 }
 
 </script>

@@ -1,5 +1,9 @@
 package com.web.spring.chat;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,6 +21,15 @@ public class ChatHandler extends TextWebSocketHandler{
 //	private Map<String, WebSocketSession > CLIENTS = 
 //			new ConcurrentHashMap<>();
 	private static final ConcurrentHashMap<String, WebSocketSession> CLIENTS = new ConcurrentHashMap<String, WebSocketSession>();
+	private List<String> messageSave = new ArrayList<>(); 
+	
+	// 저장할때 쓸 messageList출력
+	public List<String> getMessageSaveList() {
+		return messageSave;
+	}
+	public void removeMessageSaveList() {
+		messageSave.clear();
+	}
 	
 	// 접속시
 	@Override
@@ -25,15 +38,10 @@ public class ChatHandler extends TextWebSocketHandler{
 		super.afterConnectionEstablished(session);
 		
 		// session.getId() : 소켓서버에서 발급된 고유 id(0부터시작해서 16진수값으로 설정)
-		System.out.println(session.getId()+"님 소켓 서버에 접속했습니다.");
+		// System.out.println(session.getId()+"님 소켓 서버에 접속했습니다.");
+		// member 명으로 띄우게
 		Map map = (Map)session.getAttributes();
 		Member member = (Member)map.get("loginMem");
-//		if (member != null) {
-//			System.out.println(member.getMember_id()+"님 소켓 서버에 접속했습니다.");
-//			CLIENTS.put(member.getMember_id(), session);
-//		} else {
-//			CLIENTS.put(session.getId(),session);
-//		}
 		
 		// 접속시 접속자 정보에 아이디와 소켓세션 저장
 		System.out.println(member.getMember_id()+"님 소켓 서버에 접속했습니다.");
@@ -48,8 +56,6 @@ public class ChatHandler extends TextWebSocketHandler{
 			
 			System.out.println(mem.getMember_name());
 		}
-		
-		
 	}
 	
 	// 메시지보낼 때
@@ -58,8 +64,14 @@ public class ChatHandler extends TextWebSocketHandler{
 		// TODO Auto-generated method stub
 		super.handleTextMessage(session, message);
 		// 발송한 메시지
-		System.out.println(session.getId()+"님이 보낸 메시지:" + message.getPayload());
-		// 소켓 서버에 접속한 사람들
+		// System.out.println(session.getId()+"님이 보낸 메시지:" + message.getPayload());
+		LocalDateTime now = LocalDateTime.now();
+		
+		String parsedLocalDateTimeNow = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		
+		// 주고 받은 메세지 저장
+		messageSave.add(message.getPayload() + "/" + parsedLocalDateTimeNow);
+		
 		for(WebSocketSession ws: CLIENTS.values()) {
 			Map map = (Map)ws.getAttributes();
 			Member member = (Member)map.get("loginMem");

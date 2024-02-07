@@ -68,6 +68,11 @@ public class MemberService {
 		return memberDao.getMeber(memberKey);
 	}
 	
+	// 유저id로 유저 찾기
+	public Member getMemberToId(String memberId) {
+		return memberDao.getMeberToId(memberId);
+	}
+	
 	// 메일 발송
 	public String sendMail(MailSender email, Member sendMem) {
 		String msg = "";
