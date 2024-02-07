@@ -3,113 +3,178 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
 <jsp:include page="${path}/template/module/module_admain.jsp" flush="true"/>
-
+<style>
+    #myModal .modal-dialog {
+        max-width: 50%;
+    }
+</style>
 
 <script>
     $(document).ready(function () {
-        // 프로젝트 진행률(가로 막대바)
-        const ctx = document.getElementById('projectPercent').getContext('2d');
-        const myChart = new Chart(ctx, {
-            type: 'horizontalBar',
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    label: '# of Votes',
-                    data: [12, 40, 3, 5, 2, 3],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+        $.ajax({
+            url: "${path}/projectProgress",
+            dataType: "json",
+            success: function (pjdata) {
+                var texts = [];
+                var progresses = [];
+
+                $(pjdata.pjprogress).each(function (idx, item) {
+                    var row = "";
+                    var startDate = new Date(item.start_date);
+                    startDate.setDate(startDate.getDate() + 1);
+                    var formattedStartDate = startDate.toISOString().split('T')[0];
+                    var endDate = new Date(item.end_date);
+                    endDate.setDate(endDate.getDate() + 1);
+                    var formattedEndDate = endDate.toISOString().split('T')[0];
+                    row += "<tr onclick='openPage(\"" + item.project_key + "\")'><td>" + item.text + "</td><td>" + Math.floor(item.progress * 100) + "%</td><td>" + formattedStartDate + "</td><td>" + formattedEndDate + "</td></tr>"
+                    console.log(item.project_key)
+                    $("#progress").append(row)
+                    texts.push(item.text);
+                    progresses.push(item.progress * 100);
+                });
+                // 프로젝트 진행률(가로 막대바)
+                const ctx = document.getElementById('projectPercent').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'horizontalBar',
+                    data: {
+                        labels: texts,
+                        datasets: [{
+                            label: '진행률',
+                            data: progresses,
+                            barPercentage: 0.25,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    suggestedMin: 0,
+                                    suggestedMax: 100
+                                }
+                            }]
+                        }
                     }
-                }
+
+                });
             },
-
-        });
-
-        // 가용인원
-        const ctx02 = document.getElementById('ablePersonnel').getContext('2d');
-        const myDoughnutChart = new Chart(ctx02, {
-            type: 'doughnut',
-            data: {
-                labels: ['Red', 'Blue'],
-                datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+            error: function (err) {
+                console.log(err)
             }
-        });
-        // 올해 프로젝트 수주 차트 polarArea
-        const ctx03 = document.getElementById('projectCnt').getContext('2d');
-        const myPolarAreaChart = new Chart(ctx03, {
-            type: 'polarArea',
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green'],
-                datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)'
+        })
 
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+        $.ajax({
+            url: "${path}/ablePersonnel",
+            dataType: "json",
+            success: function (persondata) {
+                var totMember = persondata.totMem
+                var totTeamMember = persondata.totTeamMem
+                $("#tot01").text(totMember)
+                $("#tot02").text(totTeamMember)
+                $("#tot03").text(totMember - totTeamMember)
+                // 가용인원
+                const ctx02 = document.getElementById('ablePersonnel').getContext('2d');
+                const myDoughnutChart = new Chart(ctx02, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['프로젝트 할당인원', '비 할당인원'],
+                        datasets: [{
+                            label: '# of Votes',
+                            data: [totTeamMember, (totMember - totTeamMember)],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
                     }
-                }
+                });
+            },
+            error: function (err) {
+                console.log(err)
             }
-        });
+        })
+
+        // 올해 프로젝트 수주 차트 예약/진행중/완료
+        $.ajax({
+            url: "${path}/totProject",
+            dataType: "json",
+            success: function (totPJData) {
+                var nowPj = totPJData.totOngoingPJ;
+                var futurePj = totPJData.totWaitingPJ;
+                var agoPj = totPJData.totCompletePJ;
+                $("#pjCnt01").text(nowPj + futurePj + agoPj)
+                $("#pjCnt02").text(nowPj)
+                $("#pjCnt03").text(agoPj)
+                $("#pjCnt04").text(futurePj)
+
+                const ctx03 = document.getElementById('projectCnt').getContext('2d');
+                const myPolarAreaChart = new Chart(ctx03, {
+                    type: 'polarArea',
+                    data: {
+                        labels: ['진행중인 프로젝트', '대기중인 프로젝트', '완료 프로젝트'],
+                        datasets: [{
+                            label: '# of Votes',
+                            data: [nowPj, futurePj, agoPj],
+                            backgroundColor: [
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)'
+
+                            ],
+                            borderColor: [
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scale: {
+                            ticks: {
+                                suggestedMin: 0,
+                                suggestedMax: nowPj + futurePj + agoPj
+                            }
+                        }
+                    }
+                });
+            },
+            error: function (err) {
+                console.log(err)
+            }
+        })
+
         // 리스크관리
         const ctx04 = document.getElementById('riskStatus').getContext('2d');
         const stackedBar = new Chart(ctx04, {
@@ -157,7 +222,70 @@
             }
         });
     });
+    // 담당자별 업무 진척도
+    function openPage(key){
+        $.ajax({
+            url: "${path}/ownerProgress",
+            data: "project_key=" + key,
+            dataType: "json",
+            success: function (ownerdata) {
+                console.log(ownerdata.taskProgressByOwner)
+                var ownerName=[];
+                var ownerProgress=[];
+                $(ownerdata.taskProgressByOwner).each(function (idx, item) {
+                    console.log(item.owner)
+                    console.log(item.progress * 100)
+                    ownerName.push(item.owner);
+                    ownerProgress.push(item.progress * 100);
+                });
+
+
+                const ctx05 = document.getElementById('ownerPercent').getContext('2d');
+                const myChart = new Chart(ctx05, {
+                    type: 'horizontalBar',
+                    data: {
+                        labels: ownerName,
+                        datasets: [{
+                            label: '# of Votes',
+                            data: ownerProgress,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    },
+
+                });
+            },
+            error: function (err) {
+                console.log(err)
+            }
+        })
+
+        $("#myModal").modal('show')
+    }
 </script>
+
 <!-- 프로젝트 진행률 차트 -->
 <div class="main-panel">
     <div class="content-wrapper">
@@ -165,25 +293,25 @@
             <div class="col-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="row">
-                        <div class="col-md-6" style="flex: 0 0 40%; max-width: 35%;">
+                        <div class="col-md-6" style="flex: 0 0 80%; max-width: 40%;">
                             <div class="card-body">
                                 <div style="display: flex;">
                                     <h4 class="card-title">ProjectPercent</h4>
-                                    <canvas id="projectPercent" width="20" height="20"></canvas>
+                                    <canvas id="projectPercent" width="60" height="45"></canvas>
+
                                     <div class="table-responsive"
-                                         style="overflow-x: visible; margin-left: 40%; margin-top: 10%;">
+                                         style="overflow-x: visible; margin-left: 30%; margin-top: 3%;">
                                         <table class="table table-hover" style="width: 100%;">
                                             <thead>
                                             <tr>
                                                 <th>진행중인 프로젝트</th>
-                                                <th>1</th>
+                                                <th>진행률</th>
+                                                <th>시작일</th>
+                                                <th>종료일</th>
                                             </tr>
                                             </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>2</td>
-                                            </tr>
+                                            <tbody id="progress">
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -205,8 +333,10 @@
                         <h4 class="card-title">Available Personnel</h4>
                         <canvas id="ablePersonnel" width="50" height="30"></canvas>
                         <!-- 간단한 수치를 나타내는 텍스트 -->
-                        <div class="chart-info" style="margin-top: 20%;">
-                            <p>Current Value: <span id="currentValue">42</span></p>
+                        <div class="chart-info" style="margin-top: 8%;">
+                            <p>총 구성원 : <span id="tot01"></span></p>
+                            <p>프로젝트 할당인원 : <span id="tot02"></span></p>
+                            <p>프로젝트 비 할당인원 : <span id="tot03"></span></p>
                         </div>
                     </div>
                 </div>
@@ -220,7 +350,10 @@
                             <h4 class="card-title">project Counts</h4>
                             <canvas id="projectCnt" width="50" height="30"></canvas>
                             <div class="chart-info" style="position: absolute; bottom: 8%; left: 5%;">
-                                <p>Current Value: <span id="currentValue02">42</span></p>
+                                <p>총 프로젝트 갯수: <span id="pjCnt01"></span></p>
+                                <p>진행중인 프로젝트: <span id="pjCnt02"></span></p>
+                                <p>완료된 프로젝트 갯수: <span id="pjCnt03"></span></p>
+                                <p>대기중인 프로젝트 갯수: <span id="pjCnt04"></span></p>
                             </div>
                         </div>
                     </div>
@@ -266,43 +399,26 @@
         </div>
         <!-- 리스크 현황 end -->
     </div>
+
     <!-- The Modal -->
-    <div class="modal" id="myModal">
-        <div class="modal-dialog">
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h2 class="modal-title">New Task</h2>
-
-                    <button type="button" class="close" data-dismiss="modal" id="xBtn">×</button>
+                    <h4 class="modal-title">담당자 별 업무 진척도</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <div style="display: flex;">
-                        <h3 id=>업무 할당</h3>
-                        <span class="close">&times;</span>
-                        <p>Clicked Bar Label: <span id="modalLabel"></span></p>
-                        <p>Clicked Bar Value: <span id="modalValue"></span></p>s
-                    </div>
-
+                    <canvas id="ownerPercent" width="60" height="45"></canvas>
                 </div>
-
-
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <div class="mx-auto">
-                        <button type="button" class="btn btn-" id="regBtn"
-                                onclick="insTask()"
-                                style="background-color: #007FFF; color: white;">할당
-                        </button>
-
-                        <button type="button" class="btn btn-danger" data-dismiss="modal"
-                                id="clsBtn">닫기
-                        </button>
-                    </div>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
 
             </div>

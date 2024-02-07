@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.spring.admin.dao.AdDashBoardDao">
+	<resultMap type = "task" id="taskRst">
+		<result column = "task_key" property = "id"/>
+		<result column = "task_type" property = "type"/>
+		<result column = "task_open" property = "open"/>
+		<result column = "member_name" property = "owner"/>
+	</resultMap>
+	<!--프로젝트 진행률-->
+	<!--1. 중복제거한 프로젝트 종류 : 프로젝트 명 ==> taskDao getTitle-->
+	<!--2. 프로젝트 별 진척도 출력-->
+	<select id="projectProgress" resultMap="taskRst">
+		SELECT ta.progress, ta.TEXT, ta.START_DATE, ta.END_DATE,ta.PROJECT_KEY FROM task ta JOIN PROJECT p ON p.PROJECT_KEY = ta.project_key WHERE ta.task_type='project'
+	</select>
+	<!--가용인원-->
+	<!--1. 맴버 전체수-->
+	<select id="totMember" resultType="int">
+		select count(*) from member
+	</select>
+	<!--2. 팀원 전체수-->
+	<select id="totTeamMember" resultType="int">
+		select count(*) from TRYFORGE.TEAM_MEMBER
+	</select>
+	<!--올해 프로젝트 수주 현황-->
+	<!--1. 올해 기준으로 현재 진행중인 프로젝트 / 완료된 프로젝트 / 대기중인 프로젝트(프로젝트 별 분류) -->
+	<select id="totOngoingPJ" resultType="int">
+		SELECT count(*) FROM PROJECT p WHERE p.STATUS ='진행중' AND to_char (p.START_DATE,'YYYY') = (SELECT to_char(sysdate,'YYYY') thisYear FROM dual)
+	</select>
+	<select id="totCompletePJ" resultType="int">
+		SELECT count(*) FROM PROJECT p WHERE p.STATUS ='완료' AND to_char (p.START_DATE,'YYYY') = (SELECT to_char(sysdate,'YYYY') thisYear FROM dual)
+	</select>
+	<select id="totWaitingPJ" resultType="int">
+		SELECT count(*) FROM PROJECT p WHERE p.STATUS ='대기중' AND to_char (p.START_DATE,'YYYY') = (SELECT to_char(sysdate,'YYYY') thisYear FROM dual)
+	</select>
+	<!--리스크 현황 ===> 리스크 이후 처리-->
+	<!--리스크 발생건수 , 처리중 , 완료-->
+	<!--모달창 : 해당 프로젝트 담당자별 업무 진척도-->
+	<!--해당하는 걸로 출력시킬까, 표클릭하면 select로 해당 프로젝트를 보게할까...-->
+	<!--일단 담당자별로 묶어서 해당 사원의 전체 진척도 백분율-->
+	<select id="taskProgressBypeople" resultMap="taskRst" parameterType="String">
+		SELECT ta.member_key, AVG(ta.PROGRESS) AS progress, m.MEMBER_NAME
+		FROM task ta
+				 JOIN member m ON ta.member_key = m.MEMBER_KEY
+		WHERE ta.PROJECT_KEY = #{project_key} AND task_type = 'task'
+		GROUP BY ta.member_key, m.MEMBER_NAME;
+	</select>
+</mapper>
+
