@@ -9,6 +9,7 @@
 		FROM CHAT_MEMBER cm, CHAT_LIST cl 
 		WHERE cm.MEMBER_KEY = #{memKey}
 			AND cm.CHATLIST_KEY = cl.CHATLIST_KEY
+		ORDER BY cl.LAST_TIME DESC
 	</select>
 	
 	<select id="getChatMemList" parameterType="int" resultType="int">
@@ -16,6 +17,13 @@
 		FROM CHAT_MEMBER cm
 		WHERE cm.CHATLIST_KEY = #{listKey}
 			AND cm.MEMBER_KEY != #{memKey}
+	</select>
+	
+	<select id="getChat" parameterType="int" resultType="chat">
+		SELECT *
+		FROM chat
+		WHERE CHATLIST_KEY = #{listKey}
+		ORDER BY SEND_TIME
 	</select>
 
 </mapper>

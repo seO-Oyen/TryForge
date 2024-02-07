@@ -25,6 +25,7 @@
 .${loginMem.member_id} {
 	/* color: red; */
 	/* border: 1px solid; */
+	display: block;
 	width: auto;
 	text-align: right;
 }
@@ -32,6 +33,7 @@
 .sendMsg {
 	border-radius: 10px;
 	width: 600px;
+	margin-right: 20px;
 }
 
 .inputbox {
@@ -41,8 +43,9 @@
 
 <script>
 $(document).ready(function(){
-	/* var idVal = "${loginMem.member_name}"
+	var idVal = "${loginMem.member_name}"
 	wsocket = new WebSocket(
+		// 경로 수정
 		"ws:localhost:1111/ws/chat"	
 	)
 	
@@ -54,7 +57,7 @@ $(document).ready(function(){
 	wsocket.onmessage = function(evt){
 		// 서버에서 push 접속한 모든 client에 전송..
 		revMsg(evt.data) // 메시지 처리 공통 함수 정의				
-	} */
+	}
 })
 
 function revMsg(msg){
@@ -86,54 +89,30 @@ function clickList(listKey) {
 <div class="content-wrapper">
 <div class="col-md-12">
 <div class="row">
-
-	<div class="col-12 grid-margin stretch-card">
+	<div class="col-md-12 grid-margin stretch-card">
 		<div class="card">
-			<div class="card-body d-flex flex-column justify-content-between">
+			<div class="card-body d-flex flex-column justify-content-between"
+				style="min-height: 600px;">
 				<div
 					class="d-flex justify-content-between align-items-center mb-2">
-					<p class="mb-0">채팅 리스트</p>
-					<!-- <p class="mb-0 text-muted">새로운 메세지 개수?</p> -->
+					<p class="mb-0">채팅방</p>
 				</div>
-				<table class="table table-hover"
-					style="width: 95%; margin-left: 4%;">
-					<thead>
-						<tr>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="chat" items="${chatMap}" varStatus="status">
-							<tr onclick="clickList(${chatList[status.index].chatlist_key})">
-								<td>${chat.key}</td>
-								<td>${chat.value}</td>
-								<td style="display: none;">${chatList[status.index].chatlist_key}</td>
-								<%-- <td>${chat.last_message}</td> --%>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
+				<div id="chatScrean" class="card-body overflow-auto">
+					<c:forEach var="chat" items="${chats}" varStatus="status">
+						<c:if test="${memList[status.index].member_id ne loginMem.member_id}">
+							<div class="chat text-muted"}>${memList[status.index].member_name}</div>
+						</c:if>
+						
+						<div class="chat ${memList[status.index].member_id}">${chat.chat_detail}</div>
+					</c:forEach>
+				</div>
+				<div class="form-group" style="display: flex; margin: auto">
+						<input class="typeahead sendMsg" id="sendMsg" />
+						<input type="button" class="btn btn-info" value="전송" onclick="sendMsg()">
+				</div>
 			</div>
 		</div>
 	</div>
-	<!-- <div class="col-md-9 grid-margin stretch-card">
-		<div class="card">
-			<div class="card-body d-flex flex-column justify-content-between">
-				<div
-					class="d-flex justify-content-between align-items-center mb-2">
-					<p class="mb-0">채팅 내용</p>
-				</div>
-				
-				<div id="chatScrean" >
-					
-				</div>
-				<div class="form-group" style="display: flex;">
-					<input class="typeahead sendMsg" id="sendMsg" />
-					<input type="button" class="btn btn-info" value="전송" onclick="sendMsg()">
-				</div>
-				
-			</div>
-		</div>
-	</div> -->
 </div>
 
 </div>

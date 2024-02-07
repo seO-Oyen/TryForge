@@ -2,6 +2,7 @@ package com.web.spring.chat.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.web.spring.chat.dao.ChatDao;
 import com.web.spring.member.dao.MemberDao;
+import com.web.spring.vo.Chat;
 import com.web.spring.vo.ChatList;
 import com.web.spring.vo.Member;
 
@@ -21,12 +23,12 @@ public class ChatService {
 	private MemberDao memDao;
 	
 	// 채팅 초기 화면
-	public HashMap<List<String>, String> getChatList(int memKey) {
+	public HashMap<List<String>, String> chatHome(int memKey) {
 		List<ChatList> chatList = new ArrayList<>();
 		
 		chatList = dao.getChatList(memKey);
 		
-		HashMap<List<String>, String> chatMemMap = new HashMap<>();
+		HashMap<List<String>, String> chatMemMap = new LinkedHashMap();
 		
 		
 		for (ChatList chat : chatList) {
@@ -39,6 +41,19 @@ public class ChatService {
 		}
 		
 		return chatMemMap;
+	}
+	
+	public List<ChatList> getChatList(int memKey) {
+		List<ChatList> chatList = dao.getChatList(memKey);
+		
+		return chatList;
+	}
+	
+	public List<Chat> getChat(int listKey) {
+		List<Chat> chatList = dao.getChat(listKey);
+		
+		return chatList;
+		
 	}
 
 }

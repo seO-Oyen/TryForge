@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.web.spring.vo.Chat;
 import com.web.spring.vo.ChatList;
 import com.web.spring.vo.Member;
 
@@ -15,4 +16,5 @@ public interface ChatDao {
 	
 	List<Integer> getChatMemList(@Param("memKey") int memberKey, @Param("listKey") int listKey);
 
+	List<Chat> getChat(@Param("listKey") int listKey);
 }
