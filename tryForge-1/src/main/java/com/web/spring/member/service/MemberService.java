@@ -52,7 +52,7 @@ public class MemberService {
 	}
 	
 	// 본인이 소속되어있는 프로젝트 출력
-	public List<Project> getUserProject(Member member) {
+	public Project getUserProject(Member member) {
 		
 		return memberDao.getUserProject(member.getMember_key());
 	}

@@ -5,12 +5,24 @@ public class Task_Dependency {
 	private int source;
 	private int target;
 	private String type;
-	public Task_Dependency(String id, int source, int target, String type) {
+	private String project_key;
+
+	public Task_Dependency(String id, int source, int target, String type, String project_key) {
 		this.id = id;
 		this.source = source;
 		this.target = target;
 		this.type = type;
+		this.project_key = project_key;
 	}
+
+	public String getProject_key() {
+		return project_key;
+	}
+
+	public void setProject_key(String project_key) {
+		this.project_key = project_key;
+	}
+
 	public Task_Dependency() {
 		// TODO Auto-generated constructor stub
 	}

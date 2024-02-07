@@ -1,22 +1,32 @@
 package com.web.spring.vo;
 
 public class Task {
-	private int id;
-	private int member_key;
-	private String project_key;
-	private String text;
-	private String start_date;
-	private String end_date;
-	private int duration;
-	private double progress;
-	private int parent;
-	private String type;
-	private String status;
-	private boolean rollup;
-	private boolean hide_bar;
-	private String detail;
+	private int id; // 업무키
+	private int member_key; // 업무할당자(member_key)
+	private String project_key; // 프로젝트 키
+	private String text; // 업무이름
+	private String start_date; // 업무시작일
+	private String end_date; // 업무종료일
+	private int duration; // 진행기간
+	private double progress; // 진행률
+	private int parent; // 간트용
+	private String type; // 프로젝트 or 업무
+	private String status; // 진행상태 : 진행중 / 완료
+	private boolean rollup; // 간트용
+	private boolean hide_bar; // 간트용
+	private boolean open; // 간트용
+	private String detail; // 상세설명
+	private String owner; // 업무 배정자
+	private String assignor; // 업무할당자 이름
+	private String confirm; // 확인여부
+	public Task() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public Task(int id, int member_key, String project_key, String text, String start_date, String end_date,
-			int duration, double progress, int parent, String type, String status, boolean rollup, boolean hide_bar) {
+			int duration, double progress, int parent, String type, String status, boolean rollup, boolean hide_bar,
+			boolean open, String detail, String owner) {
+		super();
 		this.id = id;
 		this.member_key = member_key;
 		this.project_key = project_key;
@@ -30,9 +40,9 @@ public class Task {
 		this.status = status;
 		this.rollup = rollup;
 		this.hide_bar = hide_bar;
-	}
-	public Task() {
-		// TODO Auto-generated constructor stub
+		this.open = open;
+		this.detail = detail;
+		this.owner = owner;
 	}
 	public int getId() {
 		return id;
@@ -112,11 +122,36 @@ public class Task {
 	public void setHide_bar(boolean hide_bar) {
 		this.hide_bar = hide_bar;
 	}
+	public boolean isOpen() {
+		return open;
+	}
+	public void setOpen(boolean open) {
+		this.open = open;
+	}
 	public String getDetail() {
 		return detail;
 	}
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
+	public String getOwner() {
+		return owner;
+	}
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+	public String getAssignor() {
+		return assignor;
+	}
+	public void setAssignor(String assignor) {
+		this.assignor = assignor;
+	}
+	public String getConfirm() {
+		return confirm;
+	}
+	public void setConfirm(String confirm) {
+		this.confirm = confirm;
+	}
+	
 	
 }

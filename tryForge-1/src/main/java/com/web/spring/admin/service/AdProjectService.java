@@ -33,6 +33,7 @@ public class AdProjectService {
 		String msg = "";
 		int insertPJ = dao.insertPJ(insProject);
 		int insertTeam = dao.insertTeam(insTeam);
+		int insPjtoTask = dao.insPJtoTask(insProject);
 		int insertTm = 0;
 		// 배열로 받아온 맴버키 문자열 타입을 숫자형으로 변환
 		// , 와 공백 제거 처리
@@ -53,12 +54,15 @@ public class AdProjectService {
 		int uptCnt = dao.uptCnt();
 		if (insertPJ > 0) {
 			msg += "프로젝트 등록 완료 \\n";
-			if (insertTeam > 0) {
-				msg += "프로젝트 팀 등록 완료 \\n";
-				if (insertTm > 0) {
-					msg += "프로젝트 팀원 등록 완료 \\n";
-					if (uptCnt > 0) {
-						msg += "프로젝트 팀 인원수 등록완료 \\n";
+			if(insPjtoTask > 0) {
+				msg += "프로젝트(업무) 등록 완료 \\n";
+				if (insertTeam > 0) {
+					msg += "프로젝트 팀 등록 완료 \\n";
+					if (insertTm > 0) {
+						msg += "프로젝트 팀원 등록 완료 \\n";
+						if (uptCnt > 0) {
+							msg += "프로젝트 팀 인원수 등록완료 \\n";
+						}
 					}
 				}
 			}

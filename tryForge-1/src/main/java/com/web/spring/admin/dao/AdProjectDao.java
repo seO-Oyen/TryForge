@@ -16,6 +16,7 @@ public interface AdProjectDao {
 	List<Member> PJMemList(String project_key);
 	List<Member> schMem(@Param("member_name")String member_name);
 	int insertPJ(Project insProject);
+	int insPJtoTask(Project insProject);
 	int insertTeam(Team insTeam);
 	int insertTm(int member_key);
 	int uptCnt();
