@@ -1,5 +1,6 @@
 package com.web.spring.task.controller;
 
+import com.web.spring.SessionService;
 import com.web.spring.task.service.TaskReportService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class TaskReportController {
     @Autowired(required = false)
     private TaskReportService service;
+    @Autowired(required = false)
+    private SessionService sessionService;
 
     @GetMapping("taskReport")
     public String taskReport(Model d, HttpSession session){
-        return "";
+        return "project/taskReport";
     }
 }
