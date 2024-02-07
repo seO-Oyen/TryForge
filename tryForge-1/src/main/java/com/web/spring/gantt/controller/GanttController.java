@@ -1,5 +1,6 @@
 package com.web.spring.gantt.controller;
 
+import com.web.spring.SessionService;
 import com.web.spring.vo.Project;
 import com.web.spring.vo.Task;
 import com.web.spring.vo.Task_Dependency;
@@ -17,17 +18,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class GanttController {
 	@Autowired(required = false)
 	private GanttService service;
+	@Autowired(required = false)
+	private SessionService sessionService;
 
-	private Project getProject(HttpSession session) {
-		if(session.getAttribute("loginMem") != null && session.getAttribute("projectMem") != null) {
-			return (Project)session.getAttribute("projectMem");
-		}
-		return null;
-	}
 	// 프로젝트 시작/종료일과 프로젝트 참여중인 멤버리스트 출력
 	@GetMapping("gantt")
 	public String Gantt(Model d, HttpSession session) {
-		Project project = getProject(session);
+		Project project = sessionService.getProject(session);
 		if(project != null) {
 			d.addAttribute("date", service.getProjectPeriod(project.getProject_key()));
 			d.addAttribute("memList", service.getTaskMem(project.getProject_key()));
@@ -37,7 +34,7 @@ public class GanttController {
 	// 프로젝트 키로 task 정보와 taskDep 정보 검색 후 전달
 	@GetMapping("getGantt")
 	public String getGantt(Model d, HttpSession session) {
-		Project project = getProject(session);
+		Project project = sessionService.getProject(session);
 		if(project != null) {
 			d.addAttribute("data", service.getTask(project.getProject_key()));
 			d.addAttribute("links", service.getTaskDep(project.getProject_key()));
@@ -47,7 +44,7 @@ public class GanttController {
 	// 업무할당
 	@PostMapping("insTask")
 	public String insertTask(Task ins, Model d, HttpSession session) {
-		Project project = getProject(session);
+		Project project = sessionService.getProject(session);
 		if(project != null) {
 			ins.setProject_key(project.getProject_key());
 			d.addAttribute("id", service.insertTask(ins));
@@ -57,7 +54,7 @@ public class GanttController {
 	// 업무종속성할당
 	@PostMapping("insTaskDep")
 	public String insertTaskDep(Task_Dependency ins, Model d, HttpSession session) {
-		Project project = getProject(session);
+		Project project = sessionService.getProject(session);
 		if(project != null) {
 			ins.setProject_key(project.getProject_key());
 			d.addAttribute("msg", service.insertTaskDep(ins));
