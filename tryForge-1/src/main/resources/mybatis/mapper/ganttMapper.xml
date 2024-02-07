@@ -83,7 +83,8 @@
 	</update>
 	<update id="updateProject" parameterType="task">
 		UPDATE TASK
-			SET PROGRESS = #{progress}
+			SET PROGRESS = #{progress},
+			    DETAIL = #{detail}
 			WHERE TASK_KEY = #{id}
 	</update>
 	<update id="updateTaskOpenStatus" parameterType="task">

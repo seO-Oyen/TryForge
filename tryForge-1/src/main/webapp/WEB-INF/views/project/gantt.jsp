@@ -332,12 +332,14 @@ gantt.attachEvent("onLightbox", function(id) {
 });
 // 라이트박스 save
 gantt.attachEvent("onLightboxSave", function(id, task) {
-	var selectControl = gantt.getLightboxSection('owner').control;
-	// 현재 선택된 option의 index 가져오기
-	var selectedIndex = selectControl.selectedIndex;
-	if(selectedIndex > -1 && selectedIndex < dataUsers.length) {
-		var selectedUserKey = dataUsers[selectedIndex];
-		task.selectedUserKey = selectedUserKey; // task객체에 userkey 할당
+	if(task.type!=='project') {
+		var selectControl = gantt.getLightboxSection('owner').control;
+		// 현재 선택된 option의 index 가져오기
+		var selectedIndex = selectControl.selectedIndex;
+		if(selectedIndex > -1 && selectedIndex < dataUsers.length) {
+			var selectedUserKey = dataUsers[selectedIndex];
+			task.selectedUserKey = selectedUserKey; // task객체에 userkey 할당
+		}
 	}
 	if (!task.text || !task.detail) {
 		errorMsg('경고!', '업무명과 업무설명은 반드시 입력해야 합니다.');
@@ -448,6 +450,7 @@ gantt.attachEvent("onAfterTaskUpdate", function(id, item){
 				id: item.id,
 				member_key: -10,
 				progress: item.progress,
+				detail: item.detail,
 			}
 		}).then(function(response){
 				successMsg('업무 업데이트 성공!', '업무가 성공적으로 업데이트 되었습니다.');
