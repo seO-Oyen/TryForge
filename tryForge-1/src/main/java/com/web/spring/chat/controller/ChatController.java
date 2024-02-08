@@ -1,11 +1,8 @@
 package com.web.spring.chat.controller;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Formatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,23 +49,20 @@ public class ChatController {
  				@PathVariable("listKey") int chatListKey,
  				Model d
  			) {
-		System.out.println(chatListKey);
 		// 디비에 아직 저장 안된 값
 		List<String> chatDetailList = chatHandler.getMessageSaveList();
 		List<Chat> chatList = chatService.getChat(chatListKey);
 		
+		chatHandler.setChatListNum(chatListKey);
+		
 		for (String chatDetail : chatDetailList) {
 			String[] splitChat = chatDetail.split("/");
-			Member chatMem = memService.getMemberToId(splitChat[0]);
-			
-			// 시간 변경
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-			LocalDateTime dateTime = LocalDateTime.parse(splitChat[3], formatter);
-			
-			chatList.add(new Chat(chatListKey, chatMem.getMember_key(), splitChat[2], Timestamp.valueOf(dateTime)));
+			if (splitChat[0].equals(Integer.toString(chatListKey))) {
+				Member chatMem = memService.getMemberToId(splitChat[1]);
+				
+				chatList.add(new Chat(chatListKey, chatMem.getMember_key(), splitChat[3], splitChat[4]));
+			}
 		}
-		
-		d.addAttribute("chats", chatList);
 		
 		List<Member> memList = new ArrayList<>();
 		for (Chat chat : chatList) {
@@ -76,19 +70,40 @@ public class ChatController {
 		}
 		d.addAttribute("memList", memList);
 		
+		// 만약 챗값이 없을경우 -> 챗리스트 값을 구분해주기 위해
+		if (chatList.isEmpty()) {
+			Chat chatnot = new Chat();
+			chatnot.setChatlist_key(chatListKey);
+			chatList.add(chatnot);
+		}
+		
+		d.addAttribute("chats", chatList);
+		
 		return "chat/chat";
 	}
 	
 	@PostMapping("chatSave")
 	public ResponseEntity<String> chatSave() {
 		List<String> chatDetailList = chatHandler.getMessageSaveList();
+		List<Chat> chatList = new ArrayList<>();
 		
 		for (String chat : chatDetailList) {
 			System.out.println(chat);
+			String[] splitChat = chat.split("/");
+			Member chatMem = memService.getMemberToId(splitChat[1]);
+			
+			// 시간 변경
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			LocalDateTime dateTime = LocalDateTime.parse(splitChat[4], formatter);
+			
+			chatList.add(new Chat(Integer.parseInt(splitChat[0]), chatMem.getMember_key(), splitChat[3], splitChat[4]));
+		
 		}
+		String msg = chatService.insertChats(chatList);
+		
 		chatHandler.removeMessageSaveList();
 		
-		return ResponseEntity.ok("성공일껄?");
+		return ResponseEntity.ok(msg);
 	}
 	
 }

@@ -17,4 +17,8 @@ public interface ChatDao {
 	List<Integer> getChatMemList(@Param("memKey") int memberKey, @Param("listKey") int listKey);
 
 	List<Chat> getChat(@Param("listKey") int listKey);
+	
+	int insertChat(Chat chat);
+	
+	int updateLastMessage(Chat chat);
 }

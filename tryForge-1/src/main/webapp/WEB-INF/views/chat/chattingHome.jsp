@@ -106,8 +106,6 @@ function clickList(listKey) {
 							<tr onclick="clickList(${chatList[status.index].chatlist_key})">
 								<td>${chat.key}</td>
 								<td>${chat.value}</td>
-								<td style="display: none;">${chatList[status.index].chatlist_key}</td>
-								<%-- <td>${chat.last_message}</td> --%>
 							</tr>
 						</c:forEach>
 					</tbody>

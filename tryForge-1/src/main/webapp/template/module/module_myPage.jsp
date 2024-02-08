@@ -53,6 +53,20 @@ $(document).ready(function(){
 		alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
 		location.href="${path}/login"
 	}
+	
+	var startChat = setInterval(function() {
+		$.ajax({
+			url : "${path}/chatSave",
+			type : "POST",
+			dataType : "json",
+			success : function(data) {
+				console.log(data)
+			},
+			error : function(err) {
+				console.log(err)
+			}
+		})
+	}, 180000)
 })
 </script>
 <style>

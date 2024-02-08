@@ -1,5 +1,8 @@
 package com.web.spring.chat.service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -53,7 +56,15 @@ public class ChatService {
 		List<Chat> chatList = dao.getChat(listKey);
 		
 		return chatList;
+	}
+	
+	public String insertChats(List<Chat> chatList) {
+		int num = 0;
+		for (Chat chat : chatList) {
+			num += dao.insertChat(chat);
+		}
 		
+		return num + "건 db저장 완료";
 	}
 
 }

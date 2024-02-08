@@ -25,5 +25,32 @@
 		WHERE CHATLIST_KEY = #{listKey}
 		ORDER BY SEND_TIME
 	</select>
+	
+	<insert id="insertChat" parameterType="chat">
+		INSERT INTO chat
+		(
+		   chat_key,
+		   chatlist_key,
+		   sender_key,
+		   chat_detail,
+		   send_time
+		)
+		VALUES
+		(
+		   chat_seq.nextval,
+		   #{chatlist_key},
+		   #{sender_key},
+		   #{chat_detail},
+		   #{send_time}
+		)
+	</insert>
+	
+	<update id="updateLastMessage" parameterType="chat">
+		UPDATE chat_list
+		SET
+			LAST_MESSAGE = #{chat_detail},
+			LAST_TIME = TO_DATE(#{send_time}, 'YYYY-MM-DD HH24:MI:SS')
+		WHERE CHATLIST_KEY = #{chatlist_key}
+	</update>
 
 </mapper>
