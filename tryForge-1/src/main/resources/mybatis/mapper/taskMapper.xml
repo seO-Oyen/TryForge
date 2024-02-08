@@ -7,7 +7,7 @@
 	<select id="getTask" resultType="task">
 			SELECT * FROM task
 	</select>
-	<insert id="insertRisk" parameterType="">
-
+	<insert id="insertRisk" parameterType="risk">
+		insert into risk values (RISK_SEQ.nextval,#{project_key},#{task_key},#{registrant},#{type},#{possibility},#{priority})
 	</insert>
 </mapper>

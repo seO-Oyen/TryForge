@@ -101,9 +101,17 @@
         $("#myModal").modal('show');
     }
 
-    function regRisk() {
-        $("#myModal02").modal('show');
+    function regRisk(key) {
+        $.ajax({
+            url:"${path}/insRisk",
+            data:$("#modalFrm02").serialize(),
+            dataType:"json",
+
+        })
+
     }
+        $("#myModal02").modal('show');
+
 </script>
 <div class="main-panel">
     <div class="content-wrapper">
@@ -188,7 +196,7 @@
                                             <td>${tlist.end_date}</td>
                                             <td>${tlist.assignor}</td>
                                             <td>
-                                                <button type="button" class="btn btn-open"
+                                                <button type="button" class="btn btn-open" onclick='regRisk("${tlist.task_key}")'
                                                         style="background-color: #007FFF; color: white;">
                                                     리스크등록
                                                 </button>
@@ -287,7 +295,7 @@
 
                     </div>
                     <form class="forms-sample" id="modalFrm02">
-                        <input type="hidden" name="project_key">
+                        <input type="hidden" name="project_key" value="${projectMem.project_key}">
                         <input type="hidden" name="task_key">
                         <div class="form-group">
                             <label for="exampleInputUsername1">프로젝트 명</label> <input
@@ -298,7 +306,7 @@
                             <input type="text" class="form-control" placeholder="task_title">
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword1">리스크 등록자</label> <input
+                            <label for="exampleInputPassword1">리스크 등록자</label> <input value="${loginMem.member_name}"
                                 name="registrant" type="text" class="form-control" placeholder="risk_registrant">
                         </div>
                         <div class="form-group">
