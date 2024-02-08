@@ -274,25 +274,26 @@
             data: $("#modalFrm02").serialize(),
             success: function (data) {
                 var insMsg01 = data.insMsg;
+
                 Swal.fire({
                     title: '구성원 추가',
                     text: '구성원을 추가하시겠습니까?',
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonText: '확인',
-                    cancelButtonText: '취소',
-                    timerProgressBar: true,
-                    timer: 3000
+                    cancelButtonText: '취소'
                 }).then((result) => {
+                    console.log(result)
                     if (result.isConfirmed) {
+                        console.log(result.isConfirmed)
                         if (insMsg01 != null) {
                             Swal.fire({
                                 title: '성공',
                                 text: insMsg01,
                                 icon: 'success'
                             }).then(() => {
-                                Swal.close();
-                                window.location.reload();
+                               // Swal.close();
+                                //window.location.reload();
                             });
                         } else {
                             // 삭제 실패 메시지 표시
@@ -594,4 +595,3 @@ Bootstrapdash.com
 </body>
 
 </html>
-
