@@ -2,6 +2,7 @@ package com.web.spring.task.controller;
 
 import com.web.spring.vo.Risk;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,9 +26,16 @@ public class TaskController {
 		d.addAttribute("uptMsg",service.uptConfirm(id));
 		return "pageJsonReport";
 	}
+	// 상세정보 가져오기
+	@GetMapping("taskDetail")
+	public String taskDetail(@RequestParam("id")int id, Model d){
+		d.addAttribute("taskDetail",service.taskDetail(id));
+		return "pageJsonReport";
+	}
+	// 리스크 등록
 	@PostMapping("insRisk")
 	public String insRisk(Risk ins, Model d){
-		d.addAttribute("insRisk",service.insertRisk(ins));
+		d.addAttribute("insMsg",service.insertRisk(ins));
 		return "pageJsonReport";
 	}
 }

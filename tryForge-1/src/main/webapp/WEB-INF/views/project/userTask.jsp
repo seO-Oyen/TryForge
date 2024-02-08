@@ -26,6 +26,9 @@
         margin-left: 3%;
         margin-right: 8%;
     }
+    #myModal .modal-dialog {
+        max-width: 50%; /* 모달의 최대 너비를 80%로 설정 */
+    }
 
     #myModal .form-control {
         margin-right: 3%; /* 입력 요소 오른쪽 여백 조절 */
@@ -53,6 +56,14 @@
 
 </style>
 <script>
+    $(document).ready(function () {
+        $("#clsBtn").click(function () {
+            $("#modelFrm")[0].reset()
+        })
+        $("#xBtn").click(function () {
+            $("#modelFrm")[0].reset()
+        })
+    })
 
     // <c:set var="formattedStartDate" value="${fn:substring(plist.start_date, 0, 10)}" />
     // <td><c:out value="${formattedStartDate}" /></td>

@@ -3,8 +3,14 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.web.spring.task.dao.TaskDao">
+	<resultMap type = "task" id="taskRst">
+		<result column = "task_key" property = "id"/>
+		<result column = "task_type" property = "type"/>
+		<result column = "task_open" property = "open"/>
+		<result column = "member_name" property = "owner"/>
+	</resultMap>
 	<!-- 업무 출력 -->
-	<select id="getTask" resultType="task">
+	<select id="getTask" resultMap="taskRst">
 			SELECT * FROM task
 	</select>
 	<insert id="insertRisk" parameterType="risk">
