@@ -15,7 +15,7 @@
 			LEFT JOIN TEAM t ON t.team_key = tm.TEAM_KEY 
 			LEFT JOIN PROJECT p ON p.project_key = t.PROJECT_KEY 
 			WHERE m.MEMBER_NAME LIKE '%'||#{member_name}||'%' 
-			AND p.title LIKE '%'||#{title}||'%' ORDER BY m.MEMBER_KEY
+			AND p.title LIKE '%'||#{title}||'%' and m.MEMBER_ROLE = upper('emp') ORDER BY m.MEMBER_KEY
 	</select>
 	
 	<!-- 업무할당 -->
@@ -42,4 +42,8 @@
 	<delete id="delTask" parameterType="int">
 		DELETE FROM TASK WHERE task_key = #{id} and ASSIGNOR=#{ASSIGNOR}
 	</delete>
+
+	<select id="taskInfo" resultMap="taskRst">
+
+	</select>
 </mapper>
