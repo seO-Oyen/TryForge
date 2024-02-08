@@ -77,7 +77,7 @@ $(document).ready(function(){
 			case '/task':
 				Title.textContent = 'Task';
 				break;
-			case '/taskreport':
+			case '/taskReport':
 				Title.textContent = 'Task Report';
 				break;
 			case '/risk':
@@ -565,8 +565,7 @@ $(document).ready(function(){
 						</div> -->
 					</li>
 					<li class="nav-item">
-					<a class="nav-link" data-toggle="collapse" href="#icons" aria-expanded="false"
-						aria-controls="icons">
+					<a class="nav-link" href="${path}/taskReport" >
 						<i class="typcn mdi mdi-clipboard-text menu-icon"></i>
 						<span class="menu-title">업무 보고</span>
 						<!-- <i class="menu-arrow"></i> -->
