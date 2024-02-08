@@ -11,6 +11,7 @@ public class Project {
 	private String status;
 	private String start_date;
 	private String end_date;
+	private String creater;
 	public Project() {
 		// TODO Auto-generated constructor stub
 	}
@@ -57,6 +58,12 @@ public class Project {
 	}
 	public void setEnd_date(String end_date) {
 		this.end_date = end_date;
+	}
+	public String getCreater() {
+		return creater;
+	}
+	public void setCreater(String creater) {
+		this.creater = creater;
 	}
 	
 }

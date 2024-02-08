@@ -38,11 +38,11 @@ public class MainController {
 	public String userIndexPage(HttpSession session, Model d) {
 		if (session.getAttribute("loginMem") != null ) {
 			Member member = (Member)session.getAttribute("loginMem");
-			List<Project> projectList = memberService.getUserProject(member);
-			
-			d.addAttribute("plist", projectList);
+			Project project = memberService.getUserProject(member);
+			if (project != null) {
+				session.setAttribute("projectMem", project);
+			}
 		}
-		
 
 		return "user/userIndex";
 	}

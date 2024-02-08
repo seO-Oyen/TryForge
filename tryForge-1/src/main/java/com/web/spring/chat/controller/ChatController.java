@@ -53,6 +53,7 @@ public class ChatController {
  				Model d
  			) {
 		System.out.println(chatListKey);
+		// 디비에 아직 저장 안된 값
 		List<String> chatDetailList = chatHandler.getMessageSaveList();
 		List<Chat> chatList = chatService.getChat(chatListKey);
 		
