@@ -73,17 +73,64 @@
             regRisk();
         })
     })
+	// 상세 모달창
+    function openDetail(id) {
+        console.log(id)
+        $.ajax({
+            url: "${path}/taskDetail",
+            data: "id=" + id,
+            dataType: "json",
+            success: function (data) {
+                var detail = data.taskDetail
+                $("#modalFrm [name=text]").val(detail.text)
+                $("#modalFrm [name=detail]").val(detail.detail)
+                var startDate = new Date(detail.start_date);
+                startDate.setDate(startDate.getDate() + 1);
+                var formattedStartDate = startDate.toISOString().split('T')[0];
+                var endDate = new Date(detail.end_date);
+                endDate.setDate(endDate.getDate() + 1);
+                var formateedendtDate = endDate.toISOString().split('T')[0];
+                $("#modalFrm [name=start_date]").val(formattedStartDate)
+                $("#modalFrm  [name=end_date]").val(formateedendtDate)
+                if (detail.confirm === '1' || detail.confirm === 1) {
+                    // 확인여부 확인해 확인한 업무 모달창 구성
+                    $("#confirmBtn").hide();
+                    $("#proTitle").text("진행중인 업무")
+                    $(".modal-title").text("Ongoing Task")
+                } else {
+                    // 확인여부 확인해 새 업무 할당시 모달창 구성
+                    $("#confirmBtn").show();
+                    $("#proTitle").text("새 업무")
+                    $(".modal-title").text("New Task")
+                }
+                $("#myModal").modal('show');
+                $("#confirmBtn").click(function () {
+                    uptConfirm(id)
+                })
+            },
+            error: function (err) {
+                console.log(err)
+            }
+        })
 
-
+    }
+	// PL 업데이트 
     function uptConfirm(id) {
         $.ajax({
             url: "${path}/uptConfirm",
             data: "id=" + id,
             dataType: "json",
             success: function (data) {
-                var uptMsg = data.uptMsg
+                var uptMsg = data.uptMsg;
                 if (uptMsg != null) {
-                    alert(uptMsg)
+                    Swal.fire({
+                        title: uptMsg,
+                        text: ' ',
+                        icon: 'success',
+                    }).then(function () {
+                        //$("#clsBtn").click();
+                        window.location.reload();
+                    });
                 }
             },
             error: function (err) {
@@ -91,29 +138,15 @@
             }
         })
     }
-
-    function openDetail(id) {
-        $.ajax({
-            url: "",
-            data: "id=" + id,
-            dataType: "json",
-            success: function (data) {
-
-            },
-            error: function (err) {
-                console.log(err)
-            }
-        })
-
-        $("#myModal").modal('show');
-    }
-
-    function showRiskModel(key,title) {
+	
+	// 리스크 등록 모달창 오픈
+	function showRiskModel(key,title) {
         $("#task_title").val(title)
         $("#modalFrm02 [name=task_key]").val(key)
         $("#myModal02").modal('show');
     }
 
+	// 리스크 등록
     function regRisk(){
         //alert($("#modalFrm02").serialize())
         $.ajax({
