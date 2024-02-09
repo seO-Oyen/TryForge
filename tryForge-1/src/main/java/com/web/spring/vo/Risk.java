@@ -8,6 +8,7 @@ public class Risk {
 	private String type; // 리스크 종류
 	private String possibility; // 리스크 가능성 상,중,하
 	private int priority; // 리스크 우선순위 1,2,3
+	private int confirm;
 	public Risk() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -71,5 +72,12 @@ public class Risk {
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
-	
+
+	public int getConfirm() {
+		return confirm;
+	}
+
+	public void setConfirm(int confirm) {
+		this.confirm = confirm;
+	}
 }

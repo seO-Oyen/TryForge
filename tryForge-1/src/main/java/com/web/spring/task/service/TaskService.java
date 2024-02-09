@@ -34,6 +34,6 @@ public class TaskService {
 
 	// 해당 업무 리스크 등록
 	public String insertRisk(Risk ins){
-		return dao.insertRisk(ins)>0?"리스크 등록":"리스크 등록 에러";
+		return dao.insertRisk(ins)>0?"리스크 등록 성공":"리스크 등록 에러";
 	}
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.web.spring.task.service.TaskService;
@@ -33,7 +34,7 @@ public class TaskController {
 		return "pageJsonReport";
 	}
 	// 리스크 등록
-	@PostMapping("insRisk")
+	@RequestMapping ("insRisk")
 	public String insRisk(Risk ins, Model d){
 		d.addAttribute("insMsg",service.insertRisk(ins));
 		return "pageJsonReport";

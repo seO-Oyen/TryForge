@@ -63,21 +63,17 @@
         $("#xBtn").click(function () {
             $("#modelFrm")[0].reset()
         })
-    })
-
-    // <c:set var="formattedStartDate" value="${fn:substring(plist.start_date, 0, 10)}" />
-    // <td><c:out value="${formattedStartDate}" /></td>
-    $(document).ready(function () {
-        $("#uptBtn").click(function () {
-            uptTask(taskId);
-        });
-
-        $("#clsBtn").click(function () {
-            $("#myModal form")[0].reset()
-
+        $("#clsBtn02").click(function () {
+            $("#modelFrm")[0].reset()
         })
-
+        $("#xBtn02").click(function () {
+            $("#modelFrm")[0].reset()
+        })
+        $("#riskRegBtn").click(function(){
+            regRisk();
+        })
     })
+
 
     function uptConfirm(id) {
         $.ajax({
@@ -112,16 +108,38 @@
         $("#myModal").modal('show');
     }
 
-    function regRisk(key) {
+    function showRiskModel(key,title) {
+        $("#task_title").val(title)
+        $("#modalFrm02 [name=task_key]").val(key)
+        $("#myModal02").modal('show');
+    }
+
+    function regRisk(){
+        //alert($("#modalFrm02").serialize())
         $.ajax({
             url:"${path}/insRisk",
             data:$("#modalFrm02").serialize(),
             dataType:"json",
+            success:function(data){
+                var insMsg = data.insMsg;
+                if (insMsg != null) {
+                    Swal.fire({
+                        title: '등록성공',
+                        text: insMsg,
+                        icon: 'success',
+                    }).then(function () {
+                        Swal.close();
+                        window.location.reload();
+                    });
+
+                }
+            },
+            error:function(err){
+                console.log(err)
+            }
 
         })
-
     }
-        $("#myModal02").modal('show');
 
 </script>
 <div class="main-panel">
@@ -156,7 +174,7 @@
                                             <td>${tlist.end_date}</td>
                                             <td>${tlist.assignor}</td>
                                             <td>
-                                                <button type="button" class="btn btn-open" onclick="regRisk()"
+                                                <button type="button" class="btn btn-open" onclick='showRiskModel("${tlist.id}","${tlist.text}")'
                                                         style="background-color: #007FFF; color: white;">
                                                     리스크등록
                                                 </button>
@@ -207,7 +225,7 @@
                                             <td>${tlist.end_date}</td>
                                             <td>${tlist.assignor}</td>
                                             <td>
-                                                <button type="button" class="btn btn-open" onclick='regRisk("${tlist.task_key}")'
+                                                <button type="button" class="btn btn-open" onclick='showRiskModel("${tlist.id}","${tlist.text}")'
                                                         style="background-color: #007FFF; color: white;">
                                                     리스크등록
                                                 </button>
@@ -309,12 +327,12 @@
                         <input type="hidden" name="project_key" value="${projectMem.project_key}">
                         <input type="hidden" name="task_key">
                         <div class="form-group">
-                            <label for="exampleInputUsername1">프로젝트 명</label> <input
+                            <label for="exampleInputUsername1">프로젝트 명</label> <input value="${projectMem.title}"
                                 type="text" class="form-control" placeholder="project_title">
                         </div>
                         <div class="form-group">
                             <label for="exampleTextarea1">업무 명</label>
-                            <input type="text" class="form-control" placeholder="task_title">
+                            <input type="text" class="form-control" placeholder="task_title" id="task_title">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">리스크 등록자</label> <input value="${loginMem.member_name}"
@@ -360,52 +378,11 @@
                     <div class="modal-footer">
                         <div class="mx-auto">
                             <button type="button" class="btn btn-" id="riskRegBtn"
-                                    onclick="insTask()"
                                     style="background-color: #007FFF; color: white;">리스크 등록
                             </button>
 
                             <button type="button" class="btn btn-danger" data-dismiss="modal"
                                     id="clsBtn02">닫기
-                            </button>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <!-- 상세설명 모들 -->
-        <div class="modal" id="myModal03">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h2 class="modal-title">Risk Type</h2>
-
-                        <button type="button" class="close" data-dismiss="modal" id="xBtn03">×</button>
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <div style="display: flex;">
-                            <li>
-                                요구 사항 관련 리스크
-                                <ol>부정확한 또는 모호한 요구 사항</ol>
-                                <ol>요구 사항 변경의 빈도와 범위</ol>
-                            </li>
-
-                        </div>
-
-                    </div>
-                    <h3></h3>
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <div class="mx-auto">
-
-
-                            <button type="button" class="btn btn-danger" data-dismiss="modal"
-                                    id="clsBtn03">닫기
                             </button>
                         </div>
                     </div>
