@@ -2,6 +2,8 @@ package com.web.spring.admin.service;
 
 import java.util.List;
 
+import com.web.spring.vo.Risk;
+import com.web.spring.vo.Risk_Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,5 +62,17 @@ public class AdTaskService {
         return dao.completedTaskCnt();
     }
     public int allTaskCnt(){return dao.allTaskCnt();}
-
+    // 만든 프로젝트에 관해서만 업무 리스크 출력
+    public List<Risk> adRiskList(int creater){
+        return dao.adRiskList(creater);
+    }
+    // 리스크 대응자 검색
+    public List<MemberSch> riskContactList(String project_key){
+        return dao.riskContactList(project_key);
+    }
+    // 리스크 대응방안 등록
+    public String insertRiskRes(Risk_Response ins){
+        dao.confirmNewRisk(ins.getRisk_key());
+        return dao.insertRiskRes(ins)>0?"리스크 대응 등록 성공":"리스크 대응 등록 에러";
+    }
 }

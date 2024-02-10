@@ -2,13 +2,11 @@ package com.web.spring.admin.controller;
 
 import java.util.List;
 
+import com.web.spring.vo.Risk_Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import com.web.spring.admin.service.AdTaskService;
 import com.web.spring.vo.MemberSch;
@@ -73,6 +71,24 @@ public class AdTaskController {
         d.addAttribute("unConfCnt",service.unConfirm());
         d.addAttribute("finCnt",service.completedTaskCnt());
         d.addAttribute("allCnt",service.allTaskCnt());
+        return "pageJsonReport";
+    }
+    // 만든 프로젝트 별 업무 리스크 출력
+    @GetMapping("AdriskList")
+    public String adRiskList(@RequestParam("creater")int creater, Model d){
+        d.addAttribute("rlist",service.adRiskList(creater));
+        return "pageJsonReport";
+    }
+    // 리스크 대응자 검색
+    @GetMapping("riskContactSch")
+    public String riskContactSch(@RequestParam("project_key")String project_key, Model d){
+        d.addAttribute("mlist",service.riskContactList(project_key));
+        return "pageJsonReport";
+    }
+    // 리스크 대응 등록
+    @PostMapping("insertRiskResponse")
+    public String insertRiskResponse(Risk_Response ins, Model d){
+        d.addAttribute("insResMsg",service.insertRiskRes(ins));
         return "pageJsonReport";
     }
 }

@@ -1,5 +1,7 @@
 package com.web.spring.vo;
 
+import java.util.Date;
+
 public class Risk {
 	private int risk_key; // 리스크 키
 	private String project_key; // 프로젝트 키
@@ -8,10 +10,14 @@ public class Risk {
 	private String type; // 리스크 종류
 	private String possibility; // 리스크 가능성 상,중,하
 	private int priority; // 리스크 우선순위 1,2,3
-	private int confirm;
+	private int confirm; // 관리자용 리스크 확인여부
+	private String detail; // 리스크 상세설명
+	private String text; // 업무 이름
+	private String title; // 프로젝트 이름
+	private Date reg_date; //  업무 등록일
+	private String status; // 상태(발생전, 발생, 처리중, 완료)
 	public Risk() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	public Risk(int risk_key, String project_key, int task_key, String registrant, String type, String possibility,
@@ -79,5 +85,45 @@ public class Risk {
 
 	public void setConfirm(int confirm) {
 		this.confirm = confirm;
+	}
+
+	public String getDetail() {
+		return detail;
+	}
+
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Date getReg_date() {
+		return reg_date;
+	}
+
+	public void setReg_date(Date reg_date) {
+		this.reg_date = reg_date;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

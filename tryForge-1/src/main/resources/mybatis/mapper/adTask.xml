@@ -42,8 +42,22 @@
 	<delete id="delTask" parameterType="int">
 		DELETE FROM TASK WHERE task_key = #{id} and ASSIGNOR=#{ASSIGNOR}
 	</delete>
-
-	<select id="taskInfo" resultMap="taskRst">
-
+	<select id="adRiskList" resultType="risk" parameterType="int">
+		SELECT r.*, ta.text, p.TITLE, rownum
+		FROM risk r
+				 LEFT JOIN PROJECT p ON r.PROJECT_KEY = p.PROJECT_KEY
+				 LEFT JOIN task ta ON ta.TASK_KEY = r.TASK_KEY
+		WHERE p.CREATER = #{creater} order by ROWNUM
 	</select>
+	<select id="riskContactList" resultType="memberSch" parameterType="String">
+		SELECT m.*, tm.ROLE  FROM MEMBER m
+		  LEFT JOIN TEAM_MEMBER tm ON tm.MEMBER_KEY = m.MEMBER_KEY
+		  LEFT JOIN TEAM t ON t.TEAM_KEY = tm.TEAM_KEY
+		  LEFT JOIN PROJECT p ON p.PROJECT_KEY = t.PROJECT_KEY
+		WHERE p.PROJECT_KEY = #{project_key}
+	</select>
+	<insert id="insertRiskRes" parameterType="risk_response">
+		INSERT INTO RISK_RESPONSE values (RISK_RES_SEQ.nextval, #{risk_key}, #{response_method}, #{contact}, NULL, '발생전')
+	</insert>
+
 </mapper>
