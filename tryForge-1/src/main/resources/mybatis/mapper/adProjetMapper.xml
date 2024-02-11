@@ -24,12 +24,12 @@
 	
 	<!-- 사원 검색 출력 -->
 	<select id="schMem" resultType="memberSch" parameterType="String">
-		SELECT m.member_name, m.member_email, tm.ROLE, p.title, p.start_date, p.end_date, m.member_key, p.STATUS
-		FROM MEMBER m
-				 LEFT JOIN TEAM_MEMBER tm ON tm.MEMBER_KEY  = m.MEMBER_KEY
-				 LEFT JOIN TEAM t ON t.team_key = tm.TEAM_KEY
-				 LEFT JOIN PROJECT p ON p.project_key = t.PROJECT_KEY
-		WHERE m.MEMBER_NAME LIKE '%' || #{member_name} || '%' ORDER BY m.MEMBER_KEY
+		SELECT m.member_name, m.member_email, tm.ROLE, p.title, p.start_date, p.end_date, m.member_key,  p.STATUS
+		FROM MEMBER m 
+			LEFT JOIN TEAM_MEMBER tm ON tm.MEMBER_KEY  = m.MEMBER_KEY
+			LEFT JOIN TEAM t ON t.team_key = tm.TEAM_KEY 
+			LEFT JOIN PROJECT p ON p.project_key = t.PROJECT_KEY 
+			WHERE m.MEMBER_NAME LIKE '%' || #{member_name} || '%' and m.MEMBER_ROLE = upper('emp') ORDER BY m.MEMBER_KEY
 	</select>
 	
 	<!-- 프로젝트입력 -->

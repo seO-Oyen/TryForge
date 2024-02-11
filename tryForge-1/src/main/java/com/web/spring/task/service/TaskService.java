@@ -2,11 +2,12 @@ package com.web.spring.task.service;
 
 import java.util.List;
 
-import com.web.spring.gantt.dao.GanttDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.web.spring.gantt.dao.GanttDao;
 import com.web.spring.task.dao.TaskDao;
+import com.web.spring.vo.Risk;
 import com.web.spring.vo.Task;
 
 @Service
@@ -31,4 +32,8 @@ public class TaskService {
         return ganttdao.taskDetail(id);
     }
 
+	// 해당 업무 리스크 등록
+	public String insertRisk(Risk ins){
+		return dao.insertRisk(ins)>0?"리스크 등록 성공":"리스크 등록 에러";
+	}
 }

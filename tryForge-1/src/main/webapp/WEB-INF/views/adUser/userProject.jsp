@@ -273,33 +273,33 @@
             type: "post",
             data: $("#modalFrm02").serialize(),
             success: function (data) {
-                var insMsg = data.insMsg;
-                alert(insMsg)
+                var insMsg01 = data.insMsg;
+
                 Swal.fire({
-                    title: '직책 변경',
-                    text: '해당 구성원을 PL로 지정하시겠습니까?',
+                    title: '구성원 추가',
+                    text: '구성원을 추가하시겠습니까?',
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonText: '확인',
                     cancelButtonText: '취소'
                 }).then((result) => {
+                    console.log(result)
                     if (result.isConfirmed) {
-                        if (insMsg != null) {
-                            // 삭제 메시지 표시
+                        console.log(result.isConfirmed)
+                        if (insMsg01 != null) {
                             Swal.fire({
                                 title: '성공',
-                                text: insMsg,
+                                text: insMsg01,
                                 icon: 'success'
                             }).then(() => {
-                                // 확인 버튼 클릭 후 동작
-                                // $("#clsBtn").click();
-                                // window.location.reload();
+                               // Swal.close();
+                                //window.location.reload();
                             });
                         } else {
                             // 삭제 실패 메시지 표시
                             Swal.fire({
                                 title: '실패',
-                                text: '구성원 직책변경 실패',
+                                text: '구성원 추가 실패',
                                 icon: 'error'
                             });
                         }
@@ -595,4 +595,3 @@ Bootstrapdash.com
 </body>
 
 </html>
-
