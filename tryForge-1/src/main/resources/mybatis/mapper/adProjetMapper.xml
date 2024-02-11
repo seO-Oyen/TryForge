@@ -87,7 +87,9 @@
 	<delete id="delProject" parameterType="String">
 		DELETE FROM project WHERE project_KEY = #{project_key}
 	</delete>
-	
+	<delete id="delTm" parameterType="int">
+		DELETE From TEAM_MEMBER where TEAM_MEMBER_KEY = #{TEAM_MEMBER_KEY}
+	</delete>
 	<!-- 프로젝트 완료 변경 -->
 	<update id="uptFin" parameterType="String">
 		UPDATE project SET status = '완료' WHERE project_key= #{project_key}

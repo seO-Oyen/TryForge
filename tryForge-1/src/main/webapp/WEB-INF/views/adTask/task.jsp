@@ -281,6 +281,7 @@
                                                     data-member-name="${mlist.member_name}"
                                                     data-member-key="${mlist.member_key}"
                                                     data-project-key="${mlist.project_key}"
+
                                                     style="background-color: #007FFF; color: white;">업무할당
                                             </button>
                                         </td>

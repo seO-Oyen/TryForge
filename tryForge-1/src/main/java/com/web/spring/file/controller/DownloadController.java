@@ -1,5 +1,6 @@
 package com.web.spring.file.controller;
 
+import com.web.spring.vo.FileStorage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,8 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class DownloadController {
 	@RequestMapping("download")
-	public String download(@RequestParam("fname") String fname, Model d) {
+	public String download(@RequestParam("fname") String fname, @RequestParam("originfname") String originfname, Model d) {
 		d.addAttribute("downloadFile", fname);
+		d.addAttribute("originFileName", originfname);
 		return "downloadViewer";
 	}
 }

@@ -71,6 +71,8 @@
 			        	<form method="post" enctype="multipart/form-data" action="upload">
 			        		<button type="button" id="uploadBtn" class="btn btn-success">업로드</button>
 			    			<input type="file" id="fileInput" name="files" multiple="multiple" style="display: none;" />
+							<input type="hidden" name="member_key" value="${loginMem.member_key}"/>
+							<input type="hidden" name="project_key" value="${projectMem.project_key}"/>
 			    		</form>
 			    </div>
 				<div class="row">
@@ -84,11 +86,11 @@
 									<img src="${pageContext.request.contextPath}${file.iconPath}" alt ="${file.ftype}"class="file-image">
 								</div>
 								<div>
-									<h4 title="${file.fname}" class="file-title">${file.fname}</h4>
+									<h4 title="${file.originfname}" class="file-title">${file.originfname}</h4>
 								</div>
 								<div class="file-info-container">
 								    <h4 title="${file.fsize}" class="file-size">${file.fsize}</h4>
-								    <i class="mdi mdi-download fdown" onclick = "download('${file.fname}')"></i>
+								    <i class="mdi mdi-download fdown" onclick = "download('${file.fname}', '${file.originfname}')"></i>
 								</div>
 							</div>
 						</div>
@@ -108,9 +110,9 @@ document.querySelector("#fileInput").addEventListener('change', function(){
 	$("form").submit()
 })
 
-function download(fname){
-	if( confirm(fname+" 다운로드 하시겠습니까?")){
-		location.href="${pageContext.request.contextPath}/download?fname="+fname
+function download(fname, originfname){
+	if( confirm(originfname+" 다운로드 하시겠습니까?")){
+		location.href="${pageContext.request.contextPath}/download?fname="+fname+"&originfname="+originfname;
 	}
 }
 </script>			

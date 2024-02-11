@@ -2,6 +2,7 @@ package com.web.spring.calendar.service;
 
 import java.util.List;
 
+import com.web.spring.vo.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,8 @@ public class CalendarService {
 	@Autowired(required = false)
 	private CalendarDao dao;
 	
-	public List<Calendar> getCalendar(){
-		return dao.getCalendar();
+	public List<Calendar> getCalendar(Project project){
+		return dao.getCalendar(project);
 	}
 	
 	public String insertCalendar(Calendar ins) {

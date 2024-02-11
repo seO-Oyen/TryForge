@@ -45,6 +45,110 @@
     <!-- Custom js for this page-->
     <script src="${path}/template/js/dashboard.js"></script>
     <script src="${path}/template/alert/sweetalert2.min.js"></script>
+    <!-- End custom js for this page-->
+    <script>
+        $(document).ready(function () {
+            var sessId = "${loginMem.member_id}"
+            if (sessId == "") {
+                alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
+                location.href = "${path}/login"
+            } else if ("${loginMem.member_role}" != "") {
+                $("#admin").css("display", "")
+            }
+            function updateNavigation() {
+                var currentPage = window.location.pathname;
+                var titleElement = $('.navbar-menu-wrapper #titleText');
+                var detailElement = $('#detailText');
+
+                switch (currentPage) {
+                    case '/adMain':
+                        titleElement.text('Adminmain')
+                        detailElement.text('관리자페이지  >  메인페이지')
+                        break;
+                    case '/projList':
+                        titleElement.text('Project')
+                        detailElement.text('관리자페이지  >  프로젝트관리')
+                        break;
+                    case '/task':
+                        titleElement.text('Task')
+                        detailElement.text('관리자페이지  >  업무할당관리')
+                        break;
+                    case '/noticeList':
+                        titleElement.text('Notice')
+                        detailElement.text('관리자페이지  >  공지사항조회')
+                        break;
+                    case '/getNotice':
+                        titleElement.text('Notice')
+                        detailElement.text('관리자페이지  >  공지사항상세')
+                        break;
+                    case '/insertNotice':
+                        titleElement.text('Notice')
+                        detailElement.text('관리자페이지  >  공지사항등록')
+                        break;
+                    case '/updateNoticeFrm':
+                        titleElement.text('Notice')
+                        detailElement.text('관리자페이지  >  공지사항수정')
+                        break;
+                    case '/updateNotice':
+                        titleElement.text('Notice')
+                        detailElement.text('관리자페이지  >  공지사항수정')
+                        break;
+                    case '/deleteNotice':
+                        titleElement.text('Notice')
+                        detailElement.text('관리자페이지  >  공지사항삭제')
+                        break;
+                    case '/taskManage':
+                        titleElement.text('Task')
+                        detailElement.text('관리자페이지  >  업무현황관리')
+                        break;
+                    case '/adUser':
+                        titleElement.text('UserManage')
+                        detailElement.text('관리자페이지  >  사용자관리')
+                        break;
+                    default:
+                        break;
+                }
+            }
+            updateNavigation();
+        })
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/x-icon" href="${path}/template/images/logo_backDelete.png">
+    <title>TryForge</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="${path}/template/vendors/typicons/typicons.css">
+    <link rel="stylesheet" href="${path}/template/vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="${path}/template/css/vertical-layout-light/style.css">
+    <link rel="shortcut icon" href="../../images/favicon.png"/>
+
+    <link rel="stylesheet" href="${path}/template/vendors/mdi/css/materialdesignicons.min.css"/>
+    <link rel="stylesheet" href="${path}/template/alert/sweetalert2.min.css">
+
+    <!-- base:js -->
+    <script src="${path}/template/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page-->
+    <script src="${path}/template/vendors/chart.js/Chart.min.js"></script>
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
+    <script src="${path}/template/js/off-canvas.js"></script>
+    <script src="${path}/template/js/hoverable-collapse.js"></script>
+    <script src="${path}/template/js/template.js"></script>
+    <script src="${path}/template/js/settings.js"></script>
+    <script src="${path}/template/js/todolist.js"></script>
+
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="${path}/template/js/dashboard.js"></script>
+    <script src="${path}/template/alert/sweetalert2.min.js"></script>
+=======
+>>>>>>> refs/remotes/origin/develop
    <!--chart.js-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
     <!-- End custom js for this page-->

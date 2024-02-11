@@ -69,7 +69,8 @@ $(document).ready(function() {
 		selectable : true,
 		selectMirror : true,
 		
-		select : function(arg) { // 날짜 선택하면 상세일정 등록 이벤트
+		select : function(arg) {
+			// 날짜 선택하면 상세일정 등록 이벤트
 			// 등록을 위해 처리되는 이벤트 핸들러(날짜 클릭, 시간을 스크롤 하면 처리)
 			// 등록을 위해서 기존에 있던 정보(없으면 공백)으로 입력창 출력
 			$("#frm01")[0].reset()
@@ -172,6 +173,7 @@ $(document).ready(function() {
 	//		상세화면에 출력시 사용되는 속성
 	function addForm(evt){
 		$("[name=calendar_key]").val(evt.extendedProps.calendar_key)
+		$("[name=project_key]").val(evt.extendedProps.project_key)
 		$("[name=title]").val(evt.title)
 		$("[name=writer]").val(evt.extendedProps.writer)
 		$("#start").val(evt.start.toLocaleString())
@@ -246,6 +248,7 @@ $(document).ready(function() {
 				</div>
 				<div class="modal-body">
 					<form id="frm01" class="form" method="post">
+						<input type="hidden" name="project_key" value="${projectMem.project_key}"/>
 						<input type="hidden" name="calendar_key" value="0"/>
 						<div class="input-group mb-3">
 							<div class="input-group-prepend ">
@@ -275,7 +278,7 @@ $(document).ready(function() {
 								<span class="input-group-text  justify-content-center">
 									작성자</span>
 							</div>
-							<input name="writer" class="form-control" value="" />
+							<input name="writer" class="form-control" readonly value="${loginMem.member_name}" />
 						</div>
 						<div class="input-group mb-3">
 							<div class="input-group-prepend ">

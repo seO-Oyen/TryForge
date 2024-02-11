@@ -8,7 +8,6 @@
 <jsp:include page="${path}/template/module/module_user.jsp" flush="true" />
 <script>
 function goDash(projectKey) {
-	alert("프로젝트 키 : " + projectKey)
 	location.href = "${path}/dashboard"
 }
 </script>
@@ -17,7 +16,7 @@ function goDash(projectKey) {
 		<div class="main-panel">
 			<div class="content-wrapper">
 				<div class="row">
-					<%-- <div class="col-xl-6 grid-margin stretch-card flex-column">
+					<div class="col-xl-6 grid-margin stretch-card flex-column">
 						<h5 class="mb-2 text-titlecase mb-4">참여중인 프로젝트</h5>
 						<div class="row h-100">
 							<div class="col-md-12 stretch-card">
@@ -27,23 +26,20 @@ function goDash(projectKey) {
 										<div class="d-flex justify-content-between align-items-center mb-2">
 										<table class="table table-hover"
 											style="width: 95%; margin-left: 4%;">
+											<c:if test="${not empty projectMem.project_key}">
 										<thead>
 											<tr>
 												<th><h4>프로젝트명</h4></th>
-												<th></th>
-
 											</tr>
 										</thead>
 										<tbody>
-											<c:forEach var="plist" items="${plist}">
 												<tr>
-													<td>${plist.title}</td>
-													<td><button type="button" onclick="goDash('${plist.project_key}')"
+													<td>${projectMem.title}</td>
+													<td><button type="button" onclick="goDash('${projectMem.project_key}')"
 															class="btn btn-link btn-rounded btn-fw"
 															style="margin-left: 60%;">자세히</button></td>
-			
 												</tr>
-											</c:forEach>
+											</c:if>
 										</tbody>
 										</table>
 										</div>
@@ -52,7 +48,7 @@ function goDash(projectKey) {
 								</div>
 							</div>
 						</div>
-					</div> --%>
+					</div>
 					<!-- <div class="col-xl-6 grid-margin stretch-card flex-column">
 						<h5 class="mb-2 text-titlecase mb-4">초대된 프로젝트</h5>
 						<div class="row h-100">
