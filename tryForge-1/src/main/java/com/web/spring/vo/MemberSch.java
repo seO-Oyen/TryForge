@@ -11,6 +11,7 @@ public class MemberSch {
 	private String start_date;
 	private String end_date;
 	private int task_key;
+	private String member_role;
 
 	public MemberSch() {
 		// TODO Auto-generated constructor stub
@@ -72,7 +73,6 @@ public class MemberSch {
 	public void setProject_key(String project_key) {
 		this.project_key = project_key;
 	}
-
 	public int getTask_key() {
 		return task_key;
 	}
@@ -80,6 +80,11 @@ public class MemberSch {
 	public void setTask_key(int task_key) {
 		this.task_key = task_key;
 	}
+	public String getMember_role() {
+		return member_role;
+	}
 
-
+	public void setMember_role(String member_role) {
+		this.member_role = member_role;
+	}
 }

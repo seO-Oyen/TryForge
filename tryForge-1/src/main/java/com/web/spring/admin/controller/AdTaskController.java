@@ -2,13 +2,11 @@ package com.web.spring.admin.controller;
 
 import java.util.List;
 
+import com.web.spring.vo.Risk_Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import com.web.spring.admin.service.AdTaskService;
 import com.web.spring.vo.MemberSch;
@@ -68,11 +66,50 @@ public class AdTaskController {
     }
     
     @GetMapping("taskChart") // 차트용 ajax
-    public String taskChart(Model d){
-        d.addAttribute("confCnt",service.confirm());
-        d.addAttribute("unConfCnt",service.unConfirm());
-        d.addAttribute("finCnt",service.completedTaskCnt());
-        d.addAttribute("allCnt",service.allTaskCnt());
+    public String taskChart(@RequestParam("creater")int creater,Model d){
+        d.addAttribute("confCnt",service.confirm(creater));
+        d.addAttribute("unConfCnt",service.unConfirm(creater));
+        d.addAttribute("finCnt",service.completedTaskCnt(creater));
+        return "pageJsonReport";
+    }
+    // 만든 프로젝트 별 업무 리스크 출력
+    @GetMapping("AdriskList")
+    public String adRiskList(@RequestParam("creater")int creater, Model d){
+        d.addAttribute("rlist",service.adRiskList(creater));
+        return "pageJsonReport";
+    }
+    // 리스크 대응자 검색
+    @GetMapping("riskContactSch")
+    public String riskContactSch(@RequestParam("project_key")String project_key, Model d){
+        d.addAttribute("mlist",service.riskContactList(project_key));
+        return "pageJsonReport";
+    }
+    // 리스크 대응 등록
+    @PostMapping("insertRiskResponse")
+    public String insertRiskResponse(Risk_Response ins, Model d){
+        d.addAttribute("insResMsg",service.insertRiskRes(ins));
+        return "pageJsonReport";
+    }
+    // 리스크 대응 상세정보
+    @GetMapping("getRiskResponse")
+    public String getRiskResponse(@RequestParam("risk_key")int risk_key, Model d){
+        d.addAttribute("getRiskResponse",service.getRiskResponse(risk_key));
+        return "pageJsonReport";
+    }
+    // 리스크 상태 업데이트
+    @GetMapping("uptProcessing")
+    public String uptProcessing(@RequestParam("risk_response_key")int risk_response_key, Model d){
+        d.addAttribute("pMsg",service.uptProcessing(risk_response_key));
+        return "pageJsonReport";
+    }
+    @GetMapping("uptFin")
+    public String uptFin(@RequestParam("risk_response_key")int risk_response_key, Model d){
+        d.addAttribute("finMsg",service.uptFin(risk_response_key));
+        return "pageJsonReport";
+    }
+    @RequestMapping("uptRiskResponse")
+    public String uptRiskResponse(Risk_Response upt, Model d){
+        d.addAttribute("uptRiskResMsg",service.uptRiskResponse(upt));
         return "pageJsonReport";
     }
 }

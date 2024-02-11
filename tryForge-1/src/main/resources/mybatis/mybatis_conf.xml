@@ -17,5 +17,7 @@
 		<typeAlias alias="memberSch" type="com.web.spring.vo.MemberSch"/>
 		<typeAlias alias="file" type="com.web.spring.vo.FileStorage"/>
 		<typeAlias alias="approve" type="com.web.spring.vo.Approval"/>
+		<typeAlias alias="risk" type="com.web.spring.vo.Risk"/>
+      		<typeAlias alias="risk_response" type="com.web.spring.vo.Risk_Response"/>
 	</typeAliases>
 </configuration>
