@@ -166,7 +166,7 @@ $("#fileInput").on('change', function(){
 		processData: false,
 		contentType: false,
 		success: function(response) {
-			msg("success", "파일 업로드 성공!", "성공적으로 파일 업로드 했습니다.")
+			msg("success", "파일 업로드 성공!", response.msg)
 			getFileList();
 		},
 		error: function(error) {
