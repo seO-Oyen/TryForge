@@ -288,7 +288,7 @@
 									class="d-flex align-items-center justify-content-between justify-content-md-center justify-content-xl-between flex-wrap mb-4">
 									<div>
 										<p class="mb-2 text-md-center text-lg-left">Total
-											Expenses</p>
+											Expenses</p>`
 										<h1 class="mb-0">8742</h1>
 									</div>
 									<i class="typcn typcn-briefcase icon-xl text-secondary"></i>

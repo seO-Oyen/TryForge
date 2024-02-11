@@ -38,10 +38,13 @@ public class AdProjectService {
 		// 배열로 받아온 맴버키 문자열 타입을 숫자형으로 변환
 		// , 와 공백 제거 처리
 		for (String memberKeys : member_key) {
+			// 여기서 auth 한번 더 돌리고
 			String[] keys = memberKeys.replace(" ", "").split(",");
 			for (String key : keys) {
 				try {
 					int memkey = Integer.parseInt(key);
+					//여기서 auth 마저 뽑아서
+					//insertTm = dao.insertTm(memkey,auth);
 					insertTm = dao.insertTm(memkey);
 				} catch (NumberFormatException e) {
 					System.out.println("에러 1: " + e.getMessage());
