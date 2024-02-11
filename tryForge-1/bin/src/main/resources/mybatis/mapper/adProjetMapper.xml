@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.web.spring.admin.dao.AdProjectDao">
+	<resultMap type="Team_Member" id="tmRst">
+		<result column = "member_key" property = "member_key1"/>
+	</resultMap>
+	
+	<!-- 프로젝트 출력 -->
+	<select id="projList" resultType="project">
+		SELECT * FROM PROJECT p ORDER BY p.start_date
+	</select>
+	
+	<!-- 프로젝트에 해당하는 모든 정보 출력 
+	<select id="projectInfo01" resultType="" parameterType="String">
+		select * from member m 
+		LEFT JOIN TEAM_MEMBER tm ON tm.member_key = m.member_key
+		LEFT JOIN TEAM t ON t.TEAM_KEY = tm.TEAM_KEY
+		LEFT JOIN project p ON p.project_KEY = t.project_KEY
+		WHERE p.PROJECT_KEY = #{project_key}
+	</select>-->
+	
+	<!-- 사원 검색 출력 -->
+	<select id="schMem" resultType="memberSch" parameterType="String">
+		SELECT m.member_name, m.member_email, tm.ROLE, p.title, p.start_date, p.end_date
+		FROM MEMBER m 
+			LEFT JOIN TEAM_MEMBER tm ON tm.MEMBER_KEY  = m.MEMBER_KEY
+			LEFT JOIN TEAM t ON t.team_key = tm.TEAM_KEY 
+			LEFT JOIN PROJECT p ON p.project_key = t.PROJECT_KEY 
+			WHERE m.MEMBER_NAME LIKE '%' || #{member_name} || '%' ORDER BY m.MEMBER_KEY
+	</select>
+	
+	<!-- 프로젝트입력 -->
+	<insert id="insertPJ" parameterType="project">
+	    INSERT INTO PROJECT (project_key, title, detail, status, start_date, end_date)
+	    VALUES ('PJ-' || project_seq.nextval, #{title}, #{detail}, '진행중', TO_DATE(#{start_date}, 'YYYY-MM-DD'), TO_DATE(#{end_date}, 'YYYY-MM-DD'))
+	</insert>
+	
+	<!-- 팀입력 -->
+	<insert id="insertTeam" parameterType="team">
+		INSERT INTO TEAM (team_key, team_name, project_key, project_cnt)
+		VALUES (team_seq.nextval, #{team_name}, 'PJ-' || project_seq.CURRVAL,0)
+	</insert>
+	
+	<!-- 팀원입력 -->
+	<insert id="insertTm" parameterType="int">
+	    INSERT INTO TEAM_MEMBER VALUES (teamMem_seq.nextval, #{member_key}, 'TM', team_seq.CURRVAL)
+	</insert>
+	
+	<!-- 총 팀원수 변경 -->
+	<update id="uptCnt">
+		UPDATE TEAM
+		SET PROJECT_CNT = (
+		    SELECT COUNT(*)
+		    FROM TEAM_MEMBER tm
+		    WHERE tm.team_key = TEAM.team_key)
+	</update>
+	
+	<!-- 프로젝트 키로 프로젝트 정보 -->
+	<select id="projectInfo" resultType="project" parameterType="String">
+		select * from project where project_key = #{project_key}
+	</select>
+	
+	<!-- 프로젝트 키로 팀 정보 -->
+	<select id="teamInfo" resultType="team" parameterType="String">
+		select * from team where project_key = #{project_key}
+	</select>
+	
+	<!-- 팀 키로 팀 맴버 정보 -->
+	<select id="tmInfo" parameterType="int" resultMap = "tmRst">
+		select * from team_member where team_key = #{team_key}
+	</select>
+	
+	<!-- 맴버키로 맴버 정보 -->
+	<select id="memberInfo" resultType="member" parameterType="int">
+		select * from member where member_key = #{member_key}
+	</select>
+	<!-- 프로젝트 키로 프로젝트, 팀, 팀원 삭제 -->
+	<delete id="delTeam" parameterType="String">
+		DELETE FROM TEAM WHERE project_KEY = #{project_key}
+	</delete>
+	<delete id="delProject" parameterType="String">
+		DELETE FROM project WHERE project_KEY = #{project_key}
+	</delete>
+	
+	<!-- 프로젝트 완료 변경 -->
+	<update id="uptFin" parameterType="String">
+		UPDATE project SET status = '완료' WHERE project_key= #{project_key}
+	</update>
+	
+	<!-- 팀이름, 시작/종료일, 상세설명 수정 -->
+	<update id="uptProject" parameterType="project">
+		UPDATE project
+		SET start_date = TO_DATE(#{start_date}, 'YYYY-MM-DD'),
+			end_date = TO_DATE(#{end_date}, 'YYYY-MM-DD'),
+			detail = #{detail},
+			title = #{title}
+		WHERE project_key = #{project_key}
+	</update>
+	
+	<update id="uptTeam" parameterType="team">
+		UPDATE Team
+		set team_name = #{team_name}
+		where project_key = #{project_key}
+	</update>
+	
+	<!-- 맴버키  -->
+</mapper>
