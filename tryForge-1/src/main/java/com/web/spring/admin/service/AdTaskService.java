@@ -50,18 +50,18 @@ public class AdTaskService {
         return dao.delTask(id) > 0 ? "삭제 성공" : "삭제 실패";
     }
     // 총, 완료, 확인, 미확인 차트용 갯수출력
-    public int unConfirm(){
-        System.out.println(dao.unConfirmCnt());
-        return dao.unConfirmCnt();}
-    public int confirm(){
-        System.out.println(dao.confirmCnt());
-        return dao.confirmCnt();
+    public int unConfirm(int creater){
+        //System.out.println(dao.unConfirmCnt());
+        return dao.unConfirmCnt(creater);}
+    public int confirm(int creater){
+        //System.out.println(dao.confirmCnt());
+        return dao.confirmCnt(creater);
     }
-    public int completedTaskCnt(){
-        System.out.println(dao.completedTaskCnt());
-        return dao.completedTaskCnt();
+    public int completedTaskCnt(int creater){
+        //System.out.println(dao.completedTaskCnt());
+        return dao.completedTaskCnt(creater);
     }
-    public int allTaskCnt(){return dao.allTaskCnt();}
+
     // 만든 프로젝트에 관해서만 업무 리스크 출력
     public List<Risk> adRiskList(int creater){
         return dao.adRiskList(creater);
@@ -74,5 +74,21 @@ public class AdTaskService {
     public String insertRiskRes(Risk_Response ins){
         dao.confirmNewRisk(ins.getRisk_key());
         return dao.insertRiskRes(ins)>0?"리스크 대응 등록 성공":"리스크 대응 등록 에러";
+    }
+    // 리스크 대응방안 상세보기
+    public Risk_Response getRiskResponse(int risk_key){
+        return dao.getRiskResponse(risk_key);
+    }
+    // 리스크 발생 상태 업데이트 2형제
+    public String uptProcessing(int risk_response_key){
+        return dao.uptProcessing(risk_response_key)>0?"발생 상태 변경 완료":"상태 변경 에러";
+    }
+    public String uptFin(int risk_response_key){
+        dao.uptCompletionDate(risk_response_key);
+        return dao.uptFin(risk_response_key)>0?"처리완료 상태 변경 완료":"상태 변경 에러";
+    }
+    // 리스크 대응 수정
+    public String uptRiskResponse(Risk_Response upt){
+        return dao.uptRiskResponse(upt)>0?"수정 성공":"수정 에러";
     }
 }

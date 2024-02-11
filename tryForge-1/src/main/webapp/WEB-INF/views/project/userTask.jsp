@@ -406,6 +406,12 @@
                                 <option value="3">3 순위</option>
                             </select>
                         </div>
+
+                        <div class="form-group">
+                            <label for="exampleTextarea1">상세설명</label>
+                            <textarea class="form-control" id="detail" rows="4"></textarea>
+                        </div>
+
                     </form>
                     <!-- Modal footer -->
                     <div class="modal-footer">

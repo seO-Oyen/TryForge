@@ -123,7 +123,8 @@
                         row01 += "</tr>"
                     } else {
                         var formattedDate = new Date(item.reg_date).toLocaleDateString();
-                        row02 += "<tr ondblclick='riskRes()'ss>"
+                        row02 += "<tr ondblclick='getRiskResponse(\"" + item.title + "\", \"" + item.text + "\", \"" + item.registrant + "\", \"" + formattedDate + "\"," +
+                            " \"" + item.detail + "\", \"" + item.risk_key + "\")'>"
                         row02 += "<td>" + item.title + "</td>"
                         row02 += "<td>" + item.text + "</td>"
                         row02 += "<td>" + item.registrant + "</td>"
@@ -182,14 +183,20 @@
         $.ajax({
             url: "${path}/taskChart",
             dataType: "json",
+            data:"creater="+"${loginMem.member_key}",
             success: function (data) {
-                totalTasks = data.allCnt;
                 task1 = data.unConfCnt;
                 task2 = data.confCnt;
                 task3 = data.finCnt;
-                $("#task01").text(task1 + "개")
+                totalTasks = task1+task2+task3
+                $("#task01").text(totalTasks + "개")
                 $("#task02").text(task2 + "개")
                 $("#task03").text(task3 + "개")
+
+                $("#taskCnt01").text(totalTasks)
+                $("#taskCnt02").text(task2)
+                $("#taskCnt03").text(task3)
+                $("#taskCnt04").text(task1)
 
                 drawChart();
             },
@@ -207,8 +214,12 @@
         $("#reg_date").val(regdate);
         $("#detail").val(detail)
         schMem(project_key)
+        $("#risk_status_label").hide();
+        $("#risk_status").hide();
         $("#myModal").modal('show')
-
+        $("#detailBtn").hide()
+        $("#regResBtn").show()
+        $("#uptResBtn").hide()
         $("#regResBtn").click(function () {
             insRiskRes();
         })
@@ -221,6 +232,7 @@
             dataType: "json",
             success: function (data) {
                 var radioGroup = $('#radioGroup');
+                radioGroup.empty();
                 $(data.mlist).each(function (idx, member) {
                     var radioBtn = $('<input type="radio" class="form-check-input" name="contact" value="' + member.member_name + '">');
                     var label = $('<label class="form-check-label"></label>').text(member.member_name + "-" + member.role);
@@ -247,10 +259,153 @@
             success: function (data) {
                 var insResMsg = data.insResMsg;
                 if (insResMsg != null) {
-                    alert(insResMsg);
+                    Swal.fire({
+                        title: '성공',
+                        text: insResMsg,
+                        icon: 'success',
+                    }).then(function () {
+                        $("#clsBtn").click();
+                        window.location.reload();
+                    });
                 }
             },
             error: function (err) {
+                console.log(err)
+            }
+        })
+    }
+
+    function getRiskResponse(title, text, registrant, regdate, detail, key){
+        $("#project_title").val(title)
+        $("#task_text").val(text)
+        $("#registrant").val(registrant)
+        $("#reg_date").val(regdate);
+        $("#detail").val(detail)
+        $("[name=risk_key]").val(key)
+        $.ajax({
+            url:"${path}/getRiskResponse",
+            data:"risk_key="+key,
+            dataType:"json",
+            success:function (data){
+                var resInfo = data.getRiskResponse;
+                console.log(resInfo)
+                console.log(resInfo.response_method)
+                console.log(resInfo.contact)
+                $("#contactLabel").text("담당자 확인")
+                $("[name=response_method]").val(resInfo.response_method)
+                $("[name=status]").val(resInfo.status)
+                $("[name=risk_response_key]").val(resInfo.risk_response_key)
+                $("#radioGroup").empty().text(resInfo.contact)
+                $("[name=contact]").val(resInfo.contact)
+                $("#risk_status_label").show();
+                $("#risk_status").show();
+                $("#detailBtn").show()
+                $("#uptResBtn").show()
+                $("#regResBtn").hide()
+                $("#myModal").modal('show')
+
+                $("#sta01Btn").click(function (){
+                    if(resInfo.status=='발생전'){
+                        uptProcessing(resInfo.risk_response_key)
+                    }else{
+                        Swal.fire({
+                            title: '실패',
+                            text: '현재 상태에서는 처리할 수 없습니다.',
+                            icon: 'error'
+                        })
+                    }
+                })
+                $("#sta02Btn").click(function (){
+                    if(resInfo.status=='처리중'){
+                        uptFin(resInfo.risk_response_key)
+                    }else{
+                        Swal.fire({
+                            title: '실패',
+                            text: '현재 상태에서는 처리할 수 없습니다.',
+                            icon: 'error'
+                        })
+                    }
+                })
+
+                $("#uptResBtn").click(function(){
+                    uptRiskResponse();
+                })
+            },
+            error:function(err){
+                console.log(err)
+            }
+        })
+    }
+
+    // 처리중 상태로 변경
+    function uptProcessing(response_key) {
+        $.ajax({
+            url: "${path}/uptProcessing",
+            data: "risk_response_key=" + response_key,
+            dataType: "json",
+            success: function(data) {
+                if (data.pMsg != null) {
+                    Swal.fire({
+                        title: '성공',
+                        text: data.pMsg,
+                        icon: 'success',
+                    }).then(function () {
+                        $("#clsBtn").click();
+                        window.location.reload();
+                    });
+                }
+
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    }
+
+    // 처리완료 상태로 변경
+    function uptFin(response_key) {
+        $.ajax({
+            url: "${path}/uptFin",
+            data: "risk_response_key=" + response_key,
+            dataType: "json",
+            success: function(data) {
+                if(data.finMsg!=null){
+                    Swal.fire({
+                        title: '성공',
+                        text: data.finMsg,
+                        icon: 'success',
+                    }).then(function () {
+                        $("#clsBtn").click();
+                        window.location.reload();
+                    });
+                }
+
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    }
+
+    function uptRiskResponse(){
+        alert($("#modalFrm").serialize())
+        $.ajax({
+            url:"${path}/uptRiskResponse",
+            data:$("#modalFrm").serialize(),
+            dataType:"json",
+            success:function (data){
+                if(data.uptRiskResMsg!=null){
+                    Swal.fire({
+                        title: '성공',
+                        text: data.uptRiskResMsg,
+                        icon: 'success',
+                    }).then(function () {
+                        $("#clsBtn").click();
+                        window.location.reload();
+                    });
+                }
+            },
+            error:function(err){
                 console.log(err)
             }
         })
@@ -267,6 +422,12 @@
                         <div class="card-body">
                             <h4 class="card-title">업무 현황</h4>
                             <canvas id="pieChart" style="margin-top: 50px;" ></canvas>
+                            <div class="chart-info" style="position: absolute; bottom: 8%; left: 5%;">
+                                <p>총 업무 갯수: <span id="taskCnt01"></span></p>
+                                <p>진행중인 업무: <span id="taskCnt02"></span></p>
+                                <p>완료된 업무: <span id="taskCnt03"></span></p>
+                                <p>미확인 업무: <span id="taskCnt04"></span></p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -288,7 +449,7 @@
                             <div class="card-body" style="width: 100%;">
                                 <div class="d-flex align-items-center justify-content-between justify-content-md-center justify-content-xl-between flex-wrap mb-4">
                                     <div>
-                                        <p class="mb-2 text-md-center text-lg-left">미확인업무</p>
+                                        <p class="mb-2 text-md-center text-lg-left">총 업무</p>
                                         <h1 class="mb-0" id="task01"></h1>
                                     </div>
                                     <i class="mdi mdi-clipboard-outline icon-xl text-secondary"></i>
@@ -408,12 +569,36 @@
             <div class="modal-body">
                 <div style="display: flex;">
                     <h3 id=proTitle>리스크 대응</h3>
+                    <div class="btn-group" style="margin-left: 55%;" id="detailBtn">
+                        <button type="button" class="btn btn-"
+                                style="background-color: #007FFF; color: white;">리스크 상태변경</button>
+                        <button type="button"
+                                style="background-color: #007FFF; color: white;"
+                                class="btn btn- dropdown-toggle dropdown-toggle-split"
+                                id="dropdownMenuSplitButton1" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu"
+                             aria-labelledby="dropdownMenuSplitButton1">
+                            <button class="dropdown-item" id="sta01Btn">발생</button>
+                            <button class="dropdown-item" id="sta02Btn">처리완료</button>
+                        </div>
+                    </div>
 
                 </div>
 
             </div>
             <form class="forms-sample" id="modalFrm">
                 <input type="hidden" name="risk_key"/>
+                <input type="hidden" name="risk_response_key"/>
+                <input type="hidden" name="contact"/>
+
+                <div class="form-group">
+                    <label id="risk_status_label" for="exampleInputUsername1">리스크 상태</label>
+                    <input name="status" type="text" readonly class="form-control" id="risk_status"
+                           placeholder="title">
+                </div>
 
                 <div class="form-group">
                     <label for="exampleInputUsername1">프로젝트 명</label>
@@ -445,7 +630,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="exampleInputPassword1">구성원 선택</label>
+                    <label for="exampleInputPassword1" id="contactLabel">담당자 선택</label>
                     <div id="radioGroup">
                         <div class="form-check">
 
@@ -454,8 +639,8 @@
 
                 </div>
                 <div class="form-group">
-                    <label for="exampleTextarea1">대응방안</label>
-                    <textarea class="form-control" id="" rows="4" name="response_method"></textarea>
+                    <label for="exampleTextarea1" >대응방안</label>
+                    <textarea class="form-control" rows="4" name="response_method"></textarea>
                 </div>
 
             </form>
@@ -466,6 +651,9 @@
                 <div class="mx-auto">
                     <button type="button" class="btn btn-" id="regResBtn"
                             style="background-color: #007FFF; color: white;">등록
+                    </button>
+                    <button type="button" class="btn btn-" id="uptResBtn"
+                            style="background-color: #007FFF; color: white;">수정
                     </button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"
                             id="clsBtn">닫기

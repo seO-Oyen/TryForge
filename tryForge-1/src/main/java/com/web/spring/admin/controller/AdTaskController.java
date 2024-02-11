@@ -66,11 +66,10 @@ public class AdTaskController {
     }
     
     @GetMapping("taskChart") // 차트용 ajax
-    public String taskChart(Model d){
-        d.addAttribute("confCnt",service.confirm());
-        d.addAttribute("unConfCnt",service.unConfirm());
-        d.addAttribute("finCnt",service.completedTaskCnt());
-        d.addAttribute("allCnt",service.allTaskCnt());
+    public String taskChart(@RequestParam("creater")int creater,Model d){
+        d.addAttribute("confCnt",service.confirm(creater));
+        d.addAttribute("unConfCnt",service.unConfirm(creater));
+        d.addAttribute("finCnt",service.completedTaskCnt(creater));
         return "pageJsonReport";
     }
     // 만든 프로젝트 별 업무 리스크 출력
@@ -89,6 +88,28 @@ public class AdTaskController {
     @PostMapping("insertRiskResponse")
     public String insertRiskResponse(Risk_Response ins, Model d){
         d.addAttribute("insResMsg",service.insertRiskRes(ins));
+        return "pageJsonReport";
+    }
+    // 리스크 대응 상세정보
+    @GetMapping("getRiskResponse")
+    public String getRiskResponse(@RequestParam("risk_key")int risk_key, Model d){
+        d.addAttribute("getRiskResponse",service.getRiskResponse(risk_key));
+        return "pageJsonReport";
+    }
+    // 리스크 상태 업데이트
+    @GetMapping("uptProcessing")
+    public String uptProcessing(@RequestParam("risk_response_key")int risk_response_key, Model d){
+        d.addAttribute("pMsg",service.uptProcessing(risk_response_key));
+        return "pageJsonReport";
+    }
+    @GetMapping("uptFin")
+    public String uptFin(@RequestParam("risk_response_key")int risk_response_key, Model d){
+        d.addAttribute("finMsg",service.uptFin(risk_response_key));
+        return "pageJsonReport";
+    }
+    @RequestMapping("uptRiskResponse")
+    public String uptRiskResponse(Risk_Response upt, Model d){
+        d.addAttribute("uptRiskResMsg",service.uptRiskResponse(upt));
         return "pageJsonReport";
     }
 }
