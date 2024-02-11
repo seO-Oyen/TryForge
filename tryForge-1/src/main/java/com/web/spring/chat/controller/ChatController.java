@@ -3,6 +3,8 @@ package com.web.spring.chat.controller;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import com.web.spring.chat.ChatHandler;
 import com.web.spring.chat.service.ChatService;
 import com.web.spring.member.service.MemberService;
 import com.web.spring.vo.Chat;
+import com.web.spring.vo.ChatList;
 import com.web.spring.vo.Member;
 
 import jakarta.servlet.http.HttpSession;
@@ -36,8 +39,30 @@ public class ChatController {
 	public String chatHome(HttpSession session, Model d) {
 		if (session.getAttribute("loginMem") != null ) {
 			Member member = (Member)session.getAttribute("loginMem");
-			d.addAttribute("chatList", chatService.getChatList(member.getMember_key()));
-			d.addAttribute("chatMap", chatService.chatHome(member.getMember_key()));
+			
+			List<ChatList> chatList = chatService.getChatList(member.getMember_key());
+			d.addAttribute("chatList", chatList);
+			
+			HashMap<List<String>, String> chatMemMap = new LinkedHashMap();
+			chatMemMap = chatService.chatHome(member.getMember_key());
+			d.addAttribute("chatMap", chatMemMap);
+			
+			List<String> chatDetailList = chatHandler.getMessageSaveList();
+			HashMap<Integer, String> lastChat = new HashMap<>();
+			
+			for (ChatList chatLi : chatList) {
+				
+				for(int i = 0; i < chatDetailList.size(); i++) {
+					String[] splitChat = chatDetailList.get(i).split("/");
+					if(splitChat[0].equals(Integer.toString(chatLi.getChatlist_key()))) {
+						lastChat.put(chatLi.getChatlist_key(), splitChat[3]);
+					}
+				}
+			}
+			d.addAttribute("lastChat", lastChat);
+			
+			// 테에스트~..
+			chatHandler.setChatListNum(0);
 		}
 		
 		return "chat/chattingHome";
@@ -67,6 +92,7 @@ public class ChatController {
 		List<Member> memList = new ArrayList<>();
 		for (Chat chat : chatList) {
 			memList.add(memService.getMember(chat.getSender_key()));
+			System.out.println(chat.getSend_time());
 		}
 		d.addAttribute("memList", memList);
 		
@@ -91,10 +117,6 @@ public class ChatController {
 			System.out.println(chat);
 			String[] splitChat = chat.split("/");
 			Member chatMem = memService.getMemberToId(splitChat[1]);
-			
-			// 시간 변경
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-			LocalDateTime dateTime = LocalDateTime.parse(splitChat[4], formatter);
 			
 			chatList.add(new Chat(Integer.parseInt(splitChat[0]), chatMem.getMember_key(), splitChat[3], splitChat[4]));
 		

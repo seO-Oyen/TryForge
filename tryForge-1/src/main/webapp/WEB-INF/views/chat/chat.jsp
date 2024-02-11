@@ -82,16 +82,18 @@ $(document).ready(function(){
 
 function revMsg(msg){
 	var calName = "chat"
+	console.log(msg)
 	var msgArr = msg.split("/")
 	console.log(msgArr)
 	if ("${loginMem.member_id}" == msgArr[1]){
 		calName = "${loginMem.member_id}"
 	} else {
-		var sendMem = $("<div class='chat text-muted'></div>").text(msgArr[2])
+		var sendMem = $("<div class='chat'></div>").text(msgArr[2])
 		$("#chatScrean").append(sendMem)
 	}
 	
-	var msgObj = $("<div></div>").append("<span>" + msgArr[3] + "</span>").attr("class",
+	var msgObj = $("<div></div>").append("<span>" + msgArr[3] + "</span>" 
+			+ "<div style='padding-top: 5px; color: gray;'>" + msgArr[4] + "</div>").attr("class",
 			calName)
 	
 	$("#chatScrean").append(msgObj)
@@ -100,8 +102,25 @@ function revMsg(msg){
 }
 
 function sendMsg(){
-	wsocket.send("${chats[0].chatlist_key}/${loginMem.member_id}/${loginMem.member_name}/" + $("#sendMsg").val())
+	var date = new Date()
+	var yyyy = date.getFullYear()
+	var mm = date.getMonth() + 1
+	mm = mm >= 10 ? mm : '0' + mm
+	var dd = date.getDate();
+	dd = dd >= 10 ? dd : '0' + dd;
+	var hour = date.getHours()
+	var minute = date.getMinutes()
+	hour = hour >= 10 ? hour : '0' + hour
+    minute = minute >= 10 ? minute : '0' + minute
+	
+	wsocket.send("${chats[0].chatlist_key}/${loginMem.member_id}/${loginMem.member_name}/" 
+			+ $("#sendMsg").val() + "/" + yyyy + '-' + mm + '-' + dd + " " + hour + ":" + minute)
 	$("#sendMsg").val("")
+}
+
+function sendMsgTime(time) {
+	var sendMem = $("<div class='time'></div>").text(time)
+	$("#chatScrean").append(sendMem)
 }
 
 </script>
@@ -118,15 +137,39 @@ function sendMsg(){
 					<p class="mb-0">채팅방</p>
 				</div>
 				<div id="chatScrean" class="card-body">
+					<c:set var="lastName" value="" />
+					<c:set var="lastDate" value="" />
+					
 					<c:forEach var="chat" items="${chats}" varStatus="status">
+						
 						<c:if test="${memList[status.index].member_id ne loginMem.member_id}">
-							<div class="chat text">${memList[status.index].member_name}</div>
+							
+							<c:if test="${lastName ne memList[status.index].member_id}">
+								<div class="chat text">${memList[status.index].member_name}</div>
+							</c:if>
 						</c:if>
 						
 						<div class="chat ${memList[status.index].member_id}">
 							<span>${chat.chat_detail}</span>
+							<div style="padding-top: 5px; color: gray;">${chat.send_time}</div>
+							<%-- <c:choose>
+								<c:when test="${chat.send_time ne chats[status.index - 1].send_time}">
+									<div>${chat.send_time}</div>
+								</c:when>
+								<c:when test="${chat.send_time eq chats[status.index - 1].send_time}">
+									<div>${chat.send_time}</div>
+								</c:when>
+								
+							</c:choose> --%>
 						</div>
+						<div>
+							
+						</div>
+						
+						<c:set var="lastName" value="${memList[status.index].member_id}" />
+						
 					</c:forEach>
+					
 				</div>
 				<div class="form-group" style="display: flex; margin: auto">
 						<input class="typeahead sendMsg" id="sendMsg" />

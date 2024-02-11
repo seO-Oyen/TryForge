@@ -62,6 +62,7 @@ public class ChatService {
 		int num = 0;
 		for (Chat chat : chatList) {
 			num += dao.insertChat(chat);
+			dao.updateLastMessage(chat);
 		}
 		
 		return num + "건 db저장 완료";

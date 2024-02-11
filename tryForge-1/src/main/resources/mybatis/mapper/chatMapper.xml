@@ -20,7 +20,11 @@
 	</select>
 	
 	<select id="getChat" parameterType="int" resultType="chat">
-		SELECT *
+		SELECT chat_key,
+		   chatlist_key,
+		   sender_key,
+		   chat_detail,
+		   TO_CHAR(send_time, 'YYYY-MM-DD HH24:MI') send_time
 		FROM chat
 		WHERE CHATLIST_KEY = #{listKey}
 		ORDER BY SEND_TIME
@@ -41,7 +45,7 @@
 		   #{chatlist_key},
 		   #{sender_key},
 		   #{chat_detail},
-		   #{send_time}
+		   TO_DATE(#{send_time}, 'YYYY-MM-DD HH24:MI')
 		)
 	</insert>
 	
@@ -49,7 +53,7 @@
 		UPDATE chat_list
 		SET
 			LAST_MESSAGE = #{chat_detail},
-			LAST_TIME = TO_DATE(#{send_time}, 'YYYY-MM-DD HH24:MI:SS')
+			LAST_TIME = TO_DATE(#{send_time}, 'YYYY-MM-DD HH24:MI')
 		WHERE CHATLIST_KEY = #{chatlist_key}
 	</update>
 

@@ -70,7 +70,7 @@ public class ChatHandler extends TextWebSocketHandler{
 		// 날짜 설정
 		LocalDateTime now = LocalDateTime.now();
 		
-		String parsedLocalDateTimeNow = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		String parsedLocalDateTimeNow = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 		
 		// 주고 받은 메세지 저장
 		messageSave.add(message.getPayload() + "/" + parsedLocalDateTimeNow);
@@ -80,7 +80,7 @@ public class ChatHandler extends TextWebSocketHandler{
         	String[] keySplit = key.split("/");
         	String[] messageSplit = message.getPayload().split("/");
         	
-        	if (keySplit[0].equals(messageSplit[0])) {
+        	if (keySplit[0].equals(messageSplit[0]) || keySplit[0].equals("0")) {
         		WebSocketSession ws = CLIENTS.get(key);
         		
         		Map map = (Map)ws.getAttributes();

@@ -41,6 +41,15 @@
 
 <script>
 $(document).ready(function(){
+	wsocket = new WebSocket(
+		"ws:localhost:1111/ws/chat"	
+	)
+	
+	wsocket.onmessage = function(evt){
+		// 서버에서 push 접속한 모든 client에 전송..
+		revMsg(evt.data) // 메시지 처리 공통 함수 정의				
+	}
+	
 	/* var idVal = "${loginMem.member_name}"
 	wsocket = new WebSocket(
 		"ws:localhost:1111/ws/chat"	
@@ -59,15 +68,14 @@ $(document).ready(function(){
 
 function revMsg(msg){
 	var calName = "chat"
-	var msgArr = msg.split(":")
+	var msgArr = msg.split("/")
 	console.log(msgArr)
-	if ("${loginMem.member_id}" == msgArr[0]){
-		calName = "${loginMem.member_id}"
-	}
-	var msgObj = $("<div></div>").text(msg).attr("class",
+	
+	var msgObj = $("<td></td>").append(msgArr[3]).attr("class",
 			calName)
 			
-	$("#chatScrean").append(msgObj)
+	$("#" + msgArr[0]).text(msgArr[3])
+		
 }
 
 function sendMsg(){
@@ -103,9 +111,17 @@ function clickList(listKey) {
 					</thead>
 					<tbody>
 						<c:forEach var="chat" items="${chatMap}" varStatus="status">
-							<tr onclick="clickList(${chatList[status.index].chatlist_key})">
+							<tr
+								onclick="clickList(${chatList[status.index].chatlist_key})">
 								<td>${chat.key}</td>
-								<td>${chat.value}</td>
+								<c:choose>
+									<c:when test="${lastChat.containsKey(chatList[status.index].chatlist_key)}">
+										<td id="${chatList[status.index].chatlist_key}">${lastChat.get(chatList[status.index].chatlist_key)}</td>
+									</c:when>
+									<c:otherwise>
+										<td id="${chatList[status.index].chatlist_key}">${chat.value}</td>
+									</c:otherwise>
+								</c:choose>
 							</tr>
 						</c:forEach>
 					</tbody>
