@@ -53,5 +53,10 @@ public interface AdTaskDao {
 	@Update("UPDATE RISK_RESPONSE SET COMPLETION_DATE= sysdate WHERE RISK_RESPONSE_KEY =#{risk_response_key} ")
 	int uptCompletionDate(@Param("risk_response_key")int risk_response_key);
 	int uptRiskResponse(Risk_Response upt);
+	// 리스크 차트 4형제
+	int riskNotConTot(@Param("creater")int creater); // 리스크 미확인
+	int riskTot01(@Param("creater")int creater); // 발생전
+	int riskTot02(@Param("creater")int creater); // 발생(처리중)
+	int riskTot03(@Param("creater")int creater); // 처리완료
 
 }

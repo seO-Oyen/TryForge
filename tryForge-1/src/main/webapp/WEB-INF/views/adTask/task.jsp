@@ -226,6 +226,9 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Task Management</h4>
+                        <button type="button" class="btn btn-"
+                                style="background-color: white; color: #007FFF; margin-left: 87%; border-color:#007FFF; ">간트차트 이동
+                        </button>
                         <!-- 구성원 검색 -->
                         <form id="frm01">
                             <div style="display: flex;">
