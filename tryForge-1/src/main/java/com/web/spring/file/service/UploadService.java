@@ -28,7 +28,6 @@ private String path;
 		if(mpfs!=null && mpfs.length>0) {
 			try {
 				for(MultipartFile mpf:mpfs) {
-				
 					String fname = mpf.getOriginalFilename(); // 이름추출
 					String ftype = mpf.getContentType(); // image/jpeg 형식 추출
 					long fsizeByte = mpf.getSize(); // 파일크기 추출(byte)
@@ -53,6 +52,8 @@ private String path;
 					String fkey = "FILE-"+dao.getFileSeq();
 
 					mpf.transferTo(new File(path+fkey));
+					// Path truePath = Paths.get(path+fkey).toAbsolutePath();
+					// mpf.transferTo(truePath.toFile());
 					chk += dao.uploadFile(new FileStorage(fkey, fname, path, extension, fsize,
 							upload.getProject_key(), upload.getMember_key()));
 				}

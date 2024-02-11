@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.web.spring.file.service.FileService;
 import com.web.spring.vo.FileStorage;
+import org.springframework.web.bind.annotation.PostMapping;
 
 
 @Controller
@@ -18,13 +19,25 @@ public class FileController {
 	private FileService service;
 	@Autowired(required = false)
 	private SessionService sessionService;
+
 	@GetMapping("file")
-	public String FileList(FileStorage file, Model d, HttpSession session) {
+	public String file() {
+		return "/project/fileStorage";
+	}
+
+	@GetMapping("getFileList")
+	public String getFileList(FileStorage file, Model d, HttpSession session) {
 		Project project = sessionService.getProject(session);
 		if(project != null) {
 			file.setProject_key(project.getProject_key());
-			d.addAttribute("fList", service.FileList(file));
+			d.addAttribute("fList", service.fileList(file));
 		}
-		return "/project/fileStorage";
+		return "pageJsonReport";
+	}
+
+	@PostMapping("deleteFile")
+	public String delFile(FileStorage file, Model d){
+		d.addAttribute("result", service.delFile(file));
+		return "pageJsonReport";
 	}
 }
