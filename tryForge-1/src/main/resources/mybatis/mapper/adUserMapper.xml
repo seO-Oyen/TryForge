@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.spring.admin.dao.AdUserDao">
+	<select id="tmFromMember" resultType="team_member" parameterType="int">
+		SELECT tm.* FROM TEAM_MEMBER tm 
+		JOIN MEMBER m ON tm.member_key = m.member_key WHERE m.MEMBER_KEY = #{member_key}
+	</select>	
+	<update id="assignPL" parameterType="int">
+		update TRYFORGE.TEAM_MEMBER set role = 'PL' where TRYFORGE.TEAM_MEMBER.TEAM_MEMBER_KEY = #{team_Member_key}
+	</update>
+	<insert id="insNewTm" parameterType="team_member">
+		insert INTO TRYFORGE.TEAM_MEMBER values (teamMem_seq.nextval, #{member_key1}, 'TM', #{team_key})
+	</insert>
+</mapper>

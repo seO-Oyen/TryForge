@@ -3,9 +3,18 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.web.spring.task.dao.TaskDao">
+	<resultMap type = "task" id="taskRst">
+		<result column = "task_key" property = "id"/>
+		<result column = "task_type" property = "type"/>
+		<result column = "task_open" property = "open"/>
+		<result column = "member_name" property = "owner"/>
+	</resultMap>
 	<!-- 업무 출력 -->
-	<select id="getTask" resultType="task">
+	<select id="getTask" resultMap="taskRst">
 			SELECT * FROM task
 	</select>
-	
+	<!--ISK_KEY|PROJECT_KEY|TASK_KEY|REGISTRANT|TYPE|POSSIBILITY|PRIORITY|CONFIRM|DETAIL  |REG_DATE              -->
+	<insert id="insertRisk" parameterType="risk">
+		insert into risk values (RISK_SEQ.nextval,#{project_key},#{task_key},#{registrant},#{type},#{possibility},#{priority},0,#{detail},sysdate)
+	</insert>
 </mapper>

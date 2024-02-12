@@ -26,6 +26,7 @@ public interface AdProjectDao {
 	Member memberInfo(int member_key);
 	int delProject(String project_key);
 	int delTeam(String project_key);
+	int delTm(int member_key);
 	int uptFin(String project_key);
 	int uptProject(Project uptPro);
 	int uptTeam(Team uptTeam);
