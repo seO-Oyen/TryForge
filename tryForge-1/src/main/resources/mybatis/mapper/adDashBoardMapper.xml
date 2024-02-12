@@ -37,6 +37,24 @@
 	</select>
 	<!--리스크 현황 ===> 리스크 이후 처리-->
 	<!--리스크 발생건수 , 처리중 , 완료-->
+	<select id="riskTot" resultType="int" parameterType="String">
+		SELECT count(*) FROM risk r
+								 LEFT JOIN RISK_RESPONSE rr ON rr.RISK_KEY = r.RISK_KEY
+								 JOIN PROJECT p ON p.PROJECT_KEY = r.PROJECT_KEY
+		WHERE p.TITLE = #{title}
+	</select>
+	<select id="risk01Tot" parameterType="String" resultType="int">
+		SELECT count(*) FROM risk r
+								 LEFT JOIN RISK_RESPONSE rr ON rr.RISK_KEY = r.RISK_KEY
+								 JOIN PROJECT p ON p.PROJECT_KEY = r.PROJECT_KEY
+		WHERE p.TITLE = #{title} AND rr.status = '처리중'
+	</select>
+	<select id="risk02Tot" parameterType="String" resultType="int">
+		SELECT count(*) FROM risk r
+								 LEFT JOIN RISK_RESPONSE rr ON rr.RISK_KEY = r.RISK_KEY
+								 JOIN PROJECT p ON p.PROJECT_KEY = r.PROJECT_KEY
+		WHERE p.TITLE = #{title} AND rr.status = '처리완료'
+	</select>
 	<!--모달창 : 해당 프로젝트 담당자별 업무 진척도-->
 	<!--해당하는 걸로 출력시킬까, 표클릭하면 select로 해당 프로젝트를 보게할까...-->
 	<!--일단 담당자별로 묶어서 해당 사원의 전체 진척도 백분율-->

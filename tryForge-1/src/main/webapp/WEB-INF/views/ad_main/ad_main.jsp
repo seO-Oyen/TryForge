@@ -174,54 +174,91 @@
                 console.log(err)
             }
         })
+        var titleArr = [];
+        var riskTotResults = [];
+        var risk01TotResults = [];
+        var risk02TotResults = [];
 
-        // 리스크관리
-        const ctx04 = document.getElementById('riskStatus').getContext('2d');
-        const stackedBar = new Chart(ctx04, {
-            type: 'bar',
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [
-                    {
-                        label: 'Dataset 1',
-                        data: [12, 19, 3, 5, 7, 10],
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Dataset 2',
-                        data: [8, 12, 5, 8, 0, 0],
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    },
-                    {
-                        type: 'line', // 두 번째 데이터셋은 꺾은선 그래프로 지정
-                        label: 'Dataset 3 (Line)',
-                        data: [30, 50, 25, 33, 45, 22], // 꺾은선 그래프의 데이터
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 2,
-                        fill: false
-                    }
-                ]
+        $.ajax({
+            url: "${path}/RiskChart",
+            dataType: "json",
+            success: function(data) {
+                var titles = data.gettitle;
+                titles.forEach(function(title) {
+                    titleArr.push(title);
+                    $.ajax({
+                        url: "${path}/riskTot",
+                        data: "title=" + title,
+                        dataType: "json",
+                        success: function(result) {
+                            riskTotResults.push(result.riskTot);
+                            risk01TotResults.push(result.risk01Tot);
+                            risk02TotResults.push(result.risk02Tot);
+
+                            if (titleArr.length === titles.length) {
+                                createChart();
+                            }
+                        },
+                        error: function(err) {
+                            console.log(err);
+                        }
+                    });
+                });
             },
-            options: {
-                scales: {
-                    x: {
-                        stacked: true
-                    },
-                    y: {
-                        stacked: true,
-                        max: 100,
-                        ticks: {
-                            stepSize: 5
+            error: function(err) {
+                console.log(err);
+            }
+        });
+
+        function createChart() {
+            // 리스크 차트 생성
+            const ctx04 = document.getElementById('riskStatus').getContext('2d');
+            const stackedBar = new Chart(ctx04, {
+                type: 'bar',
+                data: {
+                    labels: titleArr,
+                    datasets: [
+                        {
+                            label: 'Risk Tot',
+                            data: riskTotResults,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Risk 01 Tot',
+                            data: risk01TotResults,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            type: 'line',
+                            label: 'Risk 02 Tot (Line)',
+                            data: risk02TotResults,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 2,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            stacked: true
+                        },
+                        y: {
+                            stacked: true,
+                            max: 100,
+                            ticks: {
+                                stepSize: 5
+                            }
                         }
                     }
                 }
-            }
-        });
-    });
+            });
+        }
+    })
     // 담당자별 업무 진척도
     function openPage(key){
         $.ajax({

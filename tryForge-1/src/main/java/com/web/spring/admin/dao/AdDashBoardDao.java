@@ -19,4 +19,10 @@ public interface AdDashBoardDao {
     int totWaitingPJ();
     // 프로젝트 별로 구분하여 담당자별 업무 진척도
     List<Task> taskProgressBypeople(@Param("project_key")String project_key);
+    // 리스크 총 갯수(프로젝트 별)
+    int riskTot(@Param("title")String title);
+    // 리스크 발생 건수 (프로젝트별)
+    int risk01Tot(@Param("title")String title);
+    // 리스크 처리 완료 갯수(프로젝트 별)
+    int risk02Tot(@Param("title")String title);
 }

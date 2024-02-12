@@ -44,4 +44,17 @@ public class AdDashBoardController {
         d.addAttribute("taskProgressBypeople",service.taskProgressBypeople(project_key));
         return "pageJsonReport";
     }
+    // 리스크 차트
+    @GetMapping("RiskChart")
+    public String RiskChart(Model d){
+        d.addAttribute("gettitle",service.getTitle());
+        return "pageJsonReport";
+    }
+    @GetMapping("riskTot")
+    public String riskTot(@RequestParam("title")String title, Model d){
+        d.addAttribute("riskTot",service.riskTot(title));
+        d.addAttribute("risk01Tot",service.risk01Tot(title));
+        d.addAttribute("risk02Tot",service.risk02Tot(title));
+        return "pageJsonReport";
+    }
 }
