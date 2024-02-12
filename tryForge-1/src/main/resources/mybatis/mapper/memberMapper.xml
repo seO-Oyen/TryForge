@@ -87,6 +87,12 @@
 		where member_key = #{memberKey}
 	</select>
 	
+	<select id="getMeberToId" parameterType="String" resultType="member">
+		select * 
+		from member
+		where member_id = #{memberId}
+	</select>
+	
 	<select id="checkPwd" parameterType="String" resultType="int">
 		SELECT count(*)
 		FROM MEMBER

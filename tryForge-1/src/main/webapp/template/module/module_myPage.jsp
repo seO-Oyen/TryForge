@@ -53,6 +53,20 @@ $(document).ready(function(){
 		alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
 		location.href="${path}/login"
 	}
+	
+	var startChat = setInterval(function() {
+		$.ajax({
+			url : "${path}/chatSave",
+			type : "POST",
+			dataType : "json",
+			success : function(data) {
+				console.log(data)
+			},
+			error : function(err) {
+				console.log(err)
+			}
+		})
+	}, 180000)
 })
 </script>
 <style>
@@ -486,8 +500,7 @@ $(document).ready(function(){
 						</div> -->
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" data-toggle="collapse" 
-							href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+						<a class="nav-link"  href="${path}/chatHome">
 							<i class="typcn mdi mdi-account-convert menu-icon"></i>
 							<span class="menu-title">채팅</span>
 							<!-- <i class="menu-arrow"></i> -->
