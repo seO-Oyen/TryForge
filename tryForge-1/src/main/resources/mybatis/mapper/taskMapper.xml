@@ -13,8 +13,9 @@
 	<select id="getTask" resultMap="taskRst">
 			SELECT * FROM task
 	</select>
-	<!--ISK_KEY|PROJECT_KEY|TASK_KEY|REGISTRANT|TYPE|POSSIBILITY|PRIORITY|CONFIRM|DETAIL  |REG_DATE              -->
+	<!--리스크 등록 -->
 	<insert id="insertRisk" parameterType="risk">
-		insert into risk values (RISK_SEQ.nextval,#{project_key},#{task_key},#{registrant},#{type},#{possibility},#{priority},0,#{detail},sysdate)
+		insert into risk values
+		(RISK_SEQ.nextval,#{project_key},#{task_key},#{registrant},#{type},#{possibility},#{priority},0,#{detail},sysdate)
 	</insert>
 </mapper>

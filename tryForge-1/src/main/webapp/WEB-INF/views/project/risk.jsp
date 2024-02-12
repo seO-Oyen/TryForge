@@ -102,6 +102,8 @@
 		$("#regResBtn").show()
 		$("#uptResBtn").hide()
 		$("#div01").hide()
+		$("#riskHeader").text("Risk Information")
+		$("#riskTitle").text("리스크 등록정보")
 
 	}
 
@@ -133,6 +135,8 @@
 				$("#uptResBtn").show()
 				$("#regResBtn").hide()
 				$("#div01").show()
+				$("#riskHeader").text("Risk Response")
+				$("#riskTitle").text("리스크 대응정보")
 				$("#myModal").modal('show')
 
 			},
@@ -216,7 +220,7 @@
 
 					<!-- Modal Header -->
 					<div class="modal-header">
-						<h2 class="modal-title">Risk Response</h2>
+						<h2 class="modal-title" id="riskHeader">Risk Response</h2>
 
 						<button type="button" class="close" data-dismiss="modal" id="xBtn">×</button>
 					</div>
@@ -224,7 +228,7 @@
 					<!-- Modal body -->
 					<div class="modal-body">
 						<div style="display: flex;">
-							<h3 id=proTitle>리스크 대응</h3>
+							<h3 id="riskTitle">리스크 대응</h3>
 
 
 						</div>

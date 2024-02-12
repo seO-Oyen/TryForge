@@ -148,7 +148,6 @@
 
 	// 리스크 등록
     function regRisk(){
-        //alert($("#modalFrm02").serialize())
         $.ajax({
             url:"${path}/insRisk",
             data:$("#modalFrm02").serialize(),
@@ -409,7 +408,7 @@
 
                         <div class="form-group">
                             <label for="exampleTextarea1">상세설명</label>
-                            <textarea class="form-control" id="detail" rows="4"></textarea>
+                            <textarea class="form-control" id="detail" rows="4" name="detail"></textarea>
                         </div>
 
                     </form>

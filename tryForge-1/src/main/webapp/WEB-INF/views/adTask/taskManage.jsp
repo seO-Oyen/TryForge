@@ -369,7 +369,7 @@
                 $("#uptResBtn").show()
                 $("#regResBtn").hide()
                 $("#myModal").modal('show')
-
+                // sta01Btn : 발생 상태로 변경 버튼
                 $("#sta01Btn").click(function (){
                     if(resInfo.status=='발생전'){
                         uptProcessing(resInfo.risk_response_key)
@@ -381,6 +381,7 @@
                         })
                     }
                 })
+                // sta01Btn : 처리완료 상태로 변경 버튼
                 $("#sta02Btn").click(function (){
                     if(resInfo.status=='처리중'){
                         uptFin(resInfo.risk_response_key)
