@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.web.spring.chat.controller.ChatController;
 import com.web.spring.member.service.MemberService;
 import com.web.spring.vo.InviteMember;
 import com.web.spring.vo.MailSender;
@@ -24,12 +25,15 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private ChatController chatController;
 
 	// 로그인 창 띄우기
 	@GetMapping("login")
 	public String login(HttpSession session) {
 		// 기존 session이 있다면 삭제
 		if (session.getAttribute("loginMem") != null) {
+			System.out.println(chatController.chatSave());
 			session.removeAttribute("loginMem");
 			System.out.println("세션삭제");
 		}

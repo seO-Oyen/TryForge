@@ -8,23 +8,12 @@
 	flush="true" />
 
 <style>
-#chatList {
-	/* background-color: white; */
-}
-
-.chatScrean {
-	/* margin: 0 auto; */
-	
-}
 
 .chat {
-	/* border: 1px solid; */
 	text-align: left;
 }
 
 .${loginMem.member_id} {
-	/* color: red; */
-	/* border: 1px solid; */
 	width: auto;
 	text-align: right;
 }
@@ -42,28 +31,16 @@
 <script>
 $(document).ready(function(){
 	wsocket = new WebSocket(
-		"ws:localhost:1111/ws/chat"	
-	)
-	
-	wsocket.onmessage = function(evt){
-		// 서버에서 push 접속한 모든 client에 전송..
-		revMsg(evt.data) // 메시지 처리 공통 함수 정의				
-	}
-	
-	/* var idVal = "${loginMem.member_name}"
-	wsocket = new WebSocket(
-		"ws:localhost:1111/ws/chat"	
-	)
-	
-	wsocket.onopen = function(evt){
-		console.log(evt)
+		"ws:localhost:1111/tryForge/chat"
 		
-		wsocket.send(idVal+"님 접속하셨습니다!")
-	}
+		// 서버컴 주소
+		// "ws:211.63.89.67:1111/ws/chat"
+	)
+	
 	wsocket.onmessage = function(evt){
-		// 서버에서 push 접속한 모든 client에 전송..
 		revMsg(evt.data) // 메시지 처리 공통 함수 정의				
-	} */
+	}
+	
 })
 
 function revMsg(msg){
@@ -76,11 +53,6 @@ function revMsg(msg){
 			
 	$("#" + msgArr[0]).text(msgArr[3])
 		
-}
-
-function sendMsg(){
-	wsocket.send("${loginMem.member_id}" + ":"+$("#sendMsg").val())
-	$("#sendMsg").val("")
 }
 
 function clickList(listKey) {

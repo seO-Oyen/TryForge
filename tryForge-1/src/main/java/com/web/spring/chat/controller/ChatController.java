@@ -1,7 +1,5 @@
 package com.web.spring.chat.controller;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -61,7 +59,6 @@ public class ChatController {
 			}
 			d.addAttribute("lastChat", lastChat);
 			
-			// 테에스트~..
 			chatHandler.setChatListNum(0);
 		}
 		
@@ -92,7 +89,6 @@ public class ChatController {
 		List<Member> memList = new ArrayList<>();
 		for (Chat chat : chatList) {
 			memList.add(memService.getMember(chat.getSender_key()));
-			System.out.println(chat.getSend_time());
 		}
 		d.addAttribute("memList", memList);
 		

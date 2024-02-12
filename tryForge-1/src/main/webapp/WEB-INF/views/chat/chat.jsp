@@ -63,28 +63,35 @@
 <script>
 $(document).ready(function(){
 	var idVal = "${loginMem.member_name}"
-	console.log("${chats[0].chatlist_key}")
 	$('#chatScrean').scrollTop($('#chatScrean')[0].scrollHeight)
 	
 	wsocket = new WebSocket(
 		// 경로 수정
 		// 내컴퓨터 서버주소
-		//"ws:192.168.10.110:1111/ws/chat"	
-		"ws:localhost:1111/ws/chat"
+		// "ws:192.168.10.110:1111/ws/chat"	
+		"ws:localhost:1111/tryForge/chat"
+		
+		// 서버컴 주소
+		// "ws:211.63.89.67:1111/tryForge/chat"
 	)
 	
 	wsocket.onmessage = function(evt){
-		// 서버에서 push 접속한 모든 client에 전송..
 		revMsg(evt.data) // 메시지 처리 공통 함수 정의				
 	}
+	
+	$("#sendMsg").on("keyup",function(key){
+		if(key.keyCode==13) {
+			sendMsg()
+		}
+	});
 	
 })
 
 function revMsg(msg){
 	var calName = "chat"
-	console.log(msg)
 	var msgArr = msg.split("/")
-	console.log(msgArr)
+
+	// 본인이 보낸 메세지면 오른쪽정렬, 아니면 왼쪽정렬
 	if ("${loginMem.member_id}" == msgArr[1]){
 		calName = "${loginMem.member_id}"
 	} else {
@@ -92,6 +99,7 @@ function revMsg(msg){
 		$("#chatScrean").append(sendMem)
 	}
 	
+	// 메세지 내용과 시간 넣기
 	var msgObj = $("<div></div>").append("<span>" + msgArr[3] + "</span>" 
 			+ "<div style='padding-top: 5px; color: gray;'>" + msgArr[4] + "</div>").attr("class",
 			calName)
@@ -102,6 +110,9 @@ function revMsg(msg){
 }
 
 function sendMsg(){
+	if($("#sendMsg").val() == "") {
+		return false;
+	}
 	var date = new Date()
 	var yyyy = date.getFullYear()
 	var mm = date.getMonth() + 1
@@ -116,11 +127,6 @@ function sendMsg(){
 	wsocket.send("${chats[0].chatlist_key}/${loginMem.member_id}/${loginMem.member_name}/" 
 			+ $("#sendMsg").val() + "/" + yyyy + '-' + mm + '-' + dd + " " + hour + ":" + minute)
 	$("#sendMsg").val("")
-}
-
-function sendMsgTime(time) {
-	var sendMem = $("<div class='time'></div>").text(time)
-	$("#chatScrean").append(sendMem)
 }
 
 </script>

@@ -17,7 +17,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(chatHandler, "/ws/chat")
+		registry.addHandler(chatHandler, "/tryForge/chat")
 		.addInterceptors(new HttpSessionHandshakeInterceptor())
 		.setAllowedOrigins("*");
 	}

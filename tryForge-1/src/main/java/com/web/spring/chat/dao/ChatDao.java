@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Param;
 
 import com.web.spring.vo.Chat;
 import com.web.spring.vo.ChatList;
-import com.web.spring.vo.Member;
 
 @Mapper
 public interface ChatDao {

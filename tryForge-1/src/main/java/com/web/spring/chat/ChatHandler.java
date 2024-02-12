@@ -20,7 +20,6 @@ public class ChatHandler extends TextWebSocketHandler{
 	// 접속한 채팅 소켓세션(접속자 저장)
 	private static final ConcurrentHashMap<String, WebSocketSession> CLIENTS = new ConcurrentHashMap<String, WebSocketSession>();
 	private List<String> messageSave = new ArrayList<>();
-	
 	// 채팅방 (보내는 메시지)나누기 위해 (테스트)
 	private int chatListNum = 0;
 	
@@ -67,13 +66,15 @@ public class ChatHandler extends TextWebSocketHandler{
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		super.handleTextMessage(session, message);
 		
-		// 날짜 설정
-		LocalDateTime now = LocalDateTime.now();
+		// 주고 받은 메세지 저장(임시)
+		// messageSave.add(message.getPayload() + "/" + parsedLocalDateTimeNow);
+		messageSave.add(message.getPayload());
 		
-		String parsedLocalDateTimeNow = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-		
-		// 주고 받은 메세지 저장
-		messageSave.add(message.getPayload() + "/" + parsedLocalDateTimeNow);
+		/*
+		접속자 구분
+		2/test (채팅방 번호 / 접속자 아이디)
+		2/test/테스트/하이염/2024-02-12 20:08
+		*/
 		
 		// 같은 방에 있는 멤버에게만 채팅 보여줌
 		for(String key : CLIENTS.keySet()){
