@@ -112,4 +112,13 @@ public class AdTaskController {
         d.addAttribute("uptRiskResMsg",service.uptRiskResponse(upt));
         return "pageJsonReport";
     }
+    // 리스크 차트 riskNotConTot riskTot01
+    @GetMapping("riskAllTot")
+    public String riskAllTot(@RequestParam("creater")int creater, Model d){
+        d.addAttribute("riskNotConTot",service.riskNotConTot(creater)); // 미확인
+        d.addAttribute("riskTot01",service.riskTot01(creater)); // 확인+발생전
+        d.addAttribute("riskTot02",service.riskTot02(creater)); // 확인+발생(처리중)
+        d.addAttribute("riskTot03",service.riskTot03(creater)); // 확인+처리완료
+        return "pageJsonReport";
+    }
 }
