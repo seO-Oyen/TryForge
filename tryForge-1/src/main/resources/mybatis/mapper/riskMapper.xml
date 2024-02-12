@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.spring.risk.dao.RiskDao">
+	<select id="riskList" resultType="risk" parameterType="String">
+	SELECT r.*, ta.text, p.TITLE
+		FROM risk r
+				 LEFT JOIN PROJECT p ON r.PROJECT_KEY = p.PROJECT_KEY
+				 LEFT JOIN task ta ON ta.TASK_KEY = r.TASK_KEY
+		WHERE r.PROJECT_KEY = #{project_key} order by r.REG_DATE
+	</select>
+</mapper>
+

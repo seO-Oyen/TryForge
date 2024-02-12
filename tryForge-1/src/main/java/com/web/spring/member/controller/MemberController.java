@@ -31,7 +31,10 @@ public class MemberController {
 		// 기존 session이 있다면 삭제
 		if (session.getAttribute("loginMem") != null) {
 			session.removeAttribute("loginMem");
-			System.out.println("세션삭제");
+			if(session.getAttribute("projectMem") != null){
+				session.removeAttribute("projectMem");
+				System.out.println("세션(멤버&프로젝트) 삭제");
+			}
 		}
 
 		return "user/login";

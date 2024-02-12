@@ -12,25 +12,59 @@ public class FileStorage {
 	private Date upload_time;
 	private String iconPath;
 	private MultipartFile[] files;
-	
+	private int member_key;
+	private String project_key;
+	private String originfname;
+
+	public String getOriginfname() {
+		return originfname;
+	}
+
+	public void setOriginfname(String originfname) {
+		this.originfname = originfname;
+	}
+
+	public int getMember_key() {
+		return member_key;
+	}
+
+	public void setMember_key(int member_key) {
+		this.member_key = member_key;
+	}
+
+	public String getProject_key() {
+		return project_key;
+	}
+
+	public void setProject_key(String project_key) {
+		this.project_key = project_key;
+	}
+
 	public FileStorage() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public FileStorage(String fname, String path, String ftype, String fsize, Date upload_time, MultipartFile[] files) {
+	public FileStorage(String fname, String path, String ftype, String fsize, Date upload_time, String iconPath, MultipartFile[] files, int member_key, String project_key, String originfname) {
 		this.fname = fname;
 		this.path = path;
 		this.ftype = ftype;
 		this.fsize = fsize;
 		this.upload_time = upload_time;
+		this.iconPath = iconPath;
 		this.files = files;
+		this.member_key = member_key;
+		this.project_key = project_key;
+		this.originfname = originfname;
 	}
 
-	public FileStorage(String fname, String path, String ftype, String fsize) {
+	public FileStorage(String fname, String path, String ftype, String fsize, String project_key, int member_key, String originfname) {
 		this.fname = fname;
 		this.path = path;
 		this.ftype = ftype;
 		this.fsize = fsize;
+		this.member_key = member_key;
+		this.project_key = project_key;
+		this.originfname = originfname;
 	}
 
 	public String getIconPath() {
