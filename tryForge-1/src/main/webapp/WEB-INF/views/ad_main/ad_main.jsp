@@ -174,43 +174,51 @@
                 console.log(err)
             }
         })
-        var titleArr = [];
-        var riskTotResults = [];
-        var risk01TotResults = [];
-        var risk02TotResults = [];
-
         $.ajax({
             url: "${path}/RiskChart",
             dataType: "json",
-            success: function(data) {
-                var titles = data.gettitle;
-                titles.forEach(function(title) {
-                    titleArr.push(title);
-                    $.ajax({
-                        url: "${path}/riskTot",
-                        data: "title=" + title,
-                        dataType: "json",
-                        success: function(result) {
-                            riskTotResults.push(result.riskTot);
-                            risk01TotResults.push(result.risk01Tot);
-                            risk02TotResults.push(result.risk02Tot);
+            success: function (data) {
+                const promises = [];
+                const titleArr = [];
+                const riskTotResults = [];
+                const risk01TotResults = [];
+                const risk02TotResults = [];
 
-                            if (titleArr.length === titles.length) {
-                                createChart();
-                            }
-                        },
-                        error: function(err) {
-                            console.log(err);
-                        }
-                    });
+                data.gettitle.forEach(title => {
+                    promises.push(
+                        $.ajax({
+                            url: "${path}/riskTot",
+                            data: "title=" + title,
+                            dataType: "json"
+                        })
+                            .then(result => {
+                                titleArr.push(title);
+                                riskTotResults.push(result.riskTot);
+                                risk01TotResults.push(result.risk01Tot);
+                                risk02TotResults.push(result.risk02Tot);
+                                var row="";
+                                row+="<tr>"
+                                row+="<td>"+title+"</td>"
+                                row+="<td>"+result.riskTot+"개</td>"
+                                row+="<td>"+(result.riskTot - (result.risk01Tot+result.risk02Tot))+"개</td>"
+                                row+="<td>"+result.risk02Tot+"개</td>"
+                                row+="<td>"+result.risk02Tot+"개</td>"
+                                row+="</tr>"
+                                $("#riskTable").append(row)
+                            })
+                    );
+                });
+
+                Promise.all(promises).then(() => {
+                    createChart(titleArr, riskTotResults, risk01TotResults, risk02TotResults);
                 });
             },
-            error: function(err) {
+            error: function (err) {
                 console.log(err);
             }
         });
 
-        function createChart() {
+        function createChart(titleArr, riskTotResults, risk01TotResults, risk02TotResults) {
             // 리스크 차트 생성
             const ctx04 = document.getElementById('riskStatus').getContext('2d');
             const stackedBar = new Chart(ctx04, {
@@ -219,23 +227,23 @@
                     labels: titleArr,
                     datasets: [
                         {
-                            label: 'Risk Tot',
-                            data: riskTotResults,
+                            label: '처리중 리스크',
+                            data: risk01TotResults,
                             backgroundColor: 'rgba(255, 99, 132, 0.2)',
                             borderColor: 'rgba(255, 99, 132, 1)',
                             borderWidth: 1
                         },
                         {
-                            label: 'Risk 01 Tot',
-                            data: risk01TotResults,
+                            label: '처리완료 리스크',
+                            data: risk02TotResults,
                             backgroundColor: 'rgba(54, 162, 235, 0.2)',
                             borderColor: 'rgba(54, 162, 235, 1)',
                             borderWidth: 1
                         },
                         {
                             type: 'line',
-                            label: 'Risk 02 Tot (Line)',
-                            data: risk02TotResults,
+                            label: '총 리스크 갯수',
+                            data: riskTotResults,
                             borderColor: 'rgba(75, 192, 192, 1)',
                             borderWidth: 2,
                             fill: false
@@ -244,20 +252,17 @@
                 },
                 options: {
                     scales: {
-                        x: {
-                            stacked: true
-                        },
-                        y: {
-                            stacked: true,
-                            max: 100,
+                        yAxes: [{
                             ticks: {
-                                stepSize: 5
+                                suggestedMin: 0,
+                                suggestedMax: 50
                             }
-                        }
+                        }]
                     }
                 }
             });
         }
+
     })
     // 담당자별 업무 진척도
     function openPage(key){
@@ -412,19 +417,19 @@
                                     <h4 class="card-title" style="margin-right: 15px;">Risk Status</h4>
                                     <canvas id="riskStatus" width="20" height="20"></canvas>
                                     <div class="table-responsive"
-                                         style="overflow-x: visible; margin-left: 40%; margin-top: 10%;">
+                                         style="overflow-x: visible; margin-left: 25%; margin-top: 0;">
                                         <table class="table table-hover" style="width: 100%;">
                                             <thead>
                                             <tr>
-                                                <th>진행중인 프로젝트</th>
-                                                <th>1</th>
+                                                <th>프로젝트 명</th>
+                                                <th>리스크 총 갯수</th>
+                                                <th>미발생 리스크</th>
+                                                <th>발생(처리중) 리스크</th>
+                                                <th>처리완료 리스크</th>
                                             </tr>
                                             </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>2</td>
-                                            </tr>
+                                            <tbody id="riskTable">
+
                                             </tbody>
                                         </table>
                                     </div>
