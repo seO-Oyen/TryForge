@@ -11,6 +11,7 @@ public class MemberSch {
 	private String start_date;
 	private String end_date;
 	private int task_key;
+	private String status;
 	private String member_role;
 
 	public MemberSch() {
@@ -76,7 +77,6 @@ public class MemberSch {
 	public int getTask_key() {
 		return task_key;
 	}
-
 	public void setTask_key(int task_key) {
 		this.task_key = task_key;
 	}
@@ -84,6 +84,13 @@ public class MemberSch {
 		return member_role;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;}
+	
 	public void setMember_role(String member_role) {
 		this.member_role = member_role;
 	}

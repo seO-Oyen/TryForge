@@ -226,6 +226,9 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Task Management</h4>
+                        <button type="button" class="btn btn-"
+                                style="background-color: white; color: #007FFF; margin-left: 87%; border-color:#007FFF ">간트차트 이동
+                        </button>
                         <!-- 구성원 검색 -->
                         <form id="frm01">
                             <div style="display: flex;">
@@ -250,7 +253,7 @@
                                 </div>
                                 <input type="text" class="form-control mb-2" name="member_name"
                                        placeholder="사원명 검색" style="width: 54%; margin-left: 10px;">
-                                <button type="submit" class="btn btn-" id="regBtn"
+                                <button type="submit" class="btn btn-" id="schBtn"
                                         style="background-color: #007FFF; color: white; margin-left: 5%; height: 2.875rem;">
                                     검색
                                 </button>

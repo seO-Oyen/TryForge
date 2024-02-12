@@ -7,7 +7,7 @@
              flush="true"/>
 <style>
     #myModal .modal-dialog {
-        max-width: 50%; /* 모달의 최대 너비를 80%로 설정 */
+        max-width: 50%;
     }
 
     /* 입력 요소 여백 조절 */
@@ -105,48 +105,48 @@
             success: function (data) {
                 var memList = data.memList;
                 var html = "";
-                $(memList)
-                    .each(
-                        function (idx, member) {
-                            if (member.title != null) {
-                                html += "<tr> ";
-                                html += "<td>"
-                                    + member.member_name
-                                    + "</td>";
-                                html += "<td>"
-                                    + member.member_email
-                                    + "</td>";
-                                html += "<td>" + member.title
-                                    + "</td>";
-                                html += "<td>"
-                                    + member.start_date
-                                    + "</td>";
-                                html += "<td>"
-                                    + member.end_date
-                                    + "</td>";
-                                html += "</tr>";
-                            } else {
-                                var member_key = member.member_key;
-                                html += "<tr ondblclick='selectMem(\""
-                                    + member_key
-                                    + "\", \""
-                                    + member.member_name
-                                    + "\", \""
-                                    + member.member_email
-                                    + "\")' > ";
-                                html += "<td>"
-                                    + member.member_name
-                                    + "</td>";
-                                html += "<td>"
-                                    + member.member_email
-                                    + "</td>";
-                                html += "<td style='text-align: center;'>·</td>";
-                                html += "<td style='text-align: center;'>·</td>";
-                                html += "<td style='text-align: center;'>·</td>";
+                $(memList).each(function (idx, member) {
+                    const today = new Date();
+                    const endDate = new Date(member.end_date);
+                    if (member.status == '진행중' && endDate>today) {
+                        html += "<tr> ";
+                        html += "<td>"
+                            + member.member_name
+                            + "</td>";
+                        html += "<td>"
+                            + member.member_email
+                            + "</td>";
+                        html += "<td>" + member.title
+                            + "</td>";
+                        html += "<td>"
+                            + member.start_date
+                            + "</td>";
+                        html += "<td>"
+                            + member.end_date
+                            + "</td>";
+                        html += "</tr>";
+                    } else {
+                        var member_key = member.member_key;
+                        html += "<tr ondblclick='selectMem(\""
+                            + member_key
+                            + "\", \""
+                            + member.member_name
+                            + "\", \""
+                            + member.member_email
+                            + "\")' > ";
+                        html += "<td>"
+                            + member.member_name
+                            + "</td>";
+                        html += "<td>"
+                            + member.member_email
+                            + "</td>";
+                        html += "<td style='text-align: center;'>·</td>";
+                        html += "<td style='text-align: center;'>·</td>";
+                        html += "<td style='text-align: center;'>·</td>";
 
-                                html += "</tr>";
-                            }
-                        });
+                        html += "</tr>";
+                    }
+                });
 
                 $("#addMem").html(html);
                 selectedMemberKeys.push(member.member_key);
@@ -199,7 +199,8 @@
 
     function openpage(key) {
         $.ajax({
-            url: "${path}/detail?project_key=" + key,
+            url: "${path}/detail",
+            data: "project_key=" + key,
             dataType: "json",
             success: function (data) {
                 var projectInfo = data.projectInfo;
@@ -232,8 +233,13 @@
                 // 다중 멤버 each 처리
                 var addhtml = "";
                 $.each(memberInfo, function (index, member) {
-                    addhtml += "<tr><td>" + member.member_name + "</td><td>"
-                        + member.member_email + "</td></tr>";
+                    if (member.member_name == null) {
+                        addhtml += "<tr><td>" + 구성원없음 + "</td></tr>";
+                    } else {
+
+                        addhtml += "<tr><td>" + member.member_name + "</td><td>"
+                            + member.member_email + "</td></tr>";
+                    }
                 });
 
                 // 기존의 내용을 비우고 새로운 행을 추가
