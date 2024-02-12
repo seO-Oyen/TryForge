@@ -18,7 +18,6 @@
             success: function (pjdata) {
                 var texts = [];
                 var progresses = [];
-
                 $(pjdata.pjprogress).each(function (idx, item) {
                     var row = "";
                     var startDate = new Date(item.start_date);
@@ -184,6 +183,7 @@
             dataType: "json",
             success: function(data) {
                 var titles = data.gettitle;
+                var requestsCompleted = 0; // 완료된 AJAX 요청 수를 추적
                 titles.forEach(function(title) {
                     titleArr.push(title);
                     $.ajax({
@@ -195,7 +195,10 @@
                             risk01TotResults.push(result.risk01Tot);
                             risk02TotResults.push(result.risk02Tot);
 
-                            if (titleArr.length === titles.length) {
+                            requestsCompleted++; // 요청이 완료될 때마다 증가
+
+                            // 모든 요청이 완료되면 차트 생성
+                            if (requestsCompleted === titles.length) {
                                 createChart();
                             }
                         },
@@ -219,23 +222,23 @@
                     labels: titleArr,
                     datasets: [
                         {
-                            label: 'Risk Tot',
-                            data: riskTotResults,
+                            label: '처리중 리스크',
+                            data: risk01TotResults,
                             backgroundColor: 'rgba(255, 99, 132, 0.2)',
                             borderColor: 'rgba(255, 99, 132, 1)',
                             borderWidth: 1
                         },
                         {
-                            label: 'Risk 01 Tot',
-                            data: risk01TotResults,
+                            label: '처리완료 리스크',
+                            data: risk02TotResults,
                             backgroundColor: 'rgba(54, 162, 235, 0.2)',
                             borderColor: 'rgba(54, 162, 235, 1)',
                             borderWidth: 1
                         },
                         {
                             type: 'line',
-                            label: 'Risk 02 Tot (Line)',
-                            data: risk02TotResults,
+                            label: '총 리스크 갯수',
+                            data: riskTotResults,
                             borderColor: 'rgba(75, 192, 192, 1)',
                             borderWidth: 2,
                             fill: false
