@@ -2,15 +2,15 @@ package com.web.spring.admin.service;
 
 import java.util.List;
 
-import com.web.spring.gantt.dao.GanttDao;
-import org.apache.ibatis.annotations.Param;
+import com.web.spring.vo.Risk;
+import com.web.spring.vo.Risk_Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.web.spring.admin.dao.AdTaskDao;
+import com.web.spring.gantt.dao.GanttDao;
 import com.web.spring.vo.MemberSch;
 import com.web.spring.vo.Task;
-
 
 @Service
 public class AdTaskService {
@@ -45,13 +45,61 @@ public class AdTaskService {
     public String uptTask(Task upt) {
         return dao.uptTask(upt) > 0 ? "수정 완료" : "수정 실패";
     }
-
     // 해당 업무키 삭제
     public String delTask(int id) {
         return dao.delTask(id) > 0 ? "삭제 성공" : "삭제 실패";
     }
-    // 확인 미확인 갯수 출력
-    public int unConfirm(){return dao.unConfirm();}
-    public int confirm(){return dao.Confirm();}
+    // 총, 완료, 확인, 미확인 차트용 갯수출력
+    public int unConfirm(int creater){
+        //System.out.println(dao.unConfirmCnt());
+        return dao.unConfirmCnt(creater);}
+    public int confirm(int creater){
+        //System.out.println(dao.confirmCnt());
+        return dao.confirmCnt(creater);
+    }
+    public int completedTaskCnt(int creater){
+        //System.out.println(dao.completedTaskCnt());
+        return dao.completedTaskCnt(creater);
+    }
 
+    // 만든 프로젝트에 관해서만 업무 리스크 출력
+    public List<Risk> adRiskList(int creater){
+        return dao.adRiskList(creater);
+    }
+    // 리스크 대응자 검색
+    public List<MemberSch> riskContactList(String project_key){
+        return dao.riskContactList(project_key);
+    }
+    // 리스크 대응방안 등록
+    public String insertRiskRes(Risk_Response ins){
+        dao.confirmNewRisk(ins.getRisk_key());
+        return dao.insertRiskRes(ins)>0?"리스크 대응 등록 성공":"리스크 대응 등록 에러";
+    }
+    // 리스크 대응방안 상세보기
+    public Risk_Response getRiskResponse(int risk_key){
+        return dao.getRiskResponse(risk_key);
+    }
+    // 리스크 발생 상태 업데이트 2형제
+    public String uptProcessing(int risk_response_key){
+        return dao.uptProcessing(risk_response_key)>0?"발생 상태 변경 완료":"상태 변경 에러";
+    }
+    public String uptFin(int risk_response_key){
+        dao.uptCompletionDate(risk_response_key);
+        return dao.uptFin(risk_response_key)>0?"처리완료 상태 변경 완료":"상태 변경 에러";
+    }
+    // 리스크 대응 수정
+    public String uptRiskResponse(Risk_Response upt){
+        return dao.uptRiskResponse(upt)>0?"수정 성공":"수정 에러";
+    }
+    // 리스크 차트
+    public int riskNotConTot(int creater){
+        return dao.riskNotConTot(creater);
+    }
+    public int riskTot01(int creater){
+        return dao.riskTot01(creater);
+    } public int riskTot02(int creater){
+        return dao.riskTot02(creater);
+    } public int riskTot03(int creater){
+        return dao.riskTot03(creater);
+    }
 }

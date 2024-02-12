@@ -40,6 +40,7 @@
     <script src="${path}/template/js/template.js"></script>
     <script src="${path}/template/js/settings.js"></script>
     <script src="${path}/template/js/todolist.js"></script>
+
     <!-- endinject -->
     <!-- Custom js for this page-->
     <script src="${path}/template/js/dashboard.js"></script>
@@ -135,6 +136,7 @@
                 </button>
             </div>
         </div>
+
         <!-- 유저 -->
         <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
             <ul class="navbar-nav mr-lg-2">
@@ -148,7 +150,7 @@
                         <a class="dropdown-item" href="${path}/myPage">
                             <i class="typcn typcn-cog-outline text-primary"></i> 마이페이지
                         </a>
-                        <a class="dropdown-item">
+                        <a class="dropdown-item" href="${path}/login">
                             <i class="typcn typcn-eject text-primary"></i> 로그아웃
                         </a>
                     </div>
@@ -551,7 +553,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="${path}/taskManage">
                         <i class="tpycn mdi mdi-checkbox-marked-circle menu-icon"></i>
-                        <span class="menu-title">업무현황관리</span>
+                        <span class="menu-title">리스크관리</span>
                         <!-- <i class="menu-arrow"></i> -->
                     </a>
                     <!-- <div class="collapse" id="charts">

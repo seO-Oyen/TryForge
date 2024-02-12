@@ -109,23 +109,19 @@
     }
 
     function taskList(member_key) {
+       // 선택한 열의 해당하는 데이터 가져오기
         var selectedRow = $(".member-row[data-member-key='" + member_key + "']");
         var memberName = selectedRow.find(".memname").data("member-name");
-        console.log(selectedRow.length);
-        console.log(selectedRow.find(".memname").length);
-        console.log(selectedRow.find(".memname"));
         $.ajax({
             url: "${path}/taskList?member_key=" + member_key,
             dataType: "json",
             success: function (data) {
                 var tlist = data.getTask;
                 $("#modalFrm02 [name=member_name]").val(memberName);
-
                 var row = "";
                 $(tlist).each(
                         function (idx, task) {
                             if (task.id != null) {
-
                                 row += "<tr class='task_row' data-task-key='" + task.id + "'>";
                                 row += "<td><input name='text' class='text02' type='text' value='" + task.text + "'></td>";
                                 row += "<td><input name='detail' class='detail02' type='text' value='" + task.detail + "'></td>";
@@ -153,7 +149,7 @@
     }
 
     function uptTask(taskId) {
-    	// forEach를 이용해 다중 열의 선택된 행의 데이터 가져오기
+    	// forEach를 이용해 출력된 다중 열의 선택된 행의 데이터 가져오기
         var taskRow = $(".task_row[data-task-key='" + taskId + "']");
         var textval = taskRow.find(".text02").val();
         var detailval = taskRow.find(".detail02").val();
@@ -230,6 +226,9 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Task Management</h4>
+                        <button type="button" class="btn btn-"
+                                style="background-color: white; color: #007FFF; margin-left: 87%; border-color:#007FFF ">간트차트 이동
+                        </button>
                         <!-- 구성원 검색 -->
                         <form id="frm01">
                             <div style="display: flex;">
@@ -254,7 +253,7 @@
                                 </div>
                                 <input type="text" class="form-control mb-2" name="member_name"
                                        placeholder="사원명 검색" style="width: 54%; margin-left: 10px;">
-                                <button type="submit" class="btn btn-" id="regBtn"
+                                <button type="submit" class="btn btn-" id="schBtn"
                                         style="background-color: #007FFF; color: white; margin-left: 5%; height: 2.875rem;">
                                     검색
                                 </button>
@@ -285,6 +284,7 @@
                                                     data-member-name="${mlist.member_name}"
                                                     data-member-key="${mlist.member_key}"
                                                     data-project-key="${mlist.project_key}"
+
                                                     style="background-color: #007FFF; color: white;">업무할당
                                             </button>
                                         </td>
