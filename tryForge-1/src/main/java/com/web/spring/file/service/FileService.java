@@ -1,5 +1,6 @@
 package com.web.spring.file.service;
 
+import java.io.File;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ public class FileService {
 	@Autowired(required = false)
 	private FileDao dao;
 	
-	public List<FileStorage> FileList(FileStorage file){
+	public List<FileStorage> fileList(FileStorage file){
 		List<FileStorage> fileList = dao.getFileList(file);
 		for(FileStorage fs:fileList) { // ftype 에 따른 icon get
 			String iconPath = getIcon(fs.getFtype());
@@ -22,12 +23,25 @@ public class FileService {
 		}
 		return fileList;
 	}
+
+    public int delFile(FileStorage file){
+        String fileKey = file.getFile_key();
+        String fpath = dao.getFilePath(file);
+
+        File delFile = new File(fpath, fileKey);
+        
+        if(delFile.delete()) {
+            return dao.delFile(file)+1; // 1이면 파일삭제만 2면 다 삭제 0이면 아에실패
+        } else {
+            return 0;
+        }
+    }
 	
 	// type에 따른 아이콘 출력
 	public String getIcon(String ftype) {
 	    switch (ftype) {
         case "bmp":
-            return "${path}/icons/bmp-icon.png";
+            return "/icons/bmp-icon.png";
         case "cad":
         	return "/icons/cad-icon.png";
         case "dwg":

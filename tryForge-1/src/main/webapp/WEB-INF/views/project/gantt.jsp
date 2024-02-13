@@ -414,18 +414,19 @@ gantt.attachEvent("onAfterLinkAdd", function(id, link){
 			});
 });
 
-gantt.attachEvent("onLinkDblClick", function (id){
-	confirmMsg(
-			'업무 종속성 삭제',
-			'이 종속성을 삭제하시겠습니까?',
-			'error',
-			function(){
-				gantt.deleteLink(id);
-			},
-			function(){
-
-			}
-	);
+gantt.attachEvent("onLinkDblClick", function (id) {
+	if (userRole === 'ADM' || memberKey === creater) {
+		confirmMsg(
+				'업무 종속성 삭제',
+				'이 종속성을 삭제하시겠습니까?',
+				'error',
+				function() {
+					gantt.deleteLink(id);
+				},
+				function() {
+				}
+		);
+	}
 	return false;
 });
 
