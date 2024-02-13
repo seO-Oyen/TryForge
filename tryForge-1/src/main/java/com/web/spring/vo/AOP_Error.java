@@ -22,6 +22,13 @@ public class AOP_Error {
 		this.error_level = error_level;
 		this.error_confirm = error_confirm;
 	}
+
+	public AOP_Error(String error_type, String error_detail, String error_path) {
+		this.error_type = error_type;
+		this.error_detail = error_detail;
+		this.error_path = error_path;
+	}
+
 	public String getIncident_date() {
 		return incident_date;
 	}
