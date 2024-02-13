@@ -52,10 +52,9 @@ private String path;
 					String fkey = "FILE-"+dao.getFileSeq();
 
 					mpf.transferTo(new File(path+fkey));
-					// Path truePath = Paths.get(path+fkey).toAbsolutePath();
-					// mpf.transferTo(truePath.toFile());
+
 					chk += dao.uploadFile(new FileStorage(fkey, fname, path, extension, fsize,
-							upload.getProject_key(), upload.getMember_key()));
+							upload.getProject_key(), upload.getMember_key(), upload.getDescription()));
 				}
 			} catch (IllegalStateException e) {
 				System.out.println("#파일업로드 예외1:"+e.getMessage());

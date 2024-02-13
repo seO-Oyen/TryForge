@@ -36,6 +36,10 @@ public class FileService {
             return 0;
         }
     }
+
+    public FileStorage getFileDetail(FileStorage file){
+        return dao.getFileDetail(file);
+    }
 	
 	// type에 따른 아이콘 출력
 	public String getIcon(String ftype) {

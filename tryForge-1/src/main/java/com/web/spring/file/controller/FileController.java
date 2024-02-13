@@ -40,4 +40,10 @@ public class FileController {
 		d.addAttribute("result", service.delFile(file));
 		return "pageJsonReport";
 	}
+
+	@GetMapping("getFileDetail")
+	public String getFileDetail(FileStorage file, Model d) {
+		d.addAttribute("detail", service.getFileDetail(file));
+		return "pageJsonReport";
+	}
 }

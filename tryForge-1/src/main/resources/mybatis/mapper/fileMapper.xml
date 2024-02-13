@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.spring.file.dao.FileDao">
+	<select id="getFileList" resultType="file" parameterType="file">
+		SELECT * FROM FILE_STORAGE WHERE PROJECT_KEY = #{project_key} ORDER BY UPLOAD_TIME DESC
+	</select>
+
+	<select id="getFilePath" resultType="file" parameterType="file">
+		SELECT PATH FROM FILE_STORAGE WHERE FILE_KEY = #{file_key}
+	</select>
+
+	<delete id="delFile" parameterType="file">
+		DELETE FROM FILE_STORAGE WHERE FILE_KEY = #{file_key}
+	</delete>
+
+	<select id="getFileDetail" resultType="file" parameterType="file">
+		SELECT m.MEMBER_NAME, f.DESCRIPTION
+		FROM member m
+				INNER JOIN FILE_STORAGE f ON m.MEMBER_KEY = f.MEMBER_KEY
+		WHERE f.FILE_KEY = #{file_key}
+	</select>
+</mapper>

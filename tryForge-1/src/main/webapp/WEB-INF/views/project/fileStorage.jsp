@@ -43,6 +43,15 @@
 	}
 </script>
 <style>
+	#fileList {
+		max-height: 200px; /* 원하는 최대 높이 설정 */
+		overflow-y: auto; /* 내용이 최대 높이를 초과할 경우 세로 스크롤바 표시 */
+		margin-bottom: 10px; /* 필요에 따라 여백 추가 */
+	}
+	.modal-content {
+		height: 500px;
+		margin-top: 65%;
+	}
 	.file-div {
 		flex: 0 0 10%;
 		max-width: 10%;
@@ -58,6 +67,12 @@
 		font-size: 18px;
 		height: 18px;
 	  cursor: pointer;
+  }
+	.finfo {
+		font-size: 20px;
+		height: 20px;
+		cursor: pointer;
+		margin-left: auto;
   }
   .Nfdel {
 	  width: 18px;
@@ -121,59 +136,24 @@
 			</div>
 		</div>
 
-<!-- 업로드 버튼눌렀을때 바로 파일 선택하고, 파일 선택 시 업로드처리까지 한번에 처리. -->
 <script type="text/javascript">
-/*
-	document.querySelector("#uploadBtn").addEventListener('click', function(){
-	document.querySelector("#fileInput").click();
-});
-
-document.querySelector("#fileInput").addEventListener('change', function(){
-	$("form").submit()
-	location.href="${path}/file"
-})
-*/
-/*
-var msg = "${msg}";
-if(msg!=="") {
-	if(msg.endsWith("등록 완료")) {
-		msg("success", "파일 업로드 성공", msg)
-	} else {
-		msg("error", "파일 업로드 실패", msg)
-	}
-}
-이부분은 submit 기능 코드입니다.
-ajax upload 처리 하긴 했으나 아직 지우진 않음.
-*/
-
 $("#uploadBtn").on('click', function(){
 	$('#fileInput').click();
 })
-$("#fileInput").on('change', function(){
-	var formData = new FormData();
-	var files = $("#fileInput")[0].files;
-	$.each(files, function(index, file) {
-		formData.append('files[]', file);
-	})
-	formData.append('member_key', $("input[name='member_key']").val());
-	formData.append('project_key', $("input[name='project_key']").val());
+$("#fileInput").on('change', function() {
+	var fileList = this.files;
+	var fileListDisplay = $('#fileList');
+	fileListDisplay.empty();
 
-	$.ajax({
-		url: "${path}/upload",
-		type: "POST",
-		data: formData,
-		cache: false,
-		processData: false,
-		contentType: false,
-		success: function(response) {
-			msg("success", "파일 업로드 성공!", response.msg)
-			getFileList();
-		},
-		error: function(error) {
-			msg("error", "업로드에러", error)
-		}
-	})
-})
+	for(var i = 0; i < fileList.length; i++) {
+		fileListDisplay.append($('<li class="list-group-item">').text(fileList[i].name));
+	}
+
+	if(fileList.length > 0){
+		$("#fileDescription").val("");
+		$('#fileDescriptionModal').modal('show');
+	}
+});
 
 function download(file_key, fname){
 	confirmMsg(
@@ -218,6 +198,7 @@ function getFileList() {
 						'<div class="image-and-delete-container">' +
 						deleteButton +
 						'<img src="' + file.iconPath + '" alt ="' + file.ftype + '" class="file-image">' +
+						'<i class="mdi mdi-information-outline finfo" onclick="infoFile(\'' + file.file_key + '\', \'' + file.fname + '\')"></i>' +
 						'</div>' +
 						'<div><h4 title="' + file.fname + '" class="file-title">' + file.fname + '</h4></div>' +
 						'<div class="file-info-container">' +
@@ -267,7 +248,33 @@ function deleteFile(file_key, fname){
 			}
 	);
 }
-</script>			
+
+function infoFile(file_key, fname){
+	$.ajax({
+		url: "${path}/getFileDetail",
+		type: "GET",
+		dataType: "json",
+		data: {
+			file_key: file_key
+		},
+		success: function(response) {
+			// 서버로부터 받은 파일 정보를 변수에 저장합니다.
+			var uploaderName = response.detail.member_name;
+			var fileDescription = response.detail.description;
+
+			// 모달창에 정보 표시
+			$('#fileUploaderInModal').text("업로더: " + uploaderName);
+			$('#fileDescriptionInModal').text("설명: " + fileDescription);
+
+			// 모달창 띄우기
+			$('#fileInfoModal').modal('show');
+		},
+		error: function(error) {
+			msg("error", "파일 상세정보 로딩 실패", error)
+		}
+	});
+}
+</script>
 			<!-- 풋터 -->
 			<!-- content-wrapper ends -->
 			<!-- partial:partials/_footer.html -->
@@ -300,7 +307,84 @@ function deleteFile(file_key, fname){
 	</div>
 	<!-- container-scroller -->
 
-	
+<div class="modal fade" id="fileDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modalLabel">파일 설명</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="fileUploadForm">
+					<div class="form-group">
+						<label>선택된 파일들</label>
+						<ul id="fileList" class="list-group"></ul>
+						<label for="fileDescription">설명</label>
+						<textarea class="form-control" id="fileDescription" name="fileDescription" rows="4" placeholder="파일 설명을 입력하세요"></textarea>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+				<button type="button" class="btn btn-primary" id="uploadDescription">업로드</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="fileInfoModal" tabindex="-1" role="dialog" aria-labelledby="fileInfoModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="fileInfoModalLabel">파일 정보</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<!-- 파일 정보를 여기에 표시 -->
+				<p id="fileUploaderInModal">업로더: </p>
+				<p id="fileDescriptionInModal">설명: </p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$("#uploadDescription").on('click', function(){
+		var formData = new FormData();
+		var files = $("#fileInput")[0].files;
+		var fileDescription = $("#fileDescription").val();
+
+		$.each(files, function(index, file) {
+			formData.append('files[]', file);
+		})
+		formData.append('description', fileDescription);
+		formData.append('member_key', $("input[name='member_key']").val());
+		formData.append('project_key', $("input[name='project_key']").val());
+
+		$.ajax({
+			url: "${path}/upload",
+			type: "POST",
+			data: formData,
+			cache: false,
+			processData: false,
+			contentType: false,
+			success: function(response) {
+				$('#fileDescriptionModal').modal('hide');
+				msg("success", "파일 업로드 성공!", response.msg)
+				getFileList();
+			},
+			error: function(error) {
+				msg("error", "업로드에러", error)
+			}
+		})
+	});
+</script>
 </body>
 
 </html>
