@@ -21,6 +21,7 @@
 		<typeAlias alias="chat" type="com.web.spring.vo.Chat"/>
 		<typeAlias alias="approve" type="com.web.spring.vo.Approval"/>
 		<typeAlias alias="risk" type="com.web.spring.vo.Risk"/>
-      		<typeAlias alias="risk_response" type="com.web.spring.vo.Risk_Response"/>
+      	<typeAlias alias="risk_response" type="com.web.spring.vo.Risk_Response"/>
+      	<typeAlias alias="aop_error" type="com.web.spring.vo.AOP_Error"/>
 	</typeAliases>
 </configuration>
