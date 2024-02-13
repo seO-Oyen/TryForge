@@ -89,6 +89,18 @@ public class MemberController {
 		return "pageJsonReport";
 	}
 	
+	// 초대받은 이메일인지 확인
+	@GetMapping("emailCheck")
+	public String emailCheck(
+				@RequestParam("email") String email,
+				Model d
+			) {
+		
+		d.addAttribute("emailChk", memberService.checkEmail(email));
+		
+		return "pageJsonReport";
+	}
+	
 	// 유저 초대 창
 	@GetMapping("insertUser")
 	public String insertUser(Model d) {
