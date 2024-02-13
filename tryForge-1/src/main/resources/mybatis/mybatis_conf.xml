@@ -16,6 +16,9 @@
 		<typeAlias alias="inviteMember" type="com.web.spring.vo.InviteMember"/>
 		<typeAlias alias="memberSch" type="com.web.spring.vo.MemberSch"/>
 		<typeAlias alias="file" type="com.web.spring.vo.FileStorage"/>
+		<typeAlias alias="chatList" type="com.web.spring.vo.ChatList"/>
+		<typeAlias alias="chatMember" type="com.web.spring.vo.ChatMember"/>
+		<typeAlias alias="chat" type="com.web.spring.vo.Chat"/>
 		<typeAlias alias="approve" type="com.web.spring.vo.Approval"/>
 		<typeAlias alias="risk" type="com.web.spring.vo.Risk"/>
       		<typeAlias alias="risk_response" type="com.web.spring.vo.Risk_Response"/>
