@@ -16,6 +16,7 @@ public class Risk {
 	private String title; // 프로젝트 이름
 	private Date reg_date; //  업무 등록일
 	private String status; // 상태(발생전, 발생, 처리중, 완료)
+	private int risk_response_key;
 	public Risk() {
 		super();
 	}
@@ -125,5 +126,13 @@ public class Risk {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public int getRisk_response_key() {
+		return risk_response_key;
+	}
+
+	public void setRisk_response_key(int risk_response_key) {
+		this.risk_response_key = risk_response_key;
 	}
 }

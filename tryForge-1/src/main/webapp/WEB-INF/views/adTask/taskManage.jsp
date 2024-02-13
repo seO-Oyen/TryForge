@@ -256,7 +256,7 @@
                 risk4 = data.riskTot03;
                 totalrisks = risk1+risk2+risk3+risk4
                 $("#task02").text(totalrisks + "개")
-                $("#task03").text( totalTasks/totalrisks+ "%")
+                $("#task03").text(Math.floor(totalTasks/totalrisks)+ "%")
 
                 $("#riskCnt01").text(totalrisks)
                 $("#riskCnt02").text(risk1)
@@ -665,8 +665,7 @@
             </div>
             <form class="forms-sample" id="modalFrm">
                 <input type="hidden" name="risk_key"/>
-                <input type="hidden" name="risk_response_key"/>
-                <input type="hidden" name="contact"/>
+                <input type="hidden" name="risk_response_key" value="0"/>
 
                 <div class="form-group">
                     <label id="risk_status_label" for="exampleInputUsername1">리스크 상태</label>
