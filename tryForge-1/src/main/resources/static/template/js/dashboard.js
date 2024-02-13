@@ -15,15 +15,15 @@
       var areaData = {
         labels: ["AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL"],
         datasets: [{
-            data: [42, 90, 70, 88, 15, 92, 40, 75, 60, 90, 75, 100],
-            backgroundColor: gradientFill,
-            borderColor: [
-              '#f39915'
-            ],
-            borderWidth: 2,
-            fill: 'origin',
-            label: "online"
-          }
+          data: [42, 90, 70, 88, 15, 92, 40, 75, 60, 90, 75, 100],
+          backgroundColor: gradientFill,
+          borderColor: [
+            '#f39915'
+          ],
+          borderWidth: 2,
+          fill: 'origin',
+          label: "online"
+        }
         ]
       };
       var areaOptions = {
@@ -92,15 +92,15 @@
       var areaData = {
         labels: ["AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL"],
         datasets: [{
-            data: [42, 90, 70, 88, 15, 92, 40, 75, 60, 90, 75, 100],
-            backgroundColor: gradientFill,
-            borderColor: [
-              '#f39915'
-            ],
-            borderWidth: 2,
-            fill: 'origin',
-            label: "online"
-          }
+          data: [42, 90, 70, 88, 15, 92, 40, 75, 60, 90, 75, 100],
+          backgroundColor: gradientFill,
+          borderColor: [
+            '#f39915'
+          ],
+          borderWidth: 2,
+          fill: 'origin',
+          label: "online"
+        }
         ]
       };
       var areaOptions = {
@@ -262,7 +262,7 @@
     }
     // sales-chart-a end
 
-        // sales-chart-a-dark start
+    // sales-chart-a-dark start
     if ($("#sales-chart-a-dark").length) {
       var areaData = {
         labels: ["AA", "AB", "AC", "AD", "AE", "AF", "AG", "AI", "AJ", "AK"],
@@ -373,10 +373,10 @@
         data: {
           labels: ['AA', 'AB', 'AC', 'AD', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AW', 'AX', 'AY', 'AZ', 'BA', 'BB', 'BC', 'BD'],
           datasets: [{
-              label: 'Profit',
-              data: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,],
-              backgroundColor: ['#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#b4d5f6', '#b4d5f6', '#b4d5f6', '#b4d5f6', '#b4d5f6' ]
-            }
+            label: 'Profit',
+            data: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,],
+            backgroundColor: ['#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#b4d5f6', '#b4d5f6', '#b4d5f6', '#b4d5f6', '#b4d5f6' ]
+          }
           ]
         },
         options: {
@@ -447,10 +447,10 @@
         data: {
           labels: ['AA', 'AB', 'AC', 'AD', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AW', 'AX', 'AY', 'AZ', 'BA', 'BB', 'BC', 'BD'],
           datasets: [{
-              label: 'Profit',
-              data: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,],
-              backgroundColor: ['#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', 'rgba(180, 213, 246, .8)', 'rgba(180, 213, 246, .8)', 'rgba(180, 213, 246, .8)', 'rgba(180, 213, 246, .8)', 'rgba(180, 213, 246, .8)' ]
-            }
+            label: 'Profit',
+            data: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,],
+            backgroundColor: ['#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', '#3b86d1', 'rgba(180, 213, 246, .8)', 'rgba(180, 213, 246, .8)', 'rgba(180, 213, 246, .8)', 'rgba(180, 213, 246, .8)', 'rgba(180, 213, 246, .8)' ]
+          }
           ]
         },
         options: {
@@ -518,12 +518,12 @@
       var areaData = {
         labels: ["Jan", "Feb", "Mar"],
         datasets: [{
-            data: [24, 26, 50],
-            backgroundColor: [
-              "#e6b8ff", "#d077ff","#a43cda"
-            ],
-            borderColor: "rgba(0,0,0,0)"
-          }
+          data: [24, 26, 50],
+          backgroundColor: [
+            "#e6b8ff", "#d077ff","#a43cda"
+          ],
+          borderColor: "rgba(0,0,0,0)"
+        }
         ]
       };
       var areaOptions = {
@@ -533,28 +533,28 @@
         cutoutPercentage: 72,
         elements: {
           arc: {
-              borderWidth: 4
+            borderWidth: 4
           }
-        },      
+        },
         legend: {
           display: false
         },
         tooltips: {
           enabled: true
         },
-        legendCallback: function(chart) { 
+        legendCallback: function(chart) {
           var text = [];
           text.push('<div class="d-flex align-items-center mb-3">');
-            text.push('<div class="mr-2" style="width: 10px; height: 10px; border-radius: 50%;  background: ' + chart.data.datasets[0]. backgroundColor[0] + ' "></div>');
-            text.push('<p class="mb-0">Desktop&nbsp;(24%)</p>')
+          text.push('<div class="mr-2" style="width: 10px; height: 10px; border-radius: 50%;  background: ' + chart.data.datasets[0]. backgroundColor[0] + ' "></div>');
+          text.push('<p class="mb-0">Desktop&nbsp;(24%)</p>')
           text.push('</div>');
           text.push('<div class="d-flex align-items-center mb-3">');
-            text.push('<div class="mr-2" style="width: 10px; height: 10px; border-radius: 50%; background: ' + chart.data.datasets[0]. backgroundColor[1] + ' "></div>');
-            text.push('<p class="mb-0">Mobile&nbsp;(26%)</p>')
+          text.push('<div class="mr-2" style="width: 10px; height: 10px; border-radius: 50%; background: ' + chart.data.datasets[0]. backgroundColor[1] + ' "></div>');
+          text.push('<p class="mb-0">Mobile&nbsp;(26%)</p>')
           text.push('</div>');
           text.push('<div class="d-flex align-items-center">');
-            text.push('<div class="mr-2" style="width: 10px; height: 10px; border-radius: 50%; background: ' + chart.data.datasets[0]. backgroundColor[2] + ' "></div>');
-            text.push('<p class="mb-0">Tablet&nbsp;(50%)</p>')
+          text.push('<div class="mr-2" style="width: 10px; height: 10px; border-radius: 50%; background: ' + chart.data.datasets[0]. backgroundColor[2] + ' "></div>');
+          text.push('<p class="mb-0">Tablet&nbsp;(50%)</p>')
           text.push('</div>');
           return text.join("");
         },
@@ -564,17 +564,17 @@
           var width = chart.chart.width,
               height = chart.chart.height,
               ctx = chart.chart.ctx;
-      
+
           ctx.restore();
           var fontSize = .96;
           ctx.font = "600 " + fontSize + "em sans-serif";
           ctx.textBaseline = "middle";
           ctx.fillStyle = "#fff";
-      
+
           var text = "70%",
               textX = Math.round((width - ctx.measureText(text).width) / 2),
               textY = height / 2;
-      
+
           ctx.fillText(text, textX, textY);
           ctx.save();
         }
@@ -664,12 +664,12 @@
         legendCallback : function(chart) {
           var text = [];
           text.push('<div class="d-flex align-items-center mr-3">');
-            text.push('<div class="mr-2" style="width: 12px; border-radius: 50%; height: 12px; background-color: ' + chart.data.datasets[0].borderColor[0] +' "></div>');
-            text.push('<p class="mb-0">Register User</p>');
+          text.push('<div class="mr-2" style="width: 12px; border-radius: 50%; height: 12px; background-color: ' + chart.data.datasets[0].borderColor[0] +' "></div>');
+          text.push('<p class="mb-0">Register User</p>');
           text.push('</div>');
           text.push('<div class="d-flex align-items-center">');
-            text.push('<div class="mr-2" style="width: 12px; border-radius: 50%; height: 12px; background-color: ' + chart.data.datasets[1].borderColor[0] +' "></div>');
-            text.push('<p class="mb-0">Premium User</p>');
+          text.push('<div class="mr-2" style="width: 12px; border-radius: 50%; height: 12px; background-color: ' + chart.data.datasets[1].borderColor[0] +' "></div>');
+          text.push('<p class="mb-0">Premium User</p>');
           text.push('</div>');
           return text.join('');
         },
@@ -774,12 +774,12 @@
         legendCallback : function(chart) {
           var text = [];
           text.push('<div class="d-flex align-items-center mr-3">');
-            text.push('<div class="mr-2" style="width: 12px; border-radius: 50%; height: 12px; background-color: ' + chart.data.datasets[0].borderColor[0] +' "></div>');
-            text.push('<p class="mb-0">Register User</p>');
+          text.push('<div class="mr-2" style="width: 12px; border-radius: 50%; height: 12px; background-color: ' + chart.data.datasets[0].borderColor[0] +' "></div>');
+          text.push('<p class="mb-0">Register User</p>');
           text.push('</div>');
           text.push('<div class="d-flex align-items-center">');
-            text.push('<div class="mr-2" style="width: 12px; border-radius: 50%; height: 12px; background-color: ' + chart.data.datasets[1].borderColor[0] +' "></div>');
-            text.push('<p class="mb-0">Premium User</p>');
+          text.push('<div class="mr-2" style="width: 12px; border-radius: 50%; height: 12px; background-color: ' + chart.data.datasets[1].borderColor[0] +' "></div>');
+          text.push('<p class="mb-0">Premium User</p>');
           text.push('</div>');
           return text.join('');
         },
@@ -829,7 +829,7 @@
               '#a43cda'
             ],
           }],
-      
+
           // These labels appear in the legend and in the tooltips when hovering different arcs
           labels: [
             'Gross Sales',
@@ -846,7 +846,7 @@
           legend: {
             display: false
           },
-          legendCallback: function(chart) { 
+          legendCallback: function(chart) {
             var text = [];
             text.push('<ul class="legend'+ chart.id +'">');
             for (var i = 0; i < chart.data.datasets[0].data.length; i++) {
@@ -872,10 +872,10 @@
         data: {
           labels: ["2014", "2015", "2016", "2017", "2018", "2019"],
           datasets: [{
-              label: 'Offline Sales',
-              data: [52, 40, 33, 45, 22, 50],
-              backgroundColor: '#a43cda'
-            },
+            label: 'Offline Sales',
+            data: [52, 40, 33, 45, 22, 50],
+            backgroundColor: '#a43cda'
+          },
             {
               label: 'Online Sales',
               data: [22, 45, 23, 50, 15, 40],
@@ -945,10 +945,10 @@
         data: {
           labels: ["2014", "2015", "2016", "2017", "2018", "2019"],
           datasets: [{
-              label: 'Offline Sales',
-              data: [52, 40, 33, 45, 22, 50],
-              backgroundColor: '#a43cda'
-            },
+            label: 'Offline Sales',
+            data: [52, 40, 33, 45, 22, 50],
+            backgroundColor: '#a43cda'
+          },
             {
               label: 'Online Sales',
               data: [22, 45, 23, 50, 15, 40],
@@ -1504,10 +1504,10 @@
         data: {
           labels: ["A", "B", "C", "D", "E","F", "G", "H", "I", "J", "K", "L"],
           datasets: [{
-              label: 'Profit',
-              data: [45, 38, 29, 35, 37, 38, 24, 28, 19, 33, 42, 48],
-              backgroundColor: '#dc3545',
-            }
+            label: 'Profit',
+            data: [45, 38, 29, 35, 37, 38, 24, 28, 19, 33, 42, 48],
+            backgroundColor: '#dc3545',
+          }
           ]
         },
         options: {
@@ -1581,10 +1581,10 @@
         data: {
           labels: ["A", "B", "C", "D", "E","F", "G", "H", "I", "J", "K", "L"],
           datasets: [{
-              label: 'Profit',
-              data: [38, 35, 23, 22, 35, 23, 24, 28, 19, 33, 30, 45],
-              backgroundColor: '#00c8bf',
-            }
+            label: 'Profit',
+            data: [38, 35, 23, 22, 35, 23, 24, 28, 19, 33, 30, 45],
+            backgroundColor: '#00c8bf',
+          }
           ]
         },
         options: {
@@ -1649,6 +1649,6 @@
       });
     }
     // memory-chart end
-    
+
   });
 })(jQuery);
