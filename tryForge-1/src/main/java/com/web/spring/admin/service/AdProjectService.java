@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.web.spring.admin.dao.AdProjectDao;
+import com.web.spring.chat.dao.ChatDao;
 import com.web.spring.vo.Member;
 import com.web.spring.vo.Project;
 import com.web.spring.vo.Team;
@@ -18,6 +19,9 @@ import com.web.spring.vo.Team_Member;
 public class AdProjectService {
 	@Autowired(required = false)
 	private AdProjectDao dao;
+	@Autowired(required = false)
+	private ChatDao chatDao;
+	
 	// 프로젝트 출력
 	public List<Project> projList() {
 		return dao.projList();
@@ -35,6 +39,10 @@ public class AdProjectService {
 		int insertTeam = dao.insertTeam(insTeam);
 		int insPjtoTask = dao.insPJtoTask(insProject);
 		int insertTm = 0;
+		
+		// 채팅방 리스트 생성
+		chatDao.createChatRoom();
+		
 		// 배열로 받아온 맴버키 문자열 타입을 숫자형으로 변환
 		// , 와 공백 제거 처리
 		for (String memberKeys : member_key) {
@@ -46,6 +54,9 @@ public class AdProjectService {
 					//여기서 auth 마저 뽑아서
 					//insertTm = dao.insertTm(memkey,auth);
 					insertTm = dao.insertTm(memkey);
+					
+					// 멤버 채팅 추가
+					chatDao.createChatMem(memkey);
 				} catch (NumberFormatException e) {
 					System.out.println("에러 1: " + e.getMessage());
 				} catch (Exception e) {
