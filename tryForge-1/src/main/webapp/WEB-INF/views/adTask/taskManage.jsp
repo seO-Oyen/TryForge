@@ -711,6 +711,26 @@
                     </div>
 
                 </div>
+
+                <div class="form-group">
+
+                    <label for="exampleInputConfirmPassword1" >리스크 대응전략</label>
+                    <div class="col-sm-6 col-md-4 col-lg-3">
+                        <i class="mdi mdi-information-variant"></i> mdi mdi-information-variant
+                    </div>
+
+                    <select name="strategy" class="form-control form-control-lg">
+                        <option value="">선택</option>
+                        <option value="[부정적 전략] 회피(Avoidance)">▶ [부정적 전략] 회피(Avoidance)</option>
+                        <option value="[부정적 전략] 전가(Transference)">▶ [부정적 전략] 전가(Transference)</option>
+                        <option value="[부정적 전략] 완화/감소(Mitigation)">▶ [부정적 전략] 완화/감소(Mitigation)</option>
+                        <option value="[부정적 전략] 수용(Acceptance)">▶ [부정적 전략] 수용(Acceptance)</option>
+                        <option value="[긍정적 전략] 활용(Exploit)">▶ [긍정적 전략] 활용(Exploit)</option>
+                        <option value="[긍정적 전략] 공유(Share)">▶ [긍정적 전략] 공유(Share)</option>
+                        <option value="[긍정적 전략] 향상/증대(Enhance)">▶ [긍정적 전략] 향상/증대(Enhance)</option>
+                        <option value="[긍정적 전략] 수용(Accept)">▶ [긍정적 전략] 수용(Accept)</option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label for="exampleTextarea1" >대응방안</label>
                     <textarea class="form-control" rows="4" name="response_method"></textarea>

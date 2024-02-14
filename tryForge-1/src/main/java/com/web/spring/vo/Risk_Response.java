@@ -9,6 +9,7 @@ public class Risk_Response {
 	private String contact; // 리스크 대응 담당자
 	private Date completion_date; // 리스크 발생 시, 처리 완료일
 	private String status; // 발생 시, 처리중 / 완료 / 실패
+	private String strategy; // 리스크 대응 전략
 
 	public Risk_Response() {
 	}
@@ -66,5 +67,13 @@ public class Risk_Response {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(String strategy) {
+		this.strategy = strategy;
 	}
 }
