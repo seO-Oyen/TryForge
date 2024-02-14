@@ -41,6 +41,12 @@ public class FileController {
 		return "pageJsonReport";
 	}
 
+	@PostMapping("modifyFile")
+	public String modifyFile(FileStorage file, Model d){
+		d.addAttribute("result", service.modifyFile(file));
+		return "pageJsonReport";
+	}
+
 	@GetMapping("getFileDetail")
 	public String getFileDetail(FileStorage file, Model d) {
 		d.addAttribute("detail", service.getFileDetail(file));

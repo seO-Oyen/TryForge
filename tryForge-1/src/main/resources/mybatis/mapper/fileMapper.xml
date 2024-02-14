@@ -7,13 +7,19 @@
 		SELECT * FROM FILE_STORAGE WHERE PROJECT_KEY = #{project_key} ORDER BY UPLOAD_TIME DESC
 	</select>
 
-	<select id="getFilePath" resultType="file" parameterType="file">
+	<select id="getFilePath" resultType="String" parameterType="file">
 		SELECT PATH FROM FILE_STORAGE WHERE FILE_KEY = #{file_key}
 	</select>
 
 	<delete id="delFile" parameterType="file">
 		DELETE FROM FILE_STORAGE WHERE FILE_KEY = #{file_key}
 	</delete>
+
+	<update id="modifyFile" parameterType="file">
+		UPDATE FILE_STORAGE
+			SET DESCRIPTION = #{description}
+		WHERE FILE_KEY = #{file_key}
+	</update>
 
 	<select id="getFileDetail" resultType="file" parameterType="file">
 		SELECT m.MEMBER_NAME, f.DESCRIPTION

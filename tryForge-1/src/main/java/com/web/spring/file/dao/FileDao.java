@@ -15,6 +15,7 @@ public interface FileDao {
 	String getFilePath(FileStorage file);
 
 	int delFile(FileStorage file);
+	int modifyFile(FileStorage file);
 
 	FileStorage getFileDetail(FileStorage file);
 }

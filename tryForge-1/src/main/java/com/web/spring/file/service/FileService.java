@@ -36,6 +36,9 @@ public class FileService {
             return 0;
         }
     }
+    public int modifyFile(FileStorage file){
+        return dao.modifyFile(file);
+    }
 
     public FileStorage getFileDetail(FileStorage file){
         return dao.getFileDetail(file);
