@@ -2,20 +2,20 @@ package com.web.spring;
 
 import java.io.IOException;
 
+import com.web.spring.admin.dao.AOPDao;
 import com.web.spring.vo.AOP_Error;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.web.spring.AOPDao;
 @Aspect
 @Component 
 public class Profiler {
 	@Autowired(required = false)
 	private AOPDao dao;
 
-	@Around("execution(* com.web.spring..*.*(..)) && !execution(* com.web.spring.AOPDao.*(..))")
+	@Around("execution(* com.web.spring.admin.service.*.*(..))")
 	public Object trace(ProceedingJoinPoint jointPoint) {
 		Object obj = null;
 		// 1. 수행 정보 출력
@@ -36,8 +36,8 @@ public class Profiler {
 			String error_path ="";
 			for(StackTraceElement element : stackTrace){
 				error_path+= "class 경로["+element.getClassName()+"] // ";
-				error_path+= "method 경로["+element.getMethodName()+"] // ";
-				error_path+= "File 이름["+element.getFileName()+"] // ";
+				//error_path+= "method 경로["+element.getMethodName()+"] // ";
+				//error_path+= "File 이름["+element.getFileName()+"] // ";
 				error_path+= "라인 위치["+element.getLineNumber()+"]";
 			}
 			AOP_Error critical = new AOP_Error("NullPointerException",e.getMessage(),error_path);
@@ -51,8 +51,8 @@ public class Profiler {
 			String error_path ="";
 			for(StackTraceElement element : stackTrace){
 				error_path+= "class 경로["+element.getClassName()+"] // ";
-				error_path+= "method 경로["+element.getMethodName()+"] // ";
-				error_path+= "File 이름["+element.getFileName()+"] // ";
+				//error_path+= "method 경로["+element.getMethodName()+"] // ";
+				//error_path+= "File 이름["+element.getFileName()+"] // ";
 				error_path+= "라인 위치["+element.getLineNumber()+"]";
 			}
 			AOP_Error critical = new AOP_Error("IOException",e.getMessage(),error_path);
@@ -66,8 +66,8 @@ public class Profiler {
 			String error_path ="";
 			for(StackTraceElement element : stackTrace){
 				error_path+= "class 경로["+element.getClassName()+"] // ";
-				error_path+= "method 경로["+element.getMethodName()+"] // ";
-				error_path+= "File 이름["+element.getFileName()+"] // ";
+				//error_path+= "method 경로["+element.getMethodName()+"] // ";
+				//error_path+= "File 이름["+element.getFileName()+"] // ";
 				error_path+= "라인 위치["+element.getLineNumber()+"]";
 			}
 			AOP_Error critical = new AOP_Error("NumberFormatException",e.getMessage(),error_path);
@@ -81,8 +81,8 @@ public class Profiler {
 			String error_path ="";
 			for(StackTraceElement element : stackTrace){
 				error_path+= "class 경로["+element.getClassName()+"] // ";
-				error_path+= "method 경로["+element.getMethodName()+"] // ";
-				error_path+= "File 이름["+element.getFileName()+"] // ";
+				//error_path+= "method 경로["+element.getMethodName()+"] // ";
+				//error_path+= "File 이름["+element.getFileName()+"] // ";
 				error_path+= "라인 위치["+element.getLineNumber()+"]";
 			}
 			AOP_Error normal = new AOP_Error("Exception",e.getMessage(),error_path);
