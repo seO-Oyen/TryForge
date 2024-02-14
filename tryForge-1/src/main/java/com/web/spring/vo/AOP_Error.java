@@ -1,7 +1,7 @@
 package com.web.spring.vo;
 
 public class AOP_Error {
-
+	private int error_key;
 	private String incident_date;
 	private String error_type;
 	private String error_detail;
@@ -22,6 +22,13 @@ public class AOP_Error {
 		this.error_level = error_level;
 		this.error_confirm = error_confirm;
 	}
+
+	public AOP_Error(String error_type, String error_detail, String error_path) {
+		this.error_type = error_type;
+		this.error_detail = error_detail;
+		this.error_path = error_path;
+	}
+
 	public String getIncident_date() {
 		return incident_date;
 	}
@@ -58,5 +65,12 @@ public class AOP_Error {
 	public void setError_confirm(String error_confirm) {
 		this.error_confirm = error_confirm;
 	}
-	
+
+	public int getError_key() {
+		return error_key;
+	}
+
+	public void setError_key(int error_key) {
+		this.error_key = error_key;
+	}
 }
