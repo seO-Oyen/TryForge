@@ -22,6 +22,6 @@
 		<typeAlias alias="approve" type="com.web.spring.vo.Approval"/>
 		<typeAlias alias="risk" type="com.web.spring.vo.Risk"/>
       	<typeAlias alias="risk_response" type="com.web.spring.vo.Risk_Response"/>
-      	<typeAlias alias="aop_error" type="com.web.spring.vo.AOP_Error"/>
+      	<typeAlias alias="risk_approval" type="com.web.spring.vo.Risk_Approval"/>
 	</typeAliases>
 </configuration>
