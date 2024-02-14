@@ -9,6 +9,6 @@
 
 	<insert id="uploadFile" parameterType="file">
 		INSERT INTO FILE_STORAGE VALUES
-		(#{file_key}, #{project_key}, #{fname}, #{path}, #{ftype}, #{fsize}, sysdate, #{member_key})
+		(#{file_key}, #{project_key}, #{fname}, #{path}, #{ftype}, #{fsize}, sysdate, #{member_key}, #{description})
 	</insert>
 </mapper>
