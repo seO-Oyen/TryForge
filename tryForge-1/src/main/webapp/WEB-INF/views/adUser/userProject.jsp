@@ -58,7 +58,6 @@
 
     });
 
- // openpage 함수 수정
     function openpage(key) {
         $.ajax({
             url: "${path}/userdetail?project_key=" + key,
@@ -70,22 +69,22 @@
                 var memberInfo = data.memberInfo;
                 // 모달창 내용 변경
                 $("#myModal").modal('show');
-                $("[name=title]").val(projectInfo.title);
-                $("[name=team_name]").val(teamInfo.team_name);
-                $("#modalFrm02 [name=team_key]").val(teamInfo.team_key);
+                $("[name=title]").val(projectInfo.title)
+                $("[name=team_name]").val(teamInfo.team_name)
+                $("#modalFrm02 [name=team_key]").val(teamInfo.team_key)
 
                 var startDate = new Date(projectInfo.start_date);
                 startDate.setDate(startDate.getDate() + 1);
                 var formattedStartDate = startDate.toISOString().split('T')[0];
                 var endDate = new Date(projectInfo.end_date);
                 endDate.setDate(endDate.getDate() + 1);
-                var formattedEndDate = endDate.toISOString().split('T')[0];
-                $("[name=start_date]").val(formattedStartDate);
-                $("[name=end_date]").val(formattedEndDate);
+                var formateedendtDate = endDate.toISOString().split('T')[0];
+                $("[name=start_date]").val(formattedStartDate)
+                $("[name=end_date]").val(formateedendtDate)
 
-                $("[name=detail]").val(projectInfo.detail);
-                $("[name=left]").hide();
-                $("#tm").text("프로젝트 구성원 확인");
+                $("[name=detail]").val(projectInfo.detail)
+                $("[name=left]").hide()
+                $("#tm").text("프로젝트 구성원 확인")
                 $("#right").removeClass("col-6");
                 $("#right").addClass("col-12");
                 $("#searchResults").css("height", "0px");
@@ -113,7 +112,7 @@
         });
     }
 
- // 맴버키로 팀 정보 가져오기
+    // 맴버키로 팀 정보 가져오기
     function getTeamInfo(member_key, callback) {
         $.ajax({
             url: "${path}/tmInfo",
@@ -122,16 +121,15 @@
             success: function (data) {
                 var tmInfo = data.tmInfo;
                 var team_member_key = tmInfo.team_Member_key;
-                var role = tmInfo.role; // 팀 정보에서 역할 가져오기
-                callback(role, team_member_key); // 콜백 함수 호출하여 역할과 팀 멤버 키 전달
+                $(".tmInfoRow" + member_key).html(tmInfo.role);
+                callback(tmInfo.role, team_member_key);
             },
             error: function (err) {
                 console.log(err);
-                callback("Error retrieving role"); // 에러 발생 시 콜백 함수 호출하여 에러 메시지 전달
+                callback("Error retrieving role");
             }
         });
     }
-
 
     function deleteTm(team_member_key) {
         $.ajax({
@@ -276,7 +274,11 @@
             data: $("#modalFrm02").serialize(),
             success: function (data) {
                 var insMsg01 = data.insMsg;
-
+                if(confirm("구성원을 추가 하시겠습니까?")){
+                    alert(insMsg01)
+                }else{
+                    alert("구성원 추가 에러")
+                }
                 Swal.fire({
                     title: '구성원 추가',
                     text: '구성원을 추가하시겠습니까?',

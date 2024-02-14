@@ -3,9 +3,6 @@ package com.web.spring.admin.service;
 import com.web.spring.admin.dao.AdProjectDao;
 import com.web.spring.admin.dao.AdUserDao;
 import com.web.spring.vo.Team_Member;
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +13,7 @@ public class AdUserService {
     @Autowired(required = false)
     private AdProjectDao prodao;
     // 맴버키로 팀원 테이블 정보 가져오기
-    public List<Team_Member> tmFromMember(int member_key){
+    public Team_Member tmFromMember(int member_key){
         return dao.tmFromMember(member_key);
     }
     // 팀원삭제
