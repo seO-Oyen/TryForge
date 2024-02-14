@@ -32,10 +32,10 @@
 	var sessId = "${loginMem.member_id}"
 	var role = "${loginMem.member_role}"
 	if(id != "") {
-		if(sessId != ""  && role == ""){
+		if(sessId != ""  && role == "EMP"){
 			alert("로그인 성공\n메인페이지로 이동")
 			location.href="${path}/userIndex"
-		} else if(sessId != "" && role != "") {
+		} else if(sessId != "" && role != "EMP") {
 			alert("로그인 성공\n관리자페이지로 이동")
 			location.href = "${path}/adMain"
 		} else{

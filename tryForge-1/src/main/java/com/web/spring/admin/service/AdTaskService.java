@@ -91,4 +91,15 @@ public class AdTaskService {
     public String uptRiskResponse(Risk_Response upt){
         return dao.uptRiskResponse(upt)>0?"수정 성공":"수정 에러";
     }
+    // 리스크 차트
+    public int riskNotConTot(int creater){
+        return dao.riskNotConTot(creater);
+    }
+    public int riskTot01(int creater){
+        return dao.riskTot01(creater);
+    } public int riskTot02(int creater){
+        return dao.riskTot02(creater);
+    } public int riskTot03(int creater){
+        return dao.riskTot03(creater);
+    }
 }

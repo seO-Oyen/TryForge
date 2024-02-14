@@ -46,16 +46,7 @@ public class MainController {
 
 		return "user/userIndex";
 	}
-	
-	//메인페이지 출력
-	@GetMapping("adMain")
-	public String ad_main(NoticeSch sch, Model d) {
-		d.addAttribute("noticeList", noticeService.noticeList(sch));
-		d.addAttribute("plist", PJRequestService.projList());
-		
-	    return "ad_main\\ad_main";
-	}
-	
+
 	//마이페이지 출력
 	@GetMapping("myPage")
 	public String myPage(Model d) {
