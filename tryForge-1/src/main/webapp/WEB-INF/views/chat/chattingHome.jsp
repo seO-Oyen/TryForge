@@ -94,7 +94,7 @@ $(document).ready(function(){
                 dataType: "json",
                 success: function (data) {
                     Swal.fire({
-                        title: '등록 성공',
+                        title: '채팅방 생성 성공',
                         text: ' ',
                         icon: 'success',
                     }).then(function () {
