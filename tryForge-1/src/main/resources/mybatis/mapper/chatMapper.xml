@@ -88,5 +88,22 @@
 		   #{member_key}
 		)
 	</insert>
+	
+	<insert id="createChatRoomUser">
+		INSERT INTO chat_list
+		(
+		   chatList_key,
+		   chat_category,
+		   last_message,
+		   last_time
+		)
+		VALUES
+		(
+		   chatlist_seq.nextval,
+		   '',
+		   ' ',
+		   sysdate
+		)
+	</insert>
 
 </mapper>

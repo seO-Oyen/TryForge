@@ -25,4 +25,7 @@ public interface ChatDao {
 	int createChatRoom();
 	
 	int createChatMem(int member_key);
+	
+	// 그냥 채팅방 생성
+	int createChatRoomUser();
 }
