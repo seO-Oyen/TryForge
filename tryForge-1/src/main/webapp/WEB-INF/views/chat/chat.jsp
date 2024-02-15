@@ -87,6 +87,8 @@ $(document).ready(function(){
 	
 })
 
+var userName;
+
 function revMsg(msg){
 	var calName = "chat"
 	var msgArr = msg.split("/")
@@ -94,8 +96,11 @@ function revMsg(msg){
 	// 본인이 보낸 메세지면 오른쪽정렬, 아니면 왼쪽정렬
 	if ("${loginMem.member_id}" == msgArr[1]){
 		calName = "${loginMem.member_id}"
-	} else {
+		userName = msgArr[2]
+	} else if(userName != msgArr[2]) {
+		// 연속으로 보낸 일시 이름 안나올수 있게
 		var sendMem = $("<div class='chat'></div>").text(msgArr[2])
+		userName = msgArr[2]
 		$("#chatScrean").append(sendMem)
 	}
 	
@@ -156,8 +161,10 @@ function sendMsg(){
 						</c:if>
 						
 						<div class="chat ${memList[status.index].member_id}">
-							<span>${chat.chat_detail}</span>
-							<div style="padding-top: 5px; color: gray;">${chat.send_time}</div>
+							<c:if test="${chat.chat_detail ne null}">
+								<span>${chat.chat_detail}</span>
+								<div style="padding-top: 5px; color: gray;">${chat.send_time}</div>
+							</c:if>
 							<%-- <c:choose>
 								<c:when test="${chat.send_time ne chats[status.index - 1].send_time}">
 									<div>${chat.send_time}</div>

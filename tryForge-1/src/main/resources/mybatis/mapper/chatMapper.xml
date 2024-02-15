@@ -56,5 +56,54 @@
 			LAST_TIME = TO_DATE(#{send_time}, 'YYYY-MM-DD HH24:MI')
 		WHERE CHATLIST_KEY = #{chatlist_key}
 	</update>
+	
+	<insert id="createChatRoom">
+	INSERT INTO chat_list
+	(
+	   chatList_key,
+	   chat_category,
+	   last_message,
+	   last_time
+	)
+	VALUES
+	(
+	   chatlist_seq.nextval,
+	   'TEAMCHAT',
+	   ' ',
+	   sysdate
+	)
+	</insert>
+	
+	<insert id="createChatMem" parameterType="int">
+		INSERT INTO chat_member
+		(
+		   chatmember_key,
+		   chatlist_key	,
+		   member_key
+		)
+		VALUES
+		(
+		   chatmember_seq.nextval,
+		   chatlist_seq.currval,
+		   #{member_key}
+		)
+	</insert>
+	
+	<insert id="createChatRoomUser">
+		INSERT INTO chat_list
+		(
+		   chatList_key,
+		   chat_category,
+		   last_message,
+		   last_time
+		)
+		VALUES
+		(
+		   chatlist_seq.nextval,
+		   '',
+		   ' ',
+		   sysdate
+		)
+	</insert>
 
 </mapper>

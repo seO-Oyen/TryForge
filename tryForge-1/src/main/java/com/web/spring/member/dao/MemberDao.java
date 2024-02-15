@@ -21,6 +21,9 @@ public interface MemberDao {
 	// 아이디 중복체크 - 회원가입
 	int checkId(String member_id);
 	
+	// 이메일 체크
+	int checkEmail(String member_email);
+	
 	Project getUserProject(int member_key);
 	
 	// 초대 내역 저장
