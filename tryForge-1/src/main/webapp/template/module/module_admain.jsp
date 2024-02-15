@@ -213,6 +213,10 @@
                         titleElement.text('UserManage')
                         detailElement.text('관리자페이지  >  사용자관리')
                         break;
+                    case '/errorList':
+                        titleElement.text('Error')
+                        detailElement.text('시스템관리자  >  에러관리')
+                        break;
                     default:
                         break;
                 }
@@ -727,6 +731,16 @@
                         class="tpycn mdi mdi-account-convert menu-icon">
 
                 </i> <span class="menu-title">일반유저페이지</span>
+                    <!-- <i class="menu-arrow"></i> -->
+                </a> <!-- <div class="collapse" id="auth">
+						</div> -->
+                </li>
+
+                <li class="nav-item"><a class="nav-link"
+                                        href="${path}/errorList"> <i
+                        class="tpycn mdi mdi-window-close menu-icon">
+
+                </i> <span class="menu-title">에러관리</span>
                     <!-- <i class="menu-arrow"></i> -->
                 </a> <!-- <div class="collapse" id="auth">
 						</div> -->
