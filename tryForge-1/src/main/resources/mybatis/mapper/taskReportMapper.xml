@@ -3,6 +3,19 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.web.spring.task.dao.TaskReportDao">
+	<resultMap type = "task" id="taskRst">
+		<result column = "task_key" property = "id"/>
+	</resultMap>
 
+	<select id="getMemberTaskList" resultMap="taskRst">
+		SELECT * FROM TASK
+		WHERE PROJECT_KEY = #{project_key}
+		  AND MEMBER_KEY = #{member_key}
+		ORDER BY START_DATE
+	</select>
+
+	<select id="getMemberTask" resultMap="taskRst">
+		SELECT * FROM TASK
+		WHERE TASK_KEY = #{id}
+	</select>
 </mapper>
-

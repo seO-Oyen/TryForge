@@ -6,21 +6,57 @@
 
 <jsp:include page="${path}/template/module/module_main.jsp" flush="true" />
 <style>
-#myModal .modal-dialog {
-	max-width: 50%; /* 모달의 최대 너비를 80%로 설정 */
-}
+	#taskFileUploadInModal {
+		max-height: 105px;
+		overflow-y: auto;
+	}
+	.modal-content {
+		margin-top: 25%;
+	}
+	#taskNameInModal, #taskFileUploadInModal {
+		background-color: white;
+		color: black;
+	}
+	.table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+	.form-control {
+		border: 1px solid rgba(0, 0, 0, 0.25);
+	}
 
-/* 입력 요소 여백 조절 */
-#myModal .form-group {
-	margin-bottom: 15px; /* 각 입력 요소 아래 여백 조절 */
-	margin-left: 3%;
-	margin-right: 8%;
-}
+	.table thead th {
+		position: sticky;
+		border-bottom: 1.5px solid #ddd;
+	}
 
-#myModal .form-control {
-	margin-right: 3%; /* 입력 요소 오른쪽 여백 조절 */
-	margin-left: 3%; /* 입력 요소 왼쪽 여백 조절 */
-}
+	.table tbody {
+		display: block;
+		max-height: 255px;
+		overflow-y: auto;
+	}
+
+	/* 테이블 행과 셀 */
+	.table tbody tr, .table thead tr {
+		display: table;
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	.table th, .table td {
+		text-align: center;
+		border-bottom: 1px solid #ddd;
+	}
+	.btn-info {
+		color: #fff;
+		background-color: #007fff;
+		border-color : #007fff;
+	}
+	.btn-info:hover {
+		color: #fff;
+		background-color: #2c73ba;
+		border-color : #296db0;
+	}
 
 #searchResults {
 	height: 150px;
@@ -30,6 +66,7 @@
 </style>
 <script>
 	$(document).ready(function() {
+		getMemberTaskList();
 		$("#uptBtn").click(function() {
 			uptTask(taskId);
 		});
@@ -73,6 +110,38 @@
 
 		$("#myModal").modal('show');
 	}
+	function getMemberTaskList() {
+		$.ajax({
+			url: "${path}/getMemberTaskList",
+			type: "GET",
+			dataType: "json",
+			success: function(response) {
+				var taskListHtml = '';
+				if (response.taskList && response.taskList.length > 0) {
+					$.each(response.taskList, function(index, task) {
+						var reportBtn = '';
+						var startDateFormat = task.start_date.split(' ')[0];
+						var endDateFormat = task.end_date.split(' ')[0];
+						reportBtn = '<button type="button" onclick="taskReport(\'' + task.id + '\', \'' + task.text + '\')" class="btn btn-info" id="TaskReportBtn">업무보고</button>';
+
+						taskListHtml += '<tr class="member-row">' +
+								'<td>' + task.text + '</td>' +
+								'<td>' + startDateFormat + '</td>' +
+								'<td>' + endDateFormat + '</td>' +
+								'<td>' + task.assignor + '</td>' +
+								'<td>' + reportBtn + '</td>' +
+								'</tr>';
+					});
+				} else {
+					taskListHtml = '<tr><td colspan="5">진행중인 업무가 없습니다.</td></tr>';
+				}
+				$('#memberTaskList').html(taskListHtml);
+			},
+			error: function(error) {
+				msg("error", "파일리스트 로딩 실패", error)
+			}
+		});
+	}
 </script>
 <div class="main-panel">
 	<div class="content-wrapper">
@@ -84,6 +153,33 @@
 						<h4 class="card-title">My Task</h4>
 						<!-- 새 업무 테이블 -->
 						<div class="table-responsive"
+							style="width: 95%; margin-left: 4%; overflow-x: auto;">
+							<table class="table table-hover" style="width: 100%;">
+								<thead>
+									<tr>
+										<th>업무명</th>
+										<th>업무시작일</th>
+										<th>업무종료일</th>
+										<th>할당자</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody id="memberTaskList"></tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 새 업무 end -->
+
+			<!-- 결재 대기중 업무 -->
+			<div class="col-md-12" style="margin-top: 3%;">
+				<div class="card">
+					<div class="card-body">
+						<h4 class="card-title">Approval in progress</h4>
+						<!-- 진행중인 업무 테이블 -->
+						<div class="table-responsive"
 							style="width: 95%; margin-left: 4%; max-height: 2000px; overflow-x: auto;">
 							<table class="table table-hover" style="width: 100%;">
 								<thead>
@@ -91,16 +187,17 @@
 										<th>업무명</th>
 										<th>업무시작일</th>
 										<th>업무종료일</th>
-										<th>전달자</th>
+										<th>업무상세</th>
 										<th></th>
 									</tr>
 								</thead>
-								<tbody><!--
+								<tbody>
+								<!--
 									<c:forEach var="tlist" items="${getTask}" varStatus="sts">
 										<c:if
-											test="${tlist.member_key == loginMem.member_key && tlist.confirm == 0}">
+											test="${tlist.member_key == loginMem.member_key && tlist.confirm == 1}">
 
-											<tr class="member-row" data-member-key="${tlist.id}">
+											<tr class="task-row" data-member-key="${tlist.id}" ondblclick="openDetail()">
 												<td>${tlist.text}</td>
 												<td>${tlist.start_date}</td>
 												<td>${tlist.end_date}</td>
@@ -114,7 +211,7 @@
 										</c:if>
 										<c:if test="${empty getTask}">
 											<tr>
-												<td>새로운 업무가 없습니다.</td>
+												<td>진행중인 업무가 없습니다.</td>
 											</tr>
 										</c:if>
 									</c:forEach>
@@ -126,25 +223,23 @@
 				</div>
 			</div>
 
-			<!-- 새 업무 end -->
-
-			<!-- 진행중인 업무 -->
+			<!-- 결재 대기중 업무 -->
 			<div class="col-md-12" style="margin-top: 3%;">
 				<div class="card">
 					<div class="card-body">
-						<h4 class="card-title">Ongoing Task</h4>
+						<h4 class="card-title">Approval Complete</h4>
 						<!-- 진행중인 업무 테이블 -->
 						<div class="table-responsive"
-							style="width: 95%; margin-left: 4%; max-height: 2000px; overflow-x: auto;">
+							 style="width: 95%; margin-left: 4%; max-height: 2000px; overflow-x: auto;">
 							<table class="table table-hover" style="width: 100%;">
 								<thead>
-									<tr>
-										<th>업무명</th>
-										<th>업무시작일</th>
-										<th>업무종료일</th>
-										<th>전달자</th>
-										<th></th>
-									</tr>
+								<tr>
+									<th>업무명</th>
+									<th>업무시작일</th>
+									<th>업무종료일</th>
+									<th>업무상세</th>
+									<th></th>
+								</tr>
 								</thead>
 								<tbody>
 								<!--
@@ -180,60 +275,68 @@
 			<!-- 진행중인 업무 end -->
 		</div>
 
-		<!-- The Modal -->
-		<div class="modal" id="myModal">
-			<div class="modal-dialog">
+
+		<div class="modal fade" id="taskReportModal" tabindex="-1" role="dialog" aria-labelledby="taskReportModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
 				<div class="modal-content">
-
-					<!-- Modal Header -->
 					<div class="modal-header">
-						<h2 class="modal-title">New Task</h2>
-
-						<button type="button" class="close" data-dismiss="modal" id="xBtn">×</button>
+						<h5 class="modal-title" id="taskReportModalLabel">업무 보고</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
 					</div>
-
-					<!-- Modal body -->
-					<div class="modal-body">
-						<div style="display: flex;">
-							<h3 id=proTitle>새 업무</h3>
-
+					<form method="post" enctype="multipart/form-data" action="upload">
+						<div class="modal-body">
+							<!-- 업무 정보를 여기에 표시 -->
+							<label for="taskNameInModal">업무명</label>
+							<textarea class="form-control" id="taskNameInModal" rows="1" readonly></textarea>
+							<label for="taskFileUploadInModal" style="margin-top: 1.5%;">첨부파일</label>
+							<ul id="taskFileUploadInModal" class="list-group"></ul>
+							<label for="taskReportDetailInModal" style="margin-top: 1.5%;">보고내용</label>
+							<textarea class="form-control" id="taskReportDetailInModal" rows="12"></textarea>
 						</div>
-
-					</div>
-					<form class="forms-sample" id="modalFrm">
-						<div class="form-group">
-							<label for="exampleInputUsername1">업무이름</label> <input
-								name="text" type="text" class="form-control" placeholder="title">
-						</div>
-						<div class="form-group">
-							<label for="exampleTextarea1">상세내용</label>
-							<textarea class="form-control"  rows="4" name="detail"></textarea>
-						</div>
-						<div class="form-group">
-							<label for="exampleInputPassword1">업무 시작일</label> <input
-								name="start_date" type="date" class="form-control" placeholder="startDate">
-						</div>
-						<div class="form-group">
-							<label for="exampleInputConfirmPassword1">업무 종료일</label>
-							<input name="end_date" type="date" class="form-control" placeholder="endDate">
+						<div class="modal-footer" style="display: flex; justify-content: flex-end;">
+							<div class="flex-grow-1" style="flex: 1;">
+								<button type="button" class="btn btn-success" id="uploadBtn" style="float: left;">파일첨부</button>
+								<input type="file" id="fileInput" name="files" multiple="multiple" style="display: none;" />
+								<input type="hidden" name="member_key" value="${loginMem.member_key}"/>
+								<input type="hidden" name="project_key" value="${projectMem.project_key}"/>
+							</div>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+							<button type="button" class="btn btn-info" id="taskReportInModalBtn">보고</button>
 						</div>
 					</form>
-					<!-- Modal footer -->
-					<div class="modal-footer">
-						<div class="mx-auto">
-							<button type="button" class="btn btn-" id="confirmBtn"
-								onclick="insTask()"
-								style="background-color: #007FFF; color: white;">확인완료</button>
-
-							<button type="button" class="btn btn-danger" data-dismiss="modal"
-								id="clsBtn">닫기</button>
-						</div>
-					</div>
-
 				</div>
 			</div>
 		</div>
 
+		<div class="modal fade" id="fileModifyModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="fileModifyModalLabel">파일 설명</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="fileModifyForm">
+							<div class="form-group">
+								<label for="fileModifyName">선택한 파일</label>
+								<textarea class="form-control" id="fileModifyName" rows="1" readonly></textarea>
+								<label for="fileModifyDescription">설명</label>
+								<textarea class="form-control" id="fileModifyDescription" name="description" rows="6" placeholder="수정내용을 입력하세요"></textarea>
+								<input type="hidden" id="getFileKey" name="file_key" value=""/>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" id="cancelModifyBtn">취소</button>
+						<button type="button" class="btn btn-info" id="modifyConfirm">수정</button>
+					</div>
+				</div>
+			</div>
+		</div>
 		<!-- 풋터 -->
 		<!-- content-wrapper ends -->
 		<!-- partial:partials/_footer.html -->
@@ -265,9 +368,40 @@
 	<!-- page-body-wrapper ends -->
 </div>
 <!-- container-scroller -->
+<script>
+	$("#uploadBtn").on('click', function(){
+		$('#fileInput').click();
+	})
+	$("#fileInput").on('change', function() {
+		var fileList = this.files;
+		var fileListDisplay = $('#taskFileUploadInModal');
+		fileListDisplay.empty();
 
+		for(var i = 0; i < fileList.length; i++) {
+			fileListDisplay.append($('<li class="list-group-item">').text(fileList[i].name));
+		}
+	});
+	function taskReport(id, text){
+		var fileListDisplay = $('#taskFileUploadInModal');
+		fileListDisplay.empty();
+		fileListDisplay.append($('<li class="list-group-item">').text("첨부파일 없음"));
+		$('#taskNameInModal').text(text);
+		$('#taskReportModal').modal('show');
+		$('#taskReportInModalBtn').on('click', function(id, text){
+			var formData = new FormData();
+			var files = $("#fileInput")[0].files;
+			var fileDescription = $("#fileDescription").val();
+
+			$.each(files, function(index, file) {
+				formData.append('files[]', file);
+			})
+			formData.append('description', fileDescription);
+			formData.append('member_key', $("input[name='member_key']").val());
+			formData.append('project_key', $("input[name='project_key']").val());
+		})
+	}
+</script>
 
 </body>
 
 </html>
-
