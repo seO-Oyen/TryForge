@@ -120,5 +120,26 @@
 		SET MEMBER_PWD = #{pwd}
 		WHERE MEMBER_KEY = #{memKey}
 	</update>
+	
+	<insert id="requestRole">
+		INSERT INTO role_request
+		(
+			request_key,
+			member_key,
+			request_comment,
+			admin_comment,
+			request_state,
+			request_date
+		)
+		VALUES
+		(
+			role_seq.nextval,
+			#{member_key},
+			#{comment},
+			'',
+			'request',
+			sysdate
+		)
+	</insert>
 
 </mapper>

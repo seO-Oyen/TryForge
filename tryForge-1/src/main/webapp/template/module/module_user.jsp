@@ -54,7 +54,7 @@ $(document).ready(function(){
 		location.href="${path}/login"
 	} else if ("${loginMem.member_role}" == "ADM") {
 		$("#admin").css("display", "")
-		$("#sidebar").css("height", "175px")
+		$("#sidebar").css("height", "220px")
 	}
 })
 </script>
@@ -113,7 +113,7 @@ $(document).ready(function(){
 					</li>
 					
 					<!-- 메세지(톱니바퀴모양) -->
-					<li class="nav-item dropdown">
+					<%-- <li class="nav-item dropdown">
 					<a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center"
 						id="messageDropdown" href="#" data-toggle="dropdown">
 					<i class="typcn typcn-cog-outline mx-0"></i> 
@@ -190,7 +190,7 @@ $(document).ready(function(){
 							</div>
 						</a>
 					</div>
-					</li>
+					</li> --%>
 				</ul>
 				<!-- 무슨 버튼인지 모르겠음. 화면상으론 안뜸 -->
 				<!-- <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
@@ -450,7 +450,7 @@ $(document).ready(function(){
 			<!-- 사이드바 -->
 			<!-- partial -->
 			<!-- partial:partials/_sidebar.html -->
-			<nav class="sidebar" id="sidebar" style="height: 130px; min-height: auto;">
+			<nav class="sidebar" id="sidebar" style="height: 175px; min-height: auto;">
 				<ul class="nav">
 					<li class="nav-item">
 						<a class="nav-link" href="${path}/userIndex">
@@ -464,123 +464,20 @@ $(document).ready(function(){
 							href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
 							<i class="typcn typcn-document-text menu-icon"></i>
 							<span class="menu-title">업무현황</span>
-							<!-- 메뉴 옆 +기호 -->
-							<!-- <i class="menu-arrow"></i> -->
+							
 						</a>
-						<!-- 클릭시 나오는 메뉴 -->
-						<!-- <div class="collapse" id="ui-basic">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item">
-									<a class="nav-link" href="pages/ui-features/buttons.jsp">Buttons</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" href="pages/ui-features/dropdowns.jsp">Dropdowns</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" href="pages/ui-features/typography.jsp">Typography</a>
-								</li>
-							</ul>
-						</div> -->
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="${path}/requestRole">
+							<i class="typcn typcn-document-text menu-icon"></i>
+							<span class="menu-title">권한요청</span>
+						</a>
 					</li>
 					<li class="nav-item" id="admin" style="display: none;">
 						<a class="nav-link" href="${path}/adMain">
 							<i class="mdi mdi-account-convert" style="width:20px;height:20px;"></i>
 							<span class="menu-title">관리자페이지</span>
-							<!-- <i class="menu-arrow"></i> -->
 						</a>
 					</li>
-					
-					<%-- <li class="nav-item">
-					<a class="nav-link" href="${path}/gantt.do" > 
-						<i class="typcn typcn-film menu-icon"></i> 
-							<span class="menu-title">간트차트</span>
-							<!-- <i class="menu-arrow"></i> -->
-					</a>
-						<!-- <div class="collapse" id="form-elements">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item"><a class="nav-link"
-									href="pages/forms/basic_elements.jsp">Basic Elements</a>
-								</li>
-							</ul>
-						</div> -->
-					</li>
-					<li class="nav-item">
-					<a class="nav-link" href="${path}/calendar.do" >
-						<i class="typcn typcn-chart-pie-outline menu-icon"></i>
-						<span class="menu-title">캘린더</span>
-						<!-- <i class="menu-arrow"></i> -->
-					</a>
-						<!-- <div class="collapse" id="charts">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item">
-								<a class="nav-link" href="pages/charts/chartjs.jsp">ChartJs</a>
-								</li>
-							</ul>
-						</div> -->
-					</li>
-					<li class="nav-item">
-					<a class="nav-link" data-toggle="collapse" href="#tables" aria-expanded="false"
-						aria-controls="tables">
-						<i class="typcn typcn-th-small-outline menu-icon"></i>
-						<span class="menu-title">업무 관리</span>
-						<!-- <i class="menu-arrow"></i> -->
-					</a>
-						<!-- <div class="collapse" id="tables">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item">
-								<a class="nav-link" href="pages/tables/basic-table.jsp">Basic table</a>
-								</li>
-							</ul>
-						</div> -->
-					</li>
-					<li class="nav-item">
-					<a class="nav-link" data-toggle="collapse" href="#icons" aria-expanded="false"
-						aria-controls="icons">
-						<i class="typcn typcn-compass menu-icon"></i>
-						<span class="menu-title">업무 보고</span>
-						<!-- <i class="menu-arrow"></i> -->
-					</a>
-						<!-- <div class="collapse" id="icons">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item">
-								<a class="nav-link" href="pages/icons/mdi.jsp">Mdi icons</a>
-								</li>
-							</ul>
-						</div> -->
-					</li>
-					<li class="nav-item">
-					<a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false"
-						aria-controls="auth">
-						<i class="typcn typcn-user-add-outline menu-icon"></i>
-						<span class="menu-title">리스크 관리</span>
-						<!-- <i class="menu-arrow"></i> -->
-					</a>
-						<!-- <div class="collapse" id="auth">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item">
-								<a class="nav-link" href="pages/samples/login.jsp"> Login </a>
-								</li>
-								<li class="nav-item">
-								<a class="nav-link" href="pages/samples/register.jsp"> Register </a>
-								</li>
-							</ul>
-						</div> -->
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="${path}/file.do" >
-							<i class="typcn typcn-globe-outline menu-icon"></i>
-							<span class="menu-title">파일저장소</span>
-							<!-- <i class="menu-arrow"></i> -->
-						</a>
-						<!-- <div class="collapse" id="error">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item"><a class="nav-link"
-									href="pages/samples/error-404.jsp"> 404 </a></li>
-								<li class="nav-item"><a class="nav-link"
-									href="pages/samples/error-500.jsp"> 500 </a></li>
-							</ul>
-						</div> -->
-					</li>
-					 --%>
 				</ul>
 			</nav>

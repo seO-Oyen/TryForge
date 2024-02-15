@@ -46,4 +46,8 @@ public interface MemberDao {
 	
 	// 비번 수정
 	int changePwd(@Param("memKey") String memKey, @Param("pwd") String pwd);
+	
+	// 권한 요청
+	int requestRole(@Param("member_key")int memberKey, @Param("comment") String comment);
+	
 }

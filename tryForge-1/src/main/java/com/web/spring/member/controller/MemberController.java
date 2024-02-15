@@ -131,5 +131,23 @@ public class MemberController {
 		return "redirect:/insertUser";
 		
 	}
+	
+	@GetMapping("requestRole")
+	public String requestRole() {
+		
+		return "user/requestRole";
+	}
+	
+	@PostMapping("requestRole")
+	public String requestRole(
+				@RequestParam("member_id") String member_id,
+				@RequestParam("comment") String comment,
+				Model d
+			) {
+		
+		d.addAttribute("result", memberService.requestRole(member_id, comment));
+		
+		return "pageJsonReport";
+	}
 
 }

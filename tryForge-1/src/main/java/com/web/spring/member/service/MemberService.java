@@ -134,4 +134,17 @@ public class MemberService {
 			return false;
 		}
 	}
+	
+	// 권한 요청
+	public boolean requestRole(String member_id, String comment) {
+		Member member = memberDao.getMeberToId(member_id);
+		
+		int requestNum = memberDao.requestRole(member.getMember_key(), comment);
+		
+		if (requestNum > 0) {
+			return true;
+		}
+		
+		return false;
+	}
 }
