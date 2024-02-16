@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.spring.admin.dao.AcceptRoleDao">
+
+	<select id="getRoleRequestList" resultType="roleRequest">
+		SELECT REQUEST_KEY,
+			MEMBER_KEY,
+			REQUEST_COMMENT,
+			ADMIN_COMMENT,
+			REQUEST_STATE,
+			TO_CHAR(REQUEST_DATE, 'YYYY-MM-DD HH24:MI')
+		FROM role_request
+		ORDER BY REQUEST_KEY desc
+	</select>
+	
+	<update id="updateRequest">
+		UPDATE role_request
+		SET
+			REQUEST_STATE = #{state}
+		WHERE REQUEST_KEY = #{requestKey}
+	
+	</update>
+	
+	<update id="updateRole" parameterType="int">
+		UPDATE MEMBER
+		SET 
+			MEMBER_ROLE = 'PM'
+		WHERE MEMBER_KEY = #{memberKey}
+	</update>
+
+</mapper>

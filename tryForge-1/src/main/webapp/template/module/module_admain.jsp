@@ -45,112 +45,7 @@
     <!-- Custom js for this page-->
     <script src="${path}/template/js/dashboard.js"></script>
     <script src="${path}/template/alert/sweetalert2.min.js"></script>
-   <!--chart.js-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
-    <!-- End custom js for this page-->
-    <script>
-        $(document).ready(function () {
-            var sessId = "${loginMem.member_id}"
-            if (sessId == "") {
-                alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
-                location.href = "${path}/login"
-            } else if ("${loginMem.member_role}" != "") {
-                $("#admin").css("display", "")
-            }
-            function updateNavigation() {
-                var currentPage = window.location.pathname;
-                var titleElement = $('.navbar-menu-wrapper #titleText');
-                var detailElement = $('#detailText');
 
-                switch (currentPage) {
-                    case '/adMain':
-                        titleElement.text('Adminmain')
-                        detailElement.text('관리자페이지  >  메인페이지')
-                        break;
-                    case '/projList':
-                        titleElement.text('Project')
-                        detailElement.text('관리자페이지  >  프로젝트관리')
-                        break;
-                    case '/task':
-                        titleElement.text('Task')
-                        detailElement.text('관리자페이지  >  업무할당관리')
-                        break;
-                    case '/noticeList':
-                        titleElement.text('Notice')
-                        detailElement.text('관리자페이지  >  공지사항조회')
-                        break;
-                    case '/getNotice':
-                        titleElement.text('Notice')
-                        detailElement.text('관리자페이지  >  공지사항상세')
-                        break;
-                    case '/insertNotice':
-                        titleElement.text('Notice')
-                        detailElement.text('관리자페이지  >  공지사항등록')
-                        break;
-                    case '/updateNoticeFrm':
-                        titleElement.text('Notice')
-                        detailElement.text('관리자페이지  >  공지사항수정')
-                        break;
-                    case '/updateNotice':
-                        titleElement.text('Notice')
-                        detailElement.text('관리자페이지  >  공지사항수정')
-                        break;
-                    case '/deleteNotice':
-                        titleElement.text('Notice')
-                        detailElement.text('관리자페이지  >  공지사항삭제')
-                        break;
-                    case '/taskManage':
-                        titleElement.text('Task')
-                        detailElement.text('관리자페이지  >  업무현황관리')
-                        break;
-                    case '/adUser':
-                        titleElement.text('UserManage')
-                        detailElement.text('관리자페이지  >  사용자관리')
-                        break;
-                    default:
-                        break;
-                }
-            }
-            updateNavigation();
-        })
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" type="image/x-icon" href="${path}/template/images/logo_backDelete.png">
-    <title>TryForge</title>
-    <!-- base:css -->
-    <link rel="stylesheet" href="${path}/template/vendors/typicons/typicons.css">
-    <link rel="stylesheet" href="${path}/template/vendors/css/vendor.bundle.base.css">
-    <!-- endinject -->
-    <!-- plugin css for this page -->
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <link rel="stylesheet" href="${path}/template/css/vertical-layout-light/style.css">
-    <link rel="shortcut icon" href="../../images/favicon.png"/>
-
-    <link rel="stylesheet" href="${path}/template/vendors/mdi/css/materialdesignicons.min.css"/>
-    <link rel="stylesheet" href="${path}/template/alert/sweetalert2.min.css">
-
-    <!-- base:js -->
-    <script src="${path}/template/vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page-->
-    <script src="${path}/template/vendors/chart.js/Chart.min.js"></script>
-    <!-- End plugin js for this page-->
-    <!-- inject:js -->
-    <script src="${path}/template/js/off-canvas.js"></script>
-    <script src="${path}/template/js/hoverable-collapse.js"></script>
-    <script src="${path}/template/js/template.js"></script>
-    <script src="${path}/template/js/settings.js"></script>
-    <script src="${path}/template/js/todolist.js"></script>
-
-    <!-- endinject -->
-    <!-- Custom js for this page-->
-    <script src="${path}/template/js/dashboard.js"></script>
-    <script src="${path}/template/alert/sweetalert2.min.js"></script>
-=======
->>>>>>> refs/remotes/origin/develop
    <!--chart.js-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
     <!-- End custom js for this page-->
@@ -217,6 +112,10 @@
                         titleElement.text('Error')
                         detailElement.text('시스템관리자  >  에러관리')
                         break;
+                    case '/acceptRole':
+                        titleElement.text('AcceptRole')
+                        detailElement.text('관리자페이지  >  권한요청관리')
+                        break;
                     default:
                         break;
                 }
@@ -260,7 +159,7 @@
                         <a class="dropdown-item" href="${path}/myPage">
                             <i class="typcn typcn-cog-outline text-primary"></i> 마이페이지
                         </a>
-                        <a class="dropdown-item">
+                        <a class="dropdown-item" href="${path}/login">
                             <i class="typcn typcn-eject text-primary"></i> 로그아웃
                         </a>
                     </div>
@@ -636,89 +535,38 @@
                         <i class="tpycn mdi mdi-account-check menu-icon"></i>
 
                         <span class="menu-title">사용자관리</span>
-                        <!-- <i class="menu-arrow"></i> -->
                     </a>
-                    <!-- <div class="collapse" id="form-elements">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"><a class="nav-link"
-                                href="pages/forms/basic_elements.jsp">Basic Elements</a>
-                            </li>
-                        </ul>
-                    </div> -->
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="${path}/task">
                         <i class="tpycn mdi mdi-file-export menu-icon"></i>
                         <span class="menu-title">업무할당관리</span>
-                        <!-- <i class="menu-arrow"></i> -->
                     </a>
-                    <!-- <div class="collapse" id="form-elements">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"><a class="nav-link"
-                                href="pages/forms/basic_elements.jsp">Basic Elements</a>
-                            </li>
-                        </ul>
-                    </div> -->
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="${path}/taskManage">
                         <i class="tpycn mdi mdi-checkbox-marked-circle menu-icon"></i>
                         <span class="menu-title">리스크관리</span>
-                        <!-- <i class="menu-arrow"></i> -->
                     </a>
-                    <!-- <div class="collapse" id="charts">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item">
-                            <a class="nav-link" href="pages/charts/chartjs.jsp">ChartJs</a>
-                            </li>
-                        </ul>
-                    </div> -->
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#tables">
                         <i class="tpycn mdi mdi-file-check menu-icon"></i>
                         <span class="menu-title">결재관리</span>
-                        <!-- <i class="menu-arrow"></i> -->
                     </a>
-                    <!-- <div class="collapse" id="tables">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item">
-                            <a class="nav-link" href="pages/tables/basic-table.jsp">Basic table</a>
-                            </li>
-                        </ul>
-                    </div> -->
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="${path}/noticeList">
                         <i class="tpycn mdi mdi-tooltip-text menu-icon"></i>
                         <span class="menu-title">공지사항관리</span>
-                        <!-- <i class="menu-arrow"></i> -->
                     </a>
-                    <!-- <div class="collapse" id="icons">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item">
-                            <a class="nav-link" href="pages/icons/mdi.jsp">Mdi icons</a>
-                            </li>
-                        </ul>
-                    </div> -->
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false"
-                       aria-controls="auth">
+                    <a class="nav-link" href="${path}/acceptRole">
                         <i class="tpycn mdi mdi-account-plus menu-icon"></i>
                         <span class="menu-title">권한요청관리</span>
-                        <!-- <i class="menu-arrow"></i> -->
                     </a>
-                    <!-- <div class="collapse" id="auth">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item">
-                            <a class="nav-link" href="pages/samples/login.jsp"> Login </a>
-                            </li>
-                            <li class="nav-item">
-                            <a class="nav-link" href="pages/samples/register.jsp"> Register </a>
-                            </li>
-                        </ul>
-                    </div> --></li>
+               	</li>
                 <li class="nav-item"><a class="nav-link" href="${path}/insertUser">
                     <i class="tpycn mdi mdi-account-multiple-plus menu-icon"
                        style="width: 20px; height: 20px;"></i> <span class="menu-title">사용자 초대</span>
