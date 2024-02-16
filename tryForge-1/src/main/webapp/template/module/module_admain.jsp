@@ -40,7 +40,10 @@
     <script src="${path}/template/js/template.js"></script>
     <script src="${path}/template/js/settings.js"></script>
     <script src="${path}/template/js/todolist.js"></script>
-
+    <!--vue, axios-->
+    <script src="https://unpkg.com/vue" type="text/javascript"></script>
+    <script type="text/javascript" src="https://unpkg.com/axios"></script>
+    <script type="text/javascript" src="https://unpkg.com/moment@2.30.1/moment.js"></script>
     <!-- endinject -->
     <!-- Custom js for this page-->
     <script src="${path}/template/js/dashboard.js"></script>

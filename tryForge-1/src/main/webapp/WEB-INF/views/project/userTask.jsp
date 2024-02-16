@@ -73,7 +73,7 @@
             regRisk();
         })
     })
-	// 상세 모달창
+    // 상세 모달창
     function openDetail(id) {
         console.log(id)
         $.ajax({
@@ -114,7 +114,7 @@
         })
 
     }
-	// PL 업데이트 
+    // PL 업데이트
     function uptConfirm(id) {
         $.ajax({
             url: "${path}/uptConfirm",
@@ -138,17 +138,16 @@
             }
         })
     }
-	
-	// 리스크 등록 모달창 오픈
-	function showRiskModel(key,title) {
+
+    // 리스크 등록 모달창 오픈
+    function showRiskModel(key,title) {
         $("#task_title").val(title)
         $("#modalFrm02 [name=task_key]").val(key)
         $("#myModal02").modal('show');
     }
 
-	// 리스크 등록
+    // 리스크 등록
     function regRisk(){
-        //alert($("#modalFrm02").serialize())
         $.ajax({
             url:"${path}/insRisk",
             data:$("#modalFrm02").serialize(),
@@ -361,7 +360,7 @@
                         <input type="hidden" name="task_key">
                         <div class="form-group">
                             <label for="exampleInputUsername1">프로젝트 명</label> <input value="${projectMem.title}"
-                                type="text" class="form-control" placeholder="project_title">
+                                                                                     type="text" class="form-control" placeholder="project_title">
                         </div>
                         <div class="form-group">
                             <label for="exampleTextarea1">업무 명</label>
@@ -369,7 +368,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">리스크 등록자</label> <input value="${loginMem.member_name}"
-                                name="registrant" type="text" class="form-control" placeholder="risk_registrant">
+                                                                                      name="registrant" type="text" class="form-control" placeholder="risk_registrant">
                         </div>
                         <div class="form-group">
 
@@ -409,7 +408,7 @@
 
                         <div class="form-group">
                             <label for="exampleTextarea1">상세설명</label>
-                            <textarea class="form-control" id="detail" rows="4"></textarea>
+                            <textarea class="form-control" id="detail" rows="4" name="detail"></textarea>
                         </div>
 
                     </form>
@@ -467,4 +466,3 @@
 </body>
 
 </html>
-

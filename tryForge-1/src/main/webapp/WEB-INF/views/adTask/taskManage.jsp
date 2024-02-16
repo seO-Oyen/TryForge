@@ -89,6 +89,8 @@
 </style>
 <script>
     $(document).ready(function () {
+
+
         $("#clsBtn").click(function () {
             $("#myModal form")[0].reset()
 
@@ -96,6 +98,10 @@
         $("#xBtn").click(function () {
             $("#myModal form")[0].reset()
 
+        })
+
+        $("#res_infoBtn").click(function(){
+            $("#res_info").toggle();
         })
         // 리스크 출력
         $.ajax({
@@ -363,6 +369,7 @@
                 $("[name=risk_response_key]").val(resInfo.risk_response_key)
                 $("#radioGroup").empty().text(resInfo.contact)
                 $("[name=contact]").val(resInfo.contact)
+                $("[name=strategy]").val(resInfo.strategy)
                 $("#risk_status_label").show();
                 $("#risk_status").show();
                 $("#detailBtn").show()
@@ -715,9 +722,29 @@
                 <div class="form-group">
 
                     <label for="exampleInputConfirmPassword1" >리스크 대응전략</label>
-                    <div class="col-sm-6 col-md-4 col-lg-3">
-                        <i class="mdi mdi-information-variant"></i> mdi mdi-information-variant
-                    </div>
+                        <i class="mdi mdi-information-outline" style="font-size: 20px;" id="res_infoBtn">
+                        </i>
+                        <blockquote class="blockquote" id="res_info">
+                            <p style=" line-height: 2.0;">
+                                <strong>[부정적 전략] 회피(Avoidance) : </strong> 심각한 위험의 경우 발생 가능성을 원천적으로 차단하여 프로젝트를 중단합니다.
+                                <br>
+                                <strong>[부정적 전략] 전가(Transference) : </strong> 위험 조치에 대한 책임을 제3자에게 전가하여 보험가입 등을 통해 위험을 분산시킵니다.
+                                <br>
+                                <strong>[부정적 전략] 완화/감소(Mitigation) : </strong> 위험의 발생 가능성이나 영향력을 감소시키기 위해 테스트 및 보완 조치를 시행합니다.
+                                <br>
+                                <strong>[부정적 전략] 수용(Acceptance) : </strong> 비용 대비 효과를 고려하여 관련 위험을 그대로 수용하고 대비 계획을 수립합니다.
+                                <br>
+                                <strong>[긍정적 전략] 활용(Exploit) : </strong> 기회가 확실히 발생할 수 있도록 하여 특정 상위 리스크와 관련된 불확실성을 제거합니다.
+                                <br>
+                                <strong>[긍정적 전략] 공유(Share) : </strong> 긍정적 리스크와 기회를 공유하여 회사 간 컨소시엄을 구성하거나 협력합니다.
+                                <br>
+                                <strong>[긍정적 전략] 향상/증대(Enhance) : </strong> 긍정적 영향의 리스크 주요 원인을 식별하고 최대화하기 위해 더 많은 자원을 투입합니다.
+                                <br>
+                                <strong>[긍정적 전략] 수용(Accept) : </strong> 적극적으로 기회를 추구하는 활동을 수행하지 않고, 안전한 기존 방식을 유지합니다.
+                            </p>
+
+                        </blockquote>
+
 
                     <select name="strategy" class="form-control form-control-lg">
                         <option value="">선택</option>

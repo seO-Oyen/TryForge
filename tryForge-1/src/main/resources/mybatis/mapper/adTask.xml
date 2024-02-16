@@ -57,7 +57,7 @@
 		WHERE p.PROJECT_KEY = #{project_key}
 	</select>
 	<insert id="insertRiskRes" parameterType="risk_response">
-		INSERT INTO RISK_RESPONSE values (RISK_RES_SEQ.nextval, #{risk_key}, #{response_method}, #{contact}, NULL, '발생전')
+		INSERT INTO RISK_RESPONSE values (RISK_RES_SEQ.nextval, #{risk_key}, #{response_method}, #{contact}, NULL, '발생전', #{strategy} )
 	</insert>
 	<update id="uptRiskResponse" parameterType="risk_response">
 		update RISK_RESPONSE set response_method = #{response_method}, contact = #{contact} where RISK_RESPONSE_KEY= #{risk_response_key}

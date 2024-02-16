@@ -3,6 +3,7 @@ package com.web.spring.vo;
 import java.util.Date;
 
 public class Risk_Response {
+
 	private int risk_response_key; //  리스크 대응 키
 	private int risk_key; // 리스크 키
 	private String response_method; // 대응방법
@@ -10,7 +11,6 @@ public class Risk_Response {
 	private Date completion_date; // 리스크 발생 시, 처리 완료일
 	private String status; // 발생 시, 처리중 / 완료 / 실패
 	private String strategy; // 리스크 대응 전략
-
 	public Risk_Response() {
 	}
 
