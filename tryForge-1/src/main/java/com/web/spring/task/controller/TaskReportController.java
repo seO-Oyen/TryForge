@@ -1,15 +1,18 @@
 package com.web.spring.task.controller;
 
 import com.web.spring.SessionService;
+import com.web.spring.file.service.UploadService;
 import com.web.spring.task.service.TaskReportService;
-import com.web.spring.vo.Member;
-import com.web.spring.vo.Project;
-import com.web.spring.vo.Task;
+import com.web.spring.vo.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Controller
 public class TaskReportController {
@@ -17,6 +20,8 @@ public class TaskReportController {
     private TaskReportService service;
     @Autowired(required = false)
     private SessionService sessionService;
+    @Autowired(required = false)
+    private UploadService uploadService;
 
     @GetMapping("taskReport")
     public String taskReport(){
@@ -37,6 +42,22 @@ public class TaskReportController {
     @GetMapping("getMemberTask")
     public String getMemberTask(Task task, Model d){
         d.addAttribute("task", service.getMemberTask(task));
+        return "pageJsonReport";
+    }
+
+    @PostMapping("reportTask")
+    public String reportTask(Approval approval, FileStorage file, Model d){
+        MultipartFile[] files = file.getFiles();
+        // 파일 있을 때
+        if(files != null && files.length > 0) {
+            List<String> fileKeys = uploadService.uploadFile(file);
+            if(service.reportTask(approval)>0) {
+                int cnt = service.reportTaskFileUse(fileKeys);
+                d.addAttribute("result", cnt>0?"업무보고 성공(첨부파일 "+cnt+"개 포함)":"업무보고 실패");
+            }
+        } else { // 파일 없을 때
+            d.addAttribute("result", service.reportTask(approval)>0?"업무보고 성공(첨부파일 없음)":"업무보고 실패");
+        }
         return "pageJsonReport";
     }
 }

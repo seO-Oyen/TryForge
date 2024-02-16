@@ -6,6 +6,10 @@
 
 <jsp:include page="${path}/template/module/module_main.jsp" flush="true" />
 <style>
+	.card-title {
+		font-size: 20px;
+		font-weight: bold;
+	}
 	#taskFileUploadInModal {
 		max-height: 105px;
 		overflow-y: auto;
@@ -67,48 +71,32 @@
 <script>
 	$(document).ready(function() {
 		getMemberTaskList();
-		$("#uptBtn").click(function() {
-			uptTask(taskId);
-		});
-
-		$("#clsBtn").click(function() {
-			$("#myModal form")[0].reset()
-
-		})
-
 	})
-
-	function uptConfirm(id){
-	    $.ajax({
-	    url:"${path}/uptConfirm",
-	    data:"id="+id,
-	    dataType:"json",
-	    success:function(data){
-	        var uptMsg = data.uptMsg
-	        if(uptMsg!=null){
-	            alert(uptMsg)
-	        }
-	    },
-	    error:function(err){
-	        console.log(err)
-	    }
-	    })
+	function confirmMsg(title, text, icon, onConfirm, onCancel) {
+		Swal.fire({
+			title: title,
+			text: text,
+			icon: icon,
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: '승인',
+			cancelButtonText: '취소'
+		}).then((result) => {
+			if (result.isConfirmed && typeof onConfirm === 'function') {
+				onConfirm();
+			} else if (result.dismiss === Swal.DismissReason.cancel && typeof onCancel === 'function') {
+				onCancel();
+			}
+		});
 	}
 
-	function openDetail(id){
-		$.ajax({
-			url:"",
-			data:"id="+id,
-			dataType:"json",
-			success:function (data){
-
-			},
-			error:function (err){
-				console.log(err)
-			}
-		})
-
-		$("#myModal").modal('show');
+	function msg(icon, title, text) {
+		Swal.fire({
+			icon: icon,
+			title: title,
+			text: text,
+		});
 	}
 	function getMemberTaskList() {
 		$.ajax({
@@ -150,7 +138,7 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-body">
-						<h4 class="card-title">My Task</h4>
+						<h4 class="card-title">내 업무</h4>
 						<!-- 새 업무 테이블 -->
 						<div class="table-responsive"
 							style="width: 95%; margin-left: 4%; overflow-x: auto;">
@@ -177,7 +165,7 @@
 			<div class="col-md-12" style="margin-top: 3%;">
 				<div class="card">
 					<div class="card-body">
-						<h4 class="card-title">Approval in progress</h4>
+						<h3 class="card-title">결재 중</h3>
 						<!-- 진행중인 업무 테이블 -->
 						<div class="table-responsive"
 							style="width: 95%; margin-left: 4%; max-height: 2000px; overflow-x: auto;">
@@ -227,7 +215,7 @@
 			<div class="col-md-12" style="margin-top: 3%;">
 				<div class="card">
 					<div class="card-body">
-						<h4 class="card-title">Approval Complete</h4>
+						<h4 class="card-title">결재 완료</h4>
 						<!-- 진행중인 업무 테이블 -->
 						<div class="table-responsive"
 							 style="width: 95%; margin-left: 4%; max-height: 2000px; overflow-x: auto;">
@@ -299,8 +287,9 @@
 							<div class="flex-grow-1" style="flex: 1;">
 								<button type="button" class="btn btn-success" id="uploadBtn" style="float: left;">파일첨부</button>
 								<input type="file" id="fileInput" name="files" multiple="multiple" style="display: none;" />
-								<input type="hidden" name="member_key" value="${loginMem.member_key}"/>
-								<input type="hidden" name="project_key" value="${projectMem.project_key}"/>
+								<input type="hidden" name="member_key" id="memberKey" value="${loginMem.member_key}"/>
+								<input type="hidden" name="project_key" id="projectKey" value="${projectMem.project_key}"/>
+								<input type="hidden" name="task_key" id="taskKey"/>
 							</div>
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 							<button type="button" class="btn btn-info" id="taskReportInModalBtn">보고</button>
@@ -386,20 +375,38 @@
 		fileListDisplay.empty();
 		fileListDisplay.append($('<li class="list-group-item">').text("첨부파일 없음"));
 		$('#taskNameInModal').text(text);
+		$('#taskKey').val(id);
 		$('#taskReportModal').modal('show');
-		$('#taskReportInModalBtn').on('click', function(id, text){
-			var formData = new FormData();
-			var files = $("#fileInput")[0].files;
-			var fileDescription = $("#fileDescription").val();
-
-			$.each(files, function(index, file) {
-				formData.append('files[]', file);
-			})
-			formData.append('description', fileDescription);
-			formData.append('member_key', $("input[name='member_key']").val());
-			formData.append('project_key', $("input[name='project_key']").val());
-		})
 	}
+	$('#taskReportInModalBtn').on('click', function(){
+		var formData = new FormData();
+		var files = $("#fileInput")[0].files;
+
+		$.each(files, function(index, file) {
+			formData.append('files[]', file);
+		})
+		formData.append('description', '업무보고 파일')
+		formData.append('detail', $("#taskReportDetailInModal").val());
+		formData.append('member_key', $("#memberKey").val());
+		formData.append('project_key', $("#projectKey").val());
+		formData.append('task_key', $("#taskKey").val());
+		$.ajax({
+			url: "${path}/reportTask",
+			type: "POST",
+			data: formData,
+			cache: false,
+			processData: false,
+			contentType: false,
+			success: function(response) {
+				$('#taskReportModal').modal('hide');
+				msg("success", "업무보고 완료!", response.result)
+				getMemberTaskList();
+			},
+			error: function(error) {
+				msg("error", "업무보고 에러", error.result)
+			}
+		})
+	})
 </script>
 
 </body>

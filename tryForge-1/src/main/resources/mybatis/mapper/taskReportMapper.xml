@@ -18,4 +18,13 @@
 		SELECT * FROM TASK
 		WHERE TASK_KEY = #{id}
 	</select>
+
+	<insert id="reportTask" parameterType="approve">
+		INSERT INTO APPROVAL VALUES
+		(TASK_APPROVAL_SEQ.nextval, #{task_key}, #{project_key}, #{member_key}, sysdate, null, '결재 대기', #{detail})
+	</insert>
+	<insert id="reportTaskFileUse" parameterType="file">
+		INSERT INTO FILE_USE VALUES
+		(#{file_key}, '업무 보고', TASK_APPROVAL_SEQ.currval)
+	</insert>
 </mapper>
