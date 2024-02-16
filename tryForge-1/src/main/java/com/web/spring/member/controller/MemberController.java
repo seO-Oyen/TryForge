@@ -16,6 +16,7 @@ import com.web.spring.member.service.MemberService;
 import com.web.spring.vo.InviteMember;
 import com.web.spring.vo.MailSender;
 import com.web.spring.vo.Member;
+import com.web.spring.vo.RoleRequest;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -133,8 +134,12 @@ public class MemberController {
 	}
 	
 	@GetMapping("requestRole")
-	public String requestRole() {
-		
+	public String requestRole(HttpSession session, Model d) {
+		if (session.getAttribute("loginMem") != null) {
+			Member member = (Member)session.getAttribute("loginMem");
+			d.addAttribute("requestList", memberService.getRequestRoleList(member.getMember_key()));
+		}
+		 
 		return "user/requestRole";
 	}
 	
@@ -146,6 +151,19 @@ public class MemberController {
 			) {
 		
 		d.addAttribute("result", memberService.requestRole(member_id, comment));
+		
+		return "pageJsonReport";
+	}
+	
+	@GetMapping("requestRoleDetail")
+	public String getRequestRole(
+				@RequestParam("requestNum") int requestNum,
+				Model d
+			) {
+		RoleRequest role = memberService.getRequestRole(requestNum);
+		Member memInfo = memberService.getMember(role.getMember_key());
+		d.addAttribute("request", role);
+		d.addAttribute("memInfo", memInfo);
 		
 		return "pageJsonReport";
 	}

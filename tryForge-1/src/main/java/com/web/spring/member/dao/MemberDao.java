@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import com.web.spring.vo.InviteMember;
 import com.web.spring.vo.Member;
 import com.web.spring.vo.Project;
+import com.web.spring.vo.RoleRequest;
 
 @Mapper
 public interface MemberDao {
@@ -50,4 +51,8 @@ public interface MemberDao {
 	// 권한 요청
 	int requestRole(@Param("member_key")int memberKey, @Param("comment") String comment);
 	
+	// 권한요청 리스트
+	List<RoleRequest> getRequestRoleList(@Param("member_key")int memberKey);
+	
+	RoleRequest getRequestRole(@Param("request_key")int request_key);
 }

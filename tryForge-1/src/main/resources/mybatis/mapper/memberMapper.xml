@@ -141,5 +141,28 @@
 			sysdate
 		)
 	</insert>
+	
+	<select id="getRequestRoleList" parameterType="int" resultType="roleRequest">
+		SELECT REQUEST_KEY,
+			MEMBER_KEY,
+			REQUEST_COMMENT,
+			ADMIN_COMMENT,
+			REQUEST_STATE,
+			TO_CHAR(REQUEST_DATE, 'YYYY-MM-DD HH24:MI')
+		FROM role_request
+		WHERE member_key = #{member_key}
+		ORDER BY REQUEST_KEY desc
+	</select>
+	
+	<select id="getRequestRole" parameterType="int" resultType="roleRequest">
+		SELECT REQUEST_KEY,
+			MEMBER_KEY,
+			REQUEST_COMMENT,
+			ADMIN_COMMENT,
+			REQUEST_STATE,
+			TO_CHAR(REQUEST_DATE, 'YYYY-MM-DD HH24:MI')
+		FROM role_request
+		WHERE REQUEST_KEY = #{request_key}
+	</select>
 
 </mapper>

@@ -11,6 +11,7 @@ import com.web.spring.vo.InviteMember;
 import com.web.spring.vo.MailSender;
 import com.web.spring.vo.Member;
 import com.web.spring.vo.Project;
+import com.web.spring.vo.RoleRequest;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
@@ -146,5 +147,16 @@ public class MemberService {
 		}
 		
 		return false;
+	}
+	
+	// 권한요청 리스트 출력
+	public List<RoleRequest> getRequestRoleList(int member_key) {
+		
+		return memberDao.getRequestRoleList(member_key);
+	}
+	
+	// 권한요청 키로 출력
+	public RoleRequest getRequestRole(int requestKey) {
+		return memberDao.getRequestRole(requestKey);
 	}
 }

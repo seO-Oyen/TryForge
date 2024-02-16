@@ -14,5 +14,4 @@ public class RoleRequest {
 	private String admin_comment;
 	private String request_state;
 	private String request_date;
-
 }
