@@ -20,19 +20,93 @@
 	href="${path}/template/vendors/typicons/typicons.css">
 <link rel="stylesheet"
 	href="${path}/template/vendors/css/vendor.bundle.base.css">
+<link rel="stylesheet" href="${path}/template/alert/sweetalert2.min.css">
 <!-- endinject -->
 <!-- plugin css for this page -->
 <!-- End plugin css for this page -->
 <!-- inject:css -->
 <link rel="stylesheet"
 	href="${path}/template/css/vertical-layout-light/style.css">
+<!-- base:js -->
+<script src="${path}/template/vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- inject:js -->
+<script src="${path}/template/js/off-canvas.js"></script>
+<script src="${path}/template/js/hoverable-collapse.js"></script>
+<script src="${path}/template/js/template.js"></script>
+<script src="${path}/template/js/settings.js"></script>
+<script src="${path}/template/js/todolist.js"></script>
+<script src="${path}/template/alert/sweetalert2.min.js"></script>
 <!-- endinject -->
 <script>
 $(document).ready(function(){
-	$("#findId").click(findId())
+	$("#findId").click(function() {
+		findId()
+	})
 })
 
 function findId() {
+	var emailVal = $("[name=member_email]").val()
+	console.log(emailVal)
+	
+	if (emailVal == ""){
+		const Toast = Swal.mixin({
+		    toast: true,
+		    position: 'top-end',
+		    showConfirmButton: false,
+		    timer: 1500,
+		    timerProgressBar: false
+		})
+		
+		Toast.fire({
+		    icon: 'error',
+		    title: '입력창이 비어있습니다.'
+		})
+	} else {
+		$.ajax({
+			url : "${path}/searchId",
+			type : "GET",
+			data : {
+				email: emailVal
+			},
+			dataType : "json",
+			success : function(data) {
+				if (data.msg == "메일 발송 성공") {
+					const Toast = Swal.mixin({
+					    toast: true,
+					    position: 'top-end',
+					    showConfirmButton: false,
+					    timer: 1500,
+					    timerProgressBar: false
+					})
+					
+					Toast.fire({
+					    icon: 'success',
+					    title: '메일발송 완료. 메일함을 확인해주세요.'
+					})
+				} else if (data.msg == "가입안됨") {
+					const Toast = Swal.mixin({
+					    toast: true,
+					    position: 'top-end',
+					    showConfirmButton: false,
+					    timer: 1500,
+					    timerProgressBar: false
+					})
+					
+					Toast.fire({
+					    icon: 'error',
+					    title: '가입된 계정이 없습니다.\n회원가입 먼저 해주세요.'
+					})
+				}
+				
+			},
+			error : function(err) {
+				console.log(err)
+			}
+		})
+	}
+	
+	
 	
 }
 
@@ -54,7 +128,7 @@ function findId() {
 							<div class="pt-3">
 								<div class="form-group">
 									<input type="text" class="form-control form-control-lg"
-										id="memberId" name="member_email" placeholder="회원가입 하신 이메일"
+										id="memberEmail" name="member_email" placeholder="회원가입 하신 이메일"
 										autocomplete="off">
 								</div>
 								<div class="mt-3">
@@ -67,7 +141,7 @@ function findId() {
 							<div class="pt-3">
 								<div class="form-group">
 									<input type="text" class="form-control form-control-lg"
-										id="memberEmail" name="member_email" placeholder="회원가입 하신 이메일"
+										id="pwdEmail" name="pwd_email" placeholder="회원가입 하신 이메일"
 										autocomplete="off">
 								</div>
 								<div class="form-group">
@@ -97,16 +171,7 @@ function findId() {
 		<!-- page-body-wrapper ends -->
 	</div>
 	<!-- container-scroller -->
-	<!-- base:js -->
-	<script src="${path}/template/vendors/js/vendor.bundle.base.js"></script>
-	<!-- endinject -->
-	<!-- inject:js -->
-	<script src="${path}/template/js/off-canvas.js"></script>
-	<script src="${path}/template/js/hoverable-collapse.js"></script>
-	<script src="${path}/template/js/template.js"></script>
-	<script src="${path}/template/js/settings.js"></script>
-	<script src="${path}/template/js/todolist.js"></script>
-	<!-- endinject -->
+	
 </body>
 
 </html>

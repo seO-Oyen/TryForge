@@ -158,4 +158,32 @@ public class MemberService {
 	public RoleRequest getRequestRole(int requestKey) {
 		return memberDao.getRequestRole(requestKey);
 	}
+	
+	public String searchId(String email) {
+		Member member = memberDao.getIdToEmail(email);
+		String msg;
+		if (member != null) {
+			MimeMessage mmsg = sender.createMimeMessage();
+			
+			try {
+				mmsg.setSubject("TryForge 아이디 찾기");
+				mmsg.setRecipient(RecipientType.TO, new InternetAddress(email));
+				mmsg.setText(member.getMember_name() + "님의 아이디는 " + member.getMember_id()
+						+ "입니다!\n바로 로그인해보세요.\n\nhttp://211.63.89.67:1111/login");
+
+				sender.send(mmsg);
+				msg = "메일 발송 성공";
+			} catch (MessagingException e) {
+				System.out.println("메시지 전송에러 발송 : " + e.getMessage());
+				msg = "메일 발송 에러 발생 : " + e.getMessage();
+			} catch (Exception e) {
+				System.out.println("기타 에러 : " + e.getMessage());
+				msg = "기타 에러 발생 : " + e.getMessage();
+			}
+		} else {
+			msg = "가입안됨";
+		}
+		
+		return msg;
+	}
 }

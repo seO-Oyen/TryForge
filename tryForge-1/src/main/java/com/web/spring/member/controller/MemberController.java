@@ -125,7 +125,7 @@ public class MemberController {
 		mailVo.setTitle("TryForge에 초대합니다.");
 		
 		mailVo.setContent(sendMem.getMember_name() + "님이 초대하셨습니다."
-				+ "\n아래링크를 눌러 가입해주세요.\n\nhttp://211.63.89.67:1111/tryForge/register");
+				+ "\n아래링크를 눌러 가입해주세요.\n\nhttp://211.63.89.67:1111/register");
 		d.addAttribute("msg", memberService.sendMail(mailVo, sendMem).equals("메일 발송 성공"));
 		
 		return "redirect:/insertUser";
@@ -195,8 +195,10 @@ public class MemberController {
 	
 	@GetMapping("searchId")
 	public String searchId(
-				@RequestParam("email") String email
+				@RequestParam("email") String email,
+				Model d
 			) {
+		d.addAttribute("msg", memberService.searchId(email));
 		
 		return "pageJsonReport";
 	}
