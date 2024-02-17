@@ -18,6 +18,6 @@ public class UploadController {
 	@PostMapping("upload")
 	public String upload(FileStorage file, Model d) {
 		d.addAttribute("msg", service.uploadFile(file));
-		return "/project/fileStorage";
+		return "pageJsonReport";
 	}
 }

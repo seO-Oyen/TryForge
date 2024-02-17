@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.spring.chat.dao.ChatDao">
+
+	<select id="getChatList" parameterType="int" resultType="chatList">
+		SELECT cl.*
+		FROM CHAT_MEMBER cm, CHAT_LIST cl 
+		WHERE cm.MEMBER_KEY = #{memKey}
+			AND cm.CHATLIST_KEY = cl.CHATLIST_KEY
+		ORDER BY cl.LAST_TIME DESC
+	</select>
+	
+	<select id="getChatMemList" parameterType="int" resultType="int">
+		SELECT cm.member_key
+		FROM CHAT_MEMBER cm
+		WHERE cm.CHATLIST_KEY = #{listKey}
+			AND cm.MEMBER_KEY != #{memKey}
+	</select>
+	
+	<select id="getChat" parameterType="int" resultType="chat">
+		SELECT chat_key,
+		   chatlist_key,
+		   sender_key,
+		   chat_detail,
+		   TO_CHAR(send_time, 'YYYY-MM-DD HH24:MI') send_time
+		FROM chat
+		WHERE CHATLIST_KEY = #{listKey}
+		ORDER BY SEND_TIME
+	</select>
+	
+	<insert id="insertChat" parameterType="chat">
+		INSERT INTO chat
+		(
+		   chat_key,
+		   chatlist_key,
+		   sender_key,
+		   chat_detail,
+		   send_time
+		)
+		VALUES
+		(
+		   chat_seq.nextval,
+		   #{chatlist_key},
+		   #{sender_key},
+		   #{chat_detail},
+		   TO_DATE(#{send_time}, 'YYYY-MM-DD HH24:MI')
+		)
+	</insert>
+	
+	<update id="updateLastMessage" parameterType="chat">
+		UPDATE chat_list
+		SET
+			LAST_MESSAGE = #{chat_detail},
+			LAST_TIME = TO_DATE(#{send_time}, 'YYYY-MM-DD HH24:MI')
+		WHERE CHATLIST_KEY = #{chatlist_key}
+	</update>
+	
+	<insert id="createChatRoom">
+	INSERT INTO chat_list
+	(
+	   chatList_key,
+	   chat_category,
+	   last_message,
+	   last_time
+	)
+	VALUES
+	(
+	   chatlist_seq.nextval,
+	   'TEAMCHAT',
+	   ' ',
+	   sysdate
+	)
+	</insert>
+	
+	<insert id="createChatMem" parameterType="int">
+		INSERT INTO chat_member
+		(
+		   chatmember_key,
+		   chatlist_key	,
+		   member_key
+		)
+		VALUES
+		(
+		   chatmember_seq.nextval,
+		   chatlist_seq.currval,
+		   #{member_key}
+		)
+	</insert>
+	
+	<insert id="createChatRoomUser">
+		INSERT INTO chat_list
+		(
+		   chatList_key,
+		   chat_category,
+		   last_message,
+		   last_time
+		)
+		VALUES
+		(
+		   chatlist_seq.nextval,
+		   '',
+		   ' ',
+		   sysdate
+		)
+	</insert>
+
+</mapper>

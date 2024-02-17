@@ -9,7 +9,6 @@ import com.web.spring.vo.InviteMember;
 import com.web.spring.vo.Member;
 import com.web.spring.vo.Project;
 
-
 @Mapper
 public interface MemberDao {
 
@@ -22,6 +21,9 @@ public interface MemberDao {
 	// 아이디 중복체크 - 회원가입
 	int checkId(String member_id);
 	
+	// 이메일 체크
+	int checkEmail(String member_email);
+	
 	Project getUserProject(int member_key);
 	
 	// 초대 내역 저장
@@ -32,6 +34,9 @@ public interface MemberDao {
 	
 	// 유저 key로 유저 찾기
 	Member getMeber(int memberKey);
+	
+	// 유저 id로 유저 찾기
+	Member getMeberToId(String memberId);
 	
 	// 비밀번호 확인
 	int checkPwd(@Param("member_key") String memKey, @Param("pwd") String pwd);

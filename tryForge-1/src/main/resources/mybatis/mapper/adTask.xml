@@ -62,5 +62,29 @@
 	<update id="uptRiskResponse" parameterType="risk_response">
 		update RISK_RESPONSE set response_method = #{response_method}, contact = #{contact} where RISK_RESPONSE_KEY= #{risk_response_key}
 	</update>
+	<!--리스크 미확인, 발생전, 처리중, 처리완료 -->
+	<select id="riskNotConTot" resultType="int" parameterType="int">
+		SELECT COUNT(*) FROM risk r
+		    JOIN project p ON p.PROJECT_KEY = r.PROJECT_KEY
+		WHERE p.CREATER = #{creater} AND r.CONFIRM = 0
+	</select>
+	<select id="riskTot01" resultType="int" parameterType="int">
+		SELECT COUNT(*) FROM risk r
+			JOIN project p ON p.PROJECT_KEY = r.PROJECT_KEY
+			JOIN RISK_RESPONSE rr ON rr.RISK_KEY = r.RISK_KEY
+		WHERE p.CREATER = #{creater} AND rr.status = '발생전'
+	</select>
+	<select id="riskTot02" resultType="int" parameterType="int">
+		SELECT COUNT(*) FROM risk r
+			 JOIN project p ON p.PROJECT_KEY = r.PROJECT_KEY
+			 JOIN RISK_RESPONSE rr ON rr.RISK_KEY = r.RISK_KEY
+		WHERE p.CREATER = #{creater} AND rr.status = '처리중'
+	</select>
+	<select id="riskTot03" resultType="int" parameterType="int">
+		SELECT COUNT(*) FROM risk r
+			 JOIN project p ON p.PROJECT_KEY = r.PROJECT_KEY
+			 JOIN RISK_RESPONSE rr ON rr.RISK_KEY = r.RISK_KEY
+		WHERE p.CREATER = #{creater} AND rr.status = '처리완료'
+	</select>
 
 </mapper>

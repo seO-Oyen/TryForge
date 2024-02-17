@@ -32,7 +32,8 @@
 			member_name,
 			member_id,
 			member_pwd,
-			member_email
+			member_email,
+			member_role
 		)
 		VALUES
 		(
@@ -40,7 +41,8 @@
 			#{member_name},
 			#{member_id},
 			#{member_pwd},
-			#{member_email}
+			#{member_email},
+			'EMP'
 		)
 	</insert>
 	
@@ -48,6 +50,12 @@
 		SELECT count(member_id)
 		FROM MEMBER
 		WHERE member_id = #{member_id}
+	</select>
+	
+	<select id="checkEmail" parameterType="String" resultType="int">
+		SELECT count(*)
+		FROM invite_member
+		WHERE INVITEE_EMAIL = #{member_email}
 	</select>
 	
 	<select id="getUserProject" parameterType="int" resultType="project">
@@ -85,6 +93,12 @@
 		select * 
 		from member
 		where member_key = #{memberKey}
+	</select>
+	
+	<select id="getMeberToId" parameterType="String" resultType="member">
+		select * 
+		from member
+		where member_id = #{memberId}
 	</select>
 	
 	<select id="checkPwd" parameterType="String" resultType="int">

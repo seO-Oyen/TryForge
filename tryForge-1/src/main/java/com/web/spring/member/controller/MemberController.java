@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.web.spring.chat.controller.ChatController;
 import com.web.spring.member.service.MemberService;
 import com.web.spring.vo.InviteMember;
 import com.web.spring.vo.MailSender;
@@ -24,12 +25,15 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private ChatController chatController;
 
 	// 로그인 창 띄우기
 	@GetMapping("login")
 	public String login(HttpSession session) {
 		// 기존 session이 있다면 삭제
 		if (session.getAttribute("loginMem") != null) {
+			System.out.println(chatController.chatSave());
 			session.removeAttribute("loginMem");
 			if(session.getAttribute("projectMem") != null){
 				session.removeAttribute("projectMem");
@@ -81,6 +85,18 @@ public class MemberController {
 			System.out.println("안중복");
 		}
 		d.addAttribute("userIdChk", memberService.checkId(userId));
+		
+		return "pageJsonReport";
+	}
+	
+	// 초대받은 이메일인지 확인
+	@GetMapping("emailCheck")
+	public String emailCheck(
+				@RequestParam("email") String email,
+				Model d
+			) {
+		
+		d.addAttribute("emailChk", memberService.checkEmail(email));
 		
 		return "pageJsonReport";
 	}

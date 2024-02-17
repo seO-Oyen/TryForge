@@ -143,17 +143,18 @@
             }
         })
 
+        // 업무 차트 전역변수
         var totalTasks = 0;
         var task1 = 0;
         var task2 = 0;
         var task3 = 0;
 
-        function drawChart() {
+        function drawChart01() {
             var ratio1 = (task1 / totalTasks) * 100;
             var ratio2 = (task2 / totalTasks) * 100;
             var ratio3 = (task3 / totalTasks) * 100;
 
-            var doughnutPieData = {
+            var doughnutPieData01 = {
                 labels: ["미확인", "진행중", "완료"],
                 datasets: [{
                     data: [ratio1, ratio2, ratio3],
@@ -169,8 +170,48 @@
                 }
             };
 
-            if ($("#pieChart").length) {
-                var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+            if ($("#pieChart01").length) {
+                var pieChartCanvas = $("#pieChart01").get(0).getContext("2d");
+                var pieChart = new Chart(pieChartCanvas, {
+                    type: 'pie',
+                    data: doughnutPieData01,
+                    options: doughnutPieOptions
+                });
+            }
+        }
+
+        // 리스크 차트 전역변수
+        var totalrisks = 0;
+        var risk1 = 0;
+        var risk2 = 0;
+        var risk3 = 0;
+        var risk4 = 0;
+
+        function drawChart02() {
+            var ratio1 = (risk1 / totalrisks) * 100;
+            var ratio2 = (risk2 / totalrisks) * 100;
+            var ratio3 = (risk3 / totalrisks) * 100;
+            var ratio4 = (risk4 / totalrisks) * 100;
+
+            var doughnutPieData = {
+                labels: ["미확인", "발생전", "처리중", "처리완료"],
+
+                datasets: [{
+                    data: [ratio1, ratio2, ratio3, ratio4],
+                    backgroundColor: ["#FFB6C1", "#4CA5FF", "#BDC3C7", "#00493A"],
+                }]
+            };
+
+            var doughnutPieOptions = {
+                responsive: true,
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            };
+
+            if ($("#pieChart02").length) {
+                var pieChartCanvas = $("#pieChart02").get(0).getContext("2d");
                 var pieChart = new Chart(pieChartCanvas, {
                     type: 'pie',
                     data: doughnutPieData,
@@ -179,7 +220,7 @@
             }
         }
 
-        // Ajax 요청
+        // Ajax 요청(업무차트)
         $.ajax({
             url: "${path}/taskChart",
             dataType: "json",
@@ -190,15 +231,40 @@
                 task3 = data.finCnt;
                 totalTasks = task1+task2+task3
                 $("#task01").text(totalTasks + "개")
-                $("#task02").text(task2 + "개")
-                $("#task03").text(task3 + "개")
-
                 $("#taskCnt01").text(totalTasks)
                 $("#taskCnt02").text(task2)
                 $("#taskCnt03").text(task3)
                 $("#taskCnt04").text(task1)
 
-                drawChart();
+                drawChart01();
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+
+        // Ajax 요청(리스크차트)
+        $.ajax({
+            url: "${path}/riskAllTot",
+            dataType: "json",
+            data:"creater="+"${loginMem.member_key}",
+            success: function (data) {
+                // riskNotConTot riskTot01
+                risk1 = data.riskNotConTot;
+                risk2 = data.riskTot01;
+                risk3 = data.riskTot02;
+                risk4 = data.riskTot03;
+                totalrisks = risk1+risk2+risk3+risk4
+                $("#task02").text(totalrisks + "개")
+                $("#task03").text(Math.floor(totalTasks/totalrisks)+ "%")
+
+                $("#riskCnt01").text(totalrisks)
+                $("#riskCnt02").text(risk1)
+                $("#riskCnt03").text(risk2)
+                $("#riskCnt04").text(risk3)
+                $("#riskCnt05").text(risk4)
+
+                drawChart02();
             },
             error: function (err) {
                 console.log(err);
@@ -303,7 +369,7 @@
                 $("#uptResBtn").show()
                 $("#regResBtn").hide()
                 $("#myModal").modal('show')
-
+                // sta01Btn : 발생 상태로 변경 버튼
                 $("#sta01Btn").click(function (){
                     if(resInfo.status=='발생전'){
                         uptProcessing(resInfo.risk_response_key)
@@ -315,6 +381,7 @@
                         })
                     }
                 })
+                // sta01Btn : 처리완료 상태로 변경 버튼
                 $("#sta02Btn").click(function (){
                     if(resInfo.status=='처리중'){
                         uptFin(resInfo.risk_response_key)
@@ -417,11 +484,11 @@
         <div class="row">
             <div class="top-wrap" style="display: flex; justify-content: space-between; width: 100%;">
                 <!-- 업무 현황 -->
-                <div class="col-lg-4 grid-margin stretch-card" style="padding-left: 0; width: 70%; padding-right: 0;">
+                <div class="col-lg-4 grid-margin stretch-card" style="padding-left: 0;padding-right: 0;">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">업무 현황</h4>
-                            <canvas id="pieChart" style="margin-top: 50px;" ></canvas>
+                            <canvas id="pieChart01"></canvas>
                             <div class="chart-info" style="position: absolute; bottom: 8%; left: 5%;">
                                 <p>총 업무 갯수: <span id="taskCnt01"></span></p>
                                 <p>진행중인 업무: <span id="taskCnt02"></span></p>
@@ -433,11 +500,18 @@
                 </div>
 
                 <!-- 업무 현황 -->
-                <div class="col-lg-4 grid-margin stretch-card" style="padding-left: 0; width: 70%; padding-right: 0;">
+                <div class="col-lg-4 grid-margin stretch-card" style="padding-left: 0;  padding-right: 0;">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">리스크 현황</h4>
                             <canvas id="pieChart02" ></canvas>
+                            <div class="chart-info" style="position: absolute; bottom: 8%; left: 5%;">
+                                <p>총 리스크 갯수: <span id="riskCnt01"></span></p>
+                                <p>미확인 리스크: <span id="riskCnt02"></span></p>
+                                <p>발생전 리스크: <span id="riskCnt03"></span></p>
+                                <p>발생, 처리중 리스크: <span id="riskCnt04"></span></p>
+                                <p>처리완료 리스크: <span id="riskCnt05"></span></p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -465,7 +539,7 @@
                                 <div
                                         class="d-flex align-items-center justify-content-between justify-content-md-center justify-content-xl-between flex-wrap mb-4">
                                     <div>
-                                        <p class="mb-2 text-md-center text-lg-left">진행중인 업무</p>
+                                        <p class="mb-2 text-md-center text-lg-left">총 리스크</p>
                                         <h1 class="mb-0" id="task02"></h1>
                                     </div>
                                     <i class="mdi mdi-clipboard-text icon-xl text-secondary"></i>
@@ -480,7 +554,7 @@
                                 <div
                                         class="d-flex align-items-center justify-content-between justify-content-md-center justify-content-xl-between flex-wrap mb-4">
                                     <div>
-                                        <p class="mb-2 text-md-center text-lg-left">완료된 업무</p>
+                                        <p class="mb-2 text-md-center text-lg-left">업무 대비 리스크</p>
                                         <h1 class="mb-0" id="task03"></h1>
                                     </div>
                                     <i class="mdi mdi-clipboard-check icon-xl text-secondary"></i>
@@ -591,8 +665,7 @@
             </div>
             <form class="forms-sample" id="modalFrm">
                 <input type="hidden" name="risk_key"/>
-                <input type="hidden" name="risk_response_key"/>
-                <input type="hidden" name="contact"/>
+                <input type="hidden" name="risk_response_key" value="0"/>
 
                 <div class="form-group">
                     <label id="risk_status_label" for="exampleInputUsername1">리스크 상태</label>
@@ -702,4 +775,3 @@ Bootstrapdash.com
 </body>
 
 </html>
-

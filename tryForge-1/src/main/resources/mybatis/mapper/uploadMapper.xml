@@ -3,6 +3,12 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.web.spring.file.dao.UploadDao">
+	<select id="getFileSeq" resultType="int">
+		SELECT FILE_STORAGE_SEQ.nextval FROM DUAL
+	</select>
 
+	<insert id="uploadFile" parameterType="file">
+		INSERT INTO FILE_STORAGE VALUES
+		(#{file_key}, #{project_key}, #{fname}, #{path}, #{ftype}, #{fsize}, sysdate, #{member_key}, #{description})
+	</insert>
 </mapper>
-

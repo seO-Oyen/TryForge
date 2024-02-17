@@ -45,6 +45,8 @@
     <!-- Custom js for this page-->
     <script src="${path}/template/js/dashboard.js"></script>
     <script src="${path}/template/alert/sweetalert2.min.js"></script>
+   <!--chart.js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
     <!-- End custom js for this page-->
     <script>
         $(document).ready(function () {
@@ -210,6 +212,10 @@
                     case '/adUser':
                         titleElement.text('UserManage')
                         detailElement.text('관리자페이지  >  사용자관리')
+                        break;
+                    case '/errorList':
+                        titleElement.text('Error')
+                        detailElement.text('시스템관리자  >  에러관리')
                         break;
                     default:
                         break;
@@ -725,6 +731,16 @@
                         class="tpycn mdi mdi-account-convert menu-icon">
 
                 </i> <span class="menu-title">일반유저페이지</span>
+                    <!-- <i class="menu-arrow"></i> -->
+                </a> <!-- <div class="collapse" id="auth">
+						</div> -->
+                </li>
+
+                <li class="nav-item"><a class="nav-link"
+                                        href="${path}/errorList"> <i
+                        class="tpycn mdi mdi-window-close menu-icon">
+
+                </i> <span class="menu-title">에러관리</span>
                     <!-- <i class="menu-arrow"></i> -->
                 </a> <!-- <div class="collapse" id="auth">
 						</div> -->
