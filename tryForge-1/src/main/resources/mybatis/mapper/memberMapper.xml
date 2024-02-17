@@ -164,5 +164,11 @@
 		FROM role_request
 		WHERE REQUEST_KEY = #{request_key}
 	</select>
+	
+	<select id="getIdToEmail" parameterType="String">
+		select *
+		from member
+		where member_email = #{member_email}
+	</select>
 
 </mapper>

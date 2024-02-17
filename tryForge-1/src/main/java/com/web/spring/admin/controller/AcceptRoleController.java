@@ -48,4 +48,22 @@ public class AcceptRoleController {
 		
 		return "pageJsonReport";
 	}
+	
+	@PostMapping("roleCancel")
+	public String requestCancel(
+				@RequestParam("requestNum") int requestKey,
+				@RequestParam("comment") String comment,
+				Model d
+			) {
+		RoleRequest request = memService.getRequestRole(requestKey);
+		if(comment == null) {
+			comment = "";
+		}
+			
+ 		request.setAdmin_comment(comment);
+		
+		d.addAttribute("result", service.requestCancel(request));
+		
+		return "pageJsonReport";
+	}
 }

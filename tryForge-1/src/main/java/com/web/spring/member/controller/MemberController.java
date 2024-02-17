@@ -116,6 +116,7 @@ public class MemberController {
 		return "user/insertUser";
 	}
 	
+	// 메일 보내기
 	@PostMapping("insertUser")
 	public String mailSend(@RequestParam("receiver") String receiver, Model d, HttpSession session) {
 		MailSender mailVo = new MailSender();
@@ -131,6 +132,7 @@ public class MemberController {
 		
 	}
 	
+	// 권한 요청 페이지 
 	@GetMapping("requestRole")
 	public String requestRole(HttpSession session, Model d) {
 		if (session.getAttribute("loginMem") != null) {
@@ -145,14 +147,33 @@ public class MemberController {
 	public String requestRole(
 				@RequestParam("member_id") String member_id,
 				@RequestParam("comment") String comment,
+				HttpSession session,
 				Model d
 			) {
+		List<RoleRequest> requestList = new ArrayList<>();
 		
-		d.addAttribute("result", memberService.requestRole(member_id, comment));
+		if (session.getAttribute("loginMem") != null) {
+			Member member = (Member)session.getAttribute("loginMem");
+			requestList = memberService.getRequestRoleList(member.getMember_key());
+		}
+		
+		if (requestList.isEmpty()) {
+			d.addAttribute("result", memberService.requestRole(member_id, comment));
+		}
+		
+		for (RoleRequest request : requestList) {
+			if (request.getRequest_state().equals("request")) {
+				d.addAttribute("msg", "이미 요청했습니다.");
+				break;
+			} else {
+				d.addAttribute("result", memberService.requestRole(member_id, comment));
+			}
+		}
 		
 		return "pageJsonReport";
 	}
 	
+	// 권한 요청 상세정보 페이지
 	@GetMapping("requestRoleDetail")
 	public String getRequestRole(
 				@RequestParam("requestNum") int requestNum,
@@ -162,6 +183,20 @@ public class MemberController {
 		Member memInfo = memberService.getMember(role.getMember_key());
 		d.addAttribute("request", role);
 		d.addAttribute("memInfo", memInfo);
+		
+		return "pageJsonReport";
+	}
+	
+	@GetMapping("findAccount")
+	public String findAccount() {
+		
+		return "user/findAccount";
+	}
+	
+	@GetMapping("searchId")
+	public String searchId(
+				@RequestParam("email") String email
+			) {
 		
 		return "pageJsonReport";
 	}

@@ -30,7 +30,9 @@
 </style>
 <script>
 	$(document).ready(function() {
-
+		$("#regBtn").click(function() {
+			cancelPost()
+		})
 	})
 	
 	function openModal(requestNum) {
@@ -83,20 +85,28 @@
 	}
 	
 	function cancel(requestNum) {
+		$("#cancelModal").modal('show');
+		$("#requestNum").val(requestNum)
+	}
+	
+	function cancelPost() {
+		var requestNumVal = $("#requestNum").val()
+		var commentVal = $("#adminComment").val()
+		
 		$.ajax({
 			url : "${path}/roleCancel",
 			type : "POST",
 			data : {
-				requestNum : requestNum
+				requestNum : requestNumVal,
+				comment : commentVal
 			},
 			dataType : "json",
 			success : function(data) {
 				if (data.result) {
 					Swal.fire({
-						title : "수락 완료",
+						title : "반려 완료",
 						icon : 'success',
 					}).then(function() {
-						$("#comment").val("")
 						window.location.reload();
 					})
 				} else {
@@ -107,7 +117,6 @@
 				console.log(err)
 			}
 		})
-		
 	}
 	
 </script>
@@ -125,8 +134,9 @@
 								style="height: 500px;">
 								<div class="table-responsive">
 									<table class="table">
-										<col width="40%">
-										<col width="40%">
+										<col width="10%">
+										<col width="35%">
+										<col width="20%">
 										<col width="10%">
 										<thead>
 											<tr>
@@ -152,10 +162,12 @@
 														</c:when>
 													</c:choose>
 													<td>
-														<button class="btn btn-success requestinfo" 
-															onclick="accept(${request.request_key})">수락</button>
-														<button class="btn btn-danger requestinfo" 
-															onclick="cancel(${request.request_key})">반려</button>
+														<c:if test="${request.request_state eq 'request'}">
+															<button class="btn btn-success requestinfo" 
+																onclick="accept(${request.request_key})">수락</button>
+															<button class="btn btn-danger requestinfo" 
+																onclick="cancel(${request.request_key})">반려</button>
+														</c:if>
 														<button class="btn btn-info requestinfo" 
 															onclick="openModal(${request.request_key})">상세정보</button>
 													</td>
@@ -209,6 +221,39 @@
 			<div class="modal-footer">
 				<div class="mx-auto">
 					
+					<button type="button" class="btn btn-danger" data-dismiss="modal"
+						id="clsBtn">닫기</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<!-- 반려 모달 -->
+<div class="modal" id="cancelModal" style="margin-top: 150px;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<h5 class="modal-title">요청 반려</h5>
+				<button type="button" class="close" data-dismiss="modal" id="xBtn">×</button>
+			</div>
+			
+			<!-- Modal body -->
+			<form class="form-group">
+				<input type="hidden" id="requestNum" value="" />
+				<label for="exampleInputUsername1">처리 코멘트</label> 
+				<textarea class="form-control" id="adminComment"
+					rows="5"></textarea>
+			</form>
+
+			<!-- Modal footer -->
+			<div class="modal-footer">
+				<div class="mx-auto">
+					<button type="button" class="btn btn-success" data-dismiss="modal"
+						id="regBtn">전송</button>
 					<button type="button" class="btn btn-danger" data-dismiss="modal"
 						id="clsBtn">닫기</button>
 				</div>

@@ -20,10 +20,18 @@ public class AcceptRoleService {
 	
 	public boolean requestAccept(RoleRequest request) {
 		
-		if (dao.updateRequest("approval", request.getRequest_key()) > 0) {
+		if (dao.updateRequest("approval", "", request.getRequest_key()) > 0) {
 			// 권한이 변경되었을 경우
 			dao.updateRole(request.getMember_key());
 			
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean requestCancel(RoleRequest request) {
+		if (dao.updateRequest("cancel", request.getAdmin_comment(), request.getRequest_key()) > 0) {
 			return true;
 		} else {
 			return false;

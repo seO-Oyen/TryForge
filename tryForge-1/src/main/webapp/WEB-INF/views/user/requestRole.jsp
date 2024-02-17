@@ -37,34 +37,53 @@
 		}, true)
 
 		$("#requestBtn").click(function() {
-			console.log("클릭")
-			var memberIdVal = $("#member_id").val()
-			var commentVal = $("#comment").val()
-			$.ajax({
-				url : "${path}/requestRole",
-				type : "POST",
-				data : {
-					member_id : memberIdVal,
-					comment : commentVal
-				},
-				dataType : "json",
-				success : function(data) {
-					if (data.result) {
-						Swal.fire({
-							title : "요청완료",
-							icon : 'success',
-						}).then(function() {
-							$("#comment").val("")
-							window.location.reload();
-						})
-					} else {
-						alert("요청 실패")
+			var loginMem = "${loginMem}"
+			if (loginMem.member_role != "EMP") {
+				Swal.fire({
+					title : "이미 관리자입니다.",
+					icon : 'error',
+				}).then(function() {
+					$("#comment").val("")
+					window.location.reload();
+				})
+			} else {
+				var memberIdVal = $("#member_id").val()
+				var commentVal = $("#comment").val()
+				$.ajax({
+					url : "${path}/requestRole",
+					type : "POST",
+					data : {
+						member_id : memberIdVal,
+						comment : commentVal
+					},
+					dataType : "json",
+					success : function(data) {
+						if (data.result) {
+							Swal.fire({
+								title : "요청완료",
+								icon : 'success',
+							}).then(function() {
+								$("#comment").val("")
+								window.location.reload();
+							})
+						}
+						if (data.msg == '이미 요청했습니다.') {
+							Swal.fire({
+								title : data.msg,
+								icon : 'info',
+							}).then(function() {
+								$("#comment").val("")
+								window.location.reload();
+							})
+						}
+					},
+					error : function(err) {
+						console.log(err)
 					}
-				},
-				error : function(err) {
-					console.log(err)
-				}
-			})
+				})
+			}
+			
+			
 		})
 
 	})

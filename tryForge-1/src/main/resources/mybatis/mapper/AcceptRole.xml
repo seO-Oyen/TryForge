@@ -18,7 +18,8 @@
 	<update id="updateRequest">
 		UPDATE role_request
 		SET
-			REQUEST_STATE = #{state}
+			REQUEST_STATE = #{state},
+			ADMIN_COMMENT = #{comment}
 		WHERE REQUEST_KEY = #{requestKey}
 	
 	</update>

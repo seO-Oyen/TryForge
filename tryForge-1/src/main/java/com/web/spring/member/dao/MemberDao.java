@@ -55,4 +55,6 @@ public interface MemberDao {
 	List<RoleRequest> getRequestRoleList(@Param("member_key")int memberKey);
 	
 	RoleRequest getRequestRole(@Param("request_key")int request_key);
+	
+	Member getIdToEmail(@Param("member_email") String email);
 }
