@@ -160,107 +160,53 @@
 			</div>
 
 			<!-- 새 업무 end -->
-
-			<!-- 결재 대기중 업무 -->
+<!--
 			<div class="col-md-12" style="margin-top: 3%;">
 				<div class="card">
 					<div class="card-body">
-						<h3 class="card-title">결재 중</h3>
-						<!-- 진행중인 업무 테이블 -->
+						<h4 class="card-title">보고 한 업무</h4>
 						<div class="table-responsive"
-							style="width: 95%; margin-left: 4%; max-height: 2000px; overflow-x: auto;">
+							 style="width: 95%; margin-left: 4%; overflow-x: auto;">
 							<table class="table table-hover" style="width: 100%;">
 								<thead>
-									<tr>
-										<th>업무명</th>
-										<th>업무시작일</th>
-										<th>업무종료일</th>
-										<th>업무상세</th>
-										<th></th>
-									</tr>
+								<tr>
+									<th>업무명</th>
+									<th>결재요청일</th>
+									<th></th>
+									<th>할당자</th>
+									<th></th>
+								</tr>
 								</thead>
-								<tbody>
-								<!--
-									<c:forEach var="tlist" items="${getTask}" varStatus="sts">
-										<c:if
-											test="${tlist.member_key == loginMem.member_key && tlist.confirm == 1}">
-
-											<tr class="task-row" data-member-key="${tlist.id}" ondblclick="openDetail()">
-												<td>${tlist.text}</td>
-												<td>${tlist.start_date}</td>
-												<td>${tlist.end_date}</td>
-												<td>${tlist.assignor}</td>
-												<td>
-													<button type="button" class="btn btn-open"
-														style="background-color: #007FFF; color: white;">
-														리스크등록</button>
-												</td>
-											</tr>
-										</c:if>
-										<c:if test="${empty getTask}">
-											<tr>
-												<td>진행중인 업무가 없습니다.</td>
-											</tr>
-										</c:if>
-									</c:forEach>
-									-->
-								</tbody>
+								<tbody id="waitApproveList"></tbody>
 							</table>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<!-- 결재 대기중 업무 -->
 			<div class="col-md-12" style="margin-top: 3%;">
 				<div class="card">
 					<div class="card-body">
 						<h4 class="card-title">결재 완료</h4>
-						<!-- 진행중인 업무 테이블 -->
 						<div class="table-responsive"
-							 style="width: 95%; margin-left: 4%; max-height: 2000px; overflow-x: auto;">
+							 style="width: 95%; margin-left: 4%; overflow-x: auto;">
 							<table class="table table-hover" style="width: 100%;">
 								<thead>
 								<tr>
 									<th>업무명</th>
 									<th>업무시작일</th>
 									<th>업무종료일</th>
-									<th>업무상세</th>
+									<th>할당자</th>
 									<th></th>
 								</tr>
 								</thead>
-								<tbody>
-								<!--
-									<c:forEach var="tlist" items="${getTask}" varStatus="sts">
-										<c:if
-											test="${tlist.member_key == loginMem.member_key && tlist.confirm == 1}">
-
-											<tr class="task-row" data-member-key="${tlist.id}" ondblclick="openDetail()">
-												<td>${tlist.text}</td>
-												<td>${tlist.start_date}</td>
-												<td>${tlist.end_date}</td>
-												<td>${tlist.assignor}</td>
-												<td>
-													<button type="button" class="btn btn-open"
-														style="background-color: #007FFF; color: white;">
-														리스크등록</button>
-												</td>
-											</tr>
-										</c:if>
-										<c:if test="${empty getTask}">
-											<tr>
-												<td>진행중인 업무가 없습니다.</td>
-											</tr>
-										</c:if>
-									</c:forEach>
-									-->
-								</tbody>
+								<tbody id="completeApproveList"></tbody>
 							</table>
 						</div>
 					</div>
 				</div>
 			</div>
-			<!-- 진행중인 업무 end -->
+			-->
 		</div>
 
 
@@ -372,7 +318,9 @@
 	});
 	function taskReport(id, text){
 		var fileListDisplay = $('#taskFileUploadInModal');
+	 	$('#taskReportDetailInModal').val("");
 		fileListDisplay.empty();
+
 		fileListDisplay.append($('<li class="list-group-item">').text("첨부파일 없음"));
 		$('#taskNameInModal').text(text);
 		$('#taskKey').val(id);
@@ -381,31 +329,44 @@
 	$('#taskReportInModalBtn').on('click', function(){
 		var formData = new FormData();
 		var files = $("#fileInput")[0].files;
-
-		$.each(files, function(index, file) {
-			formData.append('files[]', file);
-		})
-		formData.append('description', '업무보고 파일')
-		formData.append('detail', $("#taskReportDetailInModal").val());
-		formData.append('member_key', $("#memberKey").val());
-		formData.append('project_key', $("#projectKey").val());
-		formData.append('task_key', $("#taskKey").val());
-		$.ajax({
-			url: "${path}/reportTask",
-			type: "POST",
-			data: formData,
-			cache: false,
-			processData: false,
-			contentType: false,
-			success: function(response) {
-				$('#taskReportModal').modal('hide');
-				msg("success", "업무보고 완료!", response.result)
-				getMemberTaskList();
-			},
-			error: function(error) {
-				msg("error", "업무보고 에러", error.result)
-			}
-		})
+		if($('#taskReportDetailInModal').val().trim()!=="") {
+			confirmMsg(
+					"업무 보고",
+					"작성하신 내용으로 업무 보고 하시겠습니까?",
+					"warning",
+					function() {
+						$.each(files, function(index, file) {
+							formData.append('files[]', file);
+						})
+						formData.append('description', '업무보고 파일')
+						formData.append('detail', $("#taskReportDetailInModal").val());
+						formData.append('member_key', $("#memberKey").val());
+						formData.append('project_key', $("#projectKey").val());
+						formData.append('task_key', $("#taskKey").val());
+						$.ajax({
+							url: "${path}/reportTask",
+							type: "POST",
+							data: formData,
+							cache: false,
+							processData: false,
+							contentType: false,
+							success: function(response) {
+								$('#taskReportModal').modal('hide');
+								msg("success", "업무보고 완료!", response.result)
+								getMemberTaskList();
+							},
+							error: function(error) {
+								msg("error", "업무보고 에러", error.result)
+							}
+						})
+					},
+					function() {
+					}
+			);
+		} else {
+			msg("error", "경고!", "보고내용을 작성 하셔야 합니다.")
+			return false;
+		}
 	})
 </script>
 
