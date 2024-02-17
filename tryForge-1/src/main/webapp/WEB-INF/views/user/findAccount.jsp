@@ -28,21 +28,15 @@
 	href="${path}/template/css/vertical-layout-light/style.css">
 <!-- endinject -->
 <script>
-	var id = "${member.member_id}"
-	var sessId = "${loginMem.member_id}"
-	var role = "${loginMem.member_role}"
-	if(id != "") {
-		if(sessId != ""  && role == "EMP"){
-			alert("로그인 성공\n메인페이지로 이동")
-			location.href="${path}/userIndex"
-		} else if(sessId != "" && role != "EMP") {
-			alert("로그인 성공\n관리자페이지로 이동")
-			location.href = "${path}/adMain"
-		} else{
-			alert("로그인 실패\n다시 로그인하세요")
-		}
-		
-	}
+$(document).ready(function(){
+	$("#findId").click(findId())
+})
+
+function findId() {
+	
+}
+
+
 </script>
 </head>
 
@@ -56,35 +50,44 @@
 							<div class="brand-logo">
 								<img src="${path}/template/images/try_forge01.jpg" alt="logo">
 							</div>
-							<h3>로그인</h3>
-							<!-- <h6 class="font-weight-light">Sign in to continue.</h6> -->
-							<form class="pt-3" method="post">
+							<h3>아이디 찾기</h3>
+							<div class="pt-3">
 								<div class="form-group">
 									<input type="text" class="form-control form-control-lg"
-										id="memberId" name="member_id" placeholder="ID" autocomplete="off">
-								</div>
-								<div class="form-group">
-									<input type="password" class="form-control form-control-lg"
-										id="memberPwd" name="member_pwd" placeholder="Password">
+										id="memberId" name="member_email" placeholder="회원가입 하신 이메일"
+										autocomplete="off">
 								</div>
 								<div class="mt-3">
-									<input type="submit" class="btn btn-block btn-lg font-weight-medium auth-form-btn"
-										style="background-color: #198CFF; color: white;" value="로그인" />
+									<input type="button" id="findId" class="btn btn-block btn-lg font-weight-medium auth-form-btn"
+										style="background-color: #198CFF; color: white;" value="아이디 찾기" />
 								</div>
+							</div>
+							<br>
+							<h3>비밀번호 찾기</h3>
+							<div class="pt-3">
+								<div class="form-group">
+									<input type="text" class="form-control form-control-lg"
+										id="memberEmail" name="member_email" placeholder="회원가입 하신 이메일"
+										autocomplete="off">
+								</div>
+								<div class="form-group">
+									<input type="text" class="form-control form-control-lg"
+										id="memberId" name="member_id" placeholder="회원가입 아이디"
+										autocomplete="off">
+								</div>
+								<div class="mt-3">
+									<input type="button" class="btn btn-block btn-lg font-weight-medium auth-form-btn"
+										style="background-color: #198CFF; color: white;" value="비밀번호 찾기" />
+								</div>
+							</div>
 								<div class="text-center mt-2 font-weight-light">
-								<!-- 나중에 로그인 기억 같은거 하면 쓸 코드 -->
-									<!-- <div class="form-check">
-										<label class="form-check-label text-muted"> 
-										<input type="checkbox" class="form-check-input"> Keep me signed in
-										</label>
-									</div> -->
-									<a href="${path}/findAccount" class="auth-link text-black">비밀번호 찾기</a>
+									<a href="${path}/login" class="auth-link text-black">로그인화면으로</a>
 								</div>
 								<div class="text-center mt-4 font-weight-light">
 									 <a href="register"
 										style="color: #198CFF;">계정이 없으신가요?</a>
 								</div>
-							</form>
+							
 						</div>
 					</div>
 				</div>
