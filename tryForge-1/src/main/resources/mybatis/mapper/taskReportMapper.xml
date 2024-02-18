@@ -3,6 +3,28 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.web.spring.task.dao.TaskReportDao">
+	<resultMap type = "task" id="taskRst">
+		<result column = "task_key" property = "id"/>
+	</resultMap>
 
+	<select id="getMemberTaskList" resultMap="taskRst">
+		SELECT * FROM TASK
+		WHERE PROJECT_KEY = #{project_key}
+		  AND MEMBER_KEY = #{member_key}
+		ORDER BY START_DATE
+	</select>
+
+	<select id="getMemberTask" resultMap="taskRst">
+		SELECT * FROM TASK
+		WHERE TASK_KEY = #{id}
+	</select>
+
+	<insert id="reportTask" parameterType="approve">
+		INSERT INTO APPROVAL VALUES
+		(TASK_APPROVAL_SEQ.nextval, #{task_key}, #{project_key}, #{member_key}, sysdate, null, '결재 대기', #{detail})
+	</insert>
+	<insert id="reportTaskFileUse" parameterType="file">
+		INSERT INTO FILE_USE VALUES
+		(#{file_key}, '업무 보고', TASK_APPROVAL_SEQ.currval)
+	</insert>
 </mapper>
-
