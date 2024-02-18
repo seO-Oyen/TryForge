@@ -3,6 +3,7 @@
 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="path" value="${pageContext.request.contextPath }"/>
 <fmt:requestEncoding value="utf-8"/>
 <!DOCTYPE html>
@@ -23,9 +24,8 @@
     <!-- End plugin css for this page -->
     <!-- inject:css -->
     <link rel="stylesheet" href="${path}/template/css/vertical-layout-light/style.css">
-    <link rel="shortcut icon" href="../../images/favicon.png"/>
-
     <link rel="stylesheet" href="${path}/template/vendors/mdi/css/materialdesignicons.min.css"/>
+    <link rel="stylesheet" href="${path}/template/gantt/codebase/skins/dhtmlxgantt_material.css"/>
     <link rel="stylesheet" href="${path}/template/alert/sweetalert2.min.css">
 
     <!-- base:js -->
@@ -44,12 +44,13 @@
     <script src="https://unpkg.com/vue" type="text/javascript"></script>
     <script type="text/javascript" src="https://unpkg.com/axios"></script>
     <script type="text/javascript" src="https://unpkg.com/moment@2.30.1/moment.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
     <!-- endinject -->
     <!-- Custom js for this page-->
     <script src="${path}/template/js/dashboard.js"></script>
+    <script src="${path}/template/calendar/index.global.js"></script>
+    <script src="${path}/template/gantt/codebase/dhtmlxgantt.js"></script>
     <script src="${path}/template/alert/sweetalert2.min.js"></script>
-   <!--chart.js-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
     <!-- End custom js for this page-->
     <script>
         $(document).ready(function () {
@@ -60,118 +61,7 @@
             } else if ("${loginMem.member_role}" != "") {
                 $("#admin").css("display", "")
             }
-            function updateNavigation() {
-                var currentPage = window.location.pathname;
-                var titleElement = $('.navbar-menu-wrapper #titleText');
-                var detailElement = $('#detailText');
 
-                switch (currentPage) {
-                    case '/adMain':
-                        titleElement.text('Adminmain')
-                        detailElement.text('관리자페이지  >  메인페이지')
-                        break;
-                    case '/projList':
-                        titleElement.text('Project')
-                        detailElement.text('관리자페이지  >  프로젝트관리')
-                        break;
-                    case '/task':
-                        titleElement.text('Task')
-                        detailElement.text('관리자페이지  >  업무할당관리')
-                        break;
-                    case '/noticeList':
-                        titleElement.text('Notice')
-                        detailElement.text('관리자페이지  >  공지사항조회')
-                        break;
-                    case '/getNotice':
-                        titleElement.text('Notice')
-                        detailElement.text('관리자페이지  >  공지사항상세')
-                        break;
-                    case '/insertNotice':
-                        titleElement.text('Notice')
-                        detailElement.text('관리자페이지  >  공지사항등록')
-                        break;
-                    case '/updateNoticeFrm':
-                        titleElement.text('Notice')
-                        detailElement.text('관리자페이지  >  공지사항수정')
-                        break;
-                    case '/updateNotice':
-                        titleElement.text('Notice')
-                        detailElement.text('관리자페이지  >  공지사항수정')
-                        break;
-                    case '/deleteNotice':
-                        titleElement.text('Notice')
-                        detailElement.text('관리자페이지  >  공지사항삭제')
-                        break;
-                    case '/taskManage':
-                        titleElement.text('Task')
-                        detailElement.text('관리자페이지  >  업무현황관리')
-                        break;
-                    case '/adApprovalPlist':
-                        titleElement.text('Approval')
-                        detailElement.text('관리자페이지  >  결재관리')
-                        break;
-                    case '/adApproval':
-                        titleElement.text('Approval')
-                        detailElement.text('관리자페이지  >  결재관리')
-                        break;
-                    case '/adUser':
-                        titleElement.text('UserManage')
-                        detailElement.text('관리자페이지  >  사용자관리')
-                        break;
-                    default:
-                        break;
-                }
-            }
-            updateNavigation();
-        })
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" type="image/x-icon" href="${path}/template/images/logo_backDelete.png">
-    <title>TryForge</title>
-    <!-- base:css -->
-    <link rel="stylesheet" href="${path}/template/vendors/typicons/typicons.css">
-    <link rel="stylesheet" href="${path}/template/vendors/css/vendor.bundle.base.css">
-    <!-- endinject -->
-    <!-- plugin css for this page -->
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <link rel="stylesheet" href="${path}/template/css/vertical-layout-light/style.css">
-    <link rel="shortcut icon" href="../../images/favicon.png"/>
-
-    <link rel="stylesheet" href="${path}/template/vendors/mdi/css/materialdesignicons.min.css"/>
-    <link rel="stylesheet" href="${path}/template/alert/sweetalert2.min.css">
-
-    <!-- base:js -->
-    <script src="${path}/template/vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page-->
-    <script src="${path}/template/vendors/chart.js/Chart.min.js"></script>
-    <!-- End plugin js for this page-->
-    <!-- inject:js -->
-    <script src="${path}/template/js/off-canvas.js"></script>
-    <script src="${path}/template/js/hoverable-collapse.js"></script>
-    <script src="${path}/template/js/template.js"></script>
-    <script src="${path}/template/js/settings.js"></script>
-    <script src="${path}/template/js/todolist.js"></script>
-
-    <!-- endinject -->
-    <!-- Custom js for this page-->
-    <script src="${path}/template/js/dashboard.js"></script>
-    <script src="${path}/template/alert/sweetalert2.min.js"></script>
-   <!--chart.js-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
-    <!-- End custom js for this page-->
-    <script>
-        $(document).ready(function () {
-            var sessId = "${loginMem.member_id}"
-            if (sessId == "") {
-                alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
-                location.href = "${path}/login"
-            } else if ("${loginMem.member_role}" != "") {
-                $("#admin").css("display", "")
-            }
             function updateNavigation() {
                 var currentPage = window.location.pathname;
                 var titleElement = $('.navbar-menu-wrapper #titleText');
@@ -222,6 +112,14 @@
                         titleElement.text('UserManage')
                         detailElement.text('관리자페이지  >  사용자관리')
                         break;
+                    case '/adApprovalPlist':
+                        titleElement.text('Approval')
+                        detailElement.text('관리자페이지  >  결재관리')
+                        break;
+                    case '/adApproval':
+                        titleElement.text('Approval')
+                        detailElement.text('관리자페이지  >  결재관리')
+                        break;
                     case '/errorList':
                         titleElement.text('Error')
                         detailElement.text('시스템관리자  >  에러관리')
@@ -230,10 +128,9 @@
                         break;
                 }
             }
+
             updateNavigation();
         })
->>>>>>> refs/remotes/origin/develop
-
     </script>
 </head>
 <body>
@@ -262,12 +159,12 @@
             <ul class="navbar-nav mr-lg-2">
                 <li class="nav-item nav-profile dropdown">
                     <a class="nav-link" href="#" data-toggle="dropdown" id="profileDropdown">
-                        <img src="${path}/template/images/faces/face5.jpg" alt="profile"/>
+                        <img src="${path}/template/images/faces/face5.jpg" alt="profile" />
                         <span class="nav-profile-name">${loginMem.member_name} 님</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
                          aria-labelledby="profileDropdown">
-                        <a class="dropdown-item" href="${path}/myPage">
+                        <a class="dropdown-item">
                             <i class="typcn typcn-cog-outline text-primary"></i> 마이페이지
                         </a>
                         <a class="dropdown-item" href="${path}/login">
@@ -641,7 +538,7 @@
 
 
                 <li class="nav-item">
-                    <a class="nav-link"  href="${path}/adUser">
+                    <a class="nav-link" href="${path}/adUser">
 
                         <i class="tpycn mdi mdi-account-check menu-icon"></i>
 
@@ -685,7 +582,7 @@
                     </div> -->
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#tables">
+                    <a class="nav-link" href="${path}/adApprovalPlist">
                         <i class="tpycn mdi mdi-file-check menu-icon"></i>
                         <span class="menu-title">결재관리</span>
                         <!-- <i class="menu-arrow"></i> -->
