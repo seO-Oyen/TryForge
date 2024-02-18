@@ -14,6 +14,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="shortcut icon" type="image/x-icon"
 	href="${path}/template/images/logo_backDelete.png">
+<link rel="stylesheet" href="${path}/template/alert/sweetalert2.min.css">
 <title>TryForge</title>
 <!-- base:css -->
 <link rel="stylesheet"
@@ -29,6 +30,7 @@
 <!-- endinject -->
 <!-- base:js -->
 <script src="${path}/template/vendors/js/vendor.bundle.base.js"></script>
+<script src="${path}/template/alert/sweetalert2.min.js"></script>
 <!-- endinject -->
 <!-- inject:js -->
 <script src="${path}/template/js/off-canvas.js"></script>
@@ -95,6 +97,68 @@ $(document).ready(function(){
 		})
 	})
 	
+	// 이메일 중복 체크
+	$("#emailChkBtn").click(function() {
+		var emailVal = $("[name=member_email]").val()
+		if (emailVal == "") {
+			const Toast = Swal.mixin({
+			    toast: true,
+			    position: 'top-end',
+			    showConfirmButton: false,
+			    timer: 1500,
+			    timerProgressBar: false
+			})
+			
+			Toast.fire({
+			    icon: 'error',
+			    title: '입력창이 비어있습니다.'
+			})
+			return false;
+		}
+		$.ajax({
+			url : "${path}/emailCheck",
+			type : "GET",
+			data : {
+				email: emailVal
+			},
+			dataType : "json",
+			success : function(data) {
+				if(data.emailChk) {
+					const Toast = Swal.mixin({
+					    toast: true,
+					    position: 'top-end',
+					    showConfirmButton: false,
+					    timer: 1500,
+					    timerProgressBar: false
+					})
+					
+					Toast.fire({
+					    icon: 'success',
+					    title: '초대받은 이메일입니다.'
+					})
+					$("#emailchecked").val("true")
+				} else {
+					const Toast = Swal.mixin({
+					    toast: true,
+					    position: 'top-end',
+					    showConfirmButton: false,
+					    timer: 1500,
+					    timerProgressBar: false
+					})
+					
+					Toast.fire({
+					    icon: 'error',
+					    title: '초대받지 않은 메일입니다.',
+					    text: '관리자에게 문의해주세요.'
+					})
+				}
+			},
+			error : function(err) {
+				console.log(err)
+			}
+		})
+	})
+	
 	// 비밀번호 일치 확인 (체크가 변하지 않고 비밀번호가 바뀌었을때)
 	$("[name=member_pwd]").keyup(function() {
 		if ($("[name=member_pwd]").val() == '') {
@@ -151,8 +215,20 @@ function register() {
 		alert("이름을 입력해주세요")
 		return false
 	}
-	if($("#email").val() == '') {
-		alert("이메일을 입력해주세요")
+	if($("#emailchecked").val() == 'false') {
+		const Toast = Swal.mixin({
+		    toast: true,
+		    position: 'top-end',
+		    showConfirmButton: false,
+		    timer: 1500,
+		    timerProgressBar: false
+		})
+		
+		Toast.fire({
+		    icon: 'error',
+		    title: '이메일 체크를 해주세요.'
+		})
+		
 		return false
 	}
 	
@@ -194,7 +270,11 @@ function register() {
                   <input type="text" class="form-control form-control-lg" id="name" name="member_name" placeholder="Name" autocomplete="off">
                 </div>
                 <div class="form-group">
+                  <input type="hidden" id="emailchecked" value="false" disabled>
                   <input type="email" class="form-control form-control-lg" id="email" name="member_email" placeholder="Email" autocomplete="off">
+                </div>
+                <div class="form-group">
+                  <input type="button" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" id="emailChkBtn" value="중복체크">
                 </div>
                 <div class="mt-3">
 					<input type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"

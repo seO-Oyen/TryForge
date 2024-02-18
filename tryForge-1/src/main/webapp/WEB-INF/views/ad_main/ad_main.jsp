@@ -3,8 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<jsp:include page="${path}/template/module/module_admain.jsp"
-             flush="true"/>
+<jsp:include page="${path}/template/module/module_admain.jsp" flush="true"/>
 <style>
     #myModal .modal-dialog {
         max-width: 50%;
@@ -19,6 +18,7 @@
             success: function (pjdata) {
                 var texts = [];
                 var progresses = [];
+
                 $(pjdata.pjprogress).each(function (idx, item) {
                     var row = "";
                     var startDate = new Date(item.start_date);
@@ -174,7 +174,6 @@
                 console.log(err)
             }
         })
-
         $.ajax({
             url: "${path}/RiskChart",
             dataType: "json",
@@ -197,15 +196,15 @@
                                 riskTotResults.push(result.riskTot);
                                 risk01TotResults.push(result.risk01Tot);
                                 risk02TotResults.push(result.risk02Tot);
-								var row="";
-								row+="<tr>"
-								row+="<td>"+title+"</td>"
-								row+="<td>"+result.riskTot+"개</td>"
-								row+="<td>"+(result.riskTot - (result.risk01Tot+result.risk02Tot))+"개</td>"
-								row+="<td>"+result.risk02Tot+"개</td>"
-								row+="<td>"+result.risk02Tot+"개</td>"
-								row+="</tr>"
-								$("#riskTable").append(row)
+                                var row="";
+                                row+="<tr>"
+                                row+="<td>"+title+"</td>"
+                                row+="<td>"+result.riskTot+"개</td>"
+                                row+="<td>"+(result.riskTot - (result.risk01Tot+result.risk02Tot))+"개</td>"
+                                row+="<td>"+result.risk02Tot+"개</td>"
+                                row+="<td>"+result.risk02Tot+"개</td>"
+                                row+="</tr>"
+                                $("#riskTable").append(row)
                             })
                     );
                 });
@@ -219,7 +218,7 @@
             }
         });
 
-		function createChart(titleArr, riskTotResults, risk01TotResults, risk02TotResults) {
+        function createChart(titleArr, riskTotResults, risk01TotResults, risk02TotResults) {
             // 리스크 차트 생성
             const ctx04 = document.getElementById('riskStatus').getContext('2d');
             const stackedBar = new Chart(ctx04, {
@@ -251,31 +250,30 @@
                         }
                     ]
                 },
-				options: {
-					scales: {
-						yAxes: [{
-							ticks: {
-								suggestedMin: 0,
-								suggestedMax: 50
-							}
-						}]
-					}
-				}
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                suggestedMin: 0,
+                                suggestedMax: 50
+                            }
+                        }]
+                    }
+                }
             });
         }
 
     })
-
     // 담당자별 업무 진척도
-    function openPage(key) {
+    function openPage(key){
         $.ajax({
             url: "${path}/ownerProgress",
             data: "project_key=" + key,
             dataType: "json",
             success: function (ownerdata) {
-                console.log(ownerdata);
-                var ownerName = [];
-                var ownerProgress = [];
+            	 console.log(ownerdata);  
+                var ownerName=[];
+                var ownerProgress=[];
                 $(ownerdata.taskProgressBypeople).each(function (idx, item) {
                     console.log(item.owner)
                     console.log(item.progress * 100)
@@ -373,50 +371,33 @@
         <!-- 프로젝트 진행률 end -->
         <!-- 가용인원 차트-->
         <div style="display: flex;">
-            <div class="col-md-6 grid-margin stretch-card"
-                 style="flex: 0 0 40%; max-width: 40%;">
+            <div class="col-md-6 grid-margin stretch-card" style="flex: 0 0 40%; max-width: 40%;">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Available Personnel</h4>
                         <canvas id="ablePersonnel" width="50" height="30"></canvas>
                         <!-- 간단한 수치를 나타내는 텍스트 -->
                         <div class="chart-info" style="margin-top: 8%;">
-                            <p>
-                                총 구성원 : <span id="tot01"></span>
-                            </p>
-                            <p>
-                                프로젝트 할당인원 : <span id="tot02"></span>
-                            </p>
-                            <p>
-                                프로젝트 비 할당인원 : <span id="tot03"></span>
-                            </p>
+                            <p>총 구성원 : <span id="tot01"></span></p>
+                            <p>프로젝트 할당인원 : <span id="tot02"></span></p>
+                            <p>프로젝트 비 할당인원 : <span id="tot03"></span></p>
                         </div>
                     </div>
                 </div>
             </div>
             <!--가용인원 차트 end-->
             <!-- 올해 프로젝트 차트 -->
-            <div class="col-md-6 grid-margin stretch-card"
-                 style="flex: 0 0 40%; max-width: 60%;">
+            <div class="col-md-6 grid-margin stretch-card" style="flex: 0 0 40%; max-width: 60%;">
                 <div class="card">
                     <div class="card-body">
                         <div style="display: flex;">
                             <h4 class="card-title">project Counts</h4>
                             <canvas id="projectCnt" width="50" height="30"></canvas>
-                            <div class="chart-info"
-                                 style="position: absolute; bottom: 8%; left: 5%;">
-                                <p>
-                                    총 프로젝트 갯수: <span id="pjCnt01"></span>
-                                </p>
-                                <p>
-                                    진행중인 프로젝트: <span id="pjCnt02"></span>
-                                </p>
-                                <p>
-                                    완료된 프로젝트 갯수: <span id="pjCnt03"></span>
-                                </p>
-                                <p>
-                                    대기중인 프로젝트 갯수: <span id="pjCnt04"></span>
-                                </p>
+                            <div class="chart-info" style="position: absolute; bottom: 8%; left: 5%;">
+                                <p>총 프로젝트 갯수: <span id="pjCnt01"></span></p>
+                                <p>진행중인 프로젝트: <span id="pjCnt02"></span></p>
+                                <p>완료된 프로젝트 갯수: <span id="pjCnt03"></span></p>
+                                <p>대기중인 프로젝트 갯수: <span id="pjCnt04"></span></p>
                             </div>
                         </div>
                     </div>
@@ -433,11 +414,10 @@
                         <div class="col-md-6" style="flex: 0 0 40%; max-width: 35%;">
                             <div class="card-body">
                                 <div style="display: flex;">
-                                    <h4 class="card-title" style="margin-right: 15px;">Risk
-                                        Status</h4>
+                                    <h4 class="card-title" style="margin-right: 15px;">Risk Status</h4>
                                     <canvas id="riskStatus" width="20" height="20"></canvas>
                                     <div class="table-responsive"
-                                         style="overflow-x: visible; margin-left: 40%; margin-top: 10%;">
+                                         style="overflow-x: visible; margin-left: 25%; margin-top: 0;">
                                         <table class="table table-hover" style="width: 100%;">
                                             <thead>
                                             <tr>
@@ -482,9 +462,7 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                            data-dismiss="modal">Close
-                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
 
             </div>
@@ -527,4 +505,3 @@
 </body>
 
 </html>
-

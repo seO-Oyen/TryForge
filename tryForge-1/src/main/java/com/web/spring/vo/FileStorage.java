@@ -2,6 +2,7 @@ package com.web.spring.vo;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.web.multipart.MultipartFile;
 
 public class FileStorage {
@@ -12,9 +13,29 @@ public class FileStorage {
 	private String fsize;
 	private Date upload_time;
 	private String iconPath;
-	private MultipartFile[] files;
 	private int member_key;
 	private String project_key;
+	private String description;
+	private String member_name;
+	@JsonIgnore
+	private MultipartFile[] files;
+
+
+	public String getMember_name() {
+		return member_name;
+	}
+
+	public void setMember_name(String member_name) {
+		this.member_name = member_name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 	public String getFile_key() {
 		return file_key;
@@ -44,7 +65,7 @@ public class FileStorage {
 		// TODO Auto-generated constructor stub
 	}
 
-	public FileStorage(String file_key, String fname, String path, String ftype, String fsize, Date upload_time, String iconPath, MultipartFile[] files, int member_key, String project_key) {
+	public FileStorage(String file_key, String fname, String path, String ftype, String fsize, Date upload_time, String iconPath, MultipartFile[] files, int member_key, String project_key, String description, String member_name) {
 		this.file_key = file_key;
 		this.fname = fname;
 		this.path = path;
@@ -55,9 +76,11 @@ public class FileStorage {
 		this.files = files;
 		this.member_key = member_key;
 		this.project_key = project_key;
+		this.description = description;
+		this.member_name = member_name;
 	}
 
-	public FileStorage(String file_key, String fname, String path, String ftype, String fsize, String project_key, int member_key) {
+	public FileStorage(String file_key, String fname, String path, String ftype, String fsize, String project_key, int member_key, String description) {
 		this.file_key = file_key;
 		this.fname = fname;
 		this.path = path;
@@ -65,6 +88,7 @@ public class FileStorage {
 		this.fsize = fsize;
 		this.member_key = member_key;
 		this.project_key = project_key;
+		this.description = description;
 	}
 
 	public String getIconPath() {

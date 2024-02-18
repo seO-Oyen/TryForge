@@ -67,5 +67,15 @@ public class ChatService {
 		
 		return num + "건 db저장 완료";
 	}
+	
+	// 채팅방 만들기
+	public String createChatRoom(List<Integer> memList) {
+		dao.createChatRoomUser();
+		for (int mem : memList) {
+			dao.createChatMem(mem);
+		}
+		
+		return "채팅방생성 완료";
+	}
 
 }
