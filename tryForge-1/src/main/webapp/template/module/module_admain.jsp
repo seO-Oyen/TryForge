@@ -51,6 +51,8 @@
     <script src="${path}/template/calendar/index.global.js"></script>
     <script src="${path}/template/gantt/codebase/dhtmlxgantt.js"></script>
     <script src="${path}/template/alert/sweetalert2.min.js"></script>
+   <!--chart.js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
     <!-- End custom js for this page-->
     <script>
         $(document).ready(function () {
@@ -61,7 +63,6 @@
             } else if ("${loginMem.member_role}" != "") {
                 $("#admin").css("display", "")
             }
-
             function updateNavigation() {
                 var currentPage = window.location.pathname;
                 var titleElement = $('.navbar-menu-wrapper #titleText');
@@ -124,6 +125,10 @@
                         titleElement.text('Error')
                         detailElement.text('시스템관리자  >  에러관리')
                         break;
+                    case '/acceptRole':
+                        titleElement.text('AcceptRole')
+                        detailElement.text('관리자페이지  >  권한요청관리')
+                        break;
                     default:
                         break;
                 }
@@ -164,7 +169,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
                          aria-labelledby="profileDropdown">
-                        <a class="dropdown-item">
+                        <a class="dropdown-item" href="${path}/mypage">
                             <i class="typcn typcn-cog-outline text-primary"></i> 마이페이지
                         </a>
                         <a class="dropdown-item" href="${path}/login">
@@ -543,89 +548,38 @@
                         <i class="tpycn mdi mdi-account-check menu-icon"></i>
 
                         <span class="menu-title">사용자관리</span>
-                        <!-- <i class="menu-arrow"></i> -->
                     </a>
-                    <!-- <div class="collapse" id="form-elements">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"><a class="nav-link"
-                                href="pages/forms/basic_elements.jsp">Basic Elements</a>
-                            </li>
-                        </ul>
-                    </div> -->
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="${path}/task">
                         <i class="tpycn mdi mdi-file-export menu-icon"></i>
                         <span class="menu-title">업무할당관리</span>
-                        <!-- <i class="menu-arrow"></i> -->
                     </a>
-                    <!-- <div class="collapse" id="form-elements">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"><a class="nav-link"
-                                href="pages/forms/basic_elements.jsp">Basic Elements</a>
-                            </li>
-                        </ul>
-                    </div> -->
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="${path}/taskManage">
                         <i class="tpycn mdi mdi-checkbox-marked-circle menu-icon"></i>
                         <span class="menu-title">리스크관리</span>
-                        <!-- <i class="menu-arrow"></i> -->
                     </a>
-                    <!-- <div class="collapse" id="charts">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item">
-                            <a class="nav-link" href="pages/charts/chartjs.jsp">ChartJs</a>
-                            </li>
-                        </ul>
-                    </div> -->
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="${path}/adApprovalPlist">
                         <i class="tpycn mdi mdi-file-check menu-icon"></i>
                         <span class="menu-title">결재관리</span>
-                        <!-- <i class="menu-arrow"></i> -->
                     </a>
-                    <!-- <div class="collapse" id="tables">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item">
-                            <a class="nav-link" href="pages/tables/basic-table.jsp">Basic table</a>
-                            </li>
-                        </ul>
-                    </div> -->
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="${path}/noticeList">
                         <i class="tpycn mdi mdi-tooltip-text menu-icon"></i>
                         <span class="menu-title">공지사항관리</span>
-                        <!-- <i class="menu-arrow"></i> -->
                     </a>
-                    <!-- <div class="collapse" id="icons">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item">
-                            <a class="nav-link" href="pages/icons/mdi.jsp">Mdi icons</a>
-                            </li>
-                        </ul>
-                    </div> -->
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false"
-                       aria-controls="auth">
+                    <a class="nav-link" href="${path}/acceptRole">
                         <i class="tpycn mdi mdi-account-plus menu-icon"></i>
                         <span class="menu-title">권한요청관리</span>
-                        <!-- <i class="menu-arrow"></i> -->
                     </a>
-                    <!-- <div class="collapse" id="auth">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item">
-                            <a class="nav-link" href="pages/samples/login.jsp"> Login </a>
-                            </li>
-                            <li class="nav-item">
-                            <a class="nav-link" href="pages/samples/register.jsp"> Register </a>
-                            </li>
-                        </ul>
-                    </div> --></li>
+               	</li>
                 <li class="nav-item"><a class="nav-link" href="${path}/insertUser">
                     <i class="tpycn mdi mdi-account-multiple-plus menu-icon"
                        style="width: 20px; height: 20px;"></i> <span class="menu-title">사용자 초대</span>

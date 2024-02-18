@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,16 +15,16 @@ import com.web.spring.member.service.MemberService;
 import com.web.spring.vo.InviteMember;
 import com.web.spring.vo.MailSender;
 import com.web.spring.vo.Member;
+import com.web.spring.vo.RoleRequest;
 
 import jakarta.servlet.http.HttpSession;
-
 
 @Controller
 public class MemberController {
 
-	@Autowired
+	@Autowired(required = false)
 	private MemberService memberService;
-	@Autowired
+	@Autowired(required = false)
 	private ChatController chatController;
 
 	// 로그인 창 띄우기
@@ -117,6 +116,7 @@ public class MemberController {
 		return "user/insertUser";
 	}
 	
+	// 메일 보내기
 	@PostMapping("insertUser")
 	public String mailSend(@RequestParam("receiver") String receiver, Model d, HttpSession session) {
 		MailSender mailVo = new MailSender();
@@ -125,11 +125,102 @@ public class MemberController {
 		mailVo.setTitle("TryForge에 초대합니다.");
 		
 		mailVo.setContent(sendMem.getMember_name() + "님이 초대하셨습니다."
-				+ "\n아래링크를 눌러 가입해주세요.\n\nhttp://211.63.89.67:1111/tryForge/register");
+				+ "\n아래링크를 눌러 가입해주세요.\n\nhttp://211.63.89.67:1111/register");
 		d.addAttribute("msg", memberService.sendMail(mailVo, sendMem).equals("메일 발송 성공"));
 		
 		return "redirect:/insertUser";
 		
 	}
+	
+	// 권한 요청 페이지 
+	@GetMapping("requestRole")
+	public String requestRole(HttpSession session, Model d) {
+		if (session.getAttribute("loginMem") != null) {
+			Member member = (Member)session.getAttribute("loginMem");
+			d.addAttribute("requestList", memberService.getRequestRoleList(member.getMember_key()));
+		}
+		 
+		return "user/requestRole";
+	}
+	
+	@PostMapping("requestRole")
+	public String requestRole(
+				@RequestParam("member_id") String member_id,
+				@RequestParam("comment") String comment,
+				HttpSession session,
+				Model d
+			) {
+		List<RoleRequest> requestList = new ArrayList<>();
+		
+		if (session.getAttribute("loginMem") != null) {
+			Member member = (Member)session.getAttribute("loginMem");
+			requestList = memberService.getRequestRoleList(member.getMember_key());
+		}
+		
+		if (requestList.isEmpty()) {
+			d.addAttribute("result", memberService.requestRole(member_id, comment));
+		}
+		
+		for (RoleRequest request : requestList) {
+			if (request.getRequest_state().equals("request")) {
+				d.addAttribute("msg", "이미 요청했습니다.");
+				break;
+			} else {
+				d.addAttribute("result", memberService.requestRole(member_id, comment));
+			}
+		}
+		
+		return "pageJsonReport";
+	}
+	
+	// 권한 요청 상세정보 페이지
+	@GetMapping("requestRoleDetail")
+	public String getRequestRole(
+				@RequestParam("requestNum") int requestNum,
+				Model d
+			) {
+		RoleRequest role = memberService.getRequestRole(requestNum);
+		Member memInfo = memberService.getMember(role.getMember_key());
+		d.addAttribute("request", role);
+		d.addAttribute("memInfo", memInfo);
+		
+		return "pageJsonReport";
+	}
+	
+	@GetMapping("findAccount")
+	public String findAccount() {
+		
+		return "user/findAccount";
+	}
+	
+	@GetMapping("searchId")
+	public String searchId(
+				@RequestParam("email") String email,
+				Model d
+			) {
+		d.addAttribute("msg", memberService.searchId(email));
+		
+		return "pageJsonReport";
+	}
+	
+	@GetMapping("searchPwd")
+	public String searchPwd(
+				@RequestParam("email") String email,
+				@RequestParam("userId") String userId,
+				Model d
+			) {
+		d.addAttribute("msg", memberService.searchPwd(email, userId));
+		
+		return "pageJsonReport";
+	}
+	
+	@GetMapping("memo")
+	public String memo(
+		
+		) {
+		
+		return "user/memo";
+	}
+
 
 }
