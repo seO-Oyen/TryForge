@@ -28,6 +28,13 @@
 </style>
 <script>
     $(document).ready(function () {
+        $("#clsBtn").click(function () {
+            $("#myModal form")[0].reset()
+        })
+        $("#xBtn").click(function () {
+            $("#myModal form")[0].reset()
+        })
+
         // 담당자 지정된 거 가져오기
         var pj = "${projectMem.project_key}"
         var member_name = "${loginMem.member_name}"
@@ -85,7 +92,31 @@
                         $("#myModal [name=contact]").val(it.riskArr.contact);
                         $("#myModal [name=strategy]").val(it.riskArr.strategy);
                         $("#myModal [name=response_method]").val(it.riskArr.response_method);
-
+                        $("#myModal #hideDiv").show();
+                        $("#myModal").modal('show');
+                    }).catch((err)=>{
+                        console.log(err)
+                    })
+                },
+                openPage02(key){
+                    var url = "${path}/riskApprovalInfo?risk_key="+key;
+                    var it = this;
+                    it.riskArr = [];
+                    axios.get(url).then((response)=>{
+                        it.riskArr = response.data.ralist;
+                        // 모달 채우기
+                        $("#myModal #proTitle").text("리스크 결재정보");
+                        $("#myModal #risk_status_label").text("결재보고명");
+                        $("#myModal #textlabel").text("결재상태");
+                        $("#myModal #registrant_label").text("보고자");
+                        $("#myModal #fileLabel").text("첨부파일명");
+                        $("#myModal #detail_label").text("결재상세");
+                        $("#myModal #hideDiv").hide();
+                        $("#myModal [name=status]").val(it.riskArr.title);
+                        $("#myModal [name=task_title]").val(it.riskArr.report_status);
+                        $("#myModal [name=registrant]").val(it.name);
+                        $("#myModal [name=strategy]").val(it.riskArr.fname);
+                        $("#myModal [name=response_method]").val(it.riskArr.report_detail);
                         $("#myModal").modal('show');
                     }).catch((err)=>{
                         console.log(err)
@@ -168,7 +199,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="risk02 in riskApprovalData" v-bind:data-risk-key01="risk02.r_risk_key" ondblclick="openPage01('risk02.r_risk_key')">
+                                    <tr v-for="risk02 in riskApprovalData" @dblclick="openPage(risk02.r_risk_key)">
                                         <td v-if="risk02.contact == name && risk02.status == '처리중' && (risk02.report_status == '' || risk02.report_status == null)">
                                             {{risk02.text}}
                                         </td>
@@ -223,7 +254,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="risk03 in riskApprovalData" v-bind:data-risk-key01="risk03.r_risk_key" ondblclick="openPage01('risk03.r_risk_key')">
+                                    <tr v-for="risk03 in riskApprovalData" @dblclick="openPage02(risk03.r_risk_key)">
                                         <td v-if="risk03.contact == name && risk03.report_status == '결재요청'">
                                             {{risk03.title}}
                                         </td>
@@ -346,7 +377,7 @@
 
                     <!-- Modal Header -->
                     <div class="modal-header">
-                        <h2 class="modal-title">Risk Response</h2>
+                        <h2 class="modal-title">Risk Approval</h2>
 
                         <button type="button" class="close" data-dismiss="modal" id="xBtn">×</button>
                     </div>
@@ -364,19 +395,20 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleInputUsername1">해당 업무 명</label>
+                            <label for="exampleInputUsername1" id="textlabel">해당 업무 명</label>
                             <input name="task_title" type="text" readonly class="form-control" id="task_text"
 
                                    placeholder="title">
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleInputPassword1">리스크 등록자</label> <input
+                            <label for="exampleInputPassword1" id="registrant_label">리스크 등록자</label> <input
                                 name="registrant" type="text" readonly class="form-control" id="registrant"
 
                                 placeholder="risk_registrant">
                         </div>
 
+                        <div id="hideDiv">
                         <div class="form-group">
                             <label for="exampleTextarea1">상세설명</label>
                             <textarea type="text" name="detail" class="form-control" readonly ></textarea>
@@ -387,13 +419,14 @@
                             <input name="contact" type="text" readonly class="form-control"
                                    placeholder="title">
                         </div>
+                        </div>
 
                         <div class="form-group">
-                            <label for="exampleInputConfirmPassword1">리스크 대응전략</label>
+                            <label for="exampleInputConfirmPassword1" id="fileLabel">리스크 대응전략</label>
                             <input type="text" name="strategy" class="form-control" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="exampleTextarea1">대응 상세</label>
+                            <label for="exampleTextarea1" id="detail_label">대응 상세</label>
                             <textarea type="text" name="response_method" class="form-control" readonly ></textarea>
                         </div>
 
@@ -403,9 +436,6 @@
                     <!-- Modal footer -->
                     <div class="modal-footer">
                         <div class="mx-auto">
-                            <button type="button" class="btn btn-" id="appRiskBtn"
-                                    style="background-color: #007FFF; color: white;">리스크 결재
-                            </button>
 
                             <button type="button" class="btn btn-danger" data-dismiss="modal"
                                     id="clsBtn">닫기

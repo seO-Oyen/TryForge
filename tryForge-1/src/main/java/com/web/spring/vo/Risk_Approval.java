@@ -10,6 +10,7 @@ public class Risk_Approval {
 	private int risk_key; // 리스크키
 	private int risk_response_key; // 리스크대응키
 	private String file_key; // 첨부파일 파일키
+	private String fname; // 파일이름
 	private String report_status; // 결재상태(결재요청, 결재완료, 재상신요청)
 	private String title; // 보고명
 	private String text; // 업무명
@@ -170,5 +171,13 @@ public class Risk_Approval {
 
 	public void setRr_risk_response_key(int rr_risk_response_key) {
 		this.rr_risk_response_key = rr_risk_response_key;
+	}
+
+	public String getFname() {
+		return fname;
+	}
+
+	public void setFname(String fname) {
+		this.fname = fname;
 	}
 }

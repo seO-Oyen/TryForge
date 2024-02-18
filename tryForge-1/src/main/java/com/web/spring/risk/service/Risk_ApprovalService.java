@@ -26,5 +26,9 @@ public class Risk_ApprovalService {
     public Risk rlistByrisk_key(int risk_key){
         return dao.rlistByrisk_key(risk_key);
     }
+    // 리스크 키로 리스크 결재정보
+    public Risk_Approval ralist(int risk_key){
+        return dao.ralist(risk_key);
+    }
 
 }

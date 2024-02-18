@@ -17,5 +17,7 @@ public interface Risk_ApprovalDao {
     List<Risk_Approval> riskApprovalInfo();
     // 리스크 키로 리스크 & 리스크 대응전략 상세정보
     Risk rlistByrisk_key(@Param("risk_key")int risk_key);
+    // 리스크키로 리스크 결재정보 확인
+    Risk_Approval ralist(@Param("risk_key")int risk_key);
 
 }

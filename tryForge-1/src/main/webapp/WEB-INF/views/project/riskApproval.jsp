@@ -42,7 +42,7 @@
 				url:"${path}/insRiskApproval",
 				type:"post",
 				data:$("#form02").serialize(),
-				dateType:"json",
+				dataType:"json",
 				success:function (data){
 					if(data.insMsg!=null) {
 						Swal.fire({
@@ -100,11 +100,11 @@
 	}
 
 	function emptyCheck() {
-		var title = $("#modalFrm [name='title']").val();
-		var detail = $("#modalFrm [name='report_detail']").val();
+		var title = $("#form02 [name='title']").val();
+		var detail = $("#form02 [name='report_detail']").val();
+		var fileText = $("#fileText").val();
 
-		if (title.trim() === "" || detail.trim() === "") {
-			// Use SweetAlert2 for a more visually appealing alert
+		if (title.trim() === "" || detail.trim() === "" || fileText.trim() === "") {
 			Swal.fire({
 				icon: 'warning',
 				title: '입력 오류',
@@ -130,6 +130,7 @@
 
 				<div class="form-group">
 					<label for="exampleInputName1">결재보고명</label>
+					<p style="color: red;">*필수 입력란</p>
 					<input type="text" class="form-control" value="" name="title">
 				</div>
 
@@ -150,12 +151,14 @@
 							style="background:#007FFF; width: 120px; height: 30px; margin-left: 15px; margin-bottom: 10px; text-align: center; line-height: 1px;">
 						<span style="display: inline-block; width: 100%;">파일 등록</span>
 					</button>
+					<p style="color: red;">* 파일등록은 필수입니다</p>
 					<input type="text" class="form-control" id="fileText">
 					<input type="file" class="form-control" id="uploadFile" name="files" multiple="multiple" >
 				</div>
 
 				<div class="form-group">
 					<label for="exampleTextarea1">상세내용</label>
+					<p style="color: red;">*필수 입력란</p>
 					<textarea class="form-control" id="noticeDetail" name="report_detail" rows="10"></textarea>
 				</div>
 				<button id="regBtn" type="button" class="btn btn-info mr-2" style="background:#007FFF;">등록</button>

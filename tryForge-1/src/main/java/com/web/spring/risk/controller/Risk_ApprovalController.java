@@ -62,4 +62,10 @@ public class Risk_ApprovalController {
         d.addAttribute("risk",service.rlistByrisk_key(risk_key));
         return "pageJsonReport";
     }
+    // 리스크 키로 리스크 결재정보
+    @GetMapping("riskApprovalInfo")
+    public String riskApprovalInfo(@RequestParam("risk_key")int risk_key,Model d){
+        d.addAttribute("ralist",service.ralist(risk_key));
+        return "pageJsonReport";
+    }
 }

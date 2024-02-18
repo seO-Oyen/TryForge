@@ -27,5 +27,10 @@
 				 left join RISK_RESPONSE rr on rr.RISK_KEY = r.RISK_KEY
 		WHERE r.RISK_KEY = #{risk_key}
 	</select>
+	<select id="ralist" parameterType="int" resultType="risk_approval">
+		SELECT ra.*,fs.fname FROM RISK_APPROVAL ra
+	    JOIN FILE_STORAGE fs ON fs.FILE_KEY = ra.FILE_KEY
+		WHERE risk_key = #{risk_key}
+	</select>
 </mapper>
 
