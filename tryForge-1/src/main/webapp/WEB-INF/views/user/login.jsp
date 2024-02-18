@@ -72,13 +72,7 @@
 										style="background-color: #198CFF; color: white;" value="로그인" />
 								</div>
 								<div class="text-center mt-2 font-weight-light">
-								<!-- 나중에 로그인 기억 같은거 하면 쓸 코드 -->
-									<!-- <div class="form-check">
-										<label class="form-check-label text-muted"> 
-										<input type="checkbox" class="form-check-input"> Keep me signed in
-										</label>
-									</div> -->
-									<a href="${path}/findAccount" class="auth-link text-black">비밀번호 찾기</a>
+									<a href="${path}/findAccount" class="auth-link text-black">계정 찾기</a>
 								</div>
 								<div class="text-center mt-4 font-weight-light">
 									 <a href="register"

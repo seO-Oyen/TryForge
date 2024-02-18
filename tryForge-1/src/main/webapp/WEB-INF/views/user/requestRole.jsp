@@ -37,8 +37,8 @@
 		}, true)
 
 		$("#requestBtn").click(function() {
-			var loginMem = "${loginMem}"
-			if (loginMem.member_role != "EMP") {
+			var loginMem = "${loginMem.member_role}"
+			if (loginMem != "EMP") {
 				Swal.fire({
 					title : "이미 관리자입니다.",
 					icon : 'error',

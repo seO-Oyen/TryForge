@@ -112,91 +112,9 @@ $(document).ready(function(){
 					</a>
 					</li>
 					
-					<!-- 메세지(톱니바퀴모양) -->
-					<%-- <li class="nav-item dropdown">
-					<a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center"
-						id="messageDropdown" href="#" data-toggle="dropdown">
-					<i class="typcn typcn-cog-outline mx-0"></i> 
-					<span class="count"></span>
-					</a>
-					<div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-						aria-labelledby="messageDropdown">
-						<p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
-						<a class="dropdown-item preview-item">
-							<div class="preview-thumbnail">
-								<img src="${path}/template/images/faces/face4.jpg" alt="image"
-									class="profile-pic">
-							</div>
-							<div class="preview-item-content flex-grow">
-								<h6 class="preview-subject ellipsis font-weight-normal">David Grey</h6>
-								<p class="font-weight-light small-text text-muted mb-0">The meeting is cancelled</p>
-							</div>
-						</a> 
-						<a class="dropdown-item preview-item">
-							<div class="preview-thumbnail">
-								<img src="${path}/template/images/faces/face2.jpg" alt="image"
-									class="profile-pic">
-							</div>
-							<div class="preview-item-content flex-grow">
-								<h6 class="preview-subject ellipsis font-weight-normal">Tim Cook</h6>
-								<p class="font-weight-light small-text text-muted mb-0">
-									New product launch</p>
-							</div>
-						</a> 
-					</div>
-					</li>
 					
-					<!-- 알림창 (종모양) -->
-					<li class="nav-item dropdown mr-0"><a
-						class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center"
-						id="notificationDropdown" href="#" data-toggle="dropdown">
-						<i class="typcn typcn-bell mx-0"></i>
-						<span class="count"></span>
-					</a>
-					<div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-						aria-labelledby="notificationDropdown">
-						<p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-						<a class="dropdown-item preview-item">
-							<div class="preview-thumbnail">
-								<div class="preview-icon bg-success">
-									<i class="typcn typcn-info mx-0"></i>
-								</div>
-							</div>
-							<div class="preview-item-content">
-								<h6 class="preview-subject font-weight-normal">Application Error</h6>
-								<p class="font-weight-light small-text mb-0 text-muted">Just now</p>
-							</div>
-						</a> 
-						<a class="dropdown-item preview-item">
-							<div class="preview-thumbnail">
-								<div class="preview-icon bg-warning">
-									<i class="typcn typcn-cog-outline mx-0"></i>
-								</div>
-							</div>
-							<div class="preview-item-content">
-								<h6 class="preview-subject font-weight-normal">Settings</h6>
-								<p class="font-weight-light small-text mb-0 text-muted">Private message</p>
-							</div>
-						</a> 
-						<a class="dropdown-item preview-item">
-							<div class="preview-thumbnail">
-								<div class="preview-icon bg-info">
-									<i class="typcn typcn-user mx-0"></i>
-								</div>
-							</div>
-							<div class="preview-item-content">
-								<h6 class="preview-subject font-weight-normal">New user registration</h6>
-								<p class="font-weight-light small-text mb-0 text-muted">2 days ago</p>
-							</div>
-						</a>
-					</div>
-					</li> --%>
 				</ul>
-				<!-- 무슨 버튼인지 모르겠음. 화면상으론 안뜸 -->
-				<!-- <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
-					type="button" data-toggle="offcanvas">
-					<span class="typcn typcn-th-menu"></span>
-				</button> -->
+
 			</div>
 		</nav>
 		
@@ -469,7 +387,7 @@ $(document).ready(function(){
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="${path}/requestRole">
-							<i class="typcn typcn-document-text menu-icon"></i>
+							<i class="typcn mdi mdi-account-star menu-icon"></i>
 							<span class="menu-title">권한요청</span>
 						</a>
 					</li>

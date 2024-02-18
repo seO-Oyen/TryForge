@@ -43,11 +43,13 @@ $(document).ready(function(){
 	$("#findId").click(function() {
 		findId()
 	})
+	$("#findPwd").click(function() {
+		findPwd()
+	})
 })
 
 function findId() {
 	var emailVal = $("[name=member_email]").val()
-	console.log(emailVal)
 	
 	if (emailVal == ""){
 		const Toast = Swal.mixin({
@@ -76,7 +78,7 @@ function findId() {
 					    toast: true,
 					    position: 'top-end',
 					    showConfirmButton: false,
-					    timer: 1500,
+					    timer: 2500,
 					    timerProgressBar: false
 					})
 					
@@ -89,7 +91,7 @@ function findId() {
 					    toast: true,
 					    position: 'top-end',
 					    showConfirmButton: false,
-					    timer: 1500,
+					    timer: 2000,
 					    timerProgressBar: false
 					})
 					
@@ -105,8 +107,82 @@ function findId() {
 			}
 		})
 	}
+}
+
+function findPwd() {
+var emailVal = $("[name=pwd_email]").val()
+var userIdVal = $("[name=member_id]").val()
 	
+if (emailVal == "" || userIdVal == ""){
+	const Toast = Swal.mixin({
+	    toast: true,
+	    position: 'top-end',
+	    showConfirmButton: false,
+	    timer: 1500,
+	    timerProgressBar: false
+	})
 	
+	Toast.fire({
+	    icon: 'error',
+	    title: '입력창이 비어있습니다.'
+	})
+} else {
+	$.ajax({
+		url : "${path}/searchPwd",
+		type : "GET",
+		data : {
+			email: emailVal,
+			userId: userIdVal
+		},
+		dataType : "json",
+		success : function(data) {
+			if (data.msg == "메일 발송 성공") {
+				const Toast = Swal.mixin({
+				    toast: true,
+				    position: 'top-end',
+				    showConfirmButton: false,
+				    timer: 2500,
+				    timerProgressBar: false
+				})
+				
+				Toast.fire({
+				    icon: 'success',
+				    title: '메일발송 완료. 메일함을 확인해주세요.'
+				})
+			} else if (data.msg == "아이디") {
+				const Toast = Swal.mixin({
+				    toast: true,
+				    position: 'top-end',
+				    showConfirmButton: false,
+				    timer: 2000,
+				    timerProgressBar: false
+				})
+				
+				Toast.fire({
+				    icon: 'error',
+				    title: '가입된 이메일의 아이디와\n입력하신 이메일이 다릅니다.'
+				})
+			} else if (data.msg == "이메일") {
+				const Toast = Swal.mixin({
+				    toast: true,
+				    position: 'top-end',
+				    showConfirmButton: false,
+				    timer: 2000,
+				    timerProgressBar: false
+				})
+				
+				Toast.fire({
+				    icon: 'error',
+				    title: '가입된 이메일이 아닙니다.\n회원가입 먼저 해주세요.'
+				})
+			}
+			
+		},
+		error : function(err) {
+			console.log(err)
+		}
+	})
+}
 	
 }
 
@@ -150,7 +226,7 @@ function findId() {
 										autocomplete="off">
 								</div>
 								<div class="mt-3">
-									<input type="button" class="btn btn-block btn-lg font-weight-medium auth-form-btn"
+									<input type="button" id="findPwd" class="btn btn-block btn-lg font-weight-medium auth-form-btn"
 										style="background-color: #198CFF; color: white;" value="비밀번호 찾기" />
 								</div>
 							</div>

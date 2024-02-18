@@ -202,5 +202,25 @@ public class MemberController {
 		
 		return "pageJsonReport";
 	}
+	
+	@GetMapping("searchPwd")
+	public String searchPwd(
+				@RequestParam("email") String email,
+				@RequestParam("userId") String userId,
+				Model d
+			) {
+		d.addAttribute("msg", memberService.searchPwd(email, userId));
+		
+		return "pageJsonReport";
+	}
+	
+	@GetMapping("memo")
+	public String memo(
+		
+		) {
+		
+		return "user/memo";
+	}
+
 
 }

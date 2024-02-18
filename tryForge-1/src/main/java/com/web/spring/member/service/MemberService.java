@@ -186,4 +186,39 @@ public class MemberService {
 		
 		return msg;
 	}
+	
+	public String searchPwd(String email, String memberId) {
+		Member member = memberDao.getIdToEmail(email);
+		
+		String msg = "";
+		
+		if(member != null && !member.getMember_id().equals(memberId)) {
+			msg = "아이디";
+			return msg;
+		}
+		
+		if (member != null) {
+			MimeMessage mmsg = sender.createMimeMessage();
+			
+			try {
+				mmsg.setSubject("TryForge 비밀번호 찾기");
+				mmsg.setRecipient(RecipientType.TO, new InternetAddress(email));
+				mmsg.setText(member.getMember_name() + "님의 비밀번호는 " + member.getMember_pwd()
+						+ "입니다!\n바로 로그인해보세요.\n\nhttp://211.63.89.67:1111/login");
+
+				sender.send(mmsg);
+				msg = "메일 발송 성공";
+			} catch (MessagingException e) {
+				System.out.println("메시지 전송에러 발송 : " + e.getMessage());
+				msg = "메일 발송 에러 발생 : " + e.getMessage();
+			} catch (Exception e) {
+				System.out.println("기타 에러 : " + e.getMessage());
+				msg = "기타 에러 발생 : " + e.getMessage();
+			}
+		} else if(member == null) {	
+			msg ="이메일";
+		} 
+		
+		return msg;
+	}
 }
