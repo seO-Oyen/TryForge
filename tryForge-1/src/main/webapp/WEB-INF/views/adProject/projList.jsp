@@ -108,7 +108,7 @@
                 $(memList).each(function (idx, member) {
                     const today = new Date();
                     const endDate = new Date(member.end_date);
-                    if (member.status == '진행중' && endDate>today) {
+                    if (member.status == '진행중' || endDate>today) {
                         html += "<tr> ";
                         html += "<td>"
                             + member.member_name

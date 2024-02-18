@@ -18,4 +18,5 @@
 		insert into risk values
 		(RISK_SEQ.nextval,#{project_key},#{task_key},#{registrant},#{type},#{possibility},#{priority},0,#{detail},sysdate)
 	</insert>
+	
 </mapper>
