@@ -51,6 +51,15 @@ public class MemberService {
 		}
 	}
 	
+	// 이메일 초대되어 있는지 체크 여부
+	public boolean checkEmail(String email) {
+		if (email != null && memberDao.checkEmail(email) > 0) {
+			return true;
+		} else {
+			return false;			
+		}
+	}
+	
 	// 본인이 소속되어있는 프로젝트 출력
 	public Project getUserProject(Member member) {
 		

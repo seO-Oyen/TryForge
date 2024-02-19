@@ -67,7 +67,41 @@
 	
 	function mailSend() {
 		if ($("[name=receiver]").val() != "") {
-			const Toast = Swal.mixin({
+			
+			$.ajax({
+				url : "${path}/emailCheck",
+				type : "GET",
+				data : {
+					email: $("[name=receiver]").val()
+				},
+				dataType : "json",
+				success : function(data) {
+					if(data.emailChk) {
+						const Toast = Swal.mixin({
+						    toast: true,
+						    position: 'top-end',
+						    showConfirmButton: false,
+						    timer: 1500,
+						    timerProgressBar: false
+						})
+						
+						Toast.fire({
+						    icon: 'error',
+						    title: '이미 초대한 이메일입니다.'
+						})
+						return false
+					} else {
+						$("form").attr("method", "post")
+						$("form").attr("onsubmit", "return true;")
+						$("form").submit()
+					}
+				},
+				error : function(err) {
+					console.log(err)
+				}
+			})
+			
+			/* const Toast = Swal.mixin({
 			    toast: true,
 			    position: 'top-end',
 			    showConfirmButton: false,
@@ -82,11 +116,7 @@
 			Toast.fire({
 			    icon: 'success',
 			    title: '메일 발송 성공'
-			})
-			$("form").attr("method", "post")
-			$("form").attr("onsubmit", "return true;")
-			$("form").submit()
-			
+			}) */
 			
 		} else {
 			alert("보내는 사람의 메일을 입력해주세요.")

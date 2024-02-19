@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.web.spring.chat.ChatHandler;
 import com.web.spring.chat.service.ChatService;
@@ -122,6 +123,30 @@ public class ChatController {
 		chatHandler.removeMessageSaveList();
 		
 		return ResponseEntity.ok(msg);
+	}
+	
+	// 채팅방 만들기
+	@PostMapping("createChat")
+	public String createChat(
+				@RequestParam("member_key") List<Integer> memList,
+				HttpSession session,
+				Model d
+			) {
+		String log = "";
+		if (session.getAttribute("loginMem") != null ) {
+			Member loginMem = (Member)session.getAttribute("loginMem");
+			memList.add(loginMem.getMember_key());
+			for (int mem : memList) {
+				System.out.println(mem);
+			}
+			
+			
+			log = chatService.createChatRoom(memList);
+			System.out.println(log);
+		}
+		d.addAttribute("log", log);
+		
+		return "pageJsonReport";
 	}
 	
 }
