@@ -35,6 +35,9 @@ public class TaskReportService {
     public List<Approval> getRejectApprovalList(Approval approval) {
         return dao.getRejectApprovalList(approval);
     }
+    public List<FileStorage> getRejectApprovalFileList(Approval approval) {
+        return dao.getRejectApprovalFileList(approval);
+    }
 
     public int reportTask(Approval approval) {
         return dao.reportTask(approval);

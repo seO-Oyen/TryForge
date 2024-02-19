@@ -13,6 +13,7 @@ public interface TaskReportDao {
     List<Task> getMemberTaskList(Task task);
     Task getMemberTask(Task task);
     List<Approval> getRejectApprovalList(Approval approval);
+    List<FileStorage> getRejectApprovalFileList(Approval approval);
     int reportTask(Approval approval);
     int reportTaskFileUse(FileStorage file);
 }

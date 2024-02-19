@@ -6,6 +6,12 @@
 
 <jsp:include page="${path}/template/module/module_main.jsp" flush="true" />
 <style>
+	.btn-fit-li {
+		width: auto; /* 버튼 내용에 따라 자동 조정 */
+		padding: 0 10px; /* 좌우 패딩으로 버튼 내부 여백 조정 */
+		line-height: 25px; /* 버튼의 라인 높이를 li의 높이에 맞춤 */
+		float: right; /* li 내에서 오른쪽 정렬 */
+	}
 	.card-title {
 		font-size: 20px;
 		font-weight: bold;
@@ -61,16 +67,11 @@
 		background-color: #2c73ba;
 		border-color : #296db0;
 	}
-
-#searchResults {
-	height: 150px;
-	overflow-y: auto;
-}
-
 </style>
 <script>
 	$(document).ready(function() {
 		getMemberTaskList();
+		getRejectApprovalList();
 	})
 	function confirmMsg(title, text, icon, onConfirm, onCancel) {
 		Swal.fire({
@@ -98,6 +99,13 @@
 			text: text,
 		});
 	}
+	function formatDate(date) {
+		var date = new Date(date);
+		var year = date.getFullYear();
+		var month = ('0' + (date.getMonth() + 1)).slice(-2);
+		var day = ('0' + date.getDate()).slice(-2);
+		return year + '-' + month + '-' + day;
+	}
 	function getMemberTaskList() {
 		$.ajax({
 			url: "${path}/getMemberTaskList",
@@ -124,6 +132,38 @@
 					taskListHtml = '<tr><td colspan="5">진행중인 업무가 없습니다.</td></tr>';
 				}
 				$('#memberTaskList').html(taskListHtml);
+			},
+			error: function(error) {
+				msg("error", "파일리스트 로딩 실패", error)
+			}
+		});
+	}
+	function getRejectApprovalList() {
+		$.ajax({
+			url: "${path}/getRejectApprovalList",
+			type: "GET",
+			dataType: "json",
+			success: function(response) {
+				var reApproveListHtml = '';
+				if (response.rejectList && response.rejectList.length > 0) {
+					$.each(response.rejectList, function(index, reject) {
+						var reportBtn = '';
+						var startDateFormat = formatDate(reject.request_date);
+						var endDateFormat = formatDate(reject.completion_date);
+						reportBtn = '<button type="button" onclick="reportAgain(\'' + reject.approval_key + '\', \'' + reject.task.text + '\', \'' + reject.task.id + '\', \'' + reject.detail + '\')" class="btn btn-info" id="reportAgainBtn">재상신</button>';
+
+						reApproveListHtml += '<tr class="member-row">' +
+								'<td>' + reject.task.text + '</td>' +
+								'<td>' + startDateFormat + '</td>' +
+								'<td>' + endDateFormat + '</td>' +
+								'<td>' + reject.task.assignor + '</td>' +
+								'<td>' + reportBtn + '</td>' +
+								'</tr>';
+					});
+				} else {
+					reApproveListHtml = '<tr><td colspan="5">반려된 업무가 없습니다.</td></tr>';
+				}
+				$('#reApproveList').html(reApproveListHtml);
 			},
 			error: function(error) {
 				msg("error", "파일리스트 로딩 실패", error)
@@ -170,7 +210,7 @@
 								<tr>
 									<th>업무명</th>
 									<th>결재요청일</th>
-									<th>반려일</th>
+									<th>결재반려일</th>
 									<th>결재자</th>
 									<th></th>
 								</tr>
@@ -206,7 +246,9 @@
 						<div class="modal-footer" style="display: flex; justify-content: flex-end;">
 							<div class="flex-grow-1" style="flex: 1;">
 								<button type="button" class="btn btn-success" id="uploadBtn" style="float: left;">파일첨부</button>
+								<button type="button" class="btn btn-success" id="reportAgainUploadBtn" style="float: left;">파일첨부</button>
 								<input type="file" id="fileInput" name="files" multiple="multiple" style="display: none;" />
+								<input type="file" id="fileInputAgain" name="files" multiple="multiple" style="display: none;" />
 								<input type="hidden" name="member_key" id="memberKey" value="${loginMem.member_key}"/>
 								<input type="hidden" name="project_key" id="projectKey" value="${projectMem.project_key}"/>
 								<input type="hidden" name="task_key" id="taskKey"/>
@@ -279,7 +321,7 @@
 <!-- container-scroller -->
 <script>
 	$("#uploadBtn").on('click', function(){
-		$('#fileInput').click();
+		$('#fileInput').val('').click();
 	})
 	$("#fileInput").on('change', function() {
 		var fileList = this.files;
@@ -290,6 +332,17 @@
 			fileListDisplay.append($('<li class="list-group-item">').text(fileList[i].name));
 		}
 	});
+	$("#reportAgainUploadBtn").on('click', function(){
+		$('#fileInputAgain').val('').click();
+	});
+	$("#fileInputAgain").on('change', function(){
+		var fileList = this.files;
+		var fileListDisplay = $('#taskFileUploadInModal');
+
+		for(var i = 0; i < fileList.length; i++) {
+			fileListDisplay.append($('<li class="list-group-item">').text(fileList[i].name));
+		}
+	})
 	function taskReport(id, text){
 		var fileListDisplay = $('#taskFileUploadInModal');
 	 	$('#taskReportDetailInModal').val("");
@@ -298,7 +351,52 @@
 		fileListDisplay.append($('<li class="list-group-item">').text("첨부파일 없음"));
 		$('#taskNameInModal').text(text);
 		$('#taskKey').val(id);
+		$('#reportAgainUploadBtn').hide();
 		$('#taskReportModal').modal('show');
+	}
+	function reportAgain(approvalKey, text, id, detail){
+		$.ajax({
+			url: "${path}/getRejectApprovalFileList?approval_key="+approvalKey,
+			type: "GET",
+			dataType: "json",
+			success: function(response) {
+				var fileListDisplay = $('#taskFileUploadInModal');
+				fileListDisplay.empty();
+				$('#taskReportDetailInModal').text("").text(detail);
+
+				if (response.rejectFileList.length > 0) {
+					$.each(response.rejectFileList, function(index, rejectFile) {
+						if (rejectFile && rejectFile.fname) {
+							// 첨부파일이 있을 경우
+							var fname = rejectFile.fname; // 파일 이름
+							var listItem = $('<li class="list-group-item"></li>');
+							listItem.append(document.createTextNode(fname)); // 파일 이름 추가
+
+							// 삭제 버튼을 listItem에 추가
+							var deleteButton = $('<button type="button" class="btn btn-danger btn-fit-li" style="float: right;">삭제</button>')
+									.click(function() {
+										// 삭제 버튼 클릭 이벤트 처리 로직
+										alert(fname + ' 삭제');
+										// 실제 삭제 로직 추가 필요
+									});
+							listItem.append(deleteButton);
+
+							fileListDisplay.append(listItem);
+						}
+					});
+				} else {
+					// 첨부파일이 없을 경우
+					fileListDisplay.append($('<li class="list-group-item">').text("첨부파일 없음"));
+				}
+				$('#uploadBtn').hide();
+				$('#taskNameInModal').text(text);
+				$('#taskKey').val(id);
+				$('#taskReportModal').modal('show');
+			},
+			error: function(error) {
+				msg("error", "파일리스트 로딩 실패", error)
+			}
+		});
 	}
 	$('#taskReportInModalBtn').on('click', function(){
 		var formData = new FormData();

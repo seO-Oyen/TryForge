@@ -30,10 +30,8 @@ public class TaskReportController {
 
     @GetMapping("getMemberTaskList")
     public String getMemberTaskList(Model d, Task task , HttpSession session) {
-        Project project = sessionService.getProject(session);
         Member member = sessionService.getMember(session);
-        if(project != null && member != null) {
-            task.setProject_key(project.getProject_key());
+        if(member != null) {
             task.setMember_key(member.getMember_key());
             d.addAttribute("taskList", service.getMemberTaskList(task));
         }
@@ -62,7 +60,22 @@ public class TaskReportController {
     }
 
     @GetMapping("getRejectApprovalList")
-    public String getRejectApprovalList(Approval approval) {
+    public String getRejectApprovalList(Approval approval, Model d, HttpSession session) {
+        Member member = sessionService.getMember(session);
+        if(member != null) {
+            approval.setMember_key(member.getMember_key());
+            d.addAttribute("rejectList", service.getRejectApprovalList(approval));
+        }
+        return "pageJsonReport";
+    }
+
+    @GetMapping("getRejectApprovalFileList")
+    public String getRejectApprovalFileList(Approval approval, Model d, HttpSession session) {
+        Member member = sessionService.getMember(session);
+        if(member != null) {
+            approval.setMember_key(member.getMember_key());
+            d.addAttribute("rejectFileList", service.getRejectApprovalFileList(approval));
+        }
         return "pageJsonReport";
     }
 }
