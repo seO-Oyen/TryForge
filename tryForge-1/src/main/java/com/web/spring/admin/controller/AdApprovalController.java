@@ -2,6 +2,7 @@ package com.web.spring.admin.controller;
 
 import com.web.spring.admin.service.AdApprovalService;
 import com.web.spring.vo.Approval;
+import com.web.spring.vo.Risk_Approval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,5 +71,23 @@ public class AdApprovalController {
     @GetMapping("adRiskApproval")
     public String adRiskApproval(){
         return "adApproval/adRiskApproval";
+    }
+
+    @GetMapping("getRiskApprovalInfo")
+    public String getRiskApprovalInfo(@RequestParam("risk_approval_key")int risk_approval_key, Model d){
+        d.addAttribute("getRiskApproval",service.getRiskApproval(risk_approval_key));
+        d.addAttribute("getRiskFname",service.getRiskFname(risk_approval_key));
+        return "pageJsonReport";
+    }
+    // 리스크 상태 수정2개
+    @GetMapping("riskApprovalStatusFin")
+    public String riskApprovalStatusFin(@RequestParam("risk_approval_key")int risk_approval_key,  Model d){
+        d.addAttribute("riskFinMsg",service.riskApprovalStatusFin(risk_approval_key));
+        return "pageJsonReport";
+    }
+    @PostMapping("riskApprovalStatusReturn")
+    public String riskApprovalStatusReturn(Risk_Approval ins , Model d){
+        d.addAttribute("riskReturnMsg", service.riskApprovalStatusReturn(ins));
+        return "pageJsonReport";
     }
 }

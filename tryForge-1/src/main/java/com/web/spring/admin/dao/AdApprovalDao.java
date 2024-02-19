@@ -25,4 +25,11 @@ public interface AdApprovalDao {
     int approvalStatusReturn(Approval ins);
 
     List<Risk_Approval> riskApprovalList(@Param("project_key")String project_key);
+    Risk_Approval getRiskApproval(@Param("risk_approval_key")int risk_approval_key);
+    List<FileStorage> getRiskFname(@Param("risk_approval_key")int risk_approval_key);
+    // 상태수정~
+    int riskApprovalStatusFin(@Param("risk_approval_key")int risk_approval_key);
+    int riskResponseFin(@Param("risk_approval_key")int risk_approval_key);
+    int riskApprovalStatusReturn(Risk_Approval ins);
+
 }

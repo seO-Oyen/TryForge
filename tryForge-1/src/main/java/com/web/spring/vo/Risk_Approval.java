@@ -26,7 +26,7 @@ public class Risk_Approval {
 	private int rr_risk_response_key; // 리스크대응 테이블 리스크 키
 	private String strategy; // 대응전략
 	private String response_method; // 대응 상세
-	
+	private String reject_detail; // 반려상세
 	
 	public Risk_Approval() {
 		super();
@@ -197,5 +197,12 @@ public class Risk_Approval {
 	public void setResponse_method(String response_method) {
 		this.response_method = response_method;
 	}
-	
+
+	public String getReject_detail() {
+		return reject_detail;
+	}
+
+	public void setReject_detail(String reject_detail) {
+		this.reject_detail = reject_detail;
+	}
 }

@@ -6,7 +6,7 @@
 	<insert id="insRiskApproval" parameterType="risk_approval">
 		insert into RISK_APPROVAL values
 			(risk_approval_seq.nextval, #{reporter}, #{report_detail},
-			 sysdate, #{risk_key}, #{risk_response_key},'FILE-'||FILE_STORAGE_SEQ.currval, '결재요청', #{title})
+			 sysdate, #{risk_key}, #{risk_response_key},'FILE-'||FILE_STORAGE_SEQ.currval, '결재요청', #{title},null)
 	</insert>
 	<insert id="insFileUse">
 		insert into FILE_USE values ('FILE-'||FILE_STORAGE_SEQ.currval, '리스크 관리' , risk_approval_seq.currval )
@@ -29,7 +29,7 @@
 	</select>
 	<select id="ralist" parameterType="int" resultType="risk_approval">
 		SELECT ra.*,fs.fname FROM RISK_APPROVAL ra
-	    JOIN FILE_STORAGE fs ON fs.FILE_KEY = ra.FILE_KEY
+			left JOIN FILE_STORAGE fs ON fs.FILE_KEY = ra.FILE_KEY
 		WHERE risk_key = #{risk_key}
 	</select>
 </mapper>

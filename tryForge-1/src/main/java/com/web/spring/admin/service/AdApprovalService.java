@@ -41,4 +41,19 @@ public class AdApprovalService {
     public List<Risk_Approval> riskApprovalList(String project_key){
         return dao.riskApprovalList(project_key);
     }
+    public Risk_Approval getRiskApproval(int risk_approval_key){
+        return dao.getRiskApproval(risk_approval_key);
+    }
+    public List<FileStorage> getRiskFname(int risk_approval_key){
+        return dao.getRiskFname(risk_approval_key);
+    }
+
+    public String riskApprovalStatusFin(int risk_approval_key){
+        dao.riskResponseFin(risk_approval_key);
+        return dao.riskApprovalStatusFin(risk_approval_key)>0?"결재 처리 완료":"결재 처리 에러";
+    }
+    public String riskApprovalStatusReturn(Risk_Approval ins){
+        return dao.riskApprovalStatusReturn(ins)>0?"재상신 요청 완료":"재상신 요청 에러";
+    }
+
 }
