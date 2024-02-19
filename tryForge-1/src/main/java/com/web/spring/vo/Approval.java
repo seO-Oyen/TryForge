@@ -12,11 +12,9 @@ public class Approval {
 	private Date completion_date; //  결재 완료일
 	private String status; //  결재 상태
 	private String detail; // 업무보고 설명
+	private Task task;
 
-	public Approval() {
-	}
-
-	public Approval(int approval_key, int task_key, String project_key, int member_key, String file_key, Date request_date, Date completion_date, String status, String detail) {
+	public Approval(int approval_key, int task_key, String project_key, int member_key, String file_key, Date request_date, Date completion_date, String status, String detail, Task task) {
 		this.approval_key = approval_key;
 		this.task_key = task_key;
 		this.project_key = project_key;
@@ -26,7 +24,20 @@ public class Approval {
 		this.completion_date = completion_date;
 		this.status = status;
 		this.detail = detail;
+		this.task = task;
 	}
+
+	public Task getTask() {
+		return task;
+	}
+
+	public void setTask(Task task) {
+		this.task = task;
+	}
+
+	public Approval() {
+	}
+
 
 	public int getApproval_key() {
 		return approval_key;

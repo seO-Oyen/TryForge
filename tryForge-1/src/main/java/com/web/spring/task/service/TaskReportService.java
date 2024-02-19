@@ -32,6 +32,9 @@ public class TaskReportService {
     public Task getMemberTask(Task task) {
         return dao.getMemberTask(task);
     }
+    public List<Approval> getRejectApprovalList(Approval approval) {
+        return dao.getRejectApprovalList(approval);
+    }
 
     public int reportTask(Approval approval) {
         return dao.reportTask(approval);

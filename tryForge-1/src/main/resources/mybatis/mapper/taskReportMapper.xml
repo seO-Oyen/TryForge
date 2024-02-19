@@ -7,11 +7,42 @@
 		<result column = "task_key" property = "id"/>
 	</resultMap>
 
+	<resultMap id="task" type="task">
+		<result column="task_key" property="id"/>
+		<result column="member_key" property="member_key"/>
+		<result column="project_key" property="project_key"/>
+		<result column="text" property="text"/>
+		<result column="start_date" property="start_date"/>
+		<result column="end_date" property="end_date"/>
+		<result column="detail" property="detail"/>
+		<result column="assignor" property="assignor"/>
+	</resultMap>
+	<resultMap id="approve" type="approve">
+		<result column="approval_key" property="approval_key"/>
+		<result column="task_key" property="task_key"/>
+		<result column="project_key" property="project_key"/>
+		<result column="member_key" property="member_key"/>
+		<result column="request_date" property="request_date"/>
+		<result column="completion_date" property="completion_date"/>
+		<result column="status" property="status"/>
+		<result column="detail" property="detail"/>
+		<result column="reject_detail" property="reject_detail"/>
+		<collection property="task" resultMap="task"/>
+	</resultMap>
+
 	<select id="getMemberTaskList" resultMap="taskRst">
 		SELECT * FROM TASK
 		WHERE PROJECT_KEY = #{project_key}
 		  AND MEMBER_KEY = #{member_key}
+		  AND TASK_KEY NOT IN (SELECT TASK_KEY FROM APPROVAL)
 		ORDER BY START_DATE
+	</select>
+	<select id="getRejectApprovalList" parameterType="approve" resultMap="approve">
+		SELECT ap.*, t.TASK_KEY, t.PROJECT_KEY, t.MEMBER_KEY, t.TEXT, t.START_DATE, t.END_DATE, t.DETAIL, t.ASSIGNOR
+		FROM APPROVAL ap
+				 INNER JOIN TASK t ON t.TASK_KEY = ap.TASK_KEY
+		WHERE ap.MEMBER_KEY = #{member_key}
+		  AND ap.STATUS = '재상신요청'
 	</select>
 
 	<select id="getMemberTask" resultMap="taskRst">

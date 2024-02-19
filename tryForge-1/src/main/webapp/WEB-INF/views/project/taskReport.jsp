@@ -159,12 +159,10 @@
 				</div>
 			</div>
 
-			<!-- 새 업무 end -->
-<!--
 			<div class="col-md-12" style="margin-top: 3%;">
 				<div class="card">
 					<div class="card-body">
-						<h4 class="card-title">보고 한 업무</h4>
+						<h4 class="card-title">결재 반려함</h4>
 						<div class="table-responsive"
 							 style="width: 95%; margin-left: 4%; overflow-x: auto;">
 							<table class="table table-hover" style="width: 100%;">
@@ -172,41 +170,17 @@
 								<tr>
 									<th>업무명</th>
 									<th>결재요청일</th>
-									<th></th>
-									<th>할당자</th>
+									<th>반려일</th>
+									<th>결재자</th>
 									<th></th>
 								</tr>
 								</thead>
-								<tbody id="waitApproveList"></tbody>
+								<tbody id="reApproveList"></tbody>
 							</table>
 						</div>
 					</div>
 				</div>
 			</div>
-
-			<div class="col-md-12" style="margin-top: 3%;">
-				<div class="card">
-					<div class="card-body">
-						<h4 class="card-title">결재 완료</h4>
-						<div class="table-responsive"
-							 style="width: 95%; margin-left: 4%; overflow-x: auto;">
-							<table class="table table-hover" style="width: 100%;">
-								<thead>
-								<tr>
-									<th>업무명</th>
-									<th>업무시작일</th>
-									<th>업무종료일</th>
-									<th>할당자</th>
-									<th></th>
-								</tr>
-								</thead>
-								<tbody id="completeApproveList"></tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-			-->
 		</div>
 
 

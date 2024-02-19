@@ -60,4 +60,9 @@ public class TaskReportController {
         }
         return "pageJsonReport";
     }
+
+    @GetMapping("getRejectApprovalList")
+    public String getRejectApprovalList(Approval approval) {
+        return "pageJsonReport";
+    }
 }
