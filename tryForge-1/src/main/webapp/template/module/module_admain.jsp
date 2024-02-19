@@ -169,7 +169,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
                          aria-labelledby="profileDropdown">
-                        <a class="dropdown-item" href="${path}/mypage">
+                        <a class="dropdown-item" href="${path}/myPage">
                             <i class="typcn typcn-cog-outline text-primary"></i> 마이페이지
                         </a>
                         <a class="dropdown-item" href="${path}/login">
