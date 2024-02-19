@@ -10,19 +10,67 @@ public class Approval {
 	private Date request_date; // 요청일
 	private Date completion_date; //  결재 완료일
 	private String status; //  결재 상태
+	private String text; // 결재 명
+	private String detail; // 결재 상세
+	private String task_detail;// 업무상세
+	private Date start_date; // 업무 시작일
+	private Date end_date; // 업무종료일
+	private String member_name; // 보고자
+	private String assignor; // 업무할당자
+	private String reject_detail; // 재상신요청이유
+	private Task task;
+	private FileStorage fileStorage;
+	//private FileUse fileUse;
+
 	public Approval() {
 		// TODO Auto-generated constructor stub
 	}
-	public Approval(int approval_key, int task_key, String project_key, int member_key, Date request_date,
-			Date completion_date, String status) {
-		this.approval_key = approval_key;
-		this.task_key = task_key;
-		this.project_key = project_key;
-		this.member_key = member_key;
-		this.request_date = request_date;
-		this.completion_date = completion_date;
-		this.status = status;
+
+//	public Approval(int approval_key, int task_key, String project_key, int member_key, Date request_date, Date completion_date, String status, String text, String detail, String task_detail, Date start_date, Date end_date, String member_name, String assignor, String reject_detail, Task task, FileStorage fileStorage, FileUse fileUse) {
+//		this.approval_key = approval_key;
+//		this.task_key = task_key;
+//		this.project_key = project_key;
+//		this.member_key = member_key;
+//		this.request_date = request_date;
+//		this.completion_date = completion_date;
+//		this.status = status;
+//		this.text = text;
+//		this.detail = detail;
+//		this.task_detail = task_detail;
+//		this.start_date = start_date;
+//		this.end_date = end_date;
+//		this.member_name = member_name;
+//		this.assignor = assignor;
+//		this.reject_detail = reject_detail;
+//		this.task = task;
+//		this.fileStorage = fileStorage;
+//		this.fileUse = fileUse;
+//	}
+
+	public Task getTask() {
+		return task;
 	}
+
+	public void setTask(Task task) {
+		this.task = task;
+	}
+
+	public FileStorage getFileStorage() {
+		return fileStorage;
+	}
+
+	public void setFileStorage(FileStorage fileStorage) {
+		this.fileStorage = fileStorage;
+	}
+
+//	public FileUse getFileUse() {
+//		return fileUse;
+//	}
+//
+//	public void setFileUse(FileUse fileUse) {
+//		this.fileUse = fileUse;
+//	}
+
 	public int getApproval_key() {
 		return approval_key;
 	}
@@ -65,6 +113,68 @@ public class Approval {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public String getDetail() {
+		return detail;
+	}
+
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
+
+	public String getTask_detail() {
+		return task_detail;
+	}
+
+	public void setTask_detail(String task_detail) {
+		this.task_detail = task_detail;
+	}
+
+	public Date getStart_date() {
+		return start_date;
+	}
+
+	public void setStart_date(Date start_date) {
+		this.start_date = start_date;
+	}
+
+	public Date getEnd_date() {
+		return end_date;
+	}
+
+	public void setEnd_date(Date end_date) {
+		this.end_date = end_date;
+	}
+
+	public String getMember_name() {
+		return member_name;
+	}
+
+	public void setMember_name(String member_name) {
+		this.member_name = member_name;
+	}
+
+	public String getAssignor() {
+		return assignor;
+	}
+
+	public void setAssignor(String assignor) {
+		this.assignor = assignor;
+	}
+
+	public String getReject_detail() {
+		return reject_detail;
+	}
+
+	public void setReject_detail(String reject_detail) {
+		this.reject_detail = reject_detail;
+	}
 }

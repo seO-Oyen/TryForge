@@ -41,7 +41,7 @@
                 },
                 goPage(event) {
                 	 const projectKey = event.target.dataset.projectKey;
-                    location.href = "${path}/adApproval?project_key="+projectKey;
+                    location.href = "${path}/adRiskApproval?project_key="+projectKey;
                 }
             }
         }).mount(".main-panel");

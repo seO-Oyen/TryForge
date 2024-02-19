@@ -606,7 +606,10 @@
             <div class="col-md-12" style="padding-right: 0; padding-left: 0">
                 <div class="card">
                     <div class="card-body">
+                        <div style="display: flex;">
                         <h4 class="card-title">Confirm Risk</h4>
+                        <a href="${path}/adRiskApprovalPlist" style="margin-left: 75%; font-size: 20px;">리스크 결재관리 페이지 이동</a>
+                        </div>
                         <!-- 리스크 테이블 -->
                         <div class="table-responsive"
                              style="width: 95%; margin-left: 4%; max-height: 500px; overflow-x: auto;">
