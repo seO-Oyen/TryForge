@@ -20,32 +20,32 @@ public class Approval {
 	private String reject_detail; // 재상신요청이유
 	private Task task;
 	private FileStorage fileStorage;
-	//private FileUse fileUse;
+	private FileUse fileUse;
 
 	public Approval() {
 		// TODO Auto-generated constructor stub
 	}
 
-//	public Approval(int approval_key, int task_key, String project_key, int member_key, Date request_date, Date completion_date, String status, String text, String detail, String task_detail, Date start_date, Date end_date, String member_name, String assignor, String reject_detail, Task task, FileStorage fileStorage, FileUse fileUse) {
-//		this.approval_key = approval_key;
-//		this.task_key = task_key;
-//		this.project_key = project_key;
-//		this.member_key = member_key;
-//		this.request_date = request_date;
-//		this.completion_date = completion_date;
-//		this.status = status;
-//		this.text = text;
-//		this.detail = detail;
-//		this.task_detail = task_detail;
-//		this.start_date = start_date;
-//		this.end_date = end_date;
-//		this.member_name = member_name;
-//		this.assignor = assignor;
-//		this.reject_detail = reject_detail;
-//		this.task = task;
-//		this.fileStorage = fileStorage;
-//		this.fileUse = fileUse;
-//	}
+	public Approval(int approval_key, int task_key, String project_key, int member_key, Date request_date, Date completion_date, String status, String text, String detail, String task_detail, Date start_date, Date end_date, String member_name, String assignor, String reject_detail, Task task, FileStorage fileStorage, FileUse fileUse) {
+		this.approval_key = approval_key;
+		this.task_key = task_key;
+		this.project_key = project_key;
+		this.member_key = member_key;
+		this.request_date = request_date;
+		this.completion_date = completion_date;
+		this.status = status;
+		this.text = text;
+		this.detail = detail;
+		this.task_detail = task_detail;
+		this.start_date = start_date;
+		this.end_date = end_date;
+		this.member_name = member_name;
+		this.assignor = assignor;
+		this.reject_detail = reject_detail;
+		this.task = task;
+		this.fileStorage = fileStorage;
+		this.fileUse = fileUse;
+	}
 
 	public Task getTask() {
 		return task;
@@ -63,13 +63,13 @@ public class Approval {
 		this.fileStorage = fileStorage;
 	}
 
-//	public FileUse getFileUse() {
-//		return fileUse;
-//	}
-//
-//	public void setFileUse(FileUse fileUse) {
-//		this.fileUse = fileUse;
-//	}
+	public FileUse getFileUse() {
+		return fileUse;
+	}
+
+	public void setFileUse(FileUse fileUse) {
+		this.fileUse = fileUse;
+	}
 
 	public int getApproval_key() {
 		return approval_key;
