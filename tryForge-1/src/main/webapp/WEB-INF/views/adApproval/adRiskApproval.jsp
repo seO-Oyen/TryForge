@@ -161,7 +161,7 @@
                             msg("success", "수정 성공!", data.riskFinMsg)
                         }
                         $("#clsBtn").click()
-                        aplist();
+                        raplist();
                     },
                     error: function (error) {
                         msg("error", "오류", error)
@@ -189,7 +189,7 @@
                         }
                         $("#clsBtn").click()
                         $("#clsBtn02").click()
-                        aplist();
+                        raplist();
                     },
                     error: function (error) {
                         msg("error", "오류", error)
