@@ -20,4 +20,12 @@ public interface ChatDao {
 	int insertChat(Chat chat);
 	
 	int updateLastMessage(Chat chat);
+	
+	// 프로젝트 생성시 채팅방 만드는것
+	int createChatRoom();
+	
+	int createChatMem(int member_key);
+	
+	// 그냥 채팅방 생성
+	int createChatRoomUser();
 }
