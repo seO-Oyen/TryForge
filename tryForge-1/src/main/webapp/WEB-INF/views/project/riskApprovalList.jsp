@@ -10,6 +10,7 @@
         font-size: 20px;
         font-weight: bold;
     }
+
     #myModal .modal-dialog {
         max-width: 50%; /* 모달의 최대 너비를 80%로 설정 */
     }
@@ -42,7 +43,7 @@
             name: "App",
             data() {
                 return {
-                    rlist: [], name: member_name, riskApprovalData: [], risk_key: 0, risk_response_key: 0, riskArr:[]
+                    rlist: [], name: member_name, riskApprovalData: [], risk_key: 0, risk_response_key: 0, riskArr: []
                 };
             },
             created() {
@@ -76,13 +77,20 @@
                     const riskResponseKey = event.target.dataset.riskResponseKey;
                     location.href = "${path}/riskApproval?risk_key=" + riskKey + "&risk_response_key=" + riskResponseKey;
                 },
-                openPage(key){
-                    var url = "${path}/rlistByRiskKey?risk_key="+key;
+                goReportAgain(event) {
+                    const riskKey = event.target.dataset.riskKey;
+                    const riskResponseKey = event.target.dataset.riskResponseKey;
+                    const riskApprovalKey = event.target.dataset.riskApprovalKey;
+                    // 페이지 이동 시 "isResubmit" 매개변수를 추가하여 재상신 여부를 전달
+                    location.href = "${path}/riskApproval?risk_key=" + riskKey + "&risk_response_key=" + riskResponseKey + "&isResubmit=true&risk_approval_key="+riskApprovalKey;
+                },
+                openPage(key) {
+                    var url = "${path}/rlistByRiskKey?risk_key=" + key;
                     var risk_key = key;
                     console.log(key)
                     var it = this
                     it.riskArr = [];
-                    axios.get(url).then((response)=>{
+                    axios.get(url).then((response) => {
                         it.riskArr = response.data.risk;
                         // 모달 채우기
                         $("#myModal [name=status]").val(it.riskArr.status);
@@ -94,15 +102,19 @@
                         $("#myModal [name=response_method]").val(it.riskArr.response_method);
                         $("#myModal #hideDiv").show();
                         $("#myModal").modal('show');
-                    }).catch((err)=>{
+                    }).catch((err) => {
                         console.log(err)
                     })
                 },
-                openPage02(key){
-                    var url = "${path}/riskApprovalInfo?risk_key="+key;
+                openPage02(key) {
+                    var url = "${path}/riskApprovalInfo?risk_key=" + key;
                     var it = this;
                     it.riskArr = [];
-                    axios.get(url).then((response)=>{
+                    axios.get(url).then((response) => {
+                        $("#myModal").on("hidden.bs.modal", function () {
+                            $("#rejectDiv").show(); // 모달이 닫힐 때 rejectDiv를 다시 표시
+                        });
+
                         it.riskArr = response.data.ralist;
                         // 모달 채우기
                         $("#myModal #proTitle").text("리스크 결재정보");
@@ -117,15 +129,19 @@
                         $("#myModal [name=registrant]").val(it.name);
                         $("#myModal [name=strategy]").val(it.riskArr.fname);
                         $("#myModal [name=response_method]").val(it.riskArr.report_detail);
+                        if (it.riskArr.reject_detail == '' || it.riskArr.reject_detail == null) {
+                            $("#rejectDiv").hide();
+                        } else {
+                            $("#myModal [name=reject_detail]").val(it.riskArr.reject_detail);
+                        }
                         $("#myModal").modal('show');
-                    }).catch((err)=>{
+                    }).catch((err) => {
                         console.log(err)
                     })
                 }
             }
         }).mount("#contactRisk");
     })
-
 
 
     // 결재중, 반려, 재상신요청 상세정보
@@ -157,14 +173,18 @@
                                     </thead>
                                     <tbody>
                                     <tr v-for="risk01 in riskApprovalData" @dblclick="openPage(risk01.r_risk_key)">
-                                        <td v-if="risk01.contact == name && risk01.status =='발생전' && (risk01.report_status == '' || risk01.report_status == null)"> {{risk01.text}}</td>
+                                        <td v-if="risk01.contact == name && risk01.status =='발생전' && (risk01.report_status == '' || risk01.report_status == null)">
+                                            {{risk01.text}}
+                                        </td>
                                         <td v-if="risk01.contact == name && risk01.status =='발생전' && (risk01.report_status == '' || risk01.report_status == null)">
                                             {{risk01.registrant}}
                                         </td>
                                         <td v-if="risk01.contact == name && risk01.status =='발생전' && (risk01.report_status == '' || risk01.report_status == null)">
                                             {{formatDate(risk01.reg_date)}}
                                         </td>
-                                        <td v-if="risk01.contact == name && risk01.status =='발생전' && (risk01.report_status == '' || risk01.report_status == null)">{{risk01.type}}</td>
+                                        <td v-if="risk01.contact == name && risk01.status =='발생전' && (risk01.report_status == '' || risk01.report_status == null)">
+                                            {{risk01.type}}
+                                        </td>
                                         <td v-if="risk01.contact == name && risk01.status =='발생전' && (risk01.report_status == '' || risk01.report_status == null)">
                                             {{risk01.possibility}}
                                         </td>
@@ -294,10 +314,11 @@
                                         <th>업무명</th>
                                         <th>보고날짜</th>
                                         <th>보고상태</th>
+                                        <th>재상신</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="risk04 in riskApprovalData">
+                                    <tr v-for="risk04 in riskApprovalData" @dblclick="openPage02(risk04.r_risk_key)">
                                         <td v-if="risk04.contact == name && risk04.report_status == '재상신요청'">
                                             {{risk04.title}}
                                         </td>
@@ -312,6 +333,16 @@
                                         </td>
                                         <td v-if="risk04.contact == name && risk04.report_status == '재상신요청'">
                                             {{risk04.report_status}}
+                                        </td>
+                                        <td v-if="risk04.contact == name && risk04.report_status == '재상신요청'">
+                                            <button type="button" class="btn-btn"
+                                                    v-bind:data-risk-key="risk04.r_risk_key"
+                                                    v-bind:data-risk-response-key="risk04.rr_risk_response_key"
+                                                    v-bind:data-risk-approval-key="risk04.risk_approval_key"
+                                                    style="background-color: #007FFF; color: white; width: 100px; height: 30px; border: none;"
+                                                    @click="goReportAgain($event)">
+                                                재상신
+                                            </button>
                                         </td>
 
                                     </tr>
@@ -341,7 +372,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="risk05 in riskApprovalData">
+                                    <tr v-for="risk05 in riskApprovalData" @dblclick="openPage02(risk05.r_risk_key)">
                                         <td v-if="risk05.contact == name && risk05.report_status == '결재완료'">
                                             {{risk05.title}}
                                         </td>
@@ -373,7 +404,7 @@
         <!-- The Modal -->
         <div class="modal" id="myModal">
             <div class="modal-dialog">
-                <div class="modal-content" >
+                <div class="modal-content">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
@@ -389,9 +420,10 @@
                         </div>
                     </div>
                     <form class="forms-sample" id="modalFrm">
-                        <div class="form-group" >
+                        <div class="form-group">
                             <label id="risk_status_label" for="exampleInputUsername1">리스크 상태</label>
-                            <input name="status" type="text" readonly class="form-control" id="risk_status" placeholder="title">
+                            <input name="status" type="text" readonly class="form-control" id="risk_status"
+                                   placeholder="title">
                         </div>
 
                         <div class="form-group">
@@ -409,16 +441,16 @@
                         </div>
 
                         <div id="hideDiv">
-                        <div class="form-group">
-                            <label for="exampleTextarea1">상세설명</label>
-                            <textarea type="text" name="detail" class="form-control" readonly ></textarea>
-                        </div>
+                            <div class="form-group">
+                                <label for="exampleTextarea1">상세설명</label>
+                                <textarea type="text" name="detail" class="form-control" readonly></textarea>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="exampleInputPassword1" id="contactLabel">담당자</label>
-                            <input name="contact" type="text" readonly class="form-control"
-                                   placeholder="title">
-                        </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1" id="contactLabel">담당자</label>
+                                <input name="contact" type="text" readonly class="form-control"
+                                       placeholder="title">
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -427,9 +459,13 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleTextarea1" id="detail_label">대응 상세</label>
-                            <textarea type="text" name="response_method" class="form-control" readonly ></textarea>
+                            <textarea type="text" name="response_method" class="form-control" readonly></textarea>
                         </div>
-
+                        `
+                        <div class="form-group" id="rejectDiv">
+                            <label for="exampleTextarea1" id="rejectLabel">재상신요청 이유</label>
+                            <textarea type="text" name="reject_detail" class="form-control" readonly></textarea>
+                        </div>
 
                     </form>
 

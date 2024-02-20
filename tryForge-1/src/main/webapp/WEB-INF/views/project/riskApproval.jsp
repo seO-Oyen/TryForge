@@ -15,6 +15,11 @@
 		var urlParams = new URL(currentUrl).searchParams;
 		var riskKey = urlParams.get('risk_key');
 		var riskResponseKey = urlParams.get('risk_response_key');
+		var isResubmit = urlParams.get('isResubmit');
+		var RiskApprovalKey = urlParams.get('risk_approval_key');
+		console.log(riskKey)
+		console.log(riskResponseKey)
+		console.log(RiskApprovalKey)
 
 		$('input[name="risk_key"]').val(riskKey);
 		$('input[name="risk_response_key"]').val(riskResponseKey);
@@ -35,6 +40,13 @@
 			}
 		});
 		$("#regBtn").click(function(){
+			var titleValue = $("#form02 [name=title]").val()
+			if(isResubmit == "true"){
+				$("#form02 [name=title]").val("[재상신]"+titleValue);
+			}else{
+				$("#form02 [name=title]").val(titleValue);
+			}
+
 			if (!emptyCheck()) {
 				return;
 			}
@@ -58,6 +70,7 @@
 					console.log(err)
 				}
 			})
+			delRiskApproval(RiskApprovalKey)
 		})
 
 	})
@@ -114,6 +127,21 @@
 			return false;
 		}
 		return true;
+	}
+
+	function delRiskApproval(riskApprovalKey){
+		$.ajax({
+			url:"${path}/delRiskApproval",
+			data:"risk_approval_key"+riskApprovalKey,
+			dataType: "json",
+			success:function(data){
+				data.delRiskApproval;
+				console.log("Risk approval deleted successfully.");
+			},
+			error:function(err){
+				console.log(err)
+			}
+		})
 	}
 </script>
 <div class="col-12 grid-margin stretch-card"

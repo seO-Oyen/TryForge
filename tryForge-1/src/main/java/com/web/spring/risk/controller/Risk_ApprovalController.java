@@ -68,4 +68,10 @@ public class Risk_ApprovalController {
         d.addAttribute("ralist",service.ralist(risk_key));
         return "pageJsonReport";
     }
+    // 재상신 요청 하면 기존에 재상신 요청 결재 테이블에서 지우고 새로 결재요청으로 변경
+    @GetMapping("delRiskApproval")
+    public String delRiskApproval(@RequestParam("risk_approval_key")int risk_approval_key, Model d){
+        d.addAttribute("delRiskApproval",service.delReturnRisk(risk_approval_key));
+        return "pageJsonReport";
+    }
 }
