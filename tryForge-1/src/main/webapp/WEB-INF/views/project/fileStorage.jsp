@@ -198,16 +198,8 @@ function download(file_key, fname){
 			"다운로드 하시겠습니까?",
 			"question", // 아이콘
 			function() {
-				$.ajax({
-					url: "${path}/download?file_key="+file_key+"&fname="+fname,
-					type: "POST",
-					success: function(response) {
-						msg("success", "파일 다운로드 성공!")
-					},
-					error: function(error) {
-						msg("error", "오류", error)
-					}
-				})
+				location.href="${path}/download?file_key="+file_key+"&fname="+fname
+				msg("success", "파일 다운로드 성공!")
 			},
 			function() {
 			}
