@@ -66,6 +66,7 @@
 		WHERE ap.MEMBER_KEY = #{member_key}
 		  	AND ap.APPROVAL_KEY = #{approval_key}
 			AND ap.STATUS = '재상신요청'
+			AND fu.USE_TYPE = '업무 보고'
 	</select>
 
 	<select id="getMemberTask" resultMap="taskRst">
@@ -77,8 +78,21 @@
 		INSERT INTO APPROVAL VALUES
 		(TASK_APPROVAL_SEQ.nextval, #{task_key}, #{project_key}, #{member_key}, sysdate, null, '결재 대기', #{detail}, null)
 	</insert>
+	<update id="reportTaskAgain" parameterType="approve">
+		UPDATE APPROVAL
+			SET REQUEST_DATE = sysdate,
+			    COMPLETION_DATE = null,
+			    STATUS = '결재 대기',
+			    DETAIL = #{detail}
+			WHERE APPROVAL_KEY = #{approval_key}
+	</update>
+
 	<insert id="reportTaskFileUse" parameterType="file">
 		INSERT INTO FILE_USE VALUES
 		(#{file_key}, '업무 보고', TASK_APPROVAL_SEQ.currval)
+	</insert>
+	<insert id="reportTaskAgainFileUse" parameterType="fileUse">
+		INSERT INTO FILE_USE VALUES
+			(#{file_key}, '업무 보고', #{approval_key})
 	</insert>
 </mapper>

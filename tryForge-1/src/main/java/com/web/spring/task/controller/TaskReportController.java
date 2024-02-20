@@ -59,6 +59,23 @@ public class TaskReportController {
         return "pageJsonReport";
     }
 
+    @PostMapping("reportTaskAgain")
+    public String reportTaskAgain(Approval approval, FileStorage file, Model d) {
+        MultipartFile[] files = file.getFiles();
+        // 파일 있을 때
+        if(files != null && files.length > 0) {
+            List<String> fileKeys = uploadService.uploadFile(file);
+            if(service.reportTaskAgain(approval)>0) {
+                int cnt = service.reportTaskAgainFileUse(fileKeys, approval);
+                d.addAttribute("result", cnt>0?"재상신 성공(첨부파일 "+cnt+"개 포함)":"재상신 실패");
+            }
+        } else { // 파일 없을 때
+            d.addAttribute("result", service.reportTaskAgain(approval)>0?"재상신 성공(파일 추가첨부 없음)":"재상신 실패");
+        }
+
+        return "pageJsonReport";
+    }
+
     @GetMapping("getRejectApprovalList")
     public String getRejectApprovalList(Approval approval, Model d, HttpSession session) {
         Member member = sessionService.getMember(session);
@@ -78,4 +95,5 @@ public class TaskReportController {
         }
         return "pageJsonReport";
     }
+
 }

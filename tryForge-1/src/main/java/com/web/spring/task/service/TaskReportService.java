@@ -1,19 +1,15 @@
 package com.web.spring.task.service;
 
-import com.web.spring.file.dao.FileDao;
 import com.web.spring.file.service.UploadService;
 import com.web.spring.task.dao.TaskReportDao;
 import com.web.spring.vo.Approval;
 import com.web.spring.vo.FileStorage;
+import com.web.spring.vo.FileUse;
 import com.web.spring.vo.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -53,4 +49,18 @@ public class TaskReportService {
         return cnt;
     }
 
+    public int reportTaskAgain(Approval approval) {
+        return dao.reportTaskAgain(approval);
+    }
+
+    public int reportTaskAgainFileUse(List<String> fileKeys, Approval approval) {
+        int cnt = 0;
+        for(String fileKey : fileKeys) {
+            FileUse file = new FileUse();
+            file.setFile_key(fileKey);
+            file.setApproval_key(approval.getApproval_key());
+            cnt += dao.reportTaskAgainFileUse(file);
+        }
+        return cnt;
+    }
 }

@@ -6,6 +6,9 @@
 
 <jsp:include page="${path}/template/module/module_main.jsp" flush="true" />
 <style>
+	#reportAgainReasonBtn {
+		margin-right: 10%;
+	}
 	.btn-fit-li {
 		width: auto; /* 버튼 내용에 따라 자동 조정 */
 		padding: 0 10px; /* 좌우 패딩으로 버튼 내부 여백 조정 */
@@ -23,7 +26,7 @@
 	.modal-content {
 		margin-top: 25%;
 	}
-	#taskNameInModal, #taskFileUploadInModal {
+	#taskNameInModal, #taskFileUploadInModal, #reportAgainNameInModal, #reportAgainDetailInModal {
 		background-color: white;
 		color: black;
 	}
@@ -91,7 +94,6 @@
 			}
 		});
 	}
-
 	function msg(icon, title, text) {
 		Swal.fire({
 			icon: icon,
@@ -151,13 +153,14 @@
 						var startDateFormat = formatDate(reject.request_date);
 						var endDateFormat = formatDate(reject.completion_date);
 						reportBtn = '<button type="button" onclick="reportAgain(\'' + reject.approval_key + '\', \'' + reject.task.text + '\', \'' + reject.task.id + '\', \'' + reject.detail + '\')" class="btn btn-info" id="reportAgainBtn">재상신</button>';
+						reportAgainReasonBtn = '<button type="button" onclick="reportAgainReason(\'' + reject.task.text + '\', \'' + reject.reject_detail + '\')" class="btn btn-danger" id="reportAgainReasonBtn">반려사유</button>';
 
 						reApproveListHtml += '<tr class="member-row">' +
 								'<td>' + reject.task.text + '</td>' +
 								'<td>' + startDateFormat + '</td>' +
 								'<td>' + endDateFormat + '</td>' +
 								'<td>' + reject.task.assignor + '</td>' +
-								'<td>' + reportBtn + '</td>' +
+								'<td>' + reportAgainReasonBtn + reportBtn + '</td>' +
 								'</tr>';
 					});
 				} else {
@@ -246,45 +249,42 @@
 						<div class="modal-footer" style="display: flex; justify-content: flex-end;">
 							<div class="flex-grow-1" style="flex: 1;">
 								<button type="button" class="btn btn-success" id="uploadBtn" style="float: left;">파일첨부</button>
-								<button type="button" class="btn btn-success" id="reportAgainUploadBtn" style="float: left;">파일첨부</button>
+								<button type="button" class="btn btn-success" id="reportAgainUploadBtn" style="float: left;">추가첨부</button>
 								<input type="file" id="fileInput" name="files" multiple="multiple" style="display: none;" />
 								<input type="file" id="fileInputAgain" name="files" multiple="multiple" style="display: none;" />
 								<input type="hidden" name="member_key" id="memberKey" value="${loginMem.member_key}"/>
 								<input type="hidden" name="project_key" id="projectKey" value="${projectMem.project_key}"/>
 								<input type="hidden" name="task_key" id="taskKey"/>
+								<input type="hidden" name="approval_key" id="approvalKey"/>
 							</div>
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 							<button type="button" class="btn btn-info" id="taskReportInModalBtn">보고</button>
+							<button type="button" class="btn btn-info" id="taskReportAgainInModalBtn">재상신</button>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
 
-		<div class="modal fade" id="fileModifyModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+		<div class="modal fade" id="reportAgainReasonModal" tabindex="-1" role="dialog" aria-labelledby="reportAgainReasonModal" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="fileModifyModalLabel">파일 설명</h5>
+						<h5 class="modal-title" id="reportAgainReasonTitle">반려 사유</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body">
-						<form id="fileModifyForm">
-							<div class="form-group">
-								<label for="fileModifyName">선택한 파일</label>
-								<textarea class="form-control" id="fileModifyName" rows="1" readonly></textarea>
-								<label for="fileModifyDescription">설명</label>
-								<textarea class="form-control" id="fileModifyDescription" name="description" rows="6" placeholder="수정내용을 입력하세요"></textarea>
-								<input type="hidden" id="getFileKey" name="file_key" value=""/>
-							</div>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" id="cancelModifyBtn">취소</button>
-						<button type="button" class="btn btn-info" id="modifyConfirm">수정</button>
-					</div>
+						<div class="modal-body">
+							<!-- 업무 정보를 여기에 표시 -->
+							<label for="reportAgainNameInModal">업무명</label>
+							<textarea class="form-control" id="reportAgainNameInModal" rows="1" readonly></textarea>
+							<label for="reportAgainDetailInModal" style="margin-top: 1.5%;">상세 반려사유</label>
+							<textarea class="form-control" id="reportAgainDetailInModal" rows="12" readonly></textarea>
+						</div>
+						<div class="modal-footer" style="display: flex; justify-content: flex-end;">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+						</div>
 				</div>
 			</div>
 		</div>
@@ -351,8 +351,19 @@
 		fileListDisplay.append($('<li class="list-group-item">').text("첨부파일 없음"));
 		$('#taskNameInModal').text(text);
 		$('#taskKey').val(id);
+
 		$('#reportAgainUploadBtn').hide();
+		$('#uploadBtn').show();
+
+		$('#taskReportInModalBtn').show();
+		$('#taskReportAgainInModalBtn').hide();
 		$('#taskReportModal').modal('show');
+	}
+	function reportAgainReason(text, reject_detail) {
+		$('#reportAgainNameInModal').text(text);
+		$('#reportAgainDetailInModal').text(reject_detail);
+
+		$('#reportAgainReasonModal').modal('show');
 	}
 	function reportAgain(approvalKey, text, id, detail){
 		$.ajax({
@@ -368,16 +379,17 @@
 					$.each(response.rejectFileList, function(index, rejectFile) {
 						if (rejectFile && rejectFile.fname) {
 							// 첨부파일이 있을 경우
-							var fname = rejectFile.fname; // 파일 이름
-							var listItem = $('<li class="list-group-item"></li>');
-							listItem.append(document.createTextNode(fname)); // 파일 이름 추가
+							var fname = rejectFile.fname;
+							var file_key = rejectFile.file_key;
+
+							var listItem = $('<li class="list-group-item"></li>')
+									.attr('data-file_key', file_key) // 파일 고유 식별자 저장
+									.text(fname);
 
 							// 삭제 버튼을 listItem에 추가
 							var deleteButton = $('<button type="button" class="btn btn-danger btn-fit-li" style="float: right;">삭제</button>')
 									.click(function() {
-										// 삭제 버튼 클릭 이벤트 처리 로직
-										alert(fname + ' 삭제');
-										// 실제 삭제 로직 추가 필요
+										deleteFileInReportAgain(fname, file_key, approvalKey, text, id, detail);
 									});
 							listItem.append(deleteButton);
 
@@ -389,8 +401,14 @@
 					fileListDisplay.append($('<li class="list-group-item">').text("첨부파일 없음"));
 				}
 				$('#uploadBtn').hide();
+				$('#reportAgainUploadBtn').show();
+
+				$('#taskReportInModalBtn').hide();
+				$('#taskReportAgainInModalBtn').show();
 				$('#taskNameInModal').text(text);
 				$('#taskKey').val(id);
+				$('#approvalKey').val(approvalKey);
+
 				$('#taskReportModal').modal('show');
 			},
 			error: function(error) {
@@ -426,6 +444,7 @@
 								$('#taskReportModal').modal('hide');
 								msg("success", "업무보고 완료!", response.result)
 								getMemberTaskList();
+								getRejectApprovalList();
 							},
 							error: function(error) {
 								msg("error", "업무보고 에러", error.result)
@@ -440,8 +459,91 @@
 			return false;
 		}
 	})
+
+	$('#taskReportAgainInModalBtn').on('click', function(){
+		var formData = new FormData();
+		var files = $("#fileInputAgain")[0].files;
+		if($('#taskReportDetailInModal').val().trim()!=="") {
+			confirmMsg(
+					"업무 재상신",
+					"작성하신 내용으로 재상신 하시겠습니까?",
+					"warning",
+					function() {
+						$.each(files, function(index, file) {
+							formData.append('files[]', file);
+						})
+						formData.append('description', '업무보고 파일');
+						formData.append('detail', $("#taskReportDetailInModal").val());
+						formData.append('member_key', $("#memberKey").val());
+						formData.append('project_key', $("#projectKey").val());
+						formData.append('task_key', $("#taskKey").val());
+						formData.append('approval_key', $("#approvalKey").val());
+						$.ajax({
+							url: "${path}/reportTaskAgain",
+							type: "POST",
+							data: formData,
+							cache: false,
+							processData: false,
+							contentType: false,
+							success: function(response) {
+								$('#taskReportModal').modal('hide');
+								msg("success", "재상신 완료!", response.result)
+								getMemberTaskList();
+								getRejectApprovalList();
+							},
+							error: function(error) {
+								msg("error", "업무보고 에러", error.result)
+							}
+						})
+					},
+					function() {
+					}
+			);
+		} else {
+			msg("error", "경고!", "보고내용을 작성 하셔야 합니다.")
+			return false;
+		}
+	})
+
+	function deleteFileInReportAgain(fname, file_key, approvalKey, text, id, detail) {
+		confirmMsg(
+				fname + " 삭제", // 제목
+				"정말로 파일을 삭제하시겠습니까?", // 메시지 내용
+				"warning", // 아이콘
+				function() {
+					$.ajax({
+						url: "${path}/deleteFile?file_key="+file_key,
+						type: "POST",
+						success: function(response) {
+							switch(response.result){
+								case 0:
+									msg("error", "파일삭제 실패", "파일 삭제에 실패했습니다.");
+									break;
+								case 1:
+									msg("warning", "파일 부분삭제", "로컬파일만 삭제되었습니다.(관리자문의)");
+									break;
+								case 2:
+									msg("success", "파일삭제 완료!", "성공적으로 파일을 삭제하였습니다.");
+									$('li[data-file_key="' + file_key + '"]').remove();
+									break;
+								default:
+									msg("info", "알 수 없는 응답", "관리자에게 문의하세요.")
+							}
+
+						},
+						error: function(error) {
+							msg("error", "오류", error)
+						}
+					})
+				},
+				function() {
+				}
+		);
+	}
 </script>
 
 </body>
 
+<!--
+그다음 거기 안에서 재상신 버튼 클릭 시 기존 재상신 폼 -> 재상신 절차.. -->
 </html>
