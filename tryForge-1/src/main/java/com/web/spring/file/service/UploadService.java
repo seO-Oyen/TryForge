@@ -2,6 +2,8 @@ package com.web.spring.file.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,9 +22,8 @@ public class UploadService {
 @Value("${file.upload}")
 private String path;
 
-	public String uploadFile(FileStorage upload) {
-		int chk = 0;
-		String msg = "";
+	public List<String> uploadFile(FileStorage upload) {
+		List<String> fileKeys = new ArrayList<>();
 		MultipartFile[] mpfs = upload.getFiles();
 		
 		if(mpfs!=null && mpfs.length>0) {
@@ -53,21 +54,19 @@ private String path;
 
 					mpf.transferTo(new File(path+fkey));
 
-					chk += dao.uploadFile(new FileStorage(fkey, fname, path, extension, fsize,
+					dao.uploadFile(new FileStorage(fkey, fname, path, extension, fsize,
 							upload.getProject_key(), upload.getMember_key(), upload.getDescription()));
+
+					fileKeys.add(fkey);
 				}
 			} catch (IllegalStateException e) {
 				System.out.println("#파일업로드 예외1:"+e.getMessage());
-				msg+="#파일업로드 예외1:"+e.getMessage()+"\\n";
 			} catch (IOException e) {
 				System.out.println("#파일업로드 예외2:"+e.getMessage());
-				msg+="#파일업로드 예외2:"+e.getMessage()+"\\n";
 			} catch(Exception e) {
 				System.out.println("#기타 예외3:"+e.getMessage());
-				msg+="#기타 예외3:"+e.getMessage()+"\\n";
 			}
 		}
-		msg = "파일 "+ chk+"건 등록 완료";
-		return msg;
+		return fileKeys;
 	}
 }

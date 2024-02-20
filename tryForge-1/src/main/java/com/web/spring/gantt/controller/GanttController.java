@@ -1,6 +1,7 @@
 package com.web.spring.gantt.controller;
 
 import com.web.spring.SessionService;
+import com.web.spring.vo.Member;
 import com.web.spring.vo.Project;
 import com.web.spring.vo.Task;
 import com.web.spring.vo.Task_Dependency;
@@ -45,8 +46,10 @@ public class GanttController {
 	@PostMapping("insTask")
 	public String insertTask(Task ins, Model d, HttpSession session) {
 		Project project = sessionService.getProject(session);
-		if(project != null) {
+		Member member = sessionService.getMember(session);
+		if(project != null && member != null) {
 			ins.setProject_key(project.getProject_key());
+			ins.setAssignor(member.getMember_name());
 			d.addAttribute("id", service.insertTask(ins));
 		}
 		return "pageJsonReport";
