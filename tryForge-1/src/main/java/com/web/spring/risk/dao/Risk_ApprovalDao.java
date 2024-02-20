@@ -20,7 +20,9 @@ public interface Risk_ApprovalDao {
     Risk rlistByrisk_key(@Param("risk_key")int risk_key);
     // 리스크키로 리스크 결재정보 확인
     Risk_Approval ralist(@Param("risk_key")int risk_key);
-    // 재상신 보내면 기존 재상신 받은 항목 삭제
-    int delReturnRisk(@Param("risk_approval_key")int risk_approval_key);
+    // 재상신 보낼 폼에서 일단 정보 가져오기
+    Risk_Approval getRiskApprovalByrakey(@Param("risk_approval_key")int risk_approval_key);
+    // 재상신 요청시 정보수정
+    int reRiskApproval(Risk_Approval upt);
 
 }

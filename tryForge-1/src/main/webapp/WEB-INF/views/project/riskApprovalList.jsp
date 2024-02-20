@@ -93,6 +93,12 @@
                     axios.get(url).then((response) => {
                         it.riskArr = response.data.risk;
                         // 모달 채우기
+                        $("#myModal #proTitle").text("리스크 정보");
+                        $("#myModal #risk_status_label").text("리스크상태");
+                        $("#myModal #textlabel").text("업무명");
+                        $("#myModal #registrant_label").text("리스크등록자");
+                        $("#myModal #fileLabel").text("대응전략");
+                        $("#myModal #detail_label").text("대응상세");
                         $("#myModal [name=status]").val(it.riskArr.status);
                         $("#myModal [name=task_title]").val(it.riskArr.text);
                         $("#myModal [name=registrant]").val(it.riskArr.registrant);
@@ -100,6 +106,7 @@
                         $("#myModal [name=contact]").val(it.riskArr.contact);
                         $("#myModal [name=strategy]").val(it.riskArr.strategy);
                         $("#myModal [name=response_method]").val(it.riskArr.response_method);
+                        $("#rejectDiv").hide();
                         $("#myModal #hideDiv").show();
                         $("#myModal").modal('show');
                     }).catch((err) => {
