@@ -30,8 +30,8 @@ public class Risk_ApprovalService {
     public Risk_Approval ralist(int risk_key){
         return dao.ralist(risk_key);
     }
-    public int delReturnRisk(int risk_approval_key){
-        return dao.delReturnRisk(risk_approval_key);
+    public String delReturnRisk(int risk_approval_key){
+        return dao.delReturnRisk(risk_approval_key)>0?"삭제성공":"삭제실패";
     }
 
 }

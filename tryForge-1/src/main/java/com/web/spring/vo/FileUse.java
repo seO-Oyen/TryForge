@@ -4,14 +4,24 @@ public class FileUse {
     private String file_key;
     private String use_type;
     private int use_key;
+    private int approval_key;
 
     public FileUse() {
     }
 
-    public FileUse(String file_key, String use_type, int use_key) {
+    public FileUse(String file_key, String use_type, int use_key, int approval_key) {
         this.file_key = file_key;
         this.use_type = use_type;
         this.use_key = use_key;
+        this.approval_key = approval_key;
+    }
+
+    public int getApproval_key() {
+        return approval_key;
+    }
+
+    public void setApproval_key(int approval_key) {
+        this.approval_key = approval_key;
     }
 
     public String getFile_key() {

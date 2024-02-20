@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.web.spring.file.service.UploadService;
 import com.web.spring.vo.FileStorage;
 
+import java.util.List;
+
 
 @Controller
 public class UploadController {
@@ -17,7 +19,13 @@ public class UploadController {
 	
 	@PostMapping("upload")
 	public String upload(FileStorage file, Model d) {
-		d.addAttribute("msg", service.uploadFile(file));
+		List<String> keys = service.uploadFile(file);
+		if(!keys.isEmpty()) {
+			int cnt = keys.size();
+			d.addAttribute("msg",  "파일 "+cnt+"건 등록 완료");
+		}else {
+			d.addAttribute("msg", "파일 등록 실패");
+		}
 		return "pageJsonReport";
 	}
 }

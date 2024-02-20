@@ -133,6 +133,8 @@
     }
 
     function download(file_key, fname) {
+    	console.log(file_key)
+    	console.log(fname)
         confirmMsg(
             fname,
             "다운로드 하시겠습니까?",

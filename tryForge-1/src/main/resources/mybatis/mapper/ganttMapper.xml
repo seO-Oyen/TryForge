@@ -48,10 +48,10 @@
 	<insert id="insertTask" parameterType="task">
 		INSERT INTO TASK (TASK_KEY, MEMBER_KEY, PROJECT_KEY, TEXT, START_DATE,
 						  END_DATE, DURATION, PROGRESS, PARENT, TASK_TYPE, STATUS,
-						  HIDE_BAR, TASK_OPEN, DETAIL, CONFIRM)
+						  HIDE_BAR, TASK_OPEN, DETAIL, CONFIRM, ASSIGNOR)
 		values( task_seq.nextval, #{member_key}, #{project_key}, #{text},
 				to_date(#{start_date},'YYYY-MM-DD'), to_date(#{end_date},'YYYY-MM-DD'),
-				#{duration}, #{progress}, #{parent}, 'task', '진행중', 0, 1, #{detail}, 0)
+				#{duration}, #{progress}, #{parent}, 'task', '진행중', 0, 1, #{detail}, 0, #{assignor})
 		<selectKey keyProperty="id" resultType="int" order="AFTER">
 			SELECT task_seq.currval FROM DUAL
 		</selectKey>

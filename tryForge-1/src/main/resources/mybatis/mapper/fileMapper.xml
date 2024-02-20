@@ -4,7 +4,10 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.web.spring.file.dao.FileDao">
 	<select id="getFileList" resultType="file" parameterType="file">
-		SELECT * FROM FILE_STORAGE WHERE PROJECT_KEY = #{project_key} ORDER BY UPLOAD_TIME DESC
+		SELECT * FROM FILE_STORAGE
+			WHERE PROJECT_KEY = #{project_key}
+				AND FILE_KEY NOT IN (SELECT FILE_KEY FROM FILE_USE)
+			ORDER BY UPLOAD_TIME DESC
 	</select>
 
 	<select id="getFilePath" resultType="String" parameterType="file">

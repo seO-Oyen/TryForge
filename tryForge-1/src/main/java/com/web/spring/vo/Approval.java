@@ -19,14 +19,14 @@ public class Approval {
 	private String assignor; // 업무할당자
 	private String reject_detail; // 재상신요청이유
 	private Task task;
-	private FileStorage fileStorage;
+	private FileStorage file;
 	private FileUse fileUse;
 
 	public Approval() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Approval(int approval_key, int task_key, String project_key, int member_key, Date request_date, Date completion_date, String status, String text, String detail, String task_detail, Date start_date, Date end_date, String member_name, String assignor, String reject_detail, Task task, FileStorage fileStorage, FileUse fileUse) {
+	public Approval(int approval_key, int task_key, String project_key, int member_key, Date request_date, Date completion_date, String status, String text, String detail, String task_detail, Date start_date, Date end_date, String member_name, String assignor, String reject_detail, Task task, FileStorage file, FileUse fileUse) {
 		this.approval_key = approval_key;
 		this.task_key = task_key;
 		this.project_key = project_key;
@@ -43,25 +43,25 @@ public class Approval {
 		this.assignor = assignor;
 		this.reject_detail = reject_detail;
 		this.task = task;
-		this.fileStorage = fileStorage;
+		this.file = file;
 		this.fileUse = fileUse;
+	}
+
+	public FileStorage getFile() {
+		return file;
+	}
+
+	public void setFile(FileStorage file) {
+		this.file = file;
 	}
 
 	public Task getTask() {
 		return task;
 	}
-
 	public void setTask(Task task) {
 		this.task = task;
 	}
 
-	public FileStorage getFileStorage() {
-		return fileStorage;
-	}
-
-	public void setFileStorage(FileStorage fileStorage) {
-		this.fileStorage = fileStorage;
-	}
 
 	public FileUse getFileUse() {
 		return fileUse;

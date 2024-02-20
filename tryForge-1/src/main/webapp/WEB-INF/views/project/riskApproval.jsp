@@ -17,9 +17,9 @@
 		var riskResponseKey = urlParams.get('risk_response_key');
 		var isResubmit = urlParams.get('isResubmit');
 		var RiskApprovalKey = urlParams.get('risk_approval_key');
-		console.log(riskKey)
-		console.log(riskResponseKey)
-		console.log(RiskApprovalKey)
+		console.log("리스크키"+riskKey)
+		console.log("리스크대응키"+riskResponseKey)
+		console.log("리스크결재키"+RiskApprovalKey)
 
 		$('input[name="risk_key"]').val(riskKey);
 		$('input[name="risk_response_key"]').val(riskResponseKey);
@@ -43,6 +43,7 @@
 			var titleValue = $("#form02 [name=title]").val()
 			if(isResubmit == "true"){
 				$("#form02 [name=title]").val("[재상신]"+titleValue);
+				
 			}else{
 				$("#form02 [name=title]").val(titleValue);
 			}
@@ -70,7 +71,6 @@
 					console.log(err)
 				}
 			})
-			delRiskApproval(RiskApprovalKey)
 		})
 
 	})
@@ -129,14 +129,13 @@
 		return true;
 	}
 
-	function delRiskApproval(riskApprovalKey){
+	function delRiskApproval(apKey){
 		$.ajax({
 			url:"${path}/delRiskApproval",
-			data:"risk_approval_key"+riskApprovalKey,
+			data:"risk_approval_key="+apKey,
 			dataType: "json",
 			success:function(data){
-				data.delRiskApproval;
-				console.log("Risk approval deleted successfully.");
+				console.log(data.delMsg)
 			},
 			error:function(err){
 				console.log(err)

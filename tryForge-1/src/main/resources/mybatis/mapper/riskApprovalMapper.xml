@@ -33,7 +33,7 @@
 		WHERE risk_key = #{risk_key}
 	</select>
 	<delete id="delReturnRisk" parameterType="int">
-		delete from RISK_APPROVAL where RISK_APPROVAL_KEY = #{risk_approval__key}
+		delete from RISK_APPROVAL where RISK_APPROVAL_KEY = #{risk_approval_key}
 	</delete>
 </mapper>
 
