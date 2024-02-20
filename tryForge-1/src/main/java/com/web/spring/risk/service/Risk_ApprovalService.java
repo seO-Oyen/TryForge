@@ -30,8 +30,11 @@ public class Risk_ApprovalService {
     public Risk_Approval ralist(int risk_key){
         return dao.ralist(risk_key);
     }
-    public int delReturnRisk(int risk_approval_key){
-        return dao.delReturnRisk(risk_approval_key);
+    // 재상신 2 getRiskApprovalByrakey reRiskApproval
+    public Risk_Approval getRiskApprovalByrakey(int risk_approval_key) {
+    	return dao.getRiskApprovalByrakey(risk_approval_key);
     }
-
+    public String reRiskApproval(Risk_Approval upt) {
+    	return dao.reRiskApproval(upt)>0?"재상신 완료" : "재상신 에러";
+    }
 }

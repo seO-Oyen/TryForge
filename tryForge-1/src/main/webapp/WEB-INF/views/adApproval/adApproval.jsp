@@ -76,7 +76,7 @@
                 var row03 = "";
                 $(data.apList).each(function (idx, task) {
                     if (task.status == '결재 대기') {
-                        row01 += "<tr ondblclick='openPage(\"" + task.approval_key + "\")'>"
+                        row01 += "<tr ondblclick='openPage(\"" + task.approval_key + "\",0)'>"
                         row01 += "<td>" + task.text + "</td>"
                         row01 += "<td>" + task.member_name + "</td>"
                         var formattedDate = new Date(task.request_date).toLocaleDateString();
@@ -84,11 +84,8 @@
                         row01 += "<td>" + task.status + "</td>"
                         row01 += "</tr>"
 
-                        $("#myModal #uptBtn").show()
-                        $("#myModal #detailBtn").hide()
-
                     } else if (task.status == '결재전') {
-                        row02 += "<tr ondblclick='openPage(\"" + task.approval_key + "\")'>"
+                        row02 += "<tr ondblclick='openPage(\"" + task.approval_key + "\",1)'>"
                         row02 += "<td>" + task.text + "</td>"
                         row02 += "<td>" + task.member_name + "</td>"
                         var formattedDate = new Date(task.request_date).toLocaleDateString();
@@ -96,10 +93,8 @@
                         row02 += "<td>" + task.status + "</td>"
                         row02 += "</tr>"
 
-                        $("#myModal #uptBtn").hide()
-                        $("#myModal #detailBtn").show()
                     } else {
-                        row03 += "<tr ondblclick='openPage(\"" + task.approval_key + "\")'>"
+                        row03 += "<tr ondblclick='openPage(\"" + task.approval_key + "\",2)'>"
                         row03 += "<td>" + task.text + "</td>"
                         row03 += "<td>" + task.member_name + "</td>"
                         var formattedDate = new Date(task.request_date).toLocaleDateString();
@@ -107,8 +102,6 @@
                         row03 += "<td>" + task.status + "</td>"
                         row03 += "</tr>"
 
-                        $("#myModal #uptBtn").hide()
-                        $("#myModal #detailBtn").hide()
                     }
                 })
                 $("#taskTable01").html(row01)
@@ -121,7 +114,18 @@
         })
     }
 
-    function openPage(key){
+    function openPage(key,status){
+        if(status===0) {
+            $("#myModal #uptBtn").show()
+            $("#myModal #detailBtn").hide()
+        }else if(status===1) {
+            $("#myModal #uptBtn").hide()
+            $("#myModal #detailBtn").show()
+        }else if(status===2){
+            $("#myModal #uptBtn").hide()
+            $("#myModal #detailBtn").hide()
+        }
+
         getApprovalInfo(key)
         $("#myModal").modal('show')
         $("#uptBtn").click(function (){
@@ -178,26 +182,21 @@
             }
         })
     }
-
+    
     function download(file_key, fname){
-        confirmMsg(
-            fname,
-            "다운로드 하시겠습니까?",
-            "question", // 아이콘
-            function() {
-                $.ajax({
-                    url: "${path}/download?file_key="+file_key+"&fname="+fname,
-                    type: "POST",
-                    success: function(response) {
-                        msg("success", "파일 다운로드 성공!")
-                    },
-                    error: function(error) {
-                        msg("error", "오류", error)
-                    }
-                })
-            }
-        );
+    	confirmMsg(
+    			fname,
+    			"다운로드 하시겠습니까?",
+    			"question", // 아이콘
+    			function() {
+    				location.href="${path}/download?file_key="+file_key+"&fname="+fname
+    				msg("success", "파일 다운로드 성공!")
+    			},
+    			function() {
+    			}
+    	);
     }
+   
     // 상태 수정(결재전)
     function approvalBefore(key){
         confirmMsg(

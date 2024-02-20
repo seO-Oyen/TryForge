@@ -32,8 +32,17 @@
 			left JOIN FILE_STORAGE fs ON fs.FILE_KEY = ra.FILE_KEY
 		WHERE risk_key = #{risk_key}
 	</select>
-	<delete id="delReturnRisk" parameterType="int">
-		delete from RISK_APPROVAL where RISK_APPROVAL_KEY = #{risk_approval__key}
-	</delete>
+	<select id="getRiskApprovalByrakey" resultType="risk_approval" parameterType="int">
+		select * from risk_approval where risk_approval_key = #{risk_approval_key}
+	</select>
+	<update id="reRiskApproval" parameterType="risk_approval">
+		UPDATE RISK_APPROVAL 
+			SET report_detail = #{report_detail},
+				report_date = sysdate,
+				title = #{title},
+				report_status = '결재요청',
+				FILE_KEY = 'FILE-'||FILE_STORAGE_SEQ.currval
+		WHERE risk_approval_key = #{risk_approval_key}
+	</update>
 </mapper>
 
