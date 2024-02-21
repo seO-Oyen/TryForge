@@ -35,6 +35,8 @@ public class Risk_ApprovalService {
     	return dao.getRiskApprovalByrakey(risk_approval_key);
     }
     public String reRiskApproval(Risk_Approval upt) {
-    	return dao.reRiskApproval(upt)>0?"재상신 완료" : "재상신 에러";
+    	int reRiskApproval = dao.reRiskApproval(upt);
+    	dao.insFileUse();
+    	return reRiskApproval>0?"재상신 완료" : "재상신 에러";
     }
 }
