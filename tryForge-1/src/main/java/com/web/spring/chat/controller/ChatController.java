@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.web.spring.chat.ChatHandler;
@@ -147,6 +148,19 @@ public class ChatController {
 		d.addAttribute("log", log);
 		
 		return "pageJsonReport";
+	}
+	
+	// 채팅방 인원 검색티비
+	@GetMapping("schMemChat")
+	public String schMem(@RequestParam(value="member_name", defaultValue = "")String member_name,
+			HttpSession session,
+			Model d) {
+		if (session.getAttribute("loginMem") != null ) {
+			Member loginMem = (Member)session.getAttribute("loginMem");
+			d.addAttribute("memList", chatService.schMem(member_name, loginMem.getMember_key()));
+		}
+	    
+	    return "pageJsonReport";
 	}
 	
 }

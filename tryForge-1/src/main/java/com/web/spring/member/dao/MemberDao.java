@@ -27,6 +27,12 @@ public interface MemberDao {
 	
 	Project getUserProject(int member_key);
 	
+	List<Project> getUserProjectList(int member_key);
+	
+	Project getProject(String project_key);
+	
+	List<Member> getProjectMember(String project_key);
+	
 	// 초대 내역 저장
 	int inviteMember(Member member);
 	
