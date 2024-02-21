@@ -67,6 +67,9 @@ $(document).ready(function() {
 		// 모달 열기
 		$("#myModal").modal('show');
 	})
+	$("#profile").on('click', function(){
+		$('#fileInput').click();
+	})
 	
 	$("#pwdChangeFrm [name=memberPwd]").keyup(function() {
 		if ($("#pwdChangeFrm [name=memberPwd]").val() == '') {
@@ -234,6 +237,7 @@ function updatePwd() {
 						<div class="col-md-6" style="flex: 0 0 100%; text-align: center; max-width: 100%;">
 							<div class="card-body">
 								<img src="${path}/template/images/faces/face5.jpg" alt="profile" id ="profile"/>
+								<input type="file" id="fileInput" name="files" multiple="multiple" style="display: none;" accept="image/*" />
 								<div style="color: #4CA5FF; margin-top: 10px; font-weight: bold;">이름</div>
 								<div id="userName">${loginMem.member_name}</div>
 								<div style="color: #4CA5FF; margin-top: 20px; font-weight: bold;">아이디</div>
