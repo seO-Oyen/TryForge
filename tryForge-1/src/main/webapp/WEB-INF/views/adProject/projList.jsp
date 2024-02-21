@@ -80,6 +80,9 @@
         $("#regBtn").click(function () {
             event.preventDefault();
             // 공백 유효성 체크
+           if(getAllMemberKeys() === ""){
+               return;
+           }
             getAllMemberKeys();
             if (!emptyCheck()) {
                 return;
@@ -93,8 +96,8 @@
                 success: function (data) {
                     var msg = data.insertAll;
                     Swal.fire({
-                        title: '등록 성공',
-                        text: ' ',
+                        title: '성공',
+                        text: '프로젝트 생성 성공',
                         icon: 'success',
                     }).then(function () {
                         $("#clsBtn").click();
@@ -120,46 +123,26 @@
                 $(memList).each(function (idx, member) {
                     if (member.status == '진행중' || member.title != null) {
                         html += "<tr> ";
-                        html += "<td>"
-                            + member.member_name
-                            + "</td>";
-                        html += "<td>"
-                            + member.member_email
-                            + "</td>";
-                        html += "<td>" + member.title
-                            + "</td>";
-                        html += "<td>"
-                            + member.start_date
-                            + "</td>";
-                        html += "<td>"
-                            + member.end_date
-                            + "</td>";
+                        html += "<td>" + member.member_name + "</td>";
+                        html += "<td>" + member.member_email + "</td>";
+                        html += "<td>" + member.title + "</td>";
+                        html += "<td>" + member.start_date + "</td>";
+                        html += "<td>" + member.end_date + "</td>";
                         html += "</tr>";
                     } else {
                         var member_key = member.member_key;
-                        html += "<tr ondblclick='selectMem(\""
-                            + member_key
-                            + "\", \""
-                            + member.member_name
-                            + "\", \""
-                            + member.member_email
-                            + "\")' > ";
-                        html += "<td>"
-                            + member.member_name
-                            + "</td>";
-                        html += "<td>"
-                            + member.member_email
-                            + "</td>";
+                        html += "<tr ondblclick='selectMem(\"" + member_key + "\", \"" + member.member_name + "\", \"" + member.member_email + "\")' > ";
+                        html += "<td>" + member.member_name + "</td>";
+                        html += "<td>" + member.member_email + "</td>";
                         html += "<td style='text-align: center;'>·</td>";
                         html += "<td style='text-align: center;'>·</td>";
                         html += "<td style='text-align: center;'>·</td>";
-
                         html += "</tr>";
                     }
                 });
 
                 $("#addMem").html(html);
-                selectedMemberKeys.push(member.member_key);
+                //selectedMemberKeys.push(member.member_key);
             },
             error: function (err) {
                 console.log(err);
@@ -199,30 +182,16 @@
             var memberKey = $(this).data("member-key");
             member_key.push(memberKey);
         });
-
-        let dupYn = false;
-
-        for (let i = 0; i < member_key.length; i++) {
-            const currElem = member_key[i];
-
-            for (let j = i + 1; j < member_key.length; j++) {
-                if (currElem === member_key[j]) {
-                    dupYn = true;
-                    break;
-                }
-            }
-            if (dupYn) {
-                Swal.fire({
-                    title: '중복발생',
-                    text: '구성원이 중복으로 추가되었습니다',
-                    icon: 'error',
-                }).then(function () {
-                    return;
-                });
-            }
-        }
-
-        if (!dupYn) {
+        const setCollection = new Set(member_key)
+        const isDuplicate = setCollection.size < member_key.length
+        if (isDuplicate) {
+            Swal.fire({
+                title: '중복발생',
+                text: '구성원이 중복으로 추가되었습니다',
+                icon: 'error',
+            });
+            return "";
+        } else {
             $("#hiddenMemberKey").val(member_key);
             return member_key;
         }
