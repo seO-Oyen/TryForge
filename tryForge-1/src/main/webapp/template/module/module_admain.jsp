@@ -3,6 +3,7 @@
 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="path" value="${pageContext.request.contextPath }"/>
 <fmt:requestEncoding value="utf-8"/>
 <!DOCTYPE html>
@@ -23,9 +24,8 @@
     <!-- End plugin css for this page -->
     <!-- inject:css -->
     <link rel="stylesheet" href="${path}/template/css/vertical-layout-light/style.css">
-    <link rel="shortcut icon" href="../../images/favicon.png"/>
-
     <link rel="stylesheet" href="${path}/template/vendors/mdi/css/materialdesignicons.min.css"/>
+    <link rel="stylesheet" href="${path}/template/gantt/codebase/skins/dhtmlxgantt_material.css"/>
     <link rel="stylesheet" href="${path}/template/alert/sweetalert2.min.css">
 
     <!-- base:js -->
@@ -40,12 +40,17 @@
     <script src="${path}/template/js/template.js"></script>
     <script src="${path}/template/js/settings.js"></script>
     <script src="${path}/template/js/todolist.js"></script>
-
+    <!--vue, axios-->
+    <script src="https://unpkg.com/vue" type="text/javascript"></script>
+    <script type="text/javascript" src="https://unpkg.com/axios"></script>
+    <script type="text/javascript" src="https://unpkg.com/moment@2.30.1/moment.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
     <!-- endinject -->
     <!-- Custom js for this page-->
     <script src="${path}/template/js/dashboard.js"></script>
+    <script src="${path}/template/calendar/index.global.js"></script>
+    <script src="${path}/template/gantt/codebase/dhtmlxgantt.js"></script>
     <script src="${path}/template/alert/sweetalert2.min.js"></script>
-
    <!--chart.js-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
     <!-- End custom js for this page-->
@@ -108,6 +113,14 @@
                         titleElement.text('UserManage')
                         detailElement.text('관리자페이지  >  사용자관리')
                         break;
+                    case '/adApprovalPlist':
+                        titleElement.text('Approval')
+                        detailElement.text('관리자페이지  >  결재관리')
+                        break;
+                    case '/adApproval':
+                        titleElement.text('Approval')
+                        detailElement.text('관리자페이지  >  결재관리')
+                        break;
                     case '/errorList':
                         titleElement.text('Error')
                         detailElement.text('시스템관리자  >  에러관리')
@@ -120,9 +133,9 @@
                         break;
                 }
             }
+
             updateNavigation();
         })
-
     </script>
 </head>
 <body>
@@ -151,7 +164,7 @@
             <ul class="navbar-nav mr-lg-2">
                 <li class="nav-item nav-profile dropdown">
                     <a class="nav-link" href="#" data-toggle="dropdown" id="profileDropdown">
-                        <img src="${path}/template/images/faces/face5.jpg" alt="profile"/>
+                        <img src="${path}/template/images/faces/face5.jpg" alt="profile" />
                         <span class="nav-profile-name">${loginMem.member_name} 님</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
@@ -530,7 +543,7 @@
 
 
                 <li class="nav-item">
-                    <a class="nav-link"  href="${path}/adUser">
+                    <a class="nav-link" href="${path}/adUser">
 
                         <i class="tpycn mdi mdi-account-check menu-icon"></i>
 
@@ -550,7 +563,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#tables">
+                    <a class="nav-link" href="${path}/adApprovalPlist">
                         <i class="tpycn mdi mdi-file-check menu-icon"></i>
                         <span class="menu-title">결재관리</span>
                     </a>
