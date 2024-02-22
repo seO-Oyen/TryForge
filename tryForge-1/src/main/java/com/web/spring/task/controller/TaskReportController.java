@@ -30,10 +30,8 @@ public class TaskReportController {
 
     @GetMapping("getMemberTaskList")
     public String getMemberTaskList(Model d, Task task , HttpSession session) {
-        Project project = sessionService.getProject(session);
         Member member = sessionService.getMember(session);
-        if(project != null && member != null) {
-            task.setProject_key(project.getProject_key());
+        if(member != null) {
             task.setMember_key(member.getMember_key());
             d.addAttribute("taskList", service.getMemberTaskList(task));
         }
@@ -60,4 +58,42 @@ public class TaskReportController {
         }
         return "pageJsonReport";
     }
+
+    @PostMapping("reportTaskAgain")
+    public String reportTaskAgain(Approval approval, FileStorage file, Model d) {
+        MultipartFile[] files = file.getFiles();
+        // 파일 있을 때
+        if(files != null && files.length > 0) {
+            List<String> fileKeys = uploadService.uploadFile(file);
+            if(service.reportTaskAgain(approval)>0) {
+                int cnt = service.reportTaskAgainFileUse(fileKeys, approval);
+                d.addAttribute("result", cnt>0?"재상신 성공(첨부파일 "+cnt+"개 포함)":"재상신 실패");
+            }
+        } else { // 파일 없을 때
+            d.addAttribute("result", service.reportTaskAgain(approval)>0?"재상신 성공(파일 추가첨부 없음)":"재상신 실패");
+        }
+
+        return "pageJsonReport";
+    }
+
+    @GetMapping("getRejectApprovalList")
+    public String getRejectApprovalList(Approval approval, Model d, HttpSession session) {
+        Member member = sessionService.getMember(session);
+        if(member != null) {
+            approval.setMember_key(member.getMember_key());
+            d.addAttribute("rejectList", service.getRejectApprovalList(approval));
+        }
+        return "pageJsonReport";
+    }
+
+    @GetMapping("getRejectApprovalFileList")
+    public String getRejectApprovalFileList(Approval approval, Model d, HttpSession session) {
+        Member member = sessionService.getMember(session);
+        if(member != null) {
+            approval.setMember_key(member.getMember_key());
+            d.addAttribute("rejectFileList", service.getRejectApprovalFileList(approval));
+        }
+        return "pageJsonReport";
+    }
+
 }

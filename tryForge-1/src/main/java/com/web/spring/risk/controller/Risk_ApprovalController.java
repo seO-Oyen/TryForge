@@ -68,4 +68,16 @@ public class Risk_ApprovalController {
         d.addAttribute("ralist",service.ralist(risk_key));
         return "pageJsonReport";
     }
+    // 재상신 
+    @GetMapping("getRiskApprovalByrakey")
+    public String getRiskApprovalByrakey(@RequestParam("risk_approval_key")int risk_approval_key, Model d) {
+    	d.addAttribute("getRiskApproval",service.getRiskApprovalByrakey(risk_approval_key));
+    	return "pageJsonReport";
+    }
+    @PostMapping("reRiskApproval")
+    public String reRiskApproval(Risk_Approval upt, Model d) {
+    	d.addAttribute("uptMsg",service.reRiskApproval(upt));
+    	return "pageJsonReport";
+    }
+    
 }

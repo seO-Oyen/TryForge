@@ -3,6 +3,7 @@ package com.web.spring.vo;
 import java.util.Date;
 
 public class Risk_Approval {
+	// ra.*, t.text, r.TYPE, rr.contact, rr.STRATEGY, rr.RESPONSE_METHOD
 	private int risk_approval_key; // primary key
 	private String reporter; // 결재보고자
 	private String report_detail; // 상세내용
@@ -23,6 +24,10 @@ public class Risk_Approval {
 	private String type; // 리스크 타입
 	private int r_risk_key; // 리스크테이블 리스크키
 	private int rr_risk_response_key; // 리스크대응 테이블 리스크 키
+	private String strategy; // 대응전략
+	private String response_method; // 대응 상세
+	private String reject_detail; // 반려상세
+	
 	public Risk_Approval() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -179,5 +184,25 @@ public class Risk_Approval {
 
 	public void setFname(String fname) {
 		this.fname = fname;
+	}
+	public String getStrategy() {
+		return strategy;
+	}
+	public void setStrategy(String strategy) {
+		this.strategy = strategy;
+	}
+	public String getResponse_method() {
+		return response_method;
+	}
+	public void setResponse_method(String response_method) {
+		this.response_method = response_method;
+	}
+
+	public String getReject_detail() {
+		return reject_detail;
+	}
+
+	public void setReject_detail(String reject_detail) {
+		this.reject_detail = reject_detail;
 	}
 }

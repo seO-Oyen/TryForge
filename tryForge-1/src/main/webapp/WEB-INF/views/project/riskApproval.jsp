@@ -10,14 +10,19 @@
 </style>
 <script>
 	$(document).ready(function() {
-		// 현재 URL 가져오기
 		var currentUrl = window.location.href;
 		var urlParams = new URL(currentUrl).searchParams;
 		var riskKey = urlParams.get('risk_key');
 		var riskResponseKey = urlParams.get('risk_response_key');
-
+		var isResubmit = urlParams.get('isResubmit');
+		var RiskApprovalKey = urlParams.get('risk_approval_key');
+		console.log("리스크키"+riskKey)
+		console.log("리스크대응키"+riskResponseKey)
+		console.log("리스크결재키"+RiskApprovalKey)
+		
 		$('input[name="risk_key"]').val(riskKey);
 		$('input[name="risk_response_key"]').val(riskResponseKey);
+		$('input[name="risk_approval_key"]').val(RiskApprovalKey);
 
 		$("#uploadFile").hide()
 
@@ -34,34 +39,58 @@
 				$("#fileText").val(fileList[i].name);
 			}
 		});
-		$("#regBtn").click(function(){
-			if (!emptyCheck()) {
-				return;
-			}
-			$.ajax({
-				url:"${path}/insRiskApproval",
-				type:"post",
-				data:$("#form02").serialize(),
-				dataType:"json",
-				success:function (data){
-					if(data.insMsg!=null) {
-						Swal.fire({
-							title: '결재 성공',
-							text: data.insMsg,
-							icon: 'success',
-						}).then(function () {
-							location.href = "${path}/riskApprovalList"
-						});
-					}
-				},
-				error:function (err){
-					console.log(err)
+		
+		if(isResubmit == "true"){
+			getApproval(RiskApprovalKey);
+			$("#regBtn").click(function(){
+				if (!emptyCheck()) {
+					return;
+				}else{
+					reRiskApproval();
 				}
 			})
-		})
-
+		}else{
+			$("#regBtn").click(function(){
+				if (!emptyCheck()) {
+					return;
+				}else{
+					insRiskApproval();
+				}
+			})
+		}
 	})
-
+	
+	function msg(icon, title, text) {
+		Swal.fire({
+			icon: icon,
+			title: title,
+			text: text,
+		});
+	}
+	
+	function insRiskApproval(){
+		$.ajax({
+			url:"${path}/insRiskApproval",
+			type:"post",
+			data:$("#form02").serialize(),
+			dataType:"json",
+			success:function (data){
+				if(data.insMsg!=null) {
+					Swal.fire({
+						title: '결재 성공',
+						text: data.insMsg,
+						icon: 'success',
+					}).then(function () {
+						location.href = "${path}/riskApprovalList"
+					});
+				}
+			},
+			error:function (err){
+				console.log(err)
+			}
+		})
+	}
+	
 	function fileUpload(){
 		var formData = new FormData();
 		var files = $("#uploadFile")[0].files;
@@ -72,7 +101,8 @@
 		formData.append('description', $("input[name='description']").val());
 		formData.append('member_key', $("input[name='member_key']").val());
 		formData.append('project_key', $("input[name='project_key']").val());
-		console.log(formData.description)
+		console.log($("[name=description]").val())
+		console.log(formData.get('description'));
 
 		$.ajax({
 			url: "${path}/upload",
@@ -91,14 +121,7 @@
 		})
 	}
 
-	function msg(icon, title, text) {
-		Swal.fire({
-			icon: icon,
-			title: title,
-			text: text,
-		});
-	}
-
+	
 	function emptyCheck() {
 		var title = $("#form02 [name='title']").val();
 		var detail = $("#form02 [name='report_detail']").val();
@@ -115,6 +138,46 @@
 		}
 		return true;
 	}
+	
+	function getApproval(key){
+		$.ajax({
+			url:"${path}/getRiskApprovalByrakey",
+			data:"risk_approval_key="+key,
+			dataType:"json",
+			success:function(data){
+				var approvalData = data.getRiskApproval
+				console.log(approvalData.title)
+				$("#form02 [name=title]").val("[재상신]"+approvalData.title)
+				$("#form02 [name=report_detail]").val(approvalData.report_detail)
+			},
+			error:function(err){
+				console.log(err)
+			}
+		})
+	}
+	
+	function reRiskApproval(){
+		$.ajax({
+			url:"${path}/reRiskApproval",
+			data:$("#form02").serialize(),
+			dataType:"json",
+			type:"post",
+			success:function(data){
+				if(data.uptMsg!=null) {
+					Swal.fire({
+						title: '결재 성공',
+						text: data.uptMsg,
+						icon: 'success',
+					}).then(function () {
+						location.href = "${path}/riskApprovalList"
+					});
+				}
+			},
+			error:function(err){
+				console.log(err)
+			}
+		})
+	}
 </script>
 <div class="col-12 grid-margin stretch-card"
 	 style="max-width: 85%; flex: 0 0 95%;">
@@ -127,6 +190,7 @@
 				<input type="hidden" name="description" value="리스크 결재 보고 파일"/>
 				<input type="hidden" name="risk_key" >
 				<input type="hidden" name="risk_response_key">
+				<input type="hidden" name="risk_approval_key">
 
 				<div class="form-group">
 					<label for="exampleInputName1">결재보고명</label>
@@ -162,7 +226,7 @@
 					<textarea class="form-control" id="noticeDetail" name="report_detail" rows="10"></textarea>
 				</div>
 				<button id="regBtn" type="button" class="btn btn-info mr-2" style="background:#007FFF;">등록</button>
-				<button class="btn btn-light" id="mainBtn">조회페이지</button>
+				<button class="btn btn-light" id="mainBtn" onclick="location.href='${path}/riskApprovalList'">조회페이지</button>
 			</form>
 		</div>
 	</div>

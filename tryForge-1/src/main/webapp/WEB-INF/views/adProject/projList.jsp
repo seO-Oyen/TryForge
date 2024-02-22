@@ -10,6 +10,11 @@
         max-width: 50%;
     }
 
+    .card-title {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
     /* 입력 요소 여백 조절 */
     #myModal .form-group {
         margin-bottom: 15px; /* 각 입력 요소 아래 여백 조절 */
@@ -21,10 +26,17 @@
         margin-right: 3%; /* 입력 요소 오른쪽 여백 조절 */
         margin-left: 3%; /* 입력 요소 왼쪽 여백 조절 */
     }
+
+    #searchResults {
+        overflow-y: auto;
+        margin-left: 3%;
+        width: 100%;
+        max-height: 500px;
+    !important;
+    }
 </style>
 <script>
     $(document).ready(function () {
-        var selectedMemberKeys = [];
 
         $("#clsBtn").click(function () {
             $("#myModal form")[0].reset()
@@ -68,10 +80,10 @@
         $("#regBtn").click(function () {
             event.preventDefault();
             // 공백 유효성 체크
+            getAllMemberKeys();
             if (!emptyCheck()) {
                 return;
             }
-            getAllMemberKeys();
             $.ajax({
                 // 등록 controller 호출
                 url: "${path}/insertAll",
@@ -106,9 +118,7 @@
                 var memList = data.memList;
                 var html = "";
                 $(memList).each(function (idx, member) {
-                    const today = new Date();
-                    const endDate = new Date(member.end_date);
-                    if (member.status == '진행중' || endDate>today) {
+                    if (member.status == '진행중' || member.title != null) {
                         html += "<tr> ";
                         html += "<td>"
                             + member.member_name
@@ -180,21 +190,42 @@
     }
 
     // 폼 안에 hidden 필드 추가
-    $("#modalFrm")
-        .append(
-            "<input type='hidden' name='member_key' value='' id='hiddenMemberKey'>");
+    $("#modalFrm").append("<input type='hidden' name='member_key' value='' id='hiddenMemberKey'>");
 
+    var member_key = [];
     function getAllMemberKeys() {
-        var member_key = [];
-
+        member_key = [];
         $("#selectMem tr").each(function () {
             var memberKey = $(this).data("member-key");
             member_key.push(memberKey);
         });
 
-        // hidden 필드의 값을 업데이트
-        $("#hiddenMemberKey").val(member_key);
-        return member_key;
+        let dupYn = false;
+
+        for (let i = 0; i < member_key.length; i++) {
+            const currElem = member_key[i];
+
+            for (let j = i + 1; j < member_key.length; j++) {
+                if (currElem === member_key[j]) {
+                    dupYn = true;
+                    break;
+                }
+            }
+            if (dupYn) {
+                Swal.fire({
+                    title: '중복발생',
+                    text: '구성원이 중복으로 추가되었습니다',
+                    icon: 'error',
+                }).then(function () {
+                    return;
+                });
+            }
+        }
+
+        if (!dupYn) {
+            $("#hiddenMemberKey").val(member_key);
+            return member_key;
+        }
     }
 
     function openpage(key) {
@@ -383,8 +414,7 @@
         var detail = $("#modalFrm [name='detail']").val();
 
         if (title.trim() === "" || teamName.trim() === "" || startDate === ""
-            || endDate === "" || detail.trim() === "") {
-            // Use SweetAlert2 for a more visually appealing alert
+            || endDate === "" || detail.trim() === "" || member_key.length === 0) {
             Swal.fire({
                 icon: 'warning',
                 title: '입력 오류',
@@ -404,15 +434,17 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Ongoing Development Project</h4>
+                        <h4 class="card-title">진행중인 프로젝트</h4>
                         <!-- 진행중인 프로젝트 테이블 -->
                         <div class="table-responsive"
                              style="width: 95%; margin-left: 4%; max-height: 500px; overflow-x: auto;">
                             <table class="table table-hover" style="width: 100%;">
                                 <thead>
                                 <tr>
-                                    <th>진행중인 프로젝트</th>
-                                    <th></th>
+                                    <th>프로젝트명</th>
+                                    <th>시작일</th>
+                                    <th>종료일</th>
+                                    <th>대시보드 이동</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -429,8 +461,7 @@
                                             <td>
                                                 <button type="button"
                                                         onclick="location.href='${path}/dashboard'"
-                                                        class="btn btn-link btn-rounded btn-fw"
-                                                        style="margin-left: 60%;">대시보드
+                                                        class="btn btn-link btn-rounded btn-fw">대시보드
                                                 </button>
                                             </td>
                                         </tr>
@@ -449,14 +480,16 @@
             <div class="col-md-12" style="margin-top: 3%;">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Completed Projects</h4>
+                        <h4 class="card-title">완료된 프로젝트</h4>
                         <!-- 완료된 프로젝트 테이블 -->
                         <div class="table-responsive" style="width: 95%; margin-left: 4%;">
                             <table class="table table-hover" style="width: 100%;">
                                 <thead>
                                 <tr>
-                                    <th>완료된 프로젝트</th>
-                                    <th></th>
+                                    <th>프로젝트명</th>
+                                    <th>시작일</th>
+                                    <th>종료일</th>
+                                    <th>대시보드 이동</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -464,11 +497,16 @@
                                     <c:if test="${plist.status == '완료'}">
                                         <tr ondblclick="openpage('${plist.project_key}')">
                                             <td>${plist.title}</td>
+                                            <c:set var="formattedStartDate"
+                                                   value="${fn:substring(plist.start_date, 0, 10)}"/>
+                                            <td><c:out value="${formattedStartDate}"/></td>
+                                            <c:set var="formattedEndDate"
+                                                   value="${fn:substring(plist.end_date, 0, 10)}"/>
+                                            <td><c:out value="${formattedEndDate}"/></td>
                                             <td>
                                                 <button type="button"
                                                         onclick="location.href='${path}/dashboard'"
-                                                        class="btn btn-link btn-rounded btn-fw"
-                                                        style="margin-left: 60%;">대시보드
+                                                        class="btn btn-link btn-rounded btn-fw">대시보드
                                                 </button>
                                             </td>
                                         </tr>
@@ -561,8 +599,7 @@
                         <div class="col-12" id="bottom">
                             <input type="text" class="form-control mb-2" name="member_name"
                                    placeholder="검색">
-                            <div id="searchResults"
-                                 style=" overflow-y: auto; margin-left: 3%; width: 100%; max-height: 500px;">
+                            <div id="searchResults">
                                 <table class="table table-hover">
                                     <tbody id="addMem">
                                     </tbody>

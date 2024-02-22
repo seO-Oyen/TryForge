@@ -7,11 +7,66 @@
 		<result column = "task_key" property = "id"/>
 	</resultMap>
 
+	<resultMap id="task" type="task">
+		<result column="task_key" property="id"/>
+		<result column="member_key" property="member_key"/>
+		<result column="project_key" property="project_key"/>
+		<result column="text" property="text"/>
+		<result column="start_date" property="start_date"/>
+		<result column="end_date" property="end_date"/>
+		<result column="detail" property="detail"/>
+		<result column="assignor" property="assignor"/>
+	</resultMap>
+	<resultMap id="file" type="file">
+		<result column="file_key" property="file_key"/>
+		<result column="fname" property="fname"/>
+		<result column="path" property="path"/>
+		<result column="fsize" property="fsize"/>
+		<result column="member_key" property="member_key"/>
+		<collection property="fileUse" resultMap="fileUse"/>
+	</resultMap>
+	<resultMap id="fileUse" type="fileUse">
+		<result column="file_key" property="file_key"/>
+		<result column="use_type" property="use_type"/>
+		<result column="use_key" property="use_key"/>
+	</resultMap>
+	<resultMap id="approve" type="approve">
+		<result column="approval_key" property="approval_key"/>
+		<result column="task_key" property="task_key"/>
+		<result column="project_key" property="project_key"/>
+		<result column="member_key" property="member_key"/>
+		<result column="request_date" property="request_date"/>
+		<result column="completion_date" property="completion_date"/>
+		<result column="status" property="status"/>
+		<result column="detail" property="detail"/>
+		<result column="reject_detail" property="reject_detail"/>
+		<collection property="task" resultMap="task"/>
+	</resultMap>
+
 	<select id="getMemberTaskList" resultMap="taskRst">
 		SELECT * FROM TASK
-		WHERE PROJECT_KEY = #{project_key}
-		  AND MEMBER_KEY = #{member_key}
+		WHERE MEMBER_KEY = #{member_key}
+		  AND TASK_KEY NOT IN (SELECT TASK_KEY FROM APPROVAL)
 		ORDER BY START_DATE
+	</select>
+	<select id="getRejectApprovalList" parameterType="approve" resultMap="approve">
+		SELECT ap.*, t.TASK_KEY, t.PROJECT_KEY,
+		       t.MEMBER_KEY, t.TEXT, t.START_DATE,
+		       t.END_DATE, t.DETAIL, t.ASSIGNOR
+		FROM APPROVAL ap
+				 INNER JOIN TASK t ON t.TASK_KEY = ap.TASK_KEY
+		WHERE ap.MEMBER_KEY = #{member_key}
+		  AND ap.STATUS = '재상신요청'
+	</select>
+	<select id="getRejectApprovalFileList" parameterType="approve" resultMap="file">
+		SELECT fu.*, f.FILE_KEY, f.FNAME, f.PATH, f.FSIZE, f.MEMBER_KEY
+		FROM APPROVAL ap
+				INNER JOIN FILE_USE fu ON fu.USE_KEY = ap.APPROVAL_KEY
+				INNER JOIN FILE_STORAGE f ON f.FILE_KEY = fu.FILE_KEY
+		WHERE ap.MEMBER_KEY = #{member_key}
+		  	AND ap.APPROVAL_KEY = #{approval_key}
+			AND ap.STATUS = '재상신요청'
+			AND fu.USE_TYPE = '업무 보고'
 	</select>
 
 	<select id="getMemberTask" resultMap="taskRst">
@@ -21,10 +76,23 @@
 
 	<insert id="reportTask" parameterType="approve">
 		INSERT INTO APPROVAL VALUES
-		(TASK_APPROVAL_SEQ.nextval, #{task_key}, #{project_key}, #{member_key}, sysdate, null, '결재 대기', #{detail})
+		(TASK_APPROVAL_SEQ.nextval, #{task_key}, #{project_key}, #{member_key}, sysdate, null, '결재 대기', #{detail}, null)
 	</insert>
+	<update id="reportTaskAgain" parameterType="approve">
+		UPDATE APPROVAL
+			SET REQUEST_DATE = sysdate,
+			    COMPLETION_DATE = null,
+			    STATUS = '결재 대기',
+			    DETAIL = #{detail}
+			WHERE APPROVAL_KEY = #{approval_key}
+	</update>
+
 	<insert id="reportTaskFileUse" parameterType="file">
 		INSERT INTO FILE_USE VALUES
 		(#{file_key}, '업무 보고', TASK_APPROVAL_SEQ.currval)
+	</insert>
+	<insert id="reportTaskAgainFileUse" parameterType="fileUse">
+		INSERT INTO FILE_USE VALUES
+			(#{file_key}, '업무 보고', #{approval_key})
 	</insert>
 </mapper>
