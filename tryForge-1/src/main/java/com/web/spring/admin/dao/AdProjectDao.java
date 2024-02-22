@@ -31,4 +31,8 @@ public interface AdProjectDao {
 	int uptProject(Project uptPro);
 	int uptTeam(Team uptTeam);
 	int insBookProject(Project ins);
+	int convertTeam(Team ins);
+	int convertTm(int member_key);
+	int insPJtoTask02(Project insProject);
+	int convertProject(Project upt);
 }

@@ -87,10 +87,9 @@ public class AdProjectController {
 		d.addAttribute("pjDetail",service.projectInfo(project_key));
 		return "pageJsonReport";
 	}
-	@GetMapping("delBookProject")
-	public String delBookProject(@RequestParam("project_key")String project_key, Model d){
-		d.addAttribute("bookDelMsg",service.delBookProject(project_key));
+	@PostMapping("convertProject")
+	public String convertProject(Project uptProject, Team insTeam, @RequestParam("member_key") List<String> member_key, Model d){
+		d.addAttribute("convertMsg",service.convertProject(uptProject,insTeam,member_key));
 		return "pageJsonReport";
 	}
-
 }

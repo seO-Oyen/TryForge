@@ -44,16 +44,31 @@
 
         })
         $("#regProj").click(function () {
+            $("#regBtn").show()
+            $("#convertRegBtn").hide()
             regNewProject()
         })
         $("[name=member_name]").keyup(function () {
             schMem();
         });
+
         insertProject();
 
         $("#returnBtn").click(function () {
+            $("#regBtn").hide()
+            $("#convertRegBtn").show()
             regNewProject()
         })
+        $("#convertRegBtn").click(function (){
+            if (getAllMemberKeys() === "") {
+                return;
+            }
+            if (!emptyCheck()) {
+                return;
+            }
+            convertProject()
+        })
+
     });
 
     function regNewProject() {
@@ -72,7 +87,7 @@
         $("#right").addClass("col-6");
         $("#tm").text("프로젝트 구성원 추가");
         $("[name=member_name]").show();
-        $("#regBtn").show()
+        //$("#regBtn").show()
         $("#uptBtn").hide()
         $("#memberDiv").show()
         $("#teamNameDiv").show()
@@ -82,7 +97,9 @@
     }
 
     function insertProject() {
+
         $("#regBtn").click(function () {
+
             event.preventDefault();
             // 공백 유효성 체크
             if (getAllMemberKeys() === "") {
@@ -243,6 +260,7 @@
                 $("#regBtn").hide()
                 $("#uptBtn").show()
                 $("#detailBtn").show()
+                $("#convertRegBtn").hide()
                 $("#delBtn").click(function () {
                     Swal.fire({
                         title: '삭제',
@@ -395,6 +413,7 @@
         $("#uptBtn").hide()
         $("#detailBtn").hide()
         $("#reservation").show()
+        $("#convertRegBtn").hide()
         $("#reservation").click(function () {
             $.ajax({
                 url: "${path}/insBookProject",
@@ -420,7 +439,7 @@
         })
     }
     function bookPage(key) {
-        $("[name=reservedProjectKey]").val(key)
+        $("[name=project_key]").val(key)
         $.ajax({
             url: "${path}/projectDetail",
             data: "project_key=" + key,
@@ -442,30 +461,57 @@
                 $("[name=end_date]").val(formateedendtDate)
                 $("#memberDiv").hide()
                 $("#teamNameDiv").hide()
-                $("#detailBtn").hide()
+                $("#detailBtn").show()
+                $("#endBtn").hide()
+                $("#delBtn").show()
+
                 $("#regBtn").hide()
                 $("[name=detail]").val(projectInfo.detail)
                 $("#returnBtn").show()
                 $("#uptBtn").hide()
                 $("#reservation").hide()
+                $("#convertRegBtn").hide()
             },
             error: function (err) {
                 console.log(err)
             }
         });
-    }
-    function delBookProject(){
-        var bookProjectKey = $("[name=reservedProjectKey]").val()
-        $.ajax({
-            url:"${path}/delBookProject",
-            data:"project_key="+bookProjectKey,
-            dataType:"json",
-            success:function(data){
-                if(data.bookDelMsg!=null){
-                    console.log(data.bookDelMsg)
+
+        $("#delBtn").click(function () {
+            Swal.fire({
+                title: '삭제',
+                text: '해당 프로젝트를 삭제하시겠습니까?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: '확인',
+                cancelButtonText: '취소',
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    delAll(key);
                 }
+            });
+        });
+    }
+   function convertProject(){
+       getAllMemberKeys();
+        $.ajax({
+            url:"${path}/convertProject",
+            type: "POST",
+            data: $("#modalFrm").serialize(),
+            dataType: "json",
+            success:function (data){
+               if(data.convertMsg!=null){
+                   Swal.fire({
+                       title: '성공',
+                       text: data.convertMsg,
+                       icon: 'success',
+                   }).then(function () {
+                       $("#clsBtn").click();
+                       window.location.reload();
+                   });
+               }
             },
-            error:function(err){
+            error:function (err){
                 console.log(err)
             }
         })
@@ -655,7 +701,7 @@
             </div>
             <form class="forms-sample" id="modalFrm">
                 <input type="hidden" name="creater" value="${loginMem.member_key}"/>
-                <input type="hidden" name="reservedProjectKey"/>
+                <input type="hidden" name="project_key"/>
                 <div class="form-group">
                     <label for="exampleInputUsername1">프로젝트 타이틀</label> <input
                         name="title" type="text" class="form-control" id=""
@@ -726,6 +772,9 @@
                     </button>
                     <button type="button" class="btn btn-" id="uptBtn"
                             style="background-color: #007FFF; color: white;">수정
+                    </button>
+                    <button type="button" class="btn btn-" id="convertRegBtn"
+                            style="background-color: #007FFF; color: white;">변경등록
                     </button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"
                             id="clsBtn">닫기
