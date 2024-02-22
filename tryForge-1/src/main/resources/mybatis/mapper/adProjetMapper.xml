@@ -110,6 +110,29 @@
 		set team_name = #{team_name}
 		where project_key = #{project_key}
 	</update>
-	
-	<!-- 맴버키  -->
+	<!-- 예약 프로젝트 -->
+	<insert id="insBookProject" parameterType="project">
+		INSERT INTO PROJECT (project_key, title, detail, status, start_date, end_date, creater)
+		VALUES ('PJ-' || project_seq.nextval, #{title}, #{detail}, '대기중', TO_DATE(#{start_date}, 'YYYY-MM-DD'), TO_DATE(#{end_date}, 'YYYY-MM-DD'), #{creater})
+	</insert>
+	<update id="convertProject" parameterType="project">
+		UPDATE project
+		SET start_date = TO_DATE(#{start_date}, 'YYYY-MM-DD'),
+			end_date = TO_DATE(#{end_date}, 'YYYY-MM-DD'),
+			detail = #{detail},
+			title = #{title},
+			status = '진행중'
+		WHERE project_key = #{project_key}
+	</update>
+	<insert id="convertTeam" parameterType="team">
+		INSERT INTO TEAM (team_key, team_name, project_key, project_cnt)
+		VALUES (team_seq.nextval, #{team_name}, #{project_key},0)
+	</insert>
+	<insert id="convertTm" parameterType="int">
+		INSERT INTO TEAM_MEMBER VALUES (teamMem_seq.nextval, #{member_key}, 'TM', team_seq.CURRVAL)
+	</insert>
+	<insert id="insPJtoTask02" parameterType="project">
+		INSERT INTO TASK (task_key, project_key, text, start_date, end_date, progress, task_type, status, hide_bar, task_open, detail,member_key)
+		VALUES (task_seq.nextval, #{project_key}, #{title}, TO_DATE(#{start_date}, 'YYYY-MM-DD'), TO_DATE(#{end_date}, 'YYYY-MM-DD'), 0, 'project', '진행중', 0, 1, #{detail},#{creater})
+	</insert>
 </mapper>

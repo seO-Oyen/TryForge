@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -74,5 +76,20 @@ public class AdProjectController {
 		uptTeam.setProject_key(project_key);
 		d.addAttribute("uptAllmsg",service.uptAll(uptPro, uptTeam));
 		return "pageJsonReport"; 
+	}
+	@PostMapping("insBookProject")
+	public String insBookProject(Project ins, Model d){
+		d.addAttribute("bookInsMsg",service.insBookProject(ins));
+		return "pageJsonReport";
+	}
+	@GetMapping("projectDetail")
+	public String projectDetail(@RequestParam("project_key")String project_key,Model d){
+		d.addAttribute("pjDetail",service.projectInfo(project_key));
+		return "pageJsonReport";
+	}
+	@PostMapping("convertProject")
+	public String convertProject(Project uptProject, Team insTeam, @RequestParam("member_key") List<String> member_key, Model d){
+		d.addAttribute("convertMsg",service.convertProject(uptProject,insTeam,member_key));
+		return "pageJsonReport";
 	}
 }
