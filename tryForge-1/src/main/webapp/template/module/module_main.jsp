@@ -553,8 +553,7 @@ $(document).ready(function(){
 						</div> -->
 					</li>
 					<li class="nav-item">
-					<a class="nav-link" data-toggle="collapse" href="#tables" aria-expanded="false"
-						aria-controls="tables">
+					<a class="nav-link" href="${path}/getTask" >
 						<i class="typcn mdi mdi-clipboard-outline menu-icon"></i>
 						<span class="menu-title">업무 관리</span>
 						<!-- <i class="menu-arrow"></i> -->
@@ -582,8 +581,7 @@ $(document).ready(function(){
 						</div> -->
 					</li>
 					<li class="nav-item">
-					<a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false"
-						aria-controls="auth">
+					<a class="nav-link" href="${path}/risk" >
 						<i class="typcn mdi mdi-comment-alert-outline menu-icon"></i>
 						<span class="menu-title">리스크 관리</span>
 						<!-- <i class="menu-arrow"></i> -->
