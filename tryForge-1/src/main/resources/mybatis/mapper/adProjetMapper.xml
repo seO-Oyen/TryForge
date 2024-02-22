@@ -110,6 +110,9 @@
 		set team_name = #{team_name}
 		where project_key = #{project_key}
 	</update>
-	
-	<!-- 맴버키  -->
+	<!-- 예약 프로젝트 -->
+	<insert id="insBookProject" parameterType="project">
+		INSERT INTO PROJECT (project_key, title, detail, status, start_date, end_date, creater)
+		VALUES ('PJ-' || project_seq.nextval, #{title}, #{detail}, '대기중', TO_DATE(#{start_date}, 'YYYY-MM-DD'), TO_DATE(#{end_date}, 'YYYY-MM-DD'), #{creater})
+	</insert>
 </mapper>

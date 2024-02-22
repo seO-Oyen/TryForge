@@ -158,4 +158,12 @@ public class AdProjectService {
 		}
 		return uptmsg;
 	}
+	// 예약 프로젝트 생성
+	public String insBookProject(Project ins){
+		return dao.insBookProject(ins)>0?"프로젝트 예약 완료" : "프로젝트 예약 에러";
+	}
+	// 예약 프로젝트 삭제
+	public String delBookProject(String project_key){
+		return dao.delProject(project_key)>0?"예약프로젝트 삭제성공":"예약프로젝트 삭제에러";
+	}
 }

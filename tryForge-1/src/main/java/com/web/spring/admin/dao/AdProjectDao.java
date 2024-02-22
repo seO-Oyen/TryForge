@@ -30,4 +30,5 @@ public interface AdProjectDao {
 	int uptFin(String project_key);
 	int uptProject(Project uptPro);
 	int uptTeam(Team uptTeam);
+	int insBookProject(Project ins);
 }

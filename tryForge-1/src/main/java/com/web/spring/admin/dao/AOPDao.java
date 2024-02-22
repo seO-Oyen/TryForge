@@ -20,6 +20,6 @@ public interface AOPDao {
     @Update("update AOP_error set error_confirm = 1 where error_key = #{error_key}")
     int ConfirmError(@Param("error_key")int error_key);
     // 에러 출력
-    @Select("select * from AOP_Error")
+    @Select("select * from AOP_Error ORDER BY INCIDENT_DATE desc")
     List<AOP_Error> errorList();
 }
