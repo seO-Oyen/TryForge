@@ -368,7 +368,7 @@ $(document).ready(function(){
 			<!-- 사이드바 -->
 			<!-- partial -->
 			<!-- partial:partials/_sidebar.html -->
-			<nav class="sidebar" id="sidebar" style="height: 175px; min-height: auto;">
+			<nav class="sidebar" id="sidebar" style="height: 130px; min-height: auto;">
 				<ul class="nav">
 					<li class="nav-item">
 						<a class="nav-link" href="${path}/userIndex">
@@ -376,15 +376,6 @@ $(document).ready(function(){
 							class="menu-title">메인화면</span>
 							<!-- <div class="badge badge-danger">new</div> -->
 					</a></li>
-					
-					<li class="nav-item">
-						<a class="nav-link" data-toggle="collapse" 
-							href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-							<i class="typcn typcn-document-text menu-icon"></i>
-							<span class="menu-title">업무현황</span>
-							
-						</a>
-					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="${path}/requestRole">
 							<i class="typcn mdi mdi-account-star menu-icon"></i>

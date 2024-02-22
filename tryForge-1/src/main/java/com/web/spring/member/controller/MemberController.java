@@ -213,14 +213,6 @@ public class MemberController {
 		
 		return "pageJsonReport";
 	}
-	
-	@GetMapping("memo")
-	public String memo(
-		
-		) {
-		
-		return "user/memo";
-	}
 
 
 }

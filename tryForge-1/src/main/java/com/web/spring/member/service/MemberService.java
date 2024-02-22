@@ -67,6 +67,12 @@ public class MemberService {
 		return memberDao.getUserProject(member.getMember_key());
 	}
 	
+	// 본인이 소속되어있는 프로젝트 출력
+	public List<Project> getUserProjectList(Member member) {
+		
+		return memberDao.getUserProjectList(member.getMember_key());
+	}
+	
 	// 초대 목록 
 	public List<InviteMember> inviteMemberList() {
 		

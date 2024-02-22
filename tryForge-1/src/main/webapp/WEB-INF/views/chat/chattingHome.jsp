@@ -59,6 +59,11 @@ table {
 <script>
 var selectedMemberKeys = [];
 $(document).ready(function(){
+	document.addEventListener('keydown', function(event) {
+		if(event.keyCode === 13) {
+			event.preventDefault()
+		}
+	}, true)
 	
 	wsocket = new WebSocket(
 		"ws:localhost:1111/tryForge/chat"
@@ -153,7 +158,8 @@ function clickList(listKey) {
 
 function schMem() {
     $.ajax({
-        url: "${path}/schMem",
+        url: "${path}/schMemChat",
+        type: "GET",
         data: $("#modalFrm").serialize(),
         dataType: "json",
         success: function (data) {
@@ -231,8 +237,7 @@ function selectMem(member_key, member_name, member_email) {
 					</thead>
 					<tbody>
 						<c:forEach var="chat" items="${chatMap}" varStatus="status">
-							<tr
-								ondblclick="clickList(${chatList[status.index].chatlist_key})">
+							<tr ondblclick="clickList(${chatList[status.index].chatlist_key})">
 								<td>${chat.key}</td>
 								<c:choose>
 									<c:when test="${lastChat.containsKey(chatList[status.index].chatlist_key)}">
@@ -282,7 +287,7 @@ function selectMem(member_key, member_name, member_email) {
                         <!-- 아래: 검색 결과 -->
                         <div class="col-12" id="bottom">
                             <input type="text" class="form-control mb-2" name="member_name"
-                                   placeholder="검색">
+                                   placeholder="검색" autocomplete="off">
                             <div id="searchResults"
                                  style=" overflow-y: auto; margin-left: 3%; width: 100%; max-height: 300px;">
                                 <table class="table table-hover">
