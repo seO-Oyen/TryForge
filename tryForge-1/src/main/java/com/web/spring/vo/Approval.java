@@ -1,5 +1,5 @@
 package com.web.spring.vo;
-// com.web.spring.vo.Approval
+//com.web.spring.vo.Approval
 import java.util.Date;
 
 public class Approval {

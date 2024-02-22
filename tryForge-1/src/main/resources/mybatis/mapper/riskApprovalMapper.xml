@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.spring.risk.dao.Risk_ApprovalDao">
+	<insert id="insRiskApproval" parameterType="risk_approval">
+		insert into RISK_APPROVAL values
+			(risk_approval_seq.nextval, #{reporter}, #{report_detail},
+			 sysdate, #{risk_key}, #{risk_response_key},'FILE-'||FILE_STORAGE_SEQ.currval, '결재요청', #{title},null)
+	</insert>
+	<insert id="insFileUse">
+		insert into FILE_USE values ('FILE-'||FILE_STORAGE_SEQ.currval, '리스크 관리' , risk_approval_seq.currval )
+	</insert>
+	<select id="riskApprovalInfo" resultType="risk_approval">
+		select ra.*, t.text, r.REGISTRANT, r.REG_DATE, r.TYPE,
+			   rr.STATUS, r.RISK_KEY as r_risk_key, rr.RISK_RESPONSE_KEY as rr_risk_response_key,
+			   r.POSSIBILITY, r.PRIORITY, rr.CONTACT from RISK_RESPONSE rr
+				  left join risk r on r.RISK_KEY = rr.RISK_KEY
+				  left join RISK_APPROVAL ra on ra.RISK_RESPONSE_KEY = rr.RISK_RESPONSE_KEY
+				  left join task t on t.TASK_KEY = r.TASK_KEY
+	</select>
+	<select id="rlistByrisk_key" resultType="risk" parameterType="int" >
+		SELECT r.*, ta.text, rr.contact, rr.RISK_RESPONSE_KEY, rr.STATUS, rr.RESPONSE_METHOD,rr.STRATEGY
+		FROM risk r
+				 left  JOIN PROJECT p ON r.PROJECT_KEY = p.PROJECT_KEY
+				 LEFT JOIN task ta ON ta.TASK_KEY = r.TASK_KEY
+				 left join RISK_RESPONSE rr on rr.RISK_KEY = r.RISK_KEY
+		WHERE r.RISK_KEY = #{risk_key}
+	</select>
+	<select id="ralist" parameterType="int" resultType="risk_approval">
+		SELECT ra.*,fs.fname FROM RISK_APPROVAL ra
+			left JOIN FILE_STORAGE fs ON fs.FILE_KEY = ra.FILE_KEY
+		WHERE risk_key = #{risk_key}
+	</select>
+	<select id="getRiskApprovalByrakey" resultType="risk_approval" parameterType="int">
+		select * from risk_approval where risk_approval_key = #{risk_approval_key}
+	</select>
+	<update id="reRiskApproval" parameterType="risk_approval">
+		UPDATE RISK_APPROVAL 
+			SET report_detail = #{report_detail},
+				report_date = sysdate,
+				title = #{title},
+				report_status = '결재요청',
+				FILE_KEY = 'FILE-'||FILE_STORAGE_SEQ.currval
+		WHERE risk_approval_key = #{risk_approval_key}
+	</update>
+</mapper>
+
