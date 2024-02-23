@@ -274,9 +274,11 @@ function fileUpload(){
 					<div class="row">
 						<div class="col-md-6" style="flex: 0 0 100%; text-align: center; max-width: 100%;">
 							<div class="card-body">
-								<img src="${path}/template/images/faces/face5.jpg" alt="profile" id ="profile"/>
-								<input type="file" id="fileInput" name="files" multiple="multiple" style="display: none;" accept="image/*" />
-								<input type="hidden" name="description" value="프로필 사진"/>
+								<form method="post" enctype="multipart/form-data" action="upload">
+									<img src="${path}/template/images/faces/face5.jpg" alt="profile" id ="profile"/>
+									<input type="file" id="fileInput" name="files" multiple="multiple" style="display: none;" accept="image/*" />
+									<input type="hidden" name="description" value="프로필 사진"/>
+								</form>
 								
 								<div style="color: #4CA5FF; margin-top: 10px; font-weight: bold;">이름</div>
 								<div id="userName">${loginMem.member_name}</div>
