@@ -43,6 +43,8 @@ public class MainController {
 			if (project != null) {
 				session.setAttribute("projectMem", project);
 				d.addAttribute("projectList", projectList);
+			} else {
+				return "user/userIndexPjNo";
 			}
 		}
 
