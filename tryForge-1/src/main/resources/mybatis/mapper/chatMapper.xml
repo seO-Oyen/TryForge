@@ -12,6 +12,12 @@
 		ORDER BY cl.LAST_TIME DESC
 	</select>
 	
+	<select id="getChatListNum" parameterType="String" resultType="int">
+		SELECT chatList_key
+		FROM CHAT_LIST
+		WHERE CHAT_CATEGORY = #{pjKey}
+	</select>
+	
 	<select id="getChatMemList" parameterType="int" resultType="int">
 		SELECT cm.member_key
 		FROM CHAT_MEMBER cm
@@ -68,7 +74,7 @@
 	VALUES
 	(
 	   chatlist_seq.nextval,
-	   'TEAMCHAT',
+	   'PJ-' || project_seq.currval,
 	   ' ',
 	   sysdate
 	)
@@ -105,5 +111,13 @@
 		   sysdate
 		)
 	</insert>
+	
+	<select id="schMem" resultType="member">
+		SELECT m.*
+		FROM MEMBER m 
+		WHERE m.MEMBER_NAME LIKE '%' || #{member_name} || '%'
+			AND m.member_key != #{member_key}
+		ORDER BY m.MEMBER_KEY
+	</select>
 
 </mapper>

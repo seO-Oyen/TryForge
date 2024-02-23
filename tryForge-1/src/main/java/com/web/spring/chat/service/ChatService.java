@@ -11,6 +11,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.web.spring.admin.dao.AdProjectDao;
 import com.web.spring.chat.dao.ChatDao;
 import com.web.spring.member.dao.MemberDao;
 import com.web.spring.vo.Chat;
@@ -25,22 +26,32 @@ public class ChatService {
 	@Autowired(required = false)
 	private MemberDao memDao;
 	
+	@Autowired(required = false)
+	private AdProjectDao projectDao;
+	
 	// 채팅 초기 화면
 	public HashMap<List<String>, String> chatHome(int memKey) {
 		List<ChatList> chatList = new ArrayList<>();
 		
 		chatList = dao.getChatList(memKey);
 		
+		// [test, test2, test3] / 마지막말
 		HashMap<List<String>, String> chatMemMap = new LinkedHashMap();
 		
-		
 		for (ChatList chat : chatList) {
-			List<String> memberNameList = new ArrayList<>();
-			for (int memberKey : dao.getChatMemList(memKey, chat.getChatlist_key())){
-				 // memDao.getMeber(memberKey));
-				memberNameList.add(memDao.getMeber(memberKey).getMember_name());
+			if (chat.getChat_category() != null) {
+				String teamName = projectDao.teamInfo(chat.getChat_category()).getTeam_name();
+				List<String> teamNameList = new ArrayList<>();
+				teamNameList.add("팀 " + teamName);
+				chatMemMap.put(teamNameList, chat.getLast_message());
+			} else {
+				List<String> memberNameList = new ArrayList<>();
+				for (int memberKey : dao.getChatMemList(memKey, chat.getChatlist_key())){
+					 // memDao.getMeber(memberKey));
+					memberNameList.add(memDao.getMeber(memberKey).getMember_name());
+				}
+				chatMemMap.put(memberNameList, chat.getLast_message());
 			}
-			chatMemMap.put(memberNameList, chat.getLast_message());
 		}
 		
 		return chatMemMap;
@@ -76,6 +87,13 @@ public class ChatService {
 		}
 		
 		return "채팅방생성 완료";
+	}
+	
+	// 전체 맴버 검색 및 리스트 출력
+	public List<Member> schMem(String member_name, int member_key) {
+		if (member_name == null)
+			member_name = "";
+		return dao.schMem(member_name, member_key);
 	}
 
 }

@@ -52,9 +52,9 @@ $(document).ready(function(){
 	if(sessId==""){
 		alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
 		location.href="${path}/login"
-	} else if ("${loginMem.member_role}" != "") {
+	} else if ("${loginMem.member_role}" != "EMP") {
 		$("#admin").css("display", "")
-		$("#sidebar").css("height", "175px")
+		$("#sidebar").css("height", "220px")
 	}
 })
 </script>
@@ -112,91 +112,9 @@ $(document).ready(function(){
 					</a>
 					</li>
 					
-					<!-- 메세지(톱니바퀴모양) -->
-					<li class="nav-item dropdown">
-					<a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center"
-						id="messageDropdown" href="#" data-toggle="dropdown">
-					<i class="typcn typcn-cog-outline mx-0"></i> 
-					<span class="count"></span>
-					</a>
-					<div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-						aria-labelledby="messageDropdown">
-						<p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
-						<a class="dropdown-item preview-item">
-							<div class="preview-thumbnail">
-								<img src="${path}/template/images/faces/face4.jpg" alt="image"
-									class="profile-pic">
-							</div>
-							<div class="preview-item-content flex-grow">
-								<h6 class="preview-subject ellipsis font-weight-normal">David Grey</h6>
-								<p class="font-weight-light small-text text-muted mb-0">The meeting is cancelled</p>
-							</div>
-						</a> 
-						<a class="dropdown-item preview-item">
-							<div class="preview-thumbnail">
-								<img src="${path}/template/images/faces/face2.jpg" alt="image"
-									class="profile-pic">
-							</div>
-							<div class="preview-item-content flex-grow">
-								<h6 class="preview-subject ellipsis font-weight-normal">Tim Cook</h6>
-								<p class="font-weight-light small-text text-muted mb-0">
-									New product launch</p>
-							</div>
-						</a> 
-					</div>
-					</li>
 					
-					<!-- 알림창 (종모양) -->
-					<li class="nav-item dropdown mr-0"><a
-						class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center"
-						id="notificationDropdown" href="#" data-toggle="dropdown">
-						<i class="typcn typcn-bell mx-0"></i>
-						<span class="count"></span>
-					</a>
-					<div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-						aria-labelledby="notificationDropdown">
-						<p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-						<a class="dropdown-item preview-item">
-							<div class="preview-thumbnail">
-								<div class="preview-icon bg-success">
-									<i class="typcn typcn-info mx-0"></i>
-								</div>
-							</div>
-							<div class="preview-item-content">
-								<h6 class="preview-subject font-weight-normal">Application Error</h6>
-								<p class="font-weight-light small-text mb-0 text-muted">Just now</p>
-							</div>
-						</a> 
-						<a class="dropdown-item preview-item">
-							<div class="preview-thumbnail">
-								<div class="preview-icon bg-warning">
-									<i class="typcn typcn-cog-outline mx-0"></i>
-								</div>
-							</div>
-							<div class="preview-item-content">
-								<h6 class="preview-subject font-weight-normal">Settings</h6>
-								<p class="font-weight-light small-text mb-0 text-muted">Private message</p>
-							</div>
-						</a> 
-						<a class="dropdown-item preview-item">
-							<div class="preview-thumbnail">
-								<div class="preview-icon bg-info">
-									<i class="typcn typcn-user mx-0"></i>
-								</div>
-							</div>
-							<div class="preview-item-content">
-								<h6 class="preview-subject font-weight-normal">New user registration</h6>
-								<p class="font-weight-light small-text mb-0 text-muted">2 days ago</p>
-							</div>
-						</a>
-					</div>
-					</li>
 				</ul>
-				<!-- 무슨 버튼인지 모르겠음. 화면상으론 안뜸 -->
-				<!-- <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
-					type="button" data-toggle="offcanvas">
-					<span class="typcn typcn-th-menu"></span>
-				</button> -->
+
 			</div>
 		</nav>
 		
@@ -458,129 +376,17 @@ $(document).ready(function(){
 							class="menu-title">메인화면</span>
 							<!-- <div class="badge badge-danger">new</div> -->
 					</a></li>
-					
 					<li class="nav-item">
-						<a class="nav-link" data-toggle="collapse" 
-							href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-							<i class="typcn typcn-document-text menu-icon"></i>
-							<span class="menu-title">업무현황</span>
-							<!-- 메뉴 옆 +기호 -->
-							<!-- <i class="menu-arrow"></i> -->
+						<a class="nav-link" href="${path}/requestRole">
+							<i class="typcn mdi mdi-account-star menu-icon"></i>
+							<span class="menu-title">권한요청</span>
 						</a>
-						<!-- 클릭시 나오는 메뉴 -->
-						<!-- <div class="collapse" id="ui-basic">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item">
-									<a class="nav-link" href="pages/ui-features/buttons.jsp">Buttons</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" href="pages/ui-features/dropdowns.jsp">Dropdowns</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" href="pages/ui-features/typography.jsp">Typography</a>
-								</li>
-							</ul>
-						</div> -->
 					</li>
 					<li class="nav-item" id="admin" style="display: none;">
 						<a class="nav-link" href="${path}/adMain">
 							<i class="mdi mdi-account-convert" style="width:20px;height:20px;"></i>
 							<span class="menu-title">관리자페이지</span>
-							<!-- <i class="menu-arrow"></i> -->
 						</a>
 					</li>
-					
-					<%-- <li class="nav-item">
-					<a class="nav-link" href="${path}/gantt.do" > 
-						<i class="typcn typcn-film menu-icon"></i> 
-							<span class="menu-title">간트차트</span>
-							<!-- <i class="menu-arrow"></i> -->
-					</a>
-						<!-- <div class="collapse" id="form-elements">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item"><a class="nav-link"
-									href="pages/forms/basic_elements.jsp">Basic Elements</a>
-								</li>
-							</ul>
-						</div> -->
-					</li>
-					<li class="nav-item">
-					<a class="nav-link" href="${path}/calendar.do" >
-						<i class="typcn typcn-chart-pie-outline menu-icon"></i>
-						<span class="menu-title">캘린더</span>
-						<!-- <i class="menu-arrow"></i> -->
-					</a>
-						<!-- <div class="collapse" id="charts">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item">
-								<a class="nav-link" href="pages/charts/chartjs.jsp">ChartJs</a>
-								</li>
-							</ul>
-						</div> -->
-					</li>
-					<li class="nav-item">
-					<a class="nav-link" data-toggle="collapse" href="#tables" aria-expanded="false"
-						aria-controls="tables">
-						<i class="typcn typcn-th-small-outline menu-icon"></i>
-						<span class="menu-title">업무 관리</span>
-						<!-- <i class="menu-arrow"></i> -->
-					</a>
-						<!-- <div class="collapse" id="tables">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item">
-								<a class="nav-link" href="pages/tables/basic-table.jsp">Basic table</a>
-								</li>
-							</ul>
-						</div> -->
-					</li>
-					<li class="nav-item">
-					<a class="nav-link" data-toggle="collapse" href="#icons" aria-expanded="false"
-						aria-controls="icons">
-						<i class="typcn typcn-compass menu-icon"></i>
-						<span class="menu-title">업무 보고</span>
-						<!-- <i class="menu-arrow"></i> -->
-					</a>
-						<!-- <div class="collapse" id="icons">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item">
-								<a class="nav-link" href="pages/icons/mdi.jsp">Mdi icons</a>
-								</li>
-							</ul>
-						</div> -->
-					</li>
-					<li class="nav-item">
-					<a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false"
-						aria-controls="auth">
-						<i class="typcn typcn-user-add-outline menu-icon"></i>
-						<span class="menu-title">리스크 관리</span>
-						<!-- <i class="menu-arrow"></i> -->
-					</a>
-						<!-- <div class="collapse" id="auth">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item">
-								<a class="nav-link" href="pages/samples/login.jsp"> Login </a>
-								</li>
-								<li class="nav-item">
-								<a class="nav-link" href="pages/samples/register.jsp"> Register </a>
-								</li>
-							</ul>
-						</div> -->
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="${path}/file.do" >
-							<i class="typcn typcn-globe-outline menu-icon"></i>
-							<span class="menu-title">파일저장소</span>
-							<!-- <i class="menu-arrow"></i> -->
-						</a>
-						<!-- <div class="collapse" id="error">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item"><a class="nav-link"
-									href="pages/samples/error-404.jsp"> 404 </a></li>
-								<li class="nav-item"><a class="nav-link"
-									href="pages/samples/error-500.jsp"> 500 </a></li>
-							</ul>
-						</div> -->
-					</li>
-					 --%>
 				</ul>
 			</nav>

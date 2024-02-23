@@ -67,7 +67,17 @@ $(document).ready(function() {
 		// 모달 열기
 		$("#myModal").modal('show');
 	})
-	
+	$("#profile").on('click', function(){
+		$('#fileInput').click();
+	})
+	$("#fileInput").change(function() {
+		fileUpload();
+		var fileList = this.files;
+		var fileListDisplay = $('#fileText');
+		fileListDisplay.empty();
+
+	});
+
 	$("#pwdChangeFrm [name=memberPwd]").keyup(function() {
 		if ($("#pwdChangeFrm [name=memberPwd]").val() == '') {
 			$("#pwdComent").html('')
@@ -224,6 +234,37 @@ function updatePwd() {
 	})
 }
 
+function fileUpload(){
+	var formData = new FormData();
+	var files = $("#fileInput")[0].files;
+	$.each(files, function(index, file) {
+		formData.append('files[]', file);
+
+	})
+	formData.append('description', $("input[name='description']").val());
+	formData.append('member_key', "${loginMem.member_key}");
+	console.log(formData)
+	//formData.append('project_key', $("input[name='project_key']").val());
+	console.log($("[name=description]").val())
+	//console.log(formData.get('description'));
+
+	$.ajax({
+		url: "${path}/upload",
+		type: "POST",
+		data: formData,
+		cache: false,
+		processData: false,
+		contentType: false,
+		success: function(response) {
+			msg("success", "파일 업로드 성공!", response.msg)
+
+		},
+		error: function(error) {
+			msg("error", "업로드에러", error)
+		}
+	})
+}
+
 </script>
 <div class="main-panel">
 	<div class="content-wrapper">
@@ -233,7 +274,12 @@ function updatePwd() {
 					<div class="row">
 						<div class="col-md-6" style="flex: 0 0 100%; text-align: center; max-width: 100%;">
 							<div class="card-body">
-								<img src="${path}/template/images/faces/face5.jpg" alt="profile" id ="profile"/>
+								<form method="post" enctype="multipart/form-data" action="upload">
+									<img src="${path}/template/images/faces/face5.jpg" alt="profile" id ="profile"/>
+									<input type="file" id="fileInput" name="files" multiple="multiple" style="display: none;" accept="image/*" />
+									<input type="hidden" name="description" value="프로필 사진"/>
+								</form>
+								
 								<div style="color: #4CA5FF; margin-top: 10px; font-weight: bold;">이름</div>
 								<div id="userName">${loginMem.member_name}</div>
 								<div style="color: #4CA5FF; margin-top: 20px; font-weight: bold;">아이디</div>
