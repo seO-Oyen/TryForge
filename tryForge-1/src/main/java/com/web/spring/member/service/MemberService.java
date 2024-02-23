@@ -36,6 +36,9 @@ public class MemberService {
 		int result = memberDao.registerMember(member);
 		
 		if (result > 0) {
+			// 회원가입 성공했을때 가입여부 true로 바꾸기
+			memberDao.updateInviteMember(member.getMember_email());
+			
 			return true;
 		} else {
 			return false;

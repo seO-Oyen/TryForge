@@ -36,8 +36,11 @@ public interface MemberDao {
 	// 초대 내역 저장
 	int inviteMember(Member member);
 	
-	// 초내 내역 출력
+	// 초대 내역 출력
 	List<InviteMember> getInviteMemberList();
+	
+	// 초대 내역 true로 변경
+	int updateInviteMember(String email);
 	
 	// 유저 key로 유저 찾기
 	Member getMeber(int memberKey);

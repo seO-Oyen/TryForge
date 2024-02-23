@@ -118,6 +118,12 @@
 		ORDER BY invite_key desc
 	</select>
 	
+	<update id="updateInviteMember" parameterType="String">
+		UPDATE invite_member
+			SET joined = 1
+		WHERE invitee_email = #{email}
+	</update>
+	
 	<select id="getMeber" parameterType="int" resultType="member">
 		select * 
 		from member
