@@ -142,7 +142,7 @@
                 var memList = data.memList;
                 var html = "";
                 $(memList).each(function (idx, member) {
-                    if (member.status == '진행중' || member.title != null) {
+                    if (member.status == '진행중') {
                         html += "<tr> ";
                         html += "<td>" + member.member_name + "</td>";
                         html += "<td>" + member.member_email + "</td>";
@@ -285,7 +285,7 @@
                         cancelButtonText: '취소',
                     }).then(function (result) {
                         if (result.isConfirmed) {
-                            uptFin();
+                            uptFin(key);
                         }
                     });
                 });
@@ -338,7 +338,7 @@
 
     function uptFin(key) {
         $.ajax({
-            url: "${path}/uptFin?" + key,
+            url: "${path}/uptProjectFin?project_key=" + key,
             dataType: "json",
             success: function (data) {
                 var uptmsg = data.uptmsg;
