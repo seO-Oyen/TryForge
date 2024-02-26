@@ -39,8 +39,10 @@ public class MainController {
 		if (session.getAttribute("loginMem") != null ) {
 			Member member = (Member)session.getAttribute("loginMem");
 			Project project = memberService.getUserProject(member);
+			List<Project> projectList = memberService.getUserProjectList(member);
 			if (project != null) {
 				session.setAttribute("projectMem", project);
+				d.addAttribute("projectList", projectList);
 			}
 		}
 

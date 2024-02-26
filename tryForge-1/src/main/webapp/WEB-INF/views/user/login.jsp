@@ -68,21 +68,15 @@
 										id="memberPwd" name="member_pwd" placeholder="Password">
 								</div>
 								<div class="mt-3">
-									<input type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-										value="로그인" />
+									<input type="submit" class="btn btn-block btn-lg font-weight-medium auth-form-btn"
+										style="background-color: #198CFF; color: white;" value="로그인" />
 								</div>
 								<div class="text-center mt-2 font-weight-light">
-								<!-- 나중에 로그인 기억 같은거 하면 쓸 코드 -->
-									<!-- <div class="form-check">
-										<label class="form-check-label text-muted"> 
-										<input type="checkbox" class="form-check-input"> Keep me signed in
-										</label>
-									</div> -->
-									<a href="#" class="auth-link text-black">비밀번호 찾기</a>
+									<a href="${path}/findAccount" class="auth-link text-black">계정 찾기</a>
 								</div>
 								<div class="text-center mt-4 font-weight-light">
 									 <a href="register"
-										class="text-primary">계정이 없으신가요?</a>
+										style="color: #198CFF;">계정이 없으신가요?</a>
 								</div>
 							</form>
 						</div>

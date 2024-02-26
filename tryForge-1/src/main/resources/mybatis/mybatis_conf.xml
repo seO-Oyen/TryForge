@@ -23,6 +23,8 @@
 		<typeAlias alias="risk" type="com.web.spring.vo.Risk"/>
       	<typeAlias alias="risk_response" type="com.web.spring.vo.Risk_Response"/>
       	<typeAlias alias="risk_approval" type="com.web.spring.vo.Risk_Approval"/>
+      	<typeAlias alias="roleRequest" type="com.web.spring.vo.RoleRequest"/>
 		<typeAlias alias="fileUse" type="com.web.spring.vo.FileUse"/>
+		<typeAlias alias="memo" type="com.web.spring.vo.Memo"/>
 	</typeAliases>
 </configuration>

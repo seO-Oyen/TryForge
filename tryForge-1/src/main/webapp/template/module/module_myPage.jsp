@@ -111,13 +111,10 @@ $(document).ready(function(){
 					<div class="dropdown-menu dropdown-menu-right navbar-dropdown"
 						aria-labelledby="profileDropdown">
 						<a class="dropdown-item" href="${path}/login"> 
-							<i class="typcn typcn-eject text-primary"></i> 로그아웃
+							<i class="typcn typcn-eject text-info"></i> 로그아웃
 						</a>
 					</div>
 					</li>
-					<!-- <li class="nav-item nav-user-status dropdown">
-						<p class="mb-0">(마지막 로그인 시간)</p>
-					</li> -->
 				</ul>
 				<ul class="navbar-nav navbar-nav-right">
 					<!-- 달력 -->
@@ -129,144 +126,9 @@ $(document).ready(function(){
 					</a>
 					</li>
 					
-					<!-- 메세지(톱니바퀴모양) -->
-					<li class="nav-item dropdown">
-					<a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center"
-						id="messageDropdown" href="#" data-toggle="dropdown">
-					<i class="typcn typcn-cog-outline mx-0"></i> 
-					<span class="count"></span>
-					</a>
-					<div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-						aria-labelledby="messageDropdown">
-						<p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
-						<a class="dropdown-item preview-item">
-							<div class="preview-thumbnail">
-								<img src="${path}/template/images/faces/face4.jpg" alt="image"
-									class="profile-pic">
-							</div>
-							<div class="preview-item-content flex-grow">
-								<h6 class="preview-subject ellipsis font-weight-normal">David Grey</h6>
-								<p class="font-weight-light small-text text-muted mb-0">The meeting is cancelled</p>
-							</div>
-						</a> 
-						<a class="dropdown-item preview-item">
-							<div class="preview-thumbnail">
-								<img src="${path}/template/images/faces/face2.jpg" alt="image"
-									class="profile-pic">
-							</div>
-							<div class="preview-item-content flex-grow">
-								<h6 class="preview-subject ellipsis font-weight-normal">Tim Cook</h6>
-								<p class="font-weight-light small-text text-muted mb-0">
-									New product launch</p>
-							</div>
-						</a> 
-					</div>
-					</li>
-					
-					<!-- 알림창 (종모양) -->
-					<li class="nav-item dropdown mr-0"><a
-						class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center"
-						id="notificationDropdown" href="#" data-toggle="dropdown">
-						<i class="typcn typcn-bell mx-0"></i>
-						<span class="count"></span>
-					</a>
-					<div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-						aria-labelledby="notificationDropdown">
-						<p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-						<a class="dropdown-item preview-item">
-							<div class="preview-thumbnail">
-								<div class="preview-icon bg-success">
-									<i class="typcn typcn-info mx-0"></i>
-								</div>
-							</div>
-							<div class="preview-item-content">
-								<h6 class="preview-subject font-weight-normal">Application Error</h6>
-								<p class="font-weight-light small-text mb-0 text-muted">Just now</p>
-							</div>
-						</a> 
-						<a class="dropdown-item preview-item">
-							<div class="preview-thumbnail">
-								<div class="preview-icon bg-warning">
-									<i class="typcn typcn-cog-outline mx-0"></i>
-								</div>
-							</div>
-							<div class="preview-item-content">
-								<h6 class="preview-subject font-weight-normal">Settings</h6>
-								<p class="font-weight-light small-text mb-0 text-muted">Private message</p>
-							</div>
-						</a> 
-						<a class="dropdown-item preview-item">
-							<div class="preview-thumbnail">
-								<div class="preview-icon bg-info">
-									<i class="typcn typcn-user mx-0"></i>
-								</div>
-							</div>
-							<div class="preview-item-content">
-								<h6 class="preview-subject font-weight-normal">New user registration</h6>
-								<p class="font-weight-light small-text mb-0 text-muted">2 days ago</p>
-							</div>
-						</a>
-					</div>
-					</li>
 				</ul>
-				<!-- 무슨 버튼인지 모르겠음. 화면상으론 안뜸 -->
-				<!-- <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
-					type="button" data-toggle="offcanvas">
-					<span class="typcn typcn-th-menu"></span>
-				</button> -->
 			</div>
 		</nav>
-		
-		<!-- 기존 민트색 상단바 -->
-		<!-- partial -->
-		<!-- <nav class="navbar-breadcrumb col-xl-12 col-12 d-flex flex-row p-0" style="background:#007FFF;">
-			
-			<div class="navbar-menu-wrapper d-flex align-items-center justify-content-end"
-				style="width: 1000px;">
-				<ul class="navbar-nav mr-lg-2">
-					<li class="nav-item ml-0">
-						<h4 class="mb-0">Main</h4>
-					</li>
-					<li class="nav-item">
-						<div class="d-flex align-items-baseline">
-							<p class="mb-0">Home</p>
-							<i class="typcn typcn-chevron-right"></i>
-							<p class="mb-0">Main Dahboard</p>
-						</div>
-					</li>
-				</ul>
-				검색창 => <ul>은 공간때문에 냅둠
-				<ul class="navbar-nav navbar-nav-right">
-					<li class="nav-item nav-search d-none d-md-block mr-0">
-						<div class="input-group">
-							<input type="text" class="form-control" placeholder="Search..."
-								aria-label="search" aria-describedby="search">
-							<div class="input-group-prepend">
-								<span class="input-group-text" id="search"> <i
-									class="typcn typcn-zoom"></i>
-								</span>
-							</div>
-						</div>
-					</li>
-				</ul>
-			</div>
-			아이콘 버튼
-			<div class="navbar-links-wrapper d-flex align-items-stretch"
-				style="width: 400px;">
-				<div class="nav-link" style="border-right:none;">
-					<a href="javascript:;"><span>업무현황</span></a>
-				</div>
-				<div class="nav-link" style="border-right:none;">
-					<a href="javascript:;"><span>업무현황</span></a>
-				</div>
-				<div class="nav-link" style="border-right:none;">
-					<a href="javascript:;"><span>업무현황</span></a>
-				</div>
-				<div class="nav-link" style="border-right:none;">
-					<a href="javascript:;"><i class="typcn typcn-document-text"></i></a>
-				</div>
-			</div>
-		</nav> -->
 		
 		<div class="container-fluid page-body-wrapper">
 			<!-- partial:partials/_settings-panel.html -->
@@ -297,172 +159,6 @@ $(document).ready(function(){
 					</div>
 				</div>
 			</div>
-			<div id="right-sidebar" class="settings-panel">
-				<i class="settings-close typcn typcn-times"></i>
-				<ul class="nav nav-tabs" id="setting-panel" role="tablist">
-					<li class="nav-item"><a class="nav-link active" id="todo-tab"
-						data-toggle="tab" href="#todo-section" role="tab"
-						aria-controls="todo-section" aria-expanded="true">TO DO LIST</a></li>
-					<li class="nav-item"><a class="nav-link" id="chats-tab"
-						data-toggle="tab" href="#chats-section" role="tab"
-						aria-controls="chats-section">CHATS</a></li>
-				</ul>
-				<div class="tab-content" id="setting-content">
-					<div class="tab-pane fade show active scroll-wrapper"
-						id="todo-section" role="tabpanel" aria-labelledby="todo-section">
-						<div class="add-items d-flex px-3 mb-0">
-							<form class="form w-100">
-								<div class="form-group d-flex">
-									<input type="text" class="form-control todo-list-input"
-										placeholder="Add To-do">
-									<button type="submit"
-										class="add btn btn-primary todo-list-add-btn" id="add-task">Add</button>
-								</div>
-							</form>
-						</div>
-						<div class="list-wrapper px-3">
-							<ul class="d-flex flex-column-reverse todo-list">
-								<li>
-									<div class="form-check">
-										<label class="form-check-label"> <input
-											class="checkbox" type="checkbox"> Team review meeting
-											at 3.00 PM
-										</label>
-									</div> <i class="remove typcn typcn-delete-outline"></i>
-								</li>
-								<li>
-									<div class="form-check">
-										<label class="form-check-label"> <input
-											class="checkbox" type="checkbox"> Prepare for
-											presentation
-										</label>
-									</div> <i class="remove typcn typcn-delete-outline"></i>
-								</li>
-								<li>
-									<div class="form-check">
-										<label class="form-check-label"> <input
-											class="checkbox" type="checkbox"> Resolve all the low
-											priority tickets due today
-										</label>
-									</div> <i class="remove typcn typcn-delete-outline"></i>
-								</li>
-								<li class="completed">
-									<div class="form-check">
-										<label class="form-check-label"> <input
-											class="checkbox" type="checkbox" checked> Schedule
-											meeting for next week
-										</label>
-									</div> <i class="remove typcn typcn-delete-outline"></i>
-								</li>
-								<li class="completed">
-									<div class="form-check">
-										<label class="form-check-label"> <input
-											class="checkbox" type="checkbox" checked> Project
-											review
-										</label>
-									</div> <i class="remove typcn typcn-delete-outline"></i>
-								</li>
-							</ul>
-						</div>
-						<div class="events py-4 border-bottom px-3">
-							<div class="wrapper d-flex mb-2">
-								<i class="typcn typcn-media-record-outline text-primary mr-2"></i>
-								<span>Feb 11 2018</span>
-							</div>
-							<p class="mb-0 font-weight-thin text-gray">Creating component
-								page</p>
-							<p class="text-gray mb-0">build a js based app</p>
-						</div>
-						<div class="events pt-4 px-3">
-							<div class="wrapper d-flex mb-2">
-								<i class="typcn typcn-media-record-outline text-primary mr-2"></i>
-								<span>Feb 7 2018</span>
-							</div>
-							<p class="mb-0 font-weight-thin text-gray">Meeting with Alisa</p>
-							<p class="text-gray mb-0 ">Call Sarah Graves</p>
-						</div>
-					</div>
-					<!-- To do section tab ends -->
-					<div class="tab-pane fade" id="chats-section" role="tabpanel"
-						aria-labelledby="chats-section">
-						<div
-							class="d-flex align-items-center justify-content-between border-bottom">
-							<p
-								class="settings-heading border-top-0 mb-3 pl-3 pt-0 border-bottom-0 pb-0">Friends</p>
-							<small
-								class="settings-heading border-top-0 mb-3 pt-0 border-bottom-0 pb-0 pr-3 font-weight-normal">See
-								All</small>
-						</div>
-						<ul class="chat-list">
-							<li class="list active">
-								<div class="profile">
-									<img src="${path}/template/images/faces/face1.jpg" alt="image"><span
-										class="online"></span>
-								</div>
-								<div class="info">
-									<p>Thomas Douglas</p>
-									<p>Available</p>
-								</div> <small class="text-muted my-auto">19 min</small>
-							</li>
-							<li class="list">
-								<div class="profile">
-									<img src="${path}/template/images/faces/face2.jpg" alt="image"><span
-										class="offline"></span>
-								</div>
-								<div class="info">
-									<div class="wrapper d-flex">
-										<p>Catherine</p>
-									</div>
-									<p>Away</p>
-								</div>
-								<div class="badge badge-success badge-pill my-auto mx-2">4</div>
-								<small class="text-muted my-auto">23 min</small>
-							</li>
-							<li class="list">
-								<div class="profile">
-									<img src="${path}/template/images/faces/face3.jpg" alt="image"><span
-										class="online"></span>
-								</div>
-								<div class="info">
-									<p>Daniel Russell</p>
-									<p>Available</p>
-								</div> <small class="text-muted my-auto">14 min</small>
-							</li>
-							<li class="list">
-								<div class="profile">
-									<img src="${path}/template/images/faces/face4.jpg" alt="image"><span
-										class="offline"></span>
-								</div>
-								<div class="info">
-									<p>James Richardson</p>
-									<p>Away</p>
-								</div> <small class="text-muted my-auto">2 min</small>
-							</li>
-							<li class="list">
-								<div class="profile">
-									<img src="${path}/template/images/faces/face5.jpg" alt="image"><span
-										class="online"></span>
-								</div>
-								<div class="info">
-									<p>Madeline Kennedy</p>
-									<p>Available</p>
-								</div> <small class="text-muted my-auto">5 min</small>
-							</li>
-							<li class="list">
-								<div class="profile">
-									<img src="${path}/template/images/faces/face6.jpg" alt="image"><span
-										class="online"></span>
-								</div>
-								<div class="info">
-									<p>Sarah Graves</p>
-									<p>Available</p>
-								</div> <small class="text-muted my-auto">47 min</small>
-							</li>
-						</ul>
-					</div>
-					<!-- chat tab ends -->
-				</div>
-			</div>
 			
 			<!-- 사이드바 -->
 			<!-- partial -->
@@ -471,133 +167,24 @@ $(document).ready(function(){
 				<ul class="nav">
 					<li class="nav-item">
 						<a class="nav-link" href="${path}/myPage">
-							<i class="typcn typcn-device-desktop menu-icon"></i> <span
+							<i class="typcn mdi mdi-account menu-icon"></i> <span
 							class="menu-title">마이페이지</span>
 							<!-- <div class="badge badge-danger">new</div> -->
 					</a></li>
 					
 					<li class="nav-item">
-						<a class="nav-link" data-toggle="collapse" 
-							href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-							<i class="typcn typcn-document-text menu-icon"></i>
+						<a class="nav-link" href="${path}/memo">
+							<i class="typcn mdi mdi-clipboard-text menu-icon"></i>
 							<span class="menu-title">메모</span>
-							<!-- 메뉴 옆 +기호 -->
-							<!-- <i class="menu-arrow"></i> -->
 						</a>
-						<!-- 클릭시 나오는 메뉴 -->
-						<!-- <div class="collapse" id="ui-basic">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item">
-									<a class="nav-link" href="pages/ui-features/buttons.jsp">Buttons</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" href="pages/ui-features/dropdowns.jsp">Dropdowns</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" href="pages/ui-features/typography.jsp">Typography</a>
-								</li>
-							</ul>
-						</div> -->
 					</li>
 					<li class="nav-item">
 						<a class="nav-link"  href="${path}/chatHome">
-							<i class="typcn mdi mdi-account-convert menu-icon"></i>
+							<i class="typcn mdi mdi-forum menu-icon"></i>
 							<span class="menu-title">채팅</span>
-							<!-- <i class="menu-arrow"></i> -->
 						</a>
 					</li>
 					
-					<%-- <li class="nav-item">
-					<a class="nav-link" href="${path}/gantt.do" > 
-						<i class="typcn typcn-film menu-icon"></i> 
-							<span class="menu-title">간트차트</span>
-							<!-- <i class="menu-arrow"></i> -->
-					</a>
-						<!-- <div class="collapse" id="form-elements">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item"><a class="nav-link"
-									href="pages/forms/basic_elements.jsp">Basic Elements</a>
-								</li>
-							</ul>
-						</div> -->
-					</li>
-					<li class="nav-item">
-					<a class="nav-link" href="${path}/calendar.do" >
-						<i class="typcn typcn-chart-pie-outline menu-icon"></i>
-						<span class="menu-title">캘린더</span>
-						<!-- <i class="menu-arrow"></i> -->
-					</a>
-						<!-- <div class="collapse" id="charts">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item">
-								<a class="nav-link" href="pages/charts/chartjs.jsp">ChartJs</a>
-								</li>
-							</ul>
-						</div> -->
-					</li>
-					<li class="nav-item">
-					<a class="nav-link" data-toggle="collapse" href="#tables" aria-expanded="false"
-						aria-controls="tables">
-						<i class="typcn typcn-th-small-outline menu-icon"></i>
-						<span class="menu-title">업무 관리</span>
-						<!-- <i class="menu-arrow"></i> -->
-					</a>
-						<!-- <div class="collapse" id="tables">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item">
-								<a class="nav-link" href="pages/tables/basic-table.jsp">Basic table</a>
-								</li>
-							</ul>
-						</div> -->
-					</li>
-					<li class="nav-item">
-					<a class="nav-link" data-toggle="collapse" href="#icons" aria-expanded="false"
-						aria-controls="icons">
-						<i class="typcn typcn-compass menu-icon"></i>
-						<span class="menu-title">업무 보고</span>
-						<!-- <i class="menu-arrow"></i> -->
-					</a>
-						<!-- <div class="collapse" id="icons">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item">
-								<a class="nav-link" href="pages/icons/mdi.jsp">Mdi icons</a>
-								</li>
-							</ul>
-						</div> -->
-					</li>
-					<li class="nav-item">
-					<a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false"
-						aria-controls="auth">
-						<i class="typcn typcn-user-add-outline menu-icon"></i>
-						<span class="menu-title">리스크 관리</span>
-						<!-- <i class="menu-arrow"></i> -->
-					</a>
-						<!-- <div class="collapse" id="auth">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item">
-								<a class="nav-link" href="pages/samples/login.jsp"> Login </a>
-								</li>
-								<li class="nav-item">
-								<a class="nav-link" href="pages/samples/register.jsp"> Register </a>
-								</li>
-							</ul>
-						</div> -->
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="${path}/file.do" >
-							<i class="typcn typcn-globe-outline menu-icon"></i>
-							<span class="menu-title">파일저장소</span>
-							<!-- <i class="menu-arrow"></i> -->
-						</a>
-						<!-- <div class="collapse" id="error">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item"><a class="nav-link"
-									href="pages/samples/error-404.jsp"> 404 </a></li>
-								<li class="nav-item"><a class="nav-link"
-									href="pages/samples/error-500.jsp"> 500 </a></li>
-							</ul>
-						</div> -->
-					</li>
-					 --%>
+					
 				</ul>
 			</nav>

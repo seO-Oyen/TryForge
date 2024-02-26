@@ -63,7 +63,7 @@ public class AdProjectController {
 	}
 	
 	// 완료상태 변경
-	@RequestMapping("uptFin")
+	@RequestMapping("uptProjectFin")
 	public String uptFin(@RequestParam("project_key")String project_key, Model d) {
 		d.addAttribute("uptmsg",service.uptFin(project_key));
 		return "pageJsonReport"; 

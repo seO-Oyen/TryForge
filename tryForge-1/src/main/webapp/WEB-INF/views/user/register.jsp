@@ -204,15 +204,49 @@ $(document).ready(function(){
 // 회원가입 => 안적힌 것 있음 체크해서 폼 보내지 못하게
 function register() {
 	if($("#idchecked").val() == 'false') {
-		alert("아이디 중복체크를 해주세요.")
+		const Toast = Swal.mixin({
+		    toast: true,
+		    position: 'top-end',
+		    showConfirmButton: false,
+		    timer: 1500,
+		    timerProgressBar: false
+		})
+		
+		Toast.fire({
+		    icon: 'error',
+		    title: '아이디 체크를 해주세요.'
+		})
 		return false
 	}
 	if($("#pwdchecked").val() == 'false') {
-		alert("비밀번호가 일치하지 않습니다.")
+		const Toast = Swal.mixin({
+		    toast: true,
+		    position: 'top-end',
+		    showConfirmButton: false,
+		    timer: 1500,
+		    timerProgressBar: false
+		})
+		
+		Toast.fire({
+		    icon: 'error',
+		    title: '비밀번호가 일치하지 않습니다.'
+		})
+		
 		return false
 	}
 	if($("#name").val() == '') {
-		alert("이름을 입력해주세요")
+		const Toast = Swal.mixin({
+		    toast: true,
+		    position: 'top-end',
+		    showConfirmButton: false,
+		    timer: 1500,
+		    timerProgressBar: false
+		})
+		
+		Toast.fire({
+		    icon: 'error',
+		    title: '이름을 입력해주세요.'
+		})
 		return false
 	}
 	if($("#emailchecked").val() == 'false') {
@@ -236,6 +270,14 @@ function register() {
 }
 
 </script>
+
+<style>
+.btn {
+	background-color: #198CFF;
+	color: white;
+}
+
+</style>
 </head>
 
 <body>
@@ -254,7 +296,7 @@ function register() {
                 <div class="form-group" style="display: flex;">
                 	<input type="hidden" id="idchecked" value="false" disabled>
                   <input type="text" class="form-control form-control-lg" id="id" name="member_id" placeholder="ID" autocomplete="off">
-                  <input type="button" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" id="idChkBtn" value="중복체크" 
+                  <input type="button" class="btn btn-block btn-lg font-weight-medium auth-form-btn" id="idChkBtn" value="중복체크" 
                   	style="padding-left: 10px; padding-right: 10px;
 							width: 122px; margin-left: 10px; margin-top: 3px;">
                 </div>
@@ -274,14 +316,16 @@ function register() {
                   <input type="email" class="form-control form-control-lg" id="email" name="member_email" placeholder="Email" autocomplete="off">
                 </div>
                 <div class="form-group">
-                  <input type="button" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" id="emailChkBtn" value="중복체크">
+                  <input type="button" class="btn btn-block btn-lg font-weight-medium auth-form-btn"
+                  	style="color: #198CFF; border: 1px solid #198CFF; background-color: white;" 
+                  	id="emailChkBtn" value="이메일 체크">
                 </div>
                 <div class="mt-3">
-					<input type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+					<input type="submit" class="btn btn-block btn-lg font-weight-medium auth-form-btn"
 						id="regBtn" value="회원가입" />
 				</div>
                 <div class="text-center mt-4 font-weight-light">
-                  이미 계정이 있으신가요? <a href="login" class="text-primary">로그인</a>
+                  이미 계정이 있으신가요? <a href="login" style="color: #198CFF;">로그인</a>
                 </div>
               </form>
             </div>

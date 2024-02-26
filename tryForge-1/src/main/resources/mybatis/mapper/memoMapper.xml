@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.spring.memo.dao.MemoDao">
+
+	<insert id="createMemo" parameterType="memo">
+		INSERT INTO MEMO
+		(
+			memo_key,
+			member_key,
+			memo_detail,
+			create_time
+		)
+		VALUES
+		(
+			memo_seq.nextval,
+			#{member_key},
+			#{memo_detail},
+			sysdate
+		)
+	</insert>
+	
+	<select id="getMemoList" resultType="memo">
+		select *
+		from memo
+		where member_key = #{member_key}
+	</select>
+
+</mapper>

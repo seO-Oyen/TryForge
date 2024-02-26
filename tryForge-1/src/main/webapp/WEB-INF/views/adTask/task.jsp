@@ -73,9 +73,11 @@
             var memberName = $(this).data("member-name");
             var memberKey = $(this).data("member-key");
             var projectKey = $(this).data("project-key");
+            var taskKey = $(this).data("task-key");
             $("#mname").val(memberName);
             $("#modalFrm [name=member_key]").val(memberKey);
             $("#modalFrm [name=project_key]").val(projectKey);
+            $("#modalFrm [name=parent]").val(taskKey);
             // 모달 열기
             $("#myModal").modal('show');
         });
@@ -284,7 +286,7 @@
                                                     data-member-name="${mlist.member_name}"
                                                     data-member-key="${mlist.member_key}"
                                                     data-project-key="${mlist.project_key}"
-
+                                                    data-task-key="${mlist.task_key}"
                                                     style="background-color: #007FFF; color: white;">업무할당
                                             </button>
                                         </td>
@@ -327,6 +329,7 @@
             </div>
             <form class="forms-sample" id="modalFrm">
                 <input type="hidden" name="assignor" value="${loginMem.member_name}"/>
+                <input type="hidden" name="parent"/>
                 <input type="hidden" name="member_key"/> <input type="hidden"
                                                                 name="project_key"/>
                 <div class="form-group">

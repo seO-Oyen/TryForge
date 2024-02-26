@@ -142,7 +142,7 @@
                 var memList = data.memList;
                 var html = "";
                 $(memList).each(function (idx, member) {
-                    if (member.status == '진행중' || member.title != null) {
+                    if (member.status == '진행중') {
                         html += "<tr> ";
                         html += "<td>" + member.member_name + "</td>";
                         html += "<td>" + member.member_email + "</td>";
@@ -285,7 +285,7 @@
                         cancelButtonText: '취소',
                     }).then(function (result) {
                         if (result.isConfirmed) {
-                            uptFin();
+                            uptFin(key);
                         }
                     });
                 });
@@ -338,7 +338,7 @@
 
     function uptFin(key) {
         $.ajax({
-            url: "${path}/uptFin?" + key,
+            url: "${path}/uptProjectFin?project_key=" + key,
             dataType: "json",
             success: function (data) {
                 var uptmsg = data.uptmsg;
@@ -516,6 +516,25 @@
             }
         })
     }
+
+    function goDash(projectKey) {
+        alert(projectKey)
+        $.ajax({
+            url : "${path}/setPj",
+            type : "GET",
+            data : {
+                projectNum: projectKey
+            },
+            dataType : "json",
+            success : function(data) {
+              alert(data.project)
+                location.href = "${path}/dashboard"
+            },
+            error : function(err) {
+                console.log(err)
+            }
+        })
+    }
 </script>
 <div class="main-panel">
     <div class="content-wrapper">
@@ -550,7 +569,7 @@
                                             <td><c:out value="${formattedEndDate}"/></td>
                                             <td>
                                                 <button type="button"
-                                                        onclick="location.href='${path}/dashboard'"
+                                                        onclick="goDash('${plist.project_key}')"
                                                         class="btn btn-link btn-rounded btn-fw">대시보드
                                                 </button>
                                             </td>
@@ -585,7 +604,7 @@
                                     <th>프로젝트명</th>
                                     <th>시작일</th>
                                     <th>종료일</th>
-                                    <th>대시보드 이동</th>
+                                   
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -599,12 +618,7 @@
                                             <c:set var="formattedEndDate"
                                                    value="${fn:substring(plist.end_date, 0, 10)}"/>
                                             <td><c:out value="${formattedEndDate}"/></td>
-                                            <td>
-                                                <button type="button"
-                                                        onclick="location.href='${path}/dashboard'"
-                                                        class="btn btn-link btn-rounded btn-fw">대시보드
-                                                </button>
-                                            </td>
+
                                         </tr>
                                     </c:if>
                                 </c:forEach>
@@ -643,7 +657,7 @@
                                             <td><c:out value="${formattedEndDate}"/></td>
                                             <td>
                                                 <button type="button"
-                                                        onclick="location.href='${path}/dashboard'"
+                                                        onclick="goDash('${plist.project_key}')"
                                                         class="btn btn-link btn-rounded btn-fw">대시보드
                                                 </button>
                                             </td>
