@@ -23,7 +23,7 @@ public interface MemberDao {
 	int checkId(String member_id);
 	
 	// 이메일 체크
-	int checkEmail(String member_email);
+	InviteMember checkEmail(String member_email);
 	
 	Project getUserProject(int member_key);
 	

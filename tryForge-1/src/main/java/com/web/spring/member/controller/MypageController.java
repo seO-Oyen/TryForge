@@ -20,7 +20,11 @@ public class MypageController {
 	
 	//마이페이지 출력
 	@GetMapping("myPage")
-	public String myPage(Model d) {
+	public String myPage(HttpSession session, Model d) {
+		if (session.getAttribute("loginMem") != null) {
+			Member member = (Member)session.getAttribute("loginMem");
+			d.addAttribute("profile", memService.getProfile(member.getMember_key()));
+		}
 		
 	    return "user/myPage";
 	}

@@ -52,8 +52,8 @@
 		WHERE member_id = #{member_id}
 	</select>
 	
-	<select id="checkEmail" parameterType="String" resultType="int">
-		SELECT count(*)
+	<select id="checkEmail" parameterType="String" resultType="inviteMember">
+		SELECT *
 		FROM invite_member
 		WHERE INVITEE_EMAIL = #{member_email}
 	</select>
