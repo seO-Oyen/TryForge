@@ -64,6 +64,9 @@ $(document).ready(function(){
 		$("#coment").html('')
 		$("#idchecked").val("false")
 	})
+	$("[name=member_email]").keyup(function() {
+		$("#emailchecked").val("false")
+	})
 	
 	// 아이디 중복 체크
 	$("#idChkBtn").click(function() {
@@ -142,13 +145,13 @@ $(document).ready(function(){
 					    toast: true,
 					    position: 'top-end',
 					    showConfirmButton: false,
-					    timer: 1500,
+					    timer: 2000,
 					    timerProgressBar: false
 					})
 					
 					Toast.fire({
 					    icon: 'error',
-					    title: '초대받지 않은 메일입니다.',
+					    title: '초대받지 않은 메일이거나\n이미 가입한 이메일입니다.',
 					    text: '관리자에게 문의해주세요.'
 					})
 				}
