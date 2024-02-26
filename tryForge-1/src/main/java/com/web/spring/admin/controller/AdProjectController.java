@@ -22,7 +22,7 @@ import com.web.spring.vo.Team_Member;
 public class AdProjectController {
 	@Autowired(required = false)
 	private AdProjectService service;
-	// http://localhost:1111/projList.do
+	// http://localhost:1111/schMem
 	// 프로젝트 출력(진행중/완료 상태 view단에서 변경예정)
 	@RequestMapping("projList")
 	public String projList(Project p , Model d) {
@@ -35,6 +35,11 @@ public class AdProjectController {
 		public String schMem(@RequestParam(value="member_name", defaultValue = "")String member_name, Model d) {
 		    d.addAttribute("memList", service.schMem(member_name));
 		    return "pageJsonReport";
+		}
+		@RequestMapping("exceptSchMem")
+		public String exceptSchMem(@RequestParam(value="member_name", defaultValue = "")String member_name, Model d) {
+			d.addAttribute("memList02", service.exceptSchMem(member_name));
+			return "pageJsonReport";
 		}
 	
 	// 프로젝트 생성, 팀 생성, 팀원 등록, 팀 구성원수 변경 

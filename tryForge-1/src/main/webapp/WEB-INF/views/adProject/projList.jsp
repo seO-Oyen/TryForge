@@ -34,6 +34,7 @@
     }
 </style>
 <script>
+var exceptSchMlist=[];
     $(document).ready(function () {
         $("#clsBtn").click(function () {
             $("#myModal form")[0].reset()
@@ -50,6 +51,7 @@
         })
         $("[name=member_name]").keyup(function () {
             schMem();
+            
         });
 
         insertProject();
@@ -132,8 +134,11 @@
             })
         })
     }
+    
 
     function schMem() {
+        console.log("exceptSchMlist length: " + exceptSchMlist.length);
+        console.log("exceptSchMlist content: ", exceptSchMlist);
         $.ajax({
             url: "${path}/schMem",
             data: $("#modalFrm").serialize(),
@@ -142,16 +147,27 @@
                 var memList = data.memList;
                 var html = "";
                 $(memList).each(function (idx, member) {
-                    if (member.status == '진행중') {
-                        html += "<tr> ";
-                        html += "<td>" + member.member_name + "</td>";
-                        html += "<td>" + member.member_email + "</td>";
-                        html += "<td>" + member.title + "</td>";
-                        html += "<td>" + member.start_date + "</td>";
-                        html += "<td>" + member.end_date + "</td>";
-                        html += "</tr>";
-                    } else {
-                        var member_key = member.member_key;
+                    html += "<tr> ";
+                    html += "<td>" + member.member_name + "</td>";
+                    html += "<td>" + member.member_email + "</td>";
+                    html += "<td>" + member.title + "</td>";
+                    html += "<td>" + member.start_date + "</td>";
+                    html += "<td>" + member.end_date + "</td>";
+                    html += "</tr>";
+                });
+                
+                // 할당 안된애
+                $.ajax({
+            url: "${path}/exceptSchMem",
+            data: $("#modalFrm").serialize(),
+            dataType: "json",
+            success: function (data) {
+                var memList02 = data.memList02;
+                console.log(memList02)
+                
+                $(memList02).each(function (idx, member) {
+                    var member_key = member.member_key;
+                   
                         html += "<tr ondblclick='selectMem(\"" + member_key + "\", \"" + member.member_name + "\", \"" + member.member_email + "\")' > ";
                         html += "<td>" + member.member_name + "</td>";
                         html += "<td>" + member.member_email + "</td>";
@@ -159,7 +175,7 @@
                         html += "<td style='text-align: center;'>·</td>";
                         html += "<td style='text-align: center;'>·</td>";
                         html += "</tr>";
-                    }
+                    
                 });
                 $("#addMem").html(html);
             },
@@ -167,8 +183,16 @@
                 console.log(err);
             }
         });
+                
+                
+                $("#addMem").html(html);
+                
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
     }
-
     function selectMem(member_key, member_name, member_email) {
         var row = "<tr data-member-key='" + member_key + "'>";
         row += "<td>" + member_name + "</td>";
@@ -744,6 +768,7 @@
                     <!-- 프로젝트 구성원 추가 -->
                     <div class="form-group">
                         <label id="tm">프로젝트 구성원 추가</label>
+                        <p style="color:red">*구성원은 2명이상 선택해주세요</p>
                         <div class="row mt-3">
                             <!-- 아래: 검색 결과 -->
                             <div class="col-12" id="bottom">

@@ -33,6 +33,12 @@ public class AdProjectService {
 			member_name = "";
 		return dao.schMem(member_name);
 	}
+	// 할당안된 인간들만
+	public List<Member> exceptSchMem(String member_name) {
+		if (member_name == null)
+			member_name = "";
+		return dao.exceptSchMem(member_name);
+	}
 	// 프로젝트, 팀, 팀원 등록
 	public String insertAll(Project insProject, Team insTeam, List<String> member_key) {
 		String msg = "";

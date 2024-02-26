@@ -77,7 +77,7 @@ $(document).ready(function(){
 			case '/notice':
 				Title.textContent = 'Notice';
 				break;
-			case '/task':
+			case '/getTask':
 				Title.textContent = 'Task';
 				break;
 			case '/taskReport':

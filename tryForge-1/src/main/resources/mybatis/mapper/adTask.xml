@@ -56,7 +56,7 @@
 	</update>
 	<!-- 업무 삭제 -->
 	<delete id="delTask" parameterType="int">
-		DELETE FROM TASK WHERE task_key = #{id} and ASSIGNOR=#{ASSIGNOR}
+		DELETE FROM TASK WHERE task_key = #{id}
 	</delete>
 	<select id="adRiskList" resultType="risk" parameterType="int">
 		SELECT r.*, ta.text, p.TITLE

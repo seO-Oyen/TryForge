@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface AdUserDao {
-	Team_Member tmFromMember(int member_key);
+	Team_Member tmFromMember(Team_Member tm);
 	// PL 변경
 	int assignPL(@Param("team_Member_key")int team_Member_key);
 	// 새 구성원 추가

@@ -47,27 +47,22 @@ public class Risk_ApprovalController {
         return "project/riskApproval";
     }
     // 결재 보고
-//    @PostMapping("insRiskApproval")
-//    public String insRiskApproval(Risk_Approval ins, Model d){
-//        d.addAttribute("insMsg",service.insRiskApproval(ins));
-//        return "pageJsonReport";
-//    }
-    
     @PostMapping("insRiskApproval")
     public String reportTask(Risk_Approval ins, FileStorage file, Model d){
         MultipartFile[] files = file.getFiles();
         // 파일 있을 때
         if(files != null && files.length > 0) {
             List<String> fileKeys = uploadService.uploadFile(file);
-            if(service.insRiskApproval(ins)!="") {
-                d.addAttribute("result",service.insRiskApproval(ins));
+            if(service.insRiskApproval(ins)>0) {
+                int cnt = service.insFileUse(fileKeys);
+                d.addAttribute("result", cnt>0?"업무보고 성공(첨부파일 "+cnt+"개 포함)":"업무보고 실패");
             }
         } else { // 파일 없을 때
-            d.addAttribute("result", service.insRiskApproval(ins));
+            d.addAttribute("result", service.insRiskApproval(ins)>0?"업무보고 성공(첨부파일 없음)":"업무보고 실패");
         }
         return "pageJsonReport";
     }
-    
+
     // 리스크 결재여부 리스트 출력
     @GetMapping("raInfo")
     public String raInfo(Model d){
@@ -93,9 +88,20 @@ public class Risk_ApprovalController {
     	return "pageJsonReport";
     }
     @PostMapping("reRiskApproval")
-    public String reRiskApproval(Risk_Approval upt, Model d) {
-    	d.addAttribute("uptMsg",service.reRiskApproval(upt));
-    	return "pageJsonReport";
+    public String reRiskApproval(Risk_Approval upt, FileStorage file, Model d) {
+    	   MultipartFile[] files = file.getFiles();
+        // 파일 있을 때
+        if(files != null && files.length > 0) {
+            List<String> fileKeys = uploadService.uploadFile(file);
+            if(service.reRiskApproval(upt)>0) {
+                int cnt = service.reRiskApprovalFileUse(fileKeys, upt);
+                d.addAttribute("result", cnt>0?"재상신 성공(첨부파일 "+cnt+"개 포함)":"재상신 실패");
+            }
+        } else { // 파일 없을 때
+            d.addAttribute("result", service.reRiskApproval(upt)>0?"재상신 성공(파일 추가첨부 없음)":"재상신 실패");
+        }
+
+        return "pageJsonReport";
     }
     
 }

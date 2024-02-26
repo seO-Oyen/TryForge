@@ -375,9 +375,7 @@
 					<!-- Modal footer -->
 					<div class="modal-footer">
 						<div class="mx-auto">
-							<button type="button" class="btn btn-" id="appRiskBtn"
-									style="background-color: #007FFF; color: white;">리스크 결재
-							</button>
+						
 
 							<button type="button" class="btn btn-danger" data-dismiss="modal"
 									id="clsBtn">닫기

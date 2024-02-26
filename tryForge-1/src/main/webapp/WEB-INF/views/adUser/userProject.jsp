@@ -59,6 +59,7 @@
     });
 
     function openpage(key) {
+        $("[name=project_key]").val(key);
         $.ajax({
             url: "${path}/userdetail?project_key=" + key,
             dataType: "json",
@@ -67,32 +68,33 @@
                 var teamInfo = data.teamInfo;
                 var tmInfo = data.tmInfo;
                 var memberInfo = data.memberInfo;
-                // 모달창 내용 변경
+
                 $("#myModal").modal('show');
-                $("[name=title]").val(projectInfo.title)
-                $("[name=team_name]").val(teamInfo.team_name)
-                $("#modalFrm02 [name=team_key]").val(teamInfo.team_key)
+                $("[name=title]").val(projectInfo.title);
+                $("[name=team_name]").val(teamInfo.team_name);
+                $("#modalFrm02 [name=team_key]").val(teamInfo.team_key);
 
                 var startDate = new Date(projectInfo.start_date);
                 startDate.setDate(startDate.getDate() + 1);
                 var formattedStartDate = startDate.toISOString().split('T')[0];
                 var endDate = new Date(projectInfo.end_date);
                 endDate.setDate(endDate.getDate() + 1);
-                var formateedendtDate = endDate.toISOString().split('T')[0];
-                $("[name=start_date]").val(formattedStartDate)
-                $("[name=end_date]").val(formateedendtDate)
+                var formattedEndDate = endDate.toISOString().split('T')[0];
+                $("[name=start_date]").val(formattedStartDate);
+                $("[name=end_date]").val(formattedEndDate);
 
-                $("[name=detail]").val(projectInfo.detail)
-                $("[name=left]").hide()
-                $("#tm").text("프로젝트 구성원 확인")
+                $("[name=detail]").val(projectInfo.detail);
+                $("[name=left]").hide();
+                $("#tm").text("프로젝트 구성원 확인");
                 $("#right").removeClass("col-6");
                 $("#right").addClass("col-12");
                 $("#searchResults").css("height", "0px");
-                // 다중 멤버 each 처리
-                var addhtml = "";
+
+                // 각 회원에 대한 정보 처리
                 $.each(memberInfo, function (index, member) {
                     // getTeamInfo 함수 호출
                     getTeamInfo(member.member_key, function (role, team_member_key) {
+                        var addhtml = ""; // 각 회원에 대한 HTML 행을 초기화
                         addhtml += "<tr><td>" + member.member_name + "</td>";
                         addhtml += "<td>" + member.member_email + "</td>";
                         addhtml += "<td class='tmInfoRow" + member.member_key + "'>" + role + "</td>";
@@ -100,7 +102,7 @@
                         addhtml += "<td><button type='button' class='btn btn-' style='background-color: #007FFF; color: white;' onclick='changePL(" + team_member_key + ")'>PL지정</button></td></tr>";
 
                         // 기존의 내용을 비우고 새로운 행을 추가
-                        $("#selectMem").empty().append(addhtml);
+                        $("#selectMem").append(addhtml);
                         $("#uptBtn").show();
                         $("#detailBtn").show();
                     });
@@ -112,17 +114,20 @@
         });
     }
 
-    // 맴버키로 팀 정보 가져오기
     function getTeamInfo(member_key, callback) {
+        var projectKey = $("[name=project_key]").val();
+        $("[name=member_key1]").val(member_key)
+        console.log(projectKey);
         $.ajax({
             url: "${path}/tmInfo",
-            data: "member_key=" + member_key,
+            data: $("#roleForm").serialize(),
             dataType: "json",
             success: function (data) {
                 var tmInfo = data.tmInfo;
-                var team_member_key = tmInfo.team_Member_key;
-                $(".tmInfoRow" + member_key).html(tmInfo.role);
-                callback(tmInfo.role, team_member_key);
+                var team_member_key = tmInfo.team_member_key;
+                var role = tmInfo.role; // tmInfo에서 role 속성을 가져옴
+                $(".tmInfoRow" + member_key).html(role); // role을 HTML에 적용
+                callback(role, team_member_key);
             },
             error: function (err) {
                 console.log(err);
@@ -130,7 +135,6 @@
             }
         });
     }
-
     function deleteTm(team_member_key) {
         $.ajax({
             url: "${path}/userDelete",
@@ -219,43 +223,45 @@
             }
         })
     }
-
     function schMem() {
+        
         $.ajax({
-            url: "${path}/newMemSch",
+            url: "${path}/schMem",
             data: $("#modalFrm02").serialize(),
             dataType: "json",
             success: function (data) {
                 var memList = data.memList;
                 var html = "";
                 $(memList).each(function (idx, member) {
-                    if (member.title != null) {
-                        html += "<tr> ";
-                        html += "<td>" + member.member_name + "</td>";
-                        html += "<td>" + member.member_email + "</td>";
-                        html += "<td>" + member.title + "</td>";
-                        // 시작일 format
-                        var startDate = new Date(member.start_date);
-                        startDate.setDate(startDate.getDate() + 1);
-                        var formateedstarttDate = startDate.toISOString().split('T')[0];
-                        html += "<td>" + formateedstarttDate + "</td>";
-                        // 종료일 format
-                        var endDate = new Date(member.end_date);
-                        endDate.setDate(endDate.getDate() + 1);
-                        var formateedendtDate = endDate.toISOString().split('T')[0];
-                        html += "<td>" + formateedendtDate + "</td>";
-                        html += "</tr>";
-                    } else {
-                        var member_key = member.member_key;
-
-                        html += "<tr>";
+                    html += "<tr> ";
+                    html += "<td>" + member.member_name + "</td>";
+                    html += "<td>" + member.member_email + "</td>";
+                    html += "<td>" + member.title + "</td>";
+                    html += "<td>" + member.start_date + "</td>";
+                    html += "<td>" + member.end_date + "</td>";
+                    html += "</tr>";
+                });
+                
+                // 할당 안된애
+                $.ajax({
+            url: "${path}/exceptSchMem",
+            data: $("#modalFrm02").serialize(),
+            dataType: "json",
+            success: function (data) {
+                var memList02 = data.memList02;
+                console.log(memList02)
+                
+                $(memList02).each(function (idx, member) {
+                    var member_key = member.member_key;
+                   
+                        html += "<tr ondblclick='selectMem(\"" + member_key + "\", \"" + member.member_name + "\", \"" + member.member_email + "\")' > ";
                         html += "<td>" + member.member_name + "</td>";
                         html += "<td>" + member.member_email + "</td>";
                         html += "<td style='text-align: center;'>·</td>";
                         html += "<td style='text-align: center;'>·</td>";
                         html += "<td><button class='btn btn-' style='background-color: #007FFF; color: white;' onclick='insNewTm(" + member.member_key + ")'>구성원 추가</button></td>";
                         html += "</tr>";
-                    }
+                    
                 });
                 $("#newMem").html(html);
             },
@@ -263,8 +269,18 @@
                 console.log(err);
             }
         });
+                
+                
+                $("#newMem").html(html);
+                
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
     }
 
+   
     function insNewTm(key) {
         $("#modalFrm02 [name=member_key1]").val(key);
         $.ajax({
@@ -345,13 +361,7 @@
                                             <c:set var="formattedEndDate"
                                                    value="${fn:substring(plist.end_date, 0, 10)}"/>
                                             <td><c:out value="${formattedEndDate}"/></td>
-                                            <td>
-                                                <button type="button"
-                                                        onclick="location.href='${path}/dashboard'"
-                                                        class="btn btn-link btn-rounded btn-fw"
-                                                        style="margin-left: 60%;">대시보드
-                                                </button>
-                                            </td>
+                                            
                                         </tr>
                                     </c:if>
                                 </c:forEach>
@@ -383,13 +393,7 @@
                                     <c:if test="${plist.status == '완료'}">
                                         <tr ondblclick="openpage('${plist.project_key}')">
                                             <td>${plist.title}</td>
-                                            <td>
-                                                <button type="button"
-                                                        onclick="location.href='${path}/dashboard'"
-                                                        class="btn btn-link btn-rounded btn-fw"
-                                                        style="margin-left: 60%;">대시보드
-                                                </button>
-                                            </td>
+                                            
                                         </tr>
                                     </c:if>
                                 </c:forEach>
@@ -428,7 +432,12 @@
                 </div>
 
             </div>
+            <form id="roleForm">
+            	  <input type="hidden" name="project_key"/>
+            	  <input type="hidden" name="member_key1"/>
+            </form>
             <form class="forms-sample" id="modalFrm">
+          
                 <input type="hidden" name="creater" value="${loginMem.member_key}"/>
                 <div class="form-group">
                     <label for="exampleInputUsername1">프로젝트 타이틀</label>

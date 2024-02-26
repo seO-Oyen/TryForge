@@ -116,6 +116,7 @@
     }
     // PL 업데이트
     function uptConfirm(id) {
+    	console.log(id)
         $.ajax({
             url: "${path}/uptConfirm",
             data: "id=" + id,
@@ -200,7 +201,7 @@
                                     <c:if
                                             test="${tlist.member_key == loginMem.member_key && tlist.confirm == 0}">
 
-                                        <tr class="member-row" data-member-key="${tlist.id}">
+                                        <tr class="member-row" data-member-key="${tlist.id}" ondblclick='openDetail("${tlist.id}")'>
                                             <td>${tlist.text}</td>
                                             <td>${tlist.start_date}</td>
                                             <td>${tlist.end_date}</td>
@@ -251,7 +252,7 @@
                                     <c:if
                                             test="${tlist.member_key == loginMem.member_key && tlist.confirm == 1}">
 
-                                        <tr class="task-row" data-member-key="${tlist.id}" ondblclick="openDetail()">
+                                        <tr class="task-row" data-member-key="${tlist.id}" ondblclick='openDetail("${tlist.id}")'>
                                             <td>${tlist.text}</td>
                                             <td>${tlist.start_date}</td>
                                             <td>${tlist.end_date}</td>
