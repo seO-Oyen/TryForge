@@ -59,11 +59,40 @@
 	</select>
 	
 	<select id="getUserProject" parameterType="int" resultType="project">
-		select p.*
-		from team_member mem,  team, project p
+		select *
+		from (
+			SELECT p.*
+			FROM team_member mem,  team, project p
+			where member_key = #{member_key}
+			    and mem.team_key = team.team_key
+			    and team.project_key = p.project_key
+			ORDER BY p.PROJECT_KEY desc
+		)
+		WHERE rownum = 1
+	</select>
+	
+	<select id="getUserProjectList" parameterType="int" resultType="project">
+		SELECT p.*
+		FROM team_member mem,  team, project p
 		where member_key = #{member_key}
 		    and mem.team_key = team.team_key
 		    and team.project_key = p.project_key
+		ORDER BY p.PROJECT_KEY desc
+	</select>
+	
+	<select id="getProject" parameterType="String" resultType="project">
+		SELECT *
+		FROM project
+		WHERE PROJECT_KEY = #{project_key}
+	</select>
+	
+	<select id="getProjectMember" parameterType="String" resultType="member">
+		SELECT MEMBER.*
+		FROM MEMBER, team_member mem, team, project p
+		WHERE team.PROJECT_KEY = p.PROJECT_KEY
+			AND team.TEAM_KEY = mem.TEAM_KEY
+			AND mem.MEMBER_KEY = MEMBER.MEMBER_KEY
+			AND p.PROJECT_KEY = #{project_key}
 	</select>
 	
 	<insert id="inviteMember" parameterType="member">
@@ -120,5 +149,55 @@
 		SET MEMBER_PWD = #{pwd}
 		WHERE MEMBER_KEY = #{memKey}
 	</update>
+	
+	<insert id="requestRole">
+		INSERT INTO role_request
+		(
+			request_key,
+			member_key,
+			request_comment,
+			admin_comment,
+			request_state,
+			request_date
+		)
+		VALUES
+		(
+			role_seq.nextval,
+			#{member_key},
+			#{comment},
+			'',
+			'request',
+			sysdate
+		)
+	</insert>
+	
+	<select id="getRequestRoleList" parameterType="int" resultType="roleRequest">
+		SELECT REQUEST_KEY,
+			MEMBER_KEY,
+			REQUEST_COMMENT,
+			ADMIN_COMMENT,
+			REQUEST_STATE,
+			TO_CHAR(REQUEST_DATE, 'YYYY-MM-DD HH24:MI')
+		FROM role_request
+		WHERE member_key = #{member_key}
+		ORDER BY REQUEST_KEY desc
+	</select>
+	
+	<select id="getRequestRole" parameterType="int" resultType="roleRequest">
+		SELECT REQUEST_KEY,
+			MEMBER_KEY,
+			REQUEST_COMMENT,
+			ADMIN_COMMENT,
+			REQUEST_STATE,
+			TO_CHAR(REQUEST_DATE, 'YYYY-MM-DD HH24:MI')
+		FROM role_request
+		WHERE REQUEST_KEY = #{request_key}
+	</select>
+	
+	<select id="getIdToEmail" parameterType="String">
+		select *
+		from member
+		where member_email = #{member_email}
+	</select>
 
 </mapper>

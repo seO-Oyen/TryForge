@@ -274,7 +274,11 @@
             data: $("#modalFrm02").serialize(),
             success: function (data) {
                 var insMsg01 = data.insMsg;
-
+                if(confirm("구성원을 추가 하시겠습니까?")){
+                    alert(insMsg01)
+                }else{
+                    alert("구성원 추가 에러")
+                }
                 Swal.fire({
                     title: '구성원 추가',
                     text: '구성원을 추가하시겠습니까?',

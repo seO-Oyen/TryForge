@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.spring.admin.dao.AdApprovalDao">
+	<select id="approvalList" resultType="approve" parameterType="approve">
+		SELECT a.*, t.text,t.detail as task_detail,t.START_DATE ,t.END_DATE,m.member_name
+		FROM APPROVAL a
+				 JOIN TASK t ON t.task_key = a.task_key
+				 JOIN MEMBER m ON m.member_key = a.member_key
+		WHERE a.PROJECT_KEY = #{project_key} AND t.ASSIGNOR = #{assignor}
+		ORDER BY REQUEST_DATE
+	</select>
+	<select id="getApproval" parameterType="int" resultType="approve">
+		SELECT a.*, t.text,t.detail, t.START_DATE , t.END_DATE, m.member_name
+		FROM APPROVAL a
+				 JOIN TASK t ON t.task_key = a.task_key
+				 JOIN MEMBER m ON m.member_key = a.member_key
+		WHERE a.APPROVAL_KEY = #{approval_key}
+	</select>
+	<select id="getFname" parameterType="int" resultType="file">
+		SELECT fs.fname,fs.FILE_KEY FROM FILE_STORAGE fs
+			 JOIN FILE_USE fu ON fu.FILE_KEY = fs.FILE_KEY
+			 JOIN APPROVAL a ON a.APPROVAL_KEY = fu.USE_KEY
+		WHERE a.APPROVAL_KEY = #{approval_key}
+	</select>
+	<update id="approvalStatusBefore" parameterType="int">
+		update APPROVAL set STATUS = '결재전' where APPROVAL_KEY = #{approval_key}
+	</update>
+	<update id="approvalStatusFin" parameterType="int">
+		update APPROVAL set STATUS = '처리완료', COMPLETION_DATE = sysdate where APPROVAL_KEY = #{approval_key}
+	</update>
+	<update id="approvalStatusReturn" parameterType="approve">
+		update APPROVAL set STATUS = '재상신요청', COMPLETION_DATE = sysdate, REJECT_DETAIL = #{reject_detail} where APPROVAL_KEY = #{approval_key}
+	</update>
+	<!--리스크 결재-->
+	<select id="riskApprovalList" parameterType="String" resultType="risk_approval">
+		SELECT ra.*, t.text, r.TYPE, rr.contact, rr.STRATEGY, rr.RESPONSE_METHOD
+		FROM RISK_APPROVAL ra
+				 JOIN RISK r ON r.RISK_KEY = ra.RISK_KEY
+				 JOIN TASK t ON t.task_key = r.TASK_KEY
+				 JOIN RISK_RESPONSE rr ON rr.RISK_KEY = r.RISK_KEY
+		WHERE r.PROJECT_KEY = #{project_key} ORDER BY report_date
+	</select>
+	<select id="getRiskApproval" parameterType="int" resultType="risk_approval">
+		SELECT ra.*, t.text, r.TYPE, rr.contact, rr.STRATEGY, rr.RESPONSE_METHOD,r.REGISTRANT
+		FROM RISK_APPROVAL ra
+				 JOIN RISK r ON r.RISK_KEY = ra.RISK_KEY
+				 JOIN TASK t ON t.task_key = r.TASK_KEY
+				 JOIN RISK_RESPONSE rr ON rr.RISK_KEY = r.RISK_KEY
+		WHERE ra.RISK_APPROVAL_KEY = #{risk_approval_key}
+	</select>
+	<!-- risk_approval_key로 첨부파일 이름 가지고 오기-->
+	<select id="getRiskFname" resultType="file" parameterType="int">
+		SELECT fs.fname,fs.FILE_KEY FROM FILE_STORAGE fs
+			JOIN RISK_APPROVAL ra  ON ra.FILE_KEY = fs.FILE_KEY
+		WHERE ra.RISK_APPROVAL_KEY = #{risk_approval_key}
+	</select>
+	<!--상태변경 3개-->
+	<update id="riskApprovalStatusFin" parameterType="int">
+		update RISK_APPROVAL set REPORT_STATUS = '결재완료' where RISK_APPROVAL_KEY = #{risk_approval_key}
+	</update>
+	<update id="riskResponseFin" parameterType="int">
+		UPDATE RISK_RESPONSE
+		SET STATUS = '처리완료',
+			COMPLETION_DATE = SYSDATE
+		WHERE RISK_RESPONSE_KEY = (
+			SELECT RISK_RESPONSE_KEY
+			FROM RISK_APPROVAL
+			WHERE RISK_APPROVAL_KEY = #{risk_approval_key}
+		)
+	</update>
+	<update id="riskApprovalStatusReturn" parameterType="approve">
+		update RISK_APPROVAL set REPORT_STATUS = '재상신요청', REJECT_DETAIL = #{reject_detail} where RISK_APPROVAL_KEY = #{risk_approval_key}
+	</update>
+</mapper>
+

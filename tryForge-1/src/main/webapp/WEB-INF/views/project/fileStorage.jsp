@@ -160,7 +160,7 @@
 		<div class="row">
 			<div class="col-xl-6 grid-margin stretch-card flex-column" style = "flex: 0 0 100%; max-width: 100%;">
 			    <div class="d-flex justify-content-between mb-4 align-items-center">
-			        <h5 class="mb-2 text-titlecase" style="font-size : 28px;">파일저장소</h5>
+			        <h5 class="mb-2 text-titlecase" style="font-size : 28px;">공유보관함</h5>
 			        	<form method="post" enctype="multipart/form-data" action="upload">
 			        		<button type="button" id="uploadBtn" class="btn btn-info">업로드</button>
 			    			<input type="file" id="fileInput" name="files" multiple="multiple" style="display: none;" />
@@ -198,16 +198,8 @@ function download(file_key, fname){
 			"다운로드 하시겠습니까?",
 			"question", // 아이콘
 			function() {
-				$.ajax({
-					url: "${path}/download?file_key="+file_key+"&fname="+fname,
-					type: "POST",
-					success: function(response) {
-						msg("success", "파일 다운로드 성공!")
-					},
-					error: function(error) {
-						msg("error", "오류", error)
-					}
-				})
+				location.href="${path}/download?file_key="+file_key+"&fname="+fname
+				msg("success", "파일 다운로드 성공!")
 			},
 			function() {
 			}
