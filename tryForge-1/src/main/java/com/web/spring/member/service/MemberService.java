@@ -230,4 +230,10 @@ public class MemberService {
 		
 		return msg;
 	}
+	
+	// 마이페이지 프로필사진 불러오기
+	public String getProfile() {
+		
+		return "";
+	}
 }

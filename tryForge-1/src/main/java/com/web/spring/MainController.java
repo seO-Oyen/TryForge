@@ -51,11 +51,4 @@ public class MainController {
 		return "user/userIndex";
 	}
 
-	//마이페이지 출력
-	@GetMapping("myPage")
-	public String myPage(Model d) {
-		
-	    return "user/myPage";
-	}
-
 }

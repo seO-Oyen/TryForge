@@ -277,7 +277,7 @@ function fileUpload(){
 							<div class="card-body">
 								<form method="post" enctype="multipart/form-data" action="upload">
 									<%-- <img src="${path}/template/images/faces/face5.jpg" alt="profile" id ="profile"/> --%>
-									<img src="C:/Users/user/git/TryForge/tryForge-1/src/main/webapp/FileStorage/FILE-581.png" alt="profile" id ="profile"/>
+									<img src="${path}/template/images/FILE-581.png" alt="profile" id ="profile"/>
 									<input type="file" id="fileInput" name="files" multiple="multiple" style="display: none;" accept="image/*" />
 									<input type="hidden" name="description" value="프로필 사진"/>
 									<input type="hidden" name="project_key" value="0"/>
