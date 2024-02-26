@@ -100,4 +100,21 @@
 		DELETE FROM TASK_DEPENDENCY
 			WHERE DEPENDENCY_KEY = #{id}
 	</delete>
+
+	<select id="countCompleteTask" resultType="int">
+		SELECT COUNT(TASK_KEY) FROM TASK
+		WHERE STATUS = '완료'
+	</select>
+
+	<select id="countIncompleteTask" resultType="int">
+		SELECT COUNT(TASK_KEY) FROM TASK
+		WHERE STATUS = '진행중'
+	</select>
+
+	<select id="projectProgress" parameterType="String" resultType="int">
+		SELECT PROGRESS FROM TASK
+		WHERE TASK_TYPE = 'project'
+		  AND PROJECT_KEY = #{project_key}
+	</select>
+
 </mapper>

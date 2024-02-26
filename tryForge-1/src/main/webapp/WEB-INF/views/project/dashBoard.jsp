@@ -21,8 +21,8 @@
 
 						<div class="chart-info" style="position: absolute; top: 70%; left: 50%; transform: translate(-50%, -50%); width: 100%; text-align: center;">
 							<h3 style="display: inline-block; width: 75%;">
-								<span style="float: left;">진행중 : <span id="tot01">50</span></span>
-								<span style="float: right;">완료 : <span id="tot02">50</span></span>
+								<span style="float: left;">진행중 : <span id="tot01">${inCompleteTask}</span></span>
+								<span style="float: right;">완료 : <span id="tot02">${completeTask}</span></span>
 							</h3>
 						</div>
 					</div>
@@ -36,7 +36,7 @@
 							<h4 class="card-title">진척도</h4>
 							<canvas id="projectCnt" width="50" height="30"></canvas>
 							<div class="chart-info" style="position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%);">
-								<h2>50%</h2>
+								<h2>${projectProgress}%</h2>
 							</div>
 						</div>
 					</div>

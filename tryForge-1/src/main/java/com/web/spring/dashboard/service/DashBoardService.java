@@ -2,6 +2,9 @@ package com.web.spring.dashboard.service;
 
 import java.util.List;
 
+import com.web.spring.gantt.dao.GanttDao;
+import com.web.spring.vo.Task;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,8 @@ public class DashBoardService {
 	private MemberDao memDao;
 	@Autowired(required = false) 
 	private ChatDao chatDao;
+	@Autowired(required = false)
+	private GanttDao ganttDao;
 	
 	public Project getProject(String project_key) {
 		
@@ -33,6 +38,20 @@ public class DashBoardService {
 		} else {
 			return chatDao.getChatListNum(project_key);
 		}
+	}
+
+	public List<Task> getTaskMem(@Param("project_key") String project_key) {
+		return ganttDao.getTaskMem(project_key);
+	}
+
+	public int countCompleteTask() {
+		return ganttDao.countCompleteTask();
+	}
+	public int countIncompleteTask() {
+		return ganttDao.countIncompleteTask();
+	}
+	public int projectProgress(@Param("project_key") String project_key) {
+		return ganttDao.projectProgress(project_key);
 	}
 
 }

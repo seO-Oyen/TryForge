@@ -50,8 +50,13 @@ public class DashBoardController {
 	}
 	
     @GetMapping("dashboard")
-    public String dashboard(){
-        
+    public String dashboard(Model d, HttpSession session){
+		if(session.getAttribute("projectMem") != null) {
+			Project project = (Project)session.getAttribute("projectMem");
+			d.addAttribute("completeTask", service.countCompleteTask());
+			d.addAttribute("inCompleteTask", service.countIncompleteTask());
+			d.addAttribute("projectProgress", service.projectProgress(project.getProject_key())*100);
+		}
         return "project/dashBoard";
     }
     
@@ -69,4 +74,5 @@ public class DashBoardController {
     	
     	return "pageJsonReport";
     }
+
 }
