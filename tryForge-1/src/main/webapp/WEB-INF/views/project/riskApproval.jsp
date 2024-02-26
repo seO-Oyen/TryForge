@@ -69,13 +69,26 @@
 	}
 	
 	function insRiskApproval(){
+		var formData = new FormData();
+		var files = $("#uploadFile")[0].files;
+		$.each(files, function(index, file) {
+			formData.append('files[]', file);
+
+		})
+		formData.append('description', $("input[name='description']").val());
+		formData.append('member_key', $("input[name='member_key']").val());
+		formData.append('project_key', $("input[name='project_key']").val());
+		formData.append('title', $("#form2 [name=title]").val());
+		formData.append('reporter', $("#form2 [name=reporter]").val());
+		formData.append('report_detail', $("#form2 [name=report_detail]").val());
+		
 		$.ajax({
 			url:"${path}/insRiskApproval",
 			type:"post",
-			data:$("#form02").serialize(),
+			data:formData,
 			dataType:"json",
 			success:function (data){
-				if(data.insMsg!=null) {
+				if(data.result!=null) {
 					Swal.fire({
 						title: '결재 성공',
 						text: data.insMsg,
@@ -101,24 +114,13 @@
 		formData.append('description', $("input[name='description']").val());
 		formData.append('member_key', $("input[name='member_key']").val());
 		formData.append('project_key', $("input[name='project_key']").val());
+		formData.append('title', $("#form2 [name=title]").val());
+		formData.append('reporter', $("#form2 [name=reporter]").val());
+		formData.append('report_detail', $("#form2 [name=report_detail]").val());
+
 		console.log($("[name=description]").val())
 		console.log(formData.get('description'));
 
-		$.ajax({
-			url: "${path}/upload",
-			type: "POST",
-			data: formData,
-			cache: false,
-			processData: false,
-			contentType: false,
-			success: function(response) {
-				msg("success", "파일 업로드 성공!", response.msg)
-
-			},
-			error: function(error) {
-				msg("error", "업로드에러", error)
-			}
-		})
 	}
 
 	
@@ -191,7 +193,6 @@
 				<input type="hidden" name="risk_key" >
 				<input type="hidden" name="risk_response_key">
 				<input type="hidden" name="risk_approval_key">
-
 				<div class="form-group">
 					<label for="exampleInputName1">결재보고명</label>
 					<p style="color: red;">*필수 입력란</p>
