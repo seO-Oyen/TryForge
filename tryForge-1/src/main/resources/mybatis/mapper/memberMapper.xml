@@ -52,8 +52,8 @@
 		WHERE member_id = #{member_id}
 	</select>
 	
-	<select id="checkEmail" parameterType="String" resultType="int">
-		SELECT count(*)
+	<select id="checkEmail" parameterType="String" resultType="inviteMember">
+		SELECT *
 		FROM invite_member
 		WHERE INVITEE_EMAIL = #{member_email}
 	</select>
@@ -117,6 +117,12 @@
 		FROM invite_member
 		ORDER BY invite_key desc
 	</select>
+	
+	<update id="updateInviteMember" parameterType="String">
+		UPDATE invite_member
+			SET joined = 1
+		WHERE invitee_email = #{email}
+	</update>
 	
 	<select id="getMeber" parameterType="int" resultType="member">
 		select * 

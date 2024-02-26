@@ -23,7 +23,7 @@ public interface MemberDao {
 	int checkId(String member_id);
 	
 	// 이메일 체크
-	int checkEmail(String member_email);
+	InviteMember checkEmail(String member_email);
 	
 	Project getUserProject(int member_key);
 	
@@ -36,8 +36,11 @@ public interface MemberDao {
 	// 초대 내역 저장
 	int inviteMember(Member member);
 	
-	// 초내 내역 출력
+	// 초대 내역 출력
 	List<InviteMember> getInviteMemberList();
+	
+	// 초대 내역 true로 변경
+	int updateInviteMember(String email);
 	
 	// 유저 key로 유저 찾기
 	Member getMeber(int memberKey);

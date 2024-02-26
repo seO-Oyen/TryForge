@@ -104,39 +104,8 @@ function goChat(projectKey) {
 									<div class="card-body d-flex flex-column justify-content-between"
 										style="height: 500px; overflow: auto;">
 										<div class="d-flex justify-content-between align-items-center mb-2">
-										<table class="table"
-											style="width: 95%; margin-left: 4%;">
-											<col width="90%">
-											<col width="10%">
-											<thead>
-												
-											</thead>
-											<tbody id="tbody">
-												<c:forEach var="project" items="${projectList}">
-													
-													<c:if test="${project.status eq '진행중'}">
-														<tr>
-															<td><h5>${project.title}</h5></td>
-															<td><button type="button" onclick="goDash('${project.project_key}')"
-																	class="btn btn-link btn-rounded btn-fw">대시보드로</button></td>
-														</tr>
-														<tr>
-															<td colspan="2">
-															${project.start_date.substring(0,10)}
-															~ ${project.end_date.substring(0,10)}</td>
-														</tr>
-														<tr>
-															<td colspan="2"><h6>참여중인 멤버</h6></td>
-														</tr>
-														<script>
-															projectMem("${project.project_key}")
-														</script>
-														</tbody>
-													</table>
-													</div>
-													<button class="btn btn-info" onclick="goChat('${project.project_key}')">프로젝트 채팅방으로</button>
-													</c:if>
-												</c:forEach>
+										
+										</div>
 										
 									</div>
 								</div>
@@ -151,27 +120,7 @@ function goChat(projectKey) {
 										<div class="card-body d-flex flex-column justify-content-between"
 											style="height: 400px; overflow: auto;">
 											<div class="d-flex justify-content-between align-items-center mb-2">
-											<table class="table table-hover"
-												style="width: 95%; margin-left: 4%;">
-											<col width="90%">
-											<col width="10%">
-											<thead>
-												<tr>
-													
-												</tr>
-											</thead>
-											<tbody>
-												<c:forEach var="project" items="${projectList}">
-													<c:if test="${project.status eq '완료'}">
-														<tr>
-															<td><h5>${project.title}</h5></td>
-															<td><button type="button" onclick="goDash('${project.project_key}')"
-																	class="btn btn-link btn-rounded btn-fw">대시보드로</button></td>
-														</tr>
-													</c:if>
-												</c:forEach>
-											</tbody>
-											</table>
+											
 											</div>
 											
 										</div>
