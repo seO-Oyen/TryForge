@@ -14,7 +14,7 @@
 	<!--2. 프로젝트 별 진척도 출력-->
 	<select id="projectProgress" resultMap="taskRst">
 		SELECT ta.progress, ta.TEXT, ta.START_DATE, ta.END_DATE,ta.PROJECT_KEY
-		FROM task ta JOIN PROJECT p ON p.PROJECT_KEY = ta.project_key WHERE ta.task_type='project'
+		FROM task ta JOIN PROJECT p ON p.PROJECT_KEY = ta.project_key WHERE ta.task_type='project' AND p.STATUS = '진행중'
 	</select>
 	<!--가용인원-->
 	<!--1. 맴버 전체수-->

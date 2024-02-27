@@ -219,19 +219,30 @@ var exceptSchMlist=[];
             var memberKey = $(this).data("member-key");
             member_key.push(memberKey);
         });
-        const setCollection = new Set(member_key)
-        const isDuplicate = setCollection.size < member_key.length
-        if (isDuplicate) {
-            Swal.fire({
-                title: '중복발생',
-                text: '구성원이 중복으로 추가되었습니다',
-                icon: 'error',
-            });
-            return "";
-        } else {
-            $("#hiddenMemberKey").val(member_key);
-            return member_key;
+        
+        if(member_key.length==1){
+        	 Swal.fire({
+                 title: '구성원선택',
+                 text: '구성원은 한명이상 선택해주세요',
+                 icon: 'error',
+             });
+             return "";
+        }else{
+            const setCollection = new Set(member_key)
+            const isDuplicate = setCollection.size < member_key.length
+            if (isDuplicate) {
+                Swal.fire({
+                    title: '중복발생',
+                    text: '구성원이 중복으로 추가되었습니다',
+                    icon: 'error',
+                });
+                return "";
+            } else {
+                $("#hiddenMemberKey").val(member_key);
+                return member_key;
+            }
         }
+      
     }
 
     function openpage(key) {
