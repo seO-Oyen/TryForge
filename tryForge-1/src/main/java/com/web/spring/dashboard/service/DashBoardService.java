@@ -2,7 +2,9 @@ package com.web.spring.dashboard.service;
 
 import java.util.List;
 
+import com.web.spring.dashboard.dao.DashBoardDao;
 import com.web.spring.gantt.dao.GanttDao;
+import com.web.spring.vo.Calendar;
 import com.web.spring.vo.Task;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +22,10 @@ public class DashBoardService {
 	@Autowired(required = false) 
 	private ChatDao chatDao;
 	@Autowired(required = false)
+	private DashBoardDao dashBoardDao;
+	@Autowired(required = false)
 	private GanttDao ganttDao;
-	
+
 	public Project getProject(String project_key) {
 		
 		return memDao.getProject(project_key);
@@ -44,14 +48,27 @@ public class DashBoardService {
 		return ganttDao.getTaskMem(project_key);
 	}
 
-	public int countCompleteTask(@Param("project_key") String project_key) {
-		return ganttDao.countCompleteTask(project_key);
+	public int getCountCompleteTask(@Param("project_key") String project_key) {
+		return dashBoardDao.getCountCompleteTask(project_key);
 	}
-	public int countIncompleteTask(@Param("project_key") String project_key) {
-		return ganttDao.countIncompleteTask(project_key);
+	public int getCountIncompleteTask(@Param("project_key") String project_key) {
+		return dashBoardDao.getCountIncompleteTask(project_key);
 	}
-	public float projectProgress(@Param("project_key") String project_key) {
-		return ganttDao.projectProgress(project_key);
+	public float getProjectProgress(@Param("project_key") String project_key) {
+		return dashBoardDao.getProjectProgress(project_key);
+	}
+	public int getProjectElapsedDate(@Param("project_key") String project_key) {
+		return dashBoardDao.getProjectElapsedDate(project_key);
+	}
+	public int getProjectDday(@Param("project_key") String project_key) {
+		return dashBoardDao.getProjectDday(project_key);
+	}
+	public String getProjectEndDate(@Param("project_key") String project_key) {
+		return dashBoardDao.getProjectEndDate(project_key);
+	}
+
+	public List<Calendar> getComingSchedule(@Param("project_key") String project_key) {
+		return dashBoardDao.getComingSchedule(project_key);
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.web.spring.dashboard.controller;
 
+import com.web.spring.SessionService;
 import com.web.spring.dashboard.service.DashBoardService;
 import com.web.spring.vo.Member;
 import com.web.spring.vo.Project;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class DashBoardController {
 	@Autowired(required = false)
 	private DashBoardService service;
-	
+	@Autowired(required = false)
+	private SessionService sessionService;
+
 	@GetMapping("setPj")
 	public String setPj (
 				@RequestParam("projectNum") String pjNum,
@@ -51,17 +54,38 @@ public class DashBoardController {
 	
     @GetMapping("dashboard")
     public String dashboard(Model d, HttpSession session){
-		if(session.getAttribute("projectMem") != null) {
-			Project project = (Project)session.getAttribute("projectMem");
+		Project project = sessionService.getProject(session);
+		if(project != null) {
 			String projectKey = project.getProject_key();
 
-			d.addAttribute("completeTask", service.countCompleteTask(projectKey));
-			d.addAttribute("inCompleteTask", service.countIncompleteTask(projectKey));
-			d.addAttribute("projectProgress", (int)(service.projectProgress(projectKey)*100));
+			d.addAttribute("completeTask", service.getCountCompleteTask(projectKey)); // 완료
+			d.addAttribute("inCompleteTask", service.getCountIncompleteTask(projectKey)); // 미완료
+			d.addAttribute("projectProgress", (int) (service.getProjectProgress(projectKey) * 100));
+			d.addAttribute("projectElapsedDate", service.getProjectElapsedDate(projectKey));
+			d.addAttribute("projectDday", service.getProjectDday(projectKey));
+			d.addAttribute("projectEndDate", (service.getProjectEndDate(projectKey)).split(" ")[0]);
 		}
         return "project/dashBoard";
     }
-    
+
+	@GetMapping("getComingSchedule")
+	public String getComingSchedule(Model d, HttpSession session) {
+		Project project = sessionService.getProject(session);
+		if(project != null) {
+			d.addAttribute("scheduleList", service.getComingSchedule(project.getProject_key()));
+		}
+		return "pageJsonReport";
+	}
+
+	@GetMapping("getTaskMem")
+	public String getTaskMem(Model d, HttpSession session) {
+		Project project = sessionService.getProject(session);
+		if(project != null) {
+			d.addAttribute("memberList", service.getTaskMem(project.getProject_key()));
+		}
+		return "pageJsonReport";
+	}
+
     @GetMapping("goPjChat")
     public String pjChat(
 	    		@RequestParam("projectNum") String pjNum,
