@@ -2,15 +2,12 @@ package com.web.spring.admin.service;
 
 import java.util.List;
 
-import com.web.spring.vo.Risk;
-import com.web.spring.vo.Risk_Response;
+import com.web.spring.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.web.spring.admin.dao.AdTaskDao;
 import com.web.spring.gantt.dao.GanttDao;
-import com.web.spring.vo.MemberSch;
-import com.web.spring.vo.Task;
 
 @Service
 public class AdTaskService {
@@ -18,6 +15,11 @@ public class AdTaskService {
     private AdTaskDao dao;
     @Autowired(required = false)
     private GanttDao ganttDao;
+
+
+    public List<Project> ganntProject(int creater){
+        return dao.ganttProject(creater);
+    }
 
     // 구성원 검색(for 업무할당)
     public List<MemberSch> schTaskMem(MemberSch sch) {

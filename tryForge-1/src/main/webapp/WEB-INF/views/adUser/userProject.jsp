@@ -93,13 +93,13 @@
                 // 각 회원에 대한 정보 처리
                 $.each(memberInfo, function (index, member) {
                     // getTeamInfo 함수 호출
-                    getTeamInfo(member.member_key, function (role, team_member_key) {
+                    getTeamInfo(member.member_key, function (role, team_Member_key) {
                         var addhtml = ""; // 각 회원에 대한 HTML 행을 초기화
                         addhtml += "<tr><td>" + member.member_name + "</td>";
                         addhtml += "<td>" + member.member_email + "</td>";
                         addhtml += "<td class='tmInfoRow" + member.member_key + "'>" + role + "</td>";
-                        addhtml += "<td><button type='button' class='btn btn-danger' onclick='deleteTm(" + team_member_key + ")'>구성원 삭제</button></td>";
-                        addhtml += "<td><button type='button' class='btn btn-' style='background-color: #007FFF; color: white;' onclick='changePL(" + team_member_key + ")'>PL지정</button></td></tr>";
+                        addhtml += "<td><button type='button' class='btn btn-danger' onclick='deleteTm(" + team_Member_key + ")'>구성원 삭제</button></td>";
+                        addhtml += "<td><button type='button' class='btn btn-' style='background-color: #007FFF; color: white;' onclick='changePL(" + team_Member_key + ")'>PL지정</button></td></tr>";
 
                         // 기존의 내용을 비우고 새로운 행을 추가
                         $("#selectMem").append(addhtml);
@@ -124,7 +124,12 @@
             dataType: "json",
             success: function (data) {
                 var tmInfo = data.tmInfo;
-                var team_member_key = tmInfo.team_member_key;
+
+                var team_member_key = tmInfo.team_Member_key;
+                console.log("###"+tmInfo)
+                console.log("###팀맴버키"+tmInfo.team_Member_key)
+                console.log("###팀맴버키"+tmInfo.role)
+                console.log("###팀맴버키"+tmInfo.member_key1)
                 var role = tmInfo.role; // tmInfo에서 role 속성을 가져옴
                 $(".tmInfoRow" + member_key).html(role); // role을 HTML에 적용
                 callback(role, team_member_key);
@@ -136,6 +141,7 @@
         });
     }
     function deleteTm(team_member_key) {
+    	console.log(team_member_key)
         $.ajax({
             url: "${path}/userDelete",
             dataType: "json",
