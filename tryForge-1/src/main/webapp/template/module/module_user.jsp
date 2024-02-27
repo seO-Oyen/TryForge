@@ -377,6 +377,12 @@ $(document).ready(function(){
 							<!-- <div class="badge badge-danger">new</div> -->
 					</a></li>
 					<li class="nav-item">
+					<a class="nav-link" href="${path}/notice" > 
+						<i class="typcn typcn-document-text menu-icon"></i> 
+							<span class="menu-title">공지사항</span>
+							<!-- <i class="menu-arrow"></i> -->
+					</a></li>
+					<li class="nav-item">
 						<a class="nav-link" href="${path}/requestRole">
 							<i class="typcn mdi mdi-account-star menu-icon"></i>
 							<span class="menu-title">권한요청</span>

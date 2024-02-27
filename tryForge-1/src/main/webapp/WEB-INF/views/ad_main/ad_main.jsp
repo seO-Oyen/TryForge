@@ -8,6 +8,10 @@
     #myModal .modal-dialog {
         max-width: 50%;
     }
+    .card-title {
+        font-size: 20px;
+        font-weight: bold;
+    }
 </style>
 
 <script>
@@ -340,7 +344,7 @@
                         <div class="col-md-6" style="flex: 0 0 80%; max-width: 40%;">
                             <div class="card-body">
                                 <div style="display: flex;">
-                                    <h4 class="card-title">ProjectPercent</h4>
+                                    <h4 class="card-title">진행 프로젝트 진척도</h4>
                                     <canvas id="projectPercent" width="60" height="45"></canvas>
 
                                     <div class="table-responsive"
@@ -374,7 +378,7 @@
             <div class="col-md-6 grid-margin stretch-card" style="flex: 0 0 40%; max-width: 40%;">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Available Personnel</h4>
+                        <h4 class="card-title">인원 현황</h4>
                         <canvas id="ablePersonnel" width="50" height="30"></canvas>
                         <!-- 간단한 수치를 나타내는 텍스트 -->
                         <div class="chart-info" style="margin-top: 8%;">
@@ -391,7 +395,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div style="display: flex;">
-                            <h4 class="card-title">project Counts</h4>
+                            <h4 class="card-title">올해 프로젝트 수주</h4>
                             <canvas id="projectCnt" width="50" height="30"></canvas>
                             <div class="chart-info" style="position: absolute; bottom: 8%; left: 5%;">
                                 <p>총 프로젝트 갯수: <span id="pjCnt01"></span></p>
@@ -414,7 +418,7 @@
                         <div class="col-md-6" style="flex: 0 0 40%; max-width: 35%;">
                             <div class="card-body">
                                 <div style="display: flex;">
-                                    <h4 class="card-title" style="margin-right: 15px;">Risk Status</h4>
+                                    <h4 class="card-title" style="margin-right: 15px;">리스크 현황</h4>
                                     <canvas id="riskStatus" width="20" height="20"></canvas>
                                     <div class="table-responsive"
                                          style="overflow-x: visible; margin-left: 25%; margin-top: 0;">
