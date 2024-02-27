@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:include page="${path}/template/module/module_myPage.jsp"
 	flush="true" />
 
@@ -11,6 +12,7 @@
 
 #profile{
 	width: 150px;
+	height:150px;
 	margin-bottom: 20px;
 	border-radius: 70%;
 }
@@ -257,8 +259,17 @@ function fileUpload(){
 		processData: false,
 		contentType: false,
 		success: function(response) {
-			console.log("success", "파일 업로드 성공!", response.msg)
-
+			Swal.fire({
+				position: "center-center",
+				title : "프로필 업로드 성공",
+				text : '자동 새로고침 중',
+				showConfirmButton: false,
+				icon: "success",
+				timer: 3000
+			}).then((result) => {
+				window.location.reload();
+			})
+			
 		},
 		error: function(error) {
 			console.log("error", "업로드에러", error)
@@ -277,7 +288,13 @@ function fileUpload(){
 							<div class="card-body">
 								<form method="post" enctype="multipart/form-data" action="upload">
 									<%-- <img src="${path}/template/images/faces/face5.jpg" alt="profile" id ="profile"/> --%>
-									<img src="${path}/template/images/FILE-581.png" alt="profile" id ="profile"/>
+									
+									<c:if test="${profile ne ''}">
+										<img src="${path}/FileStorage/${profile}" alt="profile" id ="profile"/>
+									</c:if>
+									<c:if test="${profile eq ''}">
+										<img src="${path}/template/images/faces/face5.jpg" alt="profile" id ="profile"/>
+									</c:if>
 									<input type="file" id="fileInput" name="files" multiple="multiple" style="display: none;" accept="image/*" />
 									<input type="hidden" name="description" value="프로필 사진"/>
 									<input type="hidden" name="project_key" value="0"/>

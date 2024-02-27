@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.web.spring.file.dao.UploadDao;
 import com.web.spring.vo.FileStorage;
 
+import jakarta.servlet.http.HttpSession;
+
 
 @Service
 public class UploadService {
@@ -51,8 +53,12 @@ private String path;
 					}
 					// File 경로 지정해서 MultipartFile에 담긴 파일 저장
 					String fkey = "FILE-"+dao.getFileSeq();
-
-					mpf.transferTo(new File(path+fkey));
+					
+					if (upload.getDescription().equals("프로필 사진")) {
+						mpf.transferTo(new File(path+fkey + "." + extension));
+					} else {
+						mpf.transferTo(new File(path+fkey));
+					}
 
 					dao.uploadFile(new FileStorage(fkey, fname, path, extension, fsize,
 							upload.getProject_key(), upload.getMember_key(), upload.getDescription()));

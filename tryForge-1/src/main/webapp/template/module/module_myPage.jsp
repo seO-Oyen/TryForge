@@ -105,7 +105,12 @@ $(document).ready(function(){
 				<ul class="navbar-nav mr-lg-2">
 					<li class="nav-item nav-profile dropdown">
 					<a class="nav-link" href="#" data-toggle="dropdown" id="profileDropdown">
-						<img src="${path}/template/images/faces/face5.jpg" alt="profile" /> 
+						<c:if test="${profile ne ''}">
+							<img src="${path}/FileStorage/${profile}" alt="profile"/>
+						</c:if>
+						<c:if test="${profile eq ''}">
+							<img src="${path}/template/images/faces/face5.jpg" alt="profile"/>
+						</c:if>
 						<span class="nav-profile-name">${loginMem.member_name} 님</span>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right navbar-dropdown"
