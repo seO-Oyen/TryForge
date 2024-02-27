@@ -129,6 +129,10 @@
                         titleElement.text('AcceptRole')
                         detailElement.text('관리자페이지  >  권한요청관리')
                         break;
+                    case '/insertUser':
+                        titleElement.text('InsertUser')
+                        detailElement.text('관리자페이지  >  사용자초대')
+                        break;
                     default:
                         break;
                 }
@@ -175,10 +179,10 @@
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
                          aria-labelledby="profileDropdown">
                         <a class="dropdown-item" href="${path}/myPage">
-                            <i class="typcn typcn-cog-outline text-primary"></i> 마이페이지
+                            <i class="typcn typcn-cog-outline text-info"></i> 마이페이지
                         </a>
                         <a class="dropdown-item" href="${path}/login">
-                            <i class="typcn typcn-eject text-primary"></i> 로그아웃
+                            <i class="typcn typcn-eject text-info"></i> 로그아웃
                         </a>
                     </div>
                 </li>

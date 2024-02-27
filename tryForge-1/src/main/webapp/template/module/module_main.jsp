@@ -107,11 +107,11 @@ $(document).ready(function(){
 			<!-- 왼쪽 상단 로고 -->
 			<div class="navbar-brand-wrapper d-flex justify-content-center" style="background:white;">
 				<div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100" >
-					<a class="navbar-brand brand-logo" href="${path}/userIndex" >
+					<a class="navbar-brand brand-logo" href="${path}/dashboard" >
 					<img src="${path}/template/images/try_forge01.jpg" alt="logo" style="width:100%"/>
 					<!-- <span>TryForge</span> -->
 					</a> 
-					<a class="navbar-brand brand-logo-mini" href="${path}/userIndex">
+					<a class="navbar-brand brand-logo-mini" href="${path}/dashboard">
 					<img src="${path}/template/images/try_logo.jpg" alt="logo" style="width:100%;"/></a>
 					<button class="navbar-toggler navbar-toggler align-self-center"
 						type="button" data-toggle="minimize" style="color:black; margin-left:10px;">
@@ -135,11 +135,14 @@ $(document).ready(function(){
 					</a>
 					<div class="dropdown-menu dropdown-menu-right navbar-dropdown"
 						aria-labelledby="profileDropdown">
-						<a class="dropdown-item">
-							<i class="typcn typcn-cog-outline text-primary"></i> 마이페이지
+						<a class="dropdown-item" href="${path}/userIndex">
+							<i class="typcn typcn-device-desktop text-info"></i> 메인페이지
+						</a> 
+						<a class="dropdown-item" href="${path}/myPage">
+							<i class="typcn typcn-cog-outline text-info"></i> 마이페이지
 						</a> 
 						<a class="dropdown-item" href="${path}/login"> 
-							<i class="typcn typcn-eject text-primary"></i> 로그아웃
+							<i class="typcn typcn-eject text-info"></i> 로그아웃
 						</a>
 					</div>
 					</li>

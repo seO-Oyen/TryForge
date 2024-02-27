@@ -52,6 +52,8 @@ $(document).ready(function(){
 	if(sessId==""){
 		alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
 		location.href="${path}/login"
+	} else if ("${loginMem.member_role}" != "EMP") {
+		$("#mainPage").attr("href", "${path}/adMain")
 	}
 	
 	var startChat = setInterval(function() {
@@ -66,7 +68,7 @@ $(document).ready(function(){
 				console.log(err)
 			}
 		})
-	}, 180000)
+	}, 120000)
 })
 </script>
 <style>
@@ -115,6 +117,9 @@ $(document).ready(function(){
 					</a>
 					<div class="dropdown-menu dropdown-menu-right navbar-dropdown"
 						aria-labelledby="profileDropdown">
+						<a class="dropdown-item" href="${path}/userIndex" id="mainPage">
+							<i class="typcn typcn-device-desktop text-info"></i> 메인페이지
+						</a>
 						<a class="dropdown-item" href="${path}/login"> 
 							<i class="typcn typcn-eject text-info"></i> 로그아웃
 						</a>

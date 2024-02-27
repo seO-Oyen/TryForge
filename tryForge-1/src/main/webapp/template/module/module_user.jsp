@@ -54,7 +54,7 @@ $(document).ready(function(){
 		location.href="${path}/login"
 	} else if ("${loginMem.member_role}" != "EMP") {
 		$("#admin").css("display", "")
-		$("#sidebar").css("height", "220px")
+		$("#sidebar").css("height", "175px")
 	}
 })
 </script>
@@ -96,10 +96,10 @@ $(document).ready(function(){
 					<div class="dropdown-menu dropdown-menu-right navbar-dropdown"
 						aria-labelledby="profileDropdown">
 						<a class="dropdown-item" href="${path}/myPage">
-							<i class="typcn typcn-cog-outline text-primary"></i> 마이페이지
+							<i class="typcn typcn-cog-outline text-info"></i> 마이페이지
 						</a> 
 						<a class="dropdown-item" href="${path}/login"> 
-							<i class="typcn typcn-eject text-primary"></i> 로그아웃
+							<i class="typcn typcn-eject text-info"></i> 로그아웃
 						</a>
 					</div>
 					</li>
@@ -380,7 +380,8 @@ $(document).ready(function(){
 							<i class="typcn typcn-device-desktop menu-icon"></i> <span
 							class="menu-title">메인화면</span>
 							<!-- <div class="badge badge-danger">new</div> -->
-					</a></li>
+						</a>
+					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="${path}/requestRole">
 							<i class="typcn mdi mdi-account-star menu-icon"></i>

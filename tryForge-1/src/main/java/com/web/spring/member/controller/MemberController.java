@@ -171,6 +171,7 @@ public class MemberController {
 				break;
 			} else {
 				d.addAttribute("result", memberService.requestRole(member_id, comment));
+				break;
 			}
 		}
 		

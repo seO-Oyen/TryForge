@@ -28,38 +28,54 @@
 	
 	function mailSend() {
 		if ($("[name=receiver]").val() != "") {
-			
-			$.ajax({
-				url : "${path}/emailCheck",
-				type : "GET",
-				data : {
-					email: $("[name=receiver]").val()
-				},
-				dataType : "json",
-				success : function(data) {
-					if(data.emailChk) {
-						const Toast = Swal.mixin({
-						    toast: true,
-						    position: 'top-end',
-						    showConfirmButton: false,
-						    timer: 1500,
-						    timerProgressBar: false
-						})
-						
-						Toast.fire({
-						    icon: 'error',
-						    title: '이미 초대한 이메일입니다.'
-						})
-						return false
-					} else {
-						console.log("클릭염")
-						mailSendOk()
+			console.log()
+			if (!emailCheck($("[name=receiver]").val())) {
+				const Toast = Swal.mixin({
+				    toast: true,
+				    position: 'top-end',
+				    showConfirmButton: false,
+				    timer: 1500,
+				    timerProgressBar: false
+				})
+				
+				Toast.fire({
+				    icon: 'error',
+				    title: '유효한 이메일 주소가 아닙니다.'
+				})
+				return false;
+			} else {
+				$.ajax({
+					url : "${path}/emailCheck",
+					type : "GET",
+					data : {
+						email: $("[name=receiver]").val()
+					},
+					dataType : "json",
+					success : function(data) {
+						if(data.emailChk) {
+							const Toast = Swal.mixin({
+							    toast: true,
+							    position: 'top-end',
+							    showConfirmButton: false,
+							    timer: 1500,
+							    timerProgressBar: false
+							})
+							
+							Toast.fire({
+							    icon: 'error',
+							    title: '이미 초대한 이메일입니다.'
+							})
+							return false
+						} else {
+							console.log("클릭염")
+							mailSendOk()
+						}
+					},
+					error : function(err) {
+						console.log(err)
 					}
-				},
-				error : function(err) {
-					console.log(err)
-				}
-			})
+				})
+			}
 			
 		} else {
 			alert("보내는 사람의 메일을 입력해주세요.")
@@ -114,6 +130,15 @@ function mailSendOk() {
 			console.log(err)
 		}
 	})
+}
+
+function emailCheck(email_address){     
+	email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+	if(!email_regex.test(email_address)){ 
+		return false; 
+	}else{
+		return true;
+	}
 }
 </script>
 <div class="content-wrapper">
