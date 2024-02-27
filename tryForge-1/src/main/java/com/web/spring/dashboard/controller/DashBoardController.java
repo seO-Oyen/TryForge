@@ -53,9 +53,11 @@ public class DashBoardController {
     public String dashboard(Model d, HttpSession session){
 		if(session.getAttribute("projectMem") != null) {
 			Project project = (Project)session.getAttribute("projectMem");
-			d.addAttribute("completeTask", service.countCompleteTask());
-			d.addAttribute("inCompleteTask", service.countIncompleteTask());
-			d.addAttribute("projectProgress", service.projectProgress(project.getProject_key())*100);
+			String projectKey = project.getProject_key();
+
+			d.addAttribute("completeTask", service.countCompleteTask(projectKey));
+			d.addAttribute("inCompleteTask", service.countIncompleteTask(projectKey));
+			d.addAttribute("projectProgress", (int)(service.projectProgress(projectKey)*100));
 		}
         return "project/dashBoard";
     }

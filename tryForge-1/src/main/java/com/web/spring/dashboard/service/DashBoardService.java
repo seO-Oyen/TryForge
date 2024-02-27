@@ -44,13 +44,13 @@ public class DashBoardService {
 		return ganttDao.getTaskMem(project_key);
 	}
 
-	public int countCompleteTask() {
-		return ganttDao.countCompleteTask();
+	public int countCompleteTask(@Param("project_key") String project_key) {
+		return ganttDao.countCompleteTask(project_key);
 	}
-	public int countIncompleteTask() {
-		return ganttDao.countIncompleteTask();
+	public int countIncompleteTask(@Param("project_key") String project_key) {
+		return ganttDao.countIncompleteTask(project_key);
 	}
-	public int projectProgress(@Param("project_key") String project_key) {
+	public float projectProgress(@Param("project_key") String project_key) {
 		return ganttDao.projectProgress(project_key);
 	}
 

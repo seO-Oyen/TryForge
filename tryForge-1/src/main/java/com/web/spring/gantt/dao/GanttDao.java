@@ -32,7 +32,7 @@ public interface GanttDao {
 	int deleteTask(Task del);
 	int deleteTaskDep(Task_Dependency del);
 
-	int countCompleteTask();
-	int countIncompleteTask();
-	int projectProgress(String project_key);
+	int countCompleteTask(String project_Key);
+	int countIncompleteTask(String project_key);
+	float projectProgress(String project_key);
 }
