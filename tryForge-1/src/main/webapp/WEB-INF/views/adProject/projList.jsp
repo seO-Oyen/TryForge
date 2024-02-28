@@ -395,8 +395,7 @@ var exceptSchMlist=[];
     }
 
     function uptAll(key) {
-        alert($("#modalFrm").serialize())
-        alert(key)
+        
         $.ajax({
             url: "${path}/uptAll?project_key=" + key,
             dataType: "json",
@@ -553,7 +552,7 @@ var exceptSchMlist=[];
     }
 
     function goDash(projectKey) {
-        alert(projectKey)
+       
         $.ajax({
             url : "${path}/setPj",
             type : "GET",
@@ -562,7 +561,7 @@ var exceptSchMlist=[];
             },
             dataType : "json",
             success : function(data) {
-              alert(data.project)
+             
                 location.href = "${path}/dashboard"
             },
             error : function(err) {

@@ -256,7 +256,7 @@
 
 
     function goGantt(projectKey) {
-        alert(projectKey)
+       
         $.ajax({
             url : "${path}/setPj",
             type : "GET",
@@ -265,7 +265,7 @@
             },
             dataType : "json",
             success : function(data) {
-              alert(data.project)
+            
                 location.href = "${path}/gantt"
             },
             error : function(err) {
