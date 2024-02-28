@@ -80,6 +80,24 @@
 	)
 	</insert>
 	
+	
+	<insert id="createChatRoomConvert">
+	INSERT INTO chat_list
+	(
+	   chatList_key,
+	   chat_category,
+	   last_message,
+	   last_time
+	)
+	VALUES
+	(
+	   chatlist_seq.nextval,
+	   #{projectKey},
+	   ' ',
+	   sysdate
+	)
+	</insert>
+	
 	<insert id="createChatMem" parameterType="int">
 		INSERT INTO chat_member
 		(
