@@ -522,29 +522,7 @@ document.addEventListener("DOMContentLoaded", function () {
 							<!-- <div class="badge badge-danger">new</div> -->
 					</a></li>
 					
-					<li class="nav-item">
-						<a class="nav-link" data-toggle="collapse" 
-							href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-							<i class="typcn typcn-document-text menu-icon"></i>
-							<span class="menu-title">공지사항</span>
-							<!-- 메뉴 옆 +기호 -->
-							<!-- <i class="menu-arrow"></i> -->
-						</a>
-						<!-- 클릭시 나오는 메뉴 -->
-						<!-- <div class="collapse" id="ui-basic">
-							<ul class="nav flex-column sub-menu">
-								<li class="nav-item">
-									<a class="nav-link" href="pages/ui-features/buttons.jsp">Buttons</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" href="pages/ui-features/dropdowns.jsp">Dropdowns</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" href="pages/ui-features/typography.jsp">Typography</a>
-								</li>
-							</ul>
-						</div> -->
-					</li>
+					
 					
 					<li class="nav-item">
 					<a class="nav-link" href="${path}/gantt" > 
