@@ -12,45 +12,6 @@
 	flush="true" />
 
 <script>
-	/* var msg = "${msg}"
-	if (msg != "") {
-		if (msg == "메일 발송 성공") {
-			const Toast = Swal.mixin({
-			    toast: true,
-			    position: 'top-end',
-			    showConfirmButton: false,
-			    timer: 2000,
-			    timerProgressBar: true,
-			    didOpen: (toast) => {
-			        toast.addEventListener('mouseenter', Swal.stopTimer)
-			        toast.addEventListener('mouseleave', Swal.resumeTimer)
-			    }
-			})
-			
-			Toast.fire({
-			    icon: 'success',
-			    title: msg
-			})
-		} else {
-			const Toast = Swal.mixin({
-			    toast: true,
-			    position: 'top-end',
-			    showConfirmButton: false,
-			    timer: 2000,
-			    timerProgressBar: true,
-			    didOpen: (toast) => {
-			        toast.addEventListener('mouseenter', Swal.stopTimer)
-			        toast.addEventListener('mouseleave', Swal.resumeTimer)
-			    }
-			})
-			
-			Toast.fire({
-			    icon: 'error',
-			    title: "메일 발송 실패",
-			    text : msg
-			})
-		}
-	} */
 
 	$(document).ready(function() {
 		$("[name=receiver]").keypress(function(e){
@@ -91,9 +52,8 @@
 						})
 						return false
 					} else {
-						$("form").attr("method", "post")
-						$("form").attr("onsubmit", "return true;")
-						$("form").submit()
+						console.log("클릭염")
+						mailSendOk()
 					}
 				},
 				error : function(err) {
@@ -101,29 +61,60 @@
 				}
 			})
 			
-			/* const Toast = Swal.mixin({
-			    toast: true,
-			    position: 'top-end',
-			    showConfirmButton: false,
-			    timer: 1000,
-			    timerProgressBar: true,
-			    didOpen: (toast) => {
-			        toast.addEventListener('mouseenter', Swal.stopTimer)
-			        toast.addEventListener('mouseleave', Swal.resumeTimer)
-			    }
-			})
-			
-			Toast.fire({
-			    icon: 'success',
-			    title: '메일 발송 성공'
-			}) */
-			
 		} else {
 			alert("보내는 사람의 메일을 입력해주세요.")
 			$("[name=receiver]").focus()
 			return false;
 		}
 	}
+	
+function mailSendOk() {
+/* 	$("form").attr("method", "post")
+	$("form").attr("onsubmit", "return true;")
+	$("form").submit() */
+	
+	$.ajax({
+		url : "${path}/insertUser",
+		type : "POST",
+		data : $("form").serialize(),
+		dataType : "json",
+		success : function(data) {
+			console.log("넘어옴요")
+			if(data.msg) {
+				const Toast = Swal.mixin({
+				    toast: true,
+				    position: 'top-end',
+				    showConfirmButton: false,
+				    timer: 2000,
+				    timerProgressBar: false
+				})
+				
+				Toast.fire({
+				    icon: 'success',
+				    title: '초대완료했습니다'
+				}).then(function() {
+					window.location.reload()
+				})
+			} else {
+				const Toast = Swal.mixin({
+				    toast: true,
+				    position: 'top-end',
+				    showConfirmButton: false,
+				    timer: 1500,
+				    timerProgressBar: false
+				})
+				
+				Toast.fire({
+				    icon: 'error',
+				    title: '이메일 전송 실패'
+				})
+			}
+		},
+		error : function(err) {
+			console.log(err)
+		}
+	})
+}
 </script>
 <div class="content-wrapper">
 	<div class="row">
@@ -142,7 +133,7 @@
 							</div>
 						</div>
 						<div style="text-align: center;">
-							<button type="button" id="inviteBtn" class="btn btn-primary mr-2">초대하기</button>
+							<button type="button" id="inviteBtn" class="btn btn-info mr-2">초대하기</button>
 						</div>
 					</form>
 				</div>
@@ -169,7 +160,13 @@
 									<td>${memList.invite_key}</td>
 									<td>${mem[status.index].member_name}</td>
 									<td>${memList.invitee_email}</td>
-									<td>${memList.joined}</td>
+									<c:if test="${memList.joined eq false}">
+										<td><label class="badge badge-warning">초대완료</label></td>
+									</c:if>
+									<c:if test="${memList.joined eq true}">
+										<td><label class="badge badge-success">가입완료</label></td>
+									</c:if>
+									
 								</tr>
 							</c:forEach>
 						</tbody>

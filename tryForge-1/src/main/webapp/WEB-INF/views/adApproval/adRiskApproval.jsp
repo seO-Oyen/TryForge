@@ -316,7 +316,7 @@
                         </button>
                         <div class="dropdown-menu"
                              aria-labelledby="dropdownMenuSplitButton1">
-                            <button class="dropdown-item" id="finBtn">결재 완료</button>
+
                             <button class="dropdown-item" id="returnBtn">재상신 요청</button>
                         </div>
                     </div>

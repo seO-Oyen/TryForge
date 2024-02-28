@@ -89,8 +89,8 @@
                                 <tr>
                                     <th>에러종류</th>
                                     <th>에러타입</th>
+                                    <th>에러발생</th>
                                     <th>에러설명</th>
-                                    <th>에러날짜</th>
                                     <th>발생경로</th>
                                 </tr>
                                 </thead>
@@ -100,9 +100,9 @@
                                         <tr ondblclick='openPage("${elist.error_confirm}")'>
                                             <td>${elist.error_level}</td>
                                             <td>${elist.error_type}</td>
-                                            <td>${elist.error_detail}</td>
                                             <c:set var="formattedDate" value="${fn:substring(elist.incident_date, 0, 10)}"/>
-                                            <td>${formattedDate}</td>
+                                            <td>${elist.incident_date}</td>
+                                            <td>${elist.error_detail}</td>
                                             <td>${elist.error_path}</td>
                                         </tr>
                                     </c:if>

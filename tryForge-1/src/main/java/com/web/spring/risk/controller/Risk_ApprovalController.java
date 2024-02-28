@@ -5,12 +5,16 @@ package com.web.spring.risk.controller;
 import java.util.Date;
 import java.util.List;
 
+import com.web.spring.file.service.UploadService;
 import com.web.spring.risk.service.RiskService;
+import com.web.spring.vo.Approval;
+import com.web.spring.vo.FileStorage;
 import com.web.spring.vo.Risk;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.web.spring.risk.service.Risk_ApprovalService;
 import com.web.spring.vo.Risk_Approval;
@@ -21,11 +25,9 @@ public class Risk_ApprovalController {
     private Risk_ApprovalService service;
     @Autowired(required = false)
     private RiskService riskService;
-//    @ModelAttribute("rlist01")
-//    public List<Risk> rlist01(@RequestParam("project_key")String project_key){
-//        return riskService.riskList(project_key);
-//    }
-    //
+    @Autowired(required = false)
+    private UploadService uploadService;
+    
     @GetMapping("rlist01")
     public  String rlist01(@RequestParam("project_key")String project_key, Model d){
         d.addAttribute("rlist01",riskService.riskList(project_key));
@@ -46,10 +48,21 @@ public class Risk_ApprovalController {
     }
     // 결재 보고
     @PostMapping("insRiskApproval")
-    public String insRiskApproval(Risk_Approval ins, Model d){
-        d.addAttribute("insMsg",service.insRiskApproval(ins));
+    public String reportTask(Risk_Approval ins, FileStorage file, Model d){
+        MultipartFile[] files = file.getFiles();
+        // 파일 있을 때
+        if(files != null && files.length > 0) {
+            List<String> fileKeys = uploadService.uploadFile(file);
+            if(service.insRiskApproval(ins)>0) {
+                int cnt = service.insFileUse(fileKeys);
+                d.addAttribute("result", cnt>0?"업무보고 성공(첨부파일 "+cnt+"개 포함)":"업무보고 실패");
+            }
+        } else { // 파일 없을 때
+            d.addAttribute("result", service.insRiskApproval(ins)>0?"업무보고 성공(첨부파일 없음)":"업무보고 실패");
+        }
         return "pageJsonReport";
     }
+
     // 리스크 결재여부 리스트 출력
     @GetMapping("raInfo")
     public String raInfo(Model d){
@@ -75,9 +88,20 @@ public class Risk_ApprovalController {
     	return "pageJsonReport";
     }
     @PostMapping("reRiskApproval")
-    public String reRiskApproval(Risk_Approval upt, Model d) {
-    	d.addAttribute("uptMsg",service.reRiskApproval(upt));
-    	return "pageJsonReport";
+    public String reRiskApproval(Risk_Approval upt, FileStorage file, Model d) {
+    	   MultipartFile[] files = file.getFiles();
+        // 파일 있을 때
+        if(files != null && files.length > 0) {
+            List<String> fileKeys = uploadService.uploadFile(file);
+            if(service.reRiskApproval(upt)>0) {
+                int cnt = service.reRiskApprovalFileUse(fileKeys, upt);
+                d.addAttribute("result", cnt>0?"재상신 성공(첨부파일 "+cnt+"개 포함)":"재상신 실패");
+            }
+        } else { // 파일 없을 때
+            d.addAttribute("result", service.reRiskApproval(upt)>0?"재상신 성공(파일 추가첨부 없음)":"재상신 실패");
+        }
+
+        return "pageJsonReport";
     }
     
 }

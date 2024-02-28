@@ -13,8 +13,8 @@ public class AdUserService {
     @Autowired(required = false)
     private AdProjectDao prodao;
     // 맴버키로 팀원 테이블 정보 가져오기
-    public Team_Member tmFromMember(int member_key){
-        return dao.tmFromMember(member_key);
+    public Team_Member tmFromMember(Team_Member tm){
+        return dao.tmFromMember(tm);
     }
     // 팀원삭제
     public String delTm(int team_Member_key){

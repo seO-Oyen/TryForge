@@ -69,16 +69,35 @@
 	}
 	
 	function insRiskApproval(){
+		var formData = new FormData();
+		var files = $("#uploadFile")[0].files;
+		$.each(files, function(index, file) {
+			formData.append('files[]', file);
+		})
+		console.log( $("#Detail0003").val())
+		formData.append('description', $('input[name="description"]').val());
+		formData.append('member_key', $('input[name="member_key"]').val());
+		formData.append('project_key', $('input[name="project_key"]').val());
+		formData.append('title', $('input[name="title"]').val());
+		formData.append('reporter', $('input[name="reporter"]').val());
+		formData.append('report_detail', $("#Detail0003").val());
+		formData.append('risk_key', $('input[name="risk_key"]').val());
+		formData.append('risk_response_key', $('input[name="risk_response_key"]').val());
+
+		console.log(formData.reporter)
 		$.ajax({
 			url:"${path}/insRiskApproval",
 			type:"post",
-			data:$("#form02").serialize(),
+			data: formData ,
 			dataType:"json",
+			cache: false,
+			processData: false,
+			contentType: false,
 			success:function (data){
-				if(data.insMsg!=null) {
+				if(data.result!=null) {
 					Swal.fire({
 						title: '결재 성공',
-						text: data.insMsg,
+						text: data.result,
 						icon: 'success',
 					}).then(function () {
 						location.href = "${path}/riskApprovalList"
@@ -92,33 +111,22 @@
 	}
 	
 	function fileUpload(){
-		var formData = new FormData();
-		var files = $("#uploadFile")[0].files;
-		$.each(files, function(index, file) {
-			formData.append('files[]', file);
+		// var formData = new FormData();
+		// var files = $("#uploadFile")[0].files;
+		// $.each(files, function(index, file) {
+		// 	formData.append('files[]', file);
+		//
+		// })
+		// formData.append('description', $("input[name='description']").val());
+		// formData.append('member_key', $("input[name='member_key']").val());
+		// formData.append('project_key', $("input[name='project_key']").val());
+		// formData.append('title', $("#form2 [name=title]").val());
+		// formData.append('reporter', $("#form2 [name=reporter]").val());
+		// formData.append('report_detail', $("#form2 [name=report_detail]").val());
 
-		})
-		formData.append('description', $("input[name='description']").val());
-		formData.append('member_key', $("input[name='member_key']").val());
-		formData.append('project_key', $("input[name='project_key']").val());
-		console.log($("[name=description]").val())
-		console.log(formData.get('description'));
+		// console.log($("[name=description]").val())
+		// console.log(formData.get('description'));
 
-		$.ajax({
-			url: "${path}/upload",
-			type: "POST",
-			data: formData,
-			cache: false,
-			processData: false,
-			contentType: false,
-			success: function(response) {
-				msg("success", "파일 업로드 성공!", response.msg)
-
-			},
-			error: function(error) {
-				msg("error", "업로드에러", error)
-			}
-		})
 	}
 
 	
@@ -157,16 +165,31 @@
 	}
 	
 	function reRiskApproval(){
+		var formData = new FormData();
+		var files = $("#uploadFile")[0].files;
+		$.each(files, function(index, file) {
+			formData.append('files[]', file);
+		})
+		console.log( $("#Detail0003").val())
+		formData.append('description', $('input[name="description"]').val());
+		formData.append('member_key', $('input[name="member_key"]').val());
+		formData.append('project_key', $('input[name="project_key"]').val());
+		formData.append('title', $('input[name="title"]').val());
+		formData.append('report_detail', $("#Detail0003").val());
+		formData.append('risk_approval_key', $('input[name="risk_approval_key"]').val());
 		$.ajax({
 			url:"${path}/reRiskApproval",
-			data:$("#form02").serialize(),
+			data:formData,
 			dataType:"json",
 			type:"post",
+			cache: false,
+			processData: false,
+			contentType: false,
 			success:function(data){
-				if(data.uptMsg!=null) {
+				if(data.result!=null) {
 					Swal.fire({
 						title: '결재 성공',
-						text: data.uptMsg,
+						text: data.result,
 						icon: 'success',
 					}).then(function () {
 						location.href = "${path}/riskApprovalList"
@@ -191,11 +214,10 @@
 				<input type="hidden" name="risk_key" >
 				<input type="hidden" name="risk_response_key">
 				<input type="hidden" name="risk_approval_key">
-
 				<div class="form-group">
 					<label for="exampleInputName1">결재보고명</label>
 					<p style="color: red;">*필수 입력란</p>
-					<input type="text" class="form-control" value="" name="title">
+					<input type="text" class="form-control" value="" name="title"/>
 				</div>
 
 				<div class="form-group">
@@ -223,7 +245,7 @@
 				<div class="form-group">
 					<label for="exampleTextarea1">상세내용</label>
 					<p style="color: red;">*필수 입력란</p>
-					<textarea class="form-control" id="noticeDetail" name="report_detail" rows="10"></textarea>
+					<textarea class="form-control" id="Detail0003" name="report_detail" rows="10"></textarea>
 				</div>
 				<button id="regBtn" type="button" class="btn btn-info mr-2" style="background:#007FFF;">등록</button>
 				<button class="btn btn-light" id="mainBtn" onclick="location.href='${path}/riskApprovalList'">조회페이지</button>

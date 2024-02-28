@@ -13,7 +13,8 @@
 	<!--1. 중복제거한 프로젝트 종류 : 프로젝트 명 ==> taskDao getTitle-->
 	<!--2. 프로젝트 별 진척도 출력-->
 	<select id="projectProgress" resultMap="taskRst">
-		SELECT ta.progress, ta.TEXT, ta.START_DATE, ta.END_DATE,ta.PROJECT_KEY FROM task ta JOIN PROJECT p ON p.PROJECT_KEY = ta.project_key WHERE ta.task_type='project'
+		SELECT ta.progress, ta.TEXT, ta.START_DATE, ta.END_DATE,ta.PROJECT_KEY
+		FROM task ta JOIN PROJECT p ON p.PROJECT_KEY = ta.project_key WHERE ta.task_type='project' AND p.STATUS = '진행중'
 	</select>
 	<!--가용인원-->
 	<!--1. 맴버 전체수-->

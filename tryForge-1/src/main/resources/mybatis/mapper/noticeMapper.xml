@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.spring.notice.UserNoticeDao">
+	<!-- 상세화면 -->
+	<select id="getNotice01" parameterType="int" resultType="notice">
+		select * from notice where notice_key = #{notice_Key}
+	</select>
+	
+	<!-- 공지사항 조회 -->
+	<select id="noticeList01" resultType="notice" parameterType="noticeSch">
+    SELECT * FROM (
+        SELECT rownum cnt, n.* FROM (
+            SELECT * FROM notice
+            WHERE 1=1
+            AND notice_title LIKE '%'||#{notice_Title}||'%'
+            AND notice_writer LIKE '%'||#{notice_Writer}||'%'
+            ORDER BY notice_key DESC
+        ) n
+    )
+    WHERE cnt BETWEEN #{start} AND #{end}
+	</select>
+	
+	<!-- 공지사항 데이터 총 건수 -->
+	<select id="totNotice01" resultType="int" parameterType="noticeSch">
+	 	select count(*) from notice n where 1=1
+	 	and notice_title like '%'||#{notice_Title}||'%'
+	 	and notice_writer like '%'||#{notice_Writer}||'%' 
+	 </select>
+	 
+	 
+</mapper>
