@@ -261,8 +261,13 @@
                 risk3 = data.riskTot02;
                 risk4 = data.riskTot03;
                 totalrisks = risk1+risk2+risk3+risk4
+                
+                var riskRatio = ((risk1 / totalrisks) + (risk2 / totalrisks) + (risk3 / totalrisks) + (risk4 / totalrisks)) * 100;
+                var taskRatio = ((task1 / totalTasks) + (task2 / totalTasks) + (task3 / totalTasks)) * 100;
+                var taskToRiskRatio = (taskRatio / riskRatio);
+
                 $("#task02").text(totalrisks + "개")
-                $("#task03").text(Math.floor(totalTasks/totalrisks)+ "%")
+                $("#task03").text( taskToRiskRatio.toFixed(2) + "%")
 
                 $("#riskCnt01").text(totalrisks)
                 $("#riskCnt02").text(risk1)
@@ -775,9 +780,10 @@
                     <button type="button" class="btn btn-" id="regResBtn"
                             style="background-color: #007FFF; color: white;">등록
                     </button>
-                    <button type="button" class="btn btn-" id="uptResBtn"
+                   <!-- 
+                   <button type="button" class="btn btn-" id="uptResBtn"
                             style="background-color: #007FFF; color: white;">수정
-                    </button>
+                    </button> --> 
                     <button type="button" class="btn btn-danger" data-dismiss="modal"
                             id="clsBtn">닫기
                     </button>
