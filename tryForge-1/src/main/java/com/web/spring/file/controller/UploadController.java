@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.web.spring.file.service.UploadService;
 import com.web.spring.vo.FileStorage;
 
+import jakarta.servlet.http.HttpSession;
+
 import java.util.List;
 
 

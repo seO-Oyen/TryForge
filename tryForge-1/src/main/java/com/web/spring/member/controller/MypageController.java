@@ -23,7 +23,7 @@ public class MypageController {
 	public String myPage(HttpSession session, Model d) {
 		if (session.getAttribute("loginMem") != null) {
 			Member member = (Member)session.getAttribute("loginMem");
-			d.addAttribute("profile", memService.getProfile(member.getMember_key()));
+			session.setAttribute("profile", memService.getProfile(member.getMember_key()));
 		}
 		
 	    return "user/myPage";
