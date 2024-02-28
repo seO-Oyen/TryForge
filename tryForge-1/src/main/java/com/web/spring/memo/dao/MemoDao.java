@@ -12,4 +12,6 @@ public interface MemoDao {
 	List<Memo> getMemoList(int member_key);
 
 	int createMemo(Memo memo);
+	
+	int deleteMemo(int memoKey);
 }

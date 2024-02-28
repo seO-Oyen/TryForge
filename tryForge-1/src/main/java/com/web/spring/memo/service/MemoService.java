@@ -27,4 +27,12 @@ public class MemoService {
 		}
 	}
 	
+	public boolean deleteMemo(int memoKey) {
+		if (memoDao.deleteMemo(memoKey) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 }

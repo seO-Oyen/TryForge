@@ -182,7 +182,7 @@ function emailCheck(email_address){
 						<tbody>
 							<c:forEach var="memList" items="${list}" varStatus="status">
 								<tr>
-									<td>${memList.invite_key}</td>
+									<td>${status.index + 1}</td>
 									<td>${mem[status.index].member_name}</td>
 									<td>${memList.invitee_email}</td>
 									<c:if test="${memList.joined eq false}">

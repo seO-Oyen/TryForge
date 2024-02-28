@@ -15,11 +15,11 @@
 </style>
 <script>
 $(document).ready(function() {
-	/* document.addEventListener('keydown', function(event) {
+	document.addEventListener('keydown', function(event) {
 		if(event.keyCode === 13) {
-			event.preventDefault()
+			event.preventDefault();
 		}
-	}, true) */
+	}, true)
 	
 })
 
@@ -30,42 +30,77 @@ function memoCreate() {
             title: '빈칸입니다.',
             text: '값을 채워주세요.',
             icon: 'error',
+        }).then(function () {
+        	return false;
         })
-        
-		return false;
+		
+	} else {
+		$.ajax({
+	        url: "${path}/createMemo",
+	        type: "POST",
+	        data: {
+	        	member_key: $("[name=member_key]").val(),
+	        	memo_detail: $("[name=memo_detail]").val()
+	        },
+	        dataType: "json",
+	        success: function (data) {
+	            if (data.result) {
+	            	Swal.fire({
+	                    title: '등록 성공',
+	                    text: ' ',
+	                    icon: 'success',
+	                }).then(function () {
+	                    window.location.reload()
+	                })
+	            } else {
+	            	Swal.fire({
+	                    title: '등록 실패',
+	                    text: '다시 시도해주세요.',
+	                    icon: 'error',
+	                })
+	            }
+	            
+	        },
+	        error: function (err) {
+	            console.log(err)
+	        }
+	    })
 	}
 	
 	
+}
+
+function memoDelete(memoKeyNum) {
+	console.log(memoKeyNum)
 	$.ajax({
-        url: "${path}/createMemo",
-        type: "POST",
-        data: {
-        	member_key: $("[name=member_key]").val(),
-        	memo_detail: $("[name=memo_detail]").val()
-        },
-        dataType: "json",
-        success: function (data) {
-            if (data.result) {
-            	Swal.fire({
-                    title: '등록 성공',
-                    text: ' ',
-                    icon: 'success',
-                }).then(function () {
-                    window.location.reload()
-                })
-            } else {
-            	Swal.fire({
-                    title: '등록 실패',
-                    text: '다시 시도해주세요.',
-                    icon: 'error',
-                })
-            }
-            
-        },
-        error: function (err) {
-            console.log(err)
-        }
-    })
+	        url: "${path}/deleteMemo",
+	        type: "GET",
+	        data: {
+	        	memoKey: memoKeyNum
+	        },
+	        dataType: "json",
+	        success: function (data) {
+	            if (data.result) {
+	            	Swal.fire({
+	                    title: '삭제 성공',
+	                    text: ' ',
+	                    icon: 'success',
+	                }).then(function () {
+	                    window.location.reload()
+	                })
+	            } else {
+	            	Swal.fire({
+	                    title: '삭제 실패',
+	                    text: '다시 시도해주세요.',
+	                    icon: 'error',
+	                })
+	            }
+	            
+	        },
+	        error: function (err) {
+	            console.log(err)
+	        }
+	    })
 }
 
 </script>
@@ -80,10 +115,9 @@ function memoCreate() {
 								<form class="forms-sample" id="memoForm">
 									<div class="form-group">
 										<input name="member_key" type="hidden" value="${loginMem.member_key}">
-										<label for="comment" style="margin-top: 20px;">메모</label>
+										<label for="comment" style="margin-top: 20px;">한줄 메모</label>
 
-										<textarea name="memo_detail" type="text" class="form-control" id="memo"
-											rows="5"></textarea>
+										<input name="memo_detail" type="text" class="form-control" id="memo" autocomplete="off"/>
 
 										<div style="text-align: center;">
 											<button id="createMemo" type="button"
@@ -102,26 +136,26 @@ function memoCreate() {
 		
 		<div class="row">
 			<div class="col-xl-12 grid-margin stretch-card flex-column">
-				<h5 class="mb-2 text-titlecase mb-4">메모 목록</h5>
+				<h5 class="mb-2 text-titlecase mb-4">메모 목록  <span class="text-muted">(더블클릭시 삭제)</span></h5>
 				<div class="row">
 					<div class="col-md-12 stretch-card">
 						<div class="card">
 							<div class="card-body d-flex flex-column justify-content-between"
 								style="height: 350px;">
 								<div class="table-responsive">
-									<table class="table" style="table-layout:fixed">
+									<table class="table table-hover" style="table-layout:fixed;">
 										<col width="80%">
 										<col width="20%">
 										<thead>
 											<tr>
 												<th>내용</th>
-												<th>작성 날짜(수정 날짜)</th>
+												<th>작성 날짜</th>
 											</tr>
 										</thead>
 										<tbody>
 											<c:if test="${memoList ne null}">
 											<c:forEach var="memo" items="${memoList}">
-												<tr>
+												<tr ondblclick="memoDelete(${memo.memo_key})" style="cursor: pointer;">
 													<td class="memoDetail">${memo.memo_detail}</td>
 													<td>${memo.create_time}</td>
 												</tr>

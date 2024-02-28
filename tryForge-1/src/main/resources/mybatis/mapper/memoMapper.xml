@@ -25,6 +25,12 @@
 		select *
 		from memo
 		where member_key = #{member_key}
+		order by memo_key desc
 	</select>
+	
+	<delete id="deleteMemo">
+		DELETE memo
+		WHERE memo_key = #{memoKey}
+	</delete>
 
 </mapper>
