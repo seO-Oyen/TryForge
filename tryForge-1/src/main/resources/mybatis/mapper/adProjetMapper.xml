@@ -131,7 +131,7 @@
 		UPDATE project SET status = '완료' WHERE project_key= #{project_key}
 	</update>
 	
-	<!-- 팀이름, 시작/종료일, 상세설명 수정 -->
+	<!-- 팀이름, 시작/종료일, 상세설명 수정 start_date , end_date, detail, title, project -->
 	<update id="uptProject" parameterType="project">
 		UPDATE project
 		SET start_date = TO_DATE(#{start_date}, 'YYYY-MM-DD'),

@@ -76,9 +76,9 @@ public class AdProjectController {
 	
 	// 프로젝트 상세내용 변경
 	@RequestMapping("uptAll")
-	public String uptAll(Project uptPro, Team uptTeam, Model d, @RequestParam("project_key")String project_key) {
-		uptPro.setProject_key(project_key);
-		uptTeam.setProject_key(project_key);
+	public String uptAll(Project uptPro, Team uptTeam, Model d) {
+		uptPro.setProject_key(uptPro.getProject_key());
+		uptTeam.setProject_key(uptPro.getProject_key());
 		d.addAttribute("uptAllmsg",service.uptAll(uptPro, uptTeam));
 		return "pageJsonReport"; 
 	}

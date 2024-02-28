@@ -395,17 +395,22 @@ var exceptSchMlist=[];
     }
 
     function uptAll(key) {
-        
-        $.ajax({
-            url: "${path}/uptAll?project_key=" + key,
+    	console.log(key)
+		$("[name=project_key]").val(key)
+		
+    	$.ajax({
+            url: "${path}/uptAll",
             dataType: "json",
             data: $("#modalFrm").serialize(),
+            cache: false,
+			processData: false,
+			contentType: false,
             success: function (data) {
                 var uptAllmsg = data.uptAllmsg;
                 if (uptAllmsg != null) {
                     Swal.fire({
                         title: '수정 성공',
-                        text: ' ',
+                        text: uptAllmsg,
                         icon: 'success',
                     }).then(function () {
                         $("#clsBtn").click();
