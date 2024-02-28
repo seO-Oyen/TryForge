@@ -666,7 +666,7 @@
                         <div class="dropdown-menu"
                              aria-labelledby="dropdownMenuSplitButton1">
                             <button class="dropdown-item" id="sta01Btn">발생</button>
-                            <button class="dropdown-item" id="sta02Btn">처리완료</button>
+                            <!-- <button class="dropdown-item" id="sta02Btn">처리완료</button> -->
                         </div>
                     </div>
 

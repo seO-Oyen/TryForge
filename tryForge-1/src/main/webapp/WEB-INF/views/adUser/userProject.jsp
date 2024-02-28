@@ -301,36 +301,7 @@
                 }else{
                     alert("구성원 추가 에러")
                 }
-                Swal.fire({
-                    title: '구성원 추가',
-                    text: '구성원을 추가하시겠습니까?',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: '확인',
-                    cancelButtonText: '취소'
-                }).then((result) => {
-                    console.log(result)
-                    if (result.isConfirmed) {
-                        console.log(result.isConfirmed)
-                        if (insMsg01 != null) {
-                            Swal.fire({
-                                title: '성공',
-                                text: insMsg01,
-                                icon: 'success'
-                            }).then(() => {
-                               // Swal.close();
-                                //window.location.reload();
-                            });
-                        } else {
-                            // 삭제 실패 메시지 표시
-                            Swal.fire({
-                                title: '실패',
-                                text: '구성원 추가 실패',
-                                icon: 'error'
-                            });
-                        }
-                    }
-                });
+               
             },
             error: function (err) {
                 console.log(err);
