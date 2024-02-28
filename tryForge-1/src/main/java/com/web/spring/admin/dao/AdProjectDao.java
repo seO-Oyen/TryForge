@@ -15,6 +15,7 @@ public interface AdProjectDao {
 	List<Project> projList();
 	List<Member> PJMemList(String project_key);
 	List<Member> schMem(@Param("member_name")String member_name);
+	List<Member> exceptSchMem(@Param("member_name")String member_name);
 	int insertPJ(Project insProject);
 	int insPJtoTask(Project insProject);
 	int insertTeam(Team insTeam);
@@ -30,4 +31,9 @@ public interface AdProjectDao {
 	int uptFin(String project_key);
 	int uptProject(Project uptPro);
 	int uptTeam(Team uptTeam);
+	int insBookProject(Project ins);
+	int convertTeam(Team ins);
+	int convertTm(int member_key);
+	int insPJtoTask02(Project insProject);
+	int convertProject(Project upt);
 }

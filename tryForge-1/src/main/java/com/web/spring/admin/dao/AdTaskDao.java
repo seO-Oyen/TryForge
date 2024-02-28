@@ -2,18 +2,17 @@ package com.web.spring.admin.dao;
 
 import java.util.List;
 
-import com.web.spring.vo.Risk;
-import com.web.spring.vo.Risk_Response;
+import com.web.spring.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import com.web.spring.vo.MemberSch;
-import com.web.spring.vo.Task;
 import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface AdTaskDao {
+	@Select("select * from PROJECT where creater = #{creater} ")
+	List<Project> ganttProject(@Param("creater")int creater);
 	List<MemberSch> schTaskMem(MemberSch sch);
 	@Select("select DISTINCT title from project order by title")
 	List<String> getTitle();

@@ -38,9 +38,9 @@ public class AdUserController {
 	      return "pageJsonReport";
 	  }
 	// 맴버키로 팀원 정보 가져오기
-	  @GetMapping("tmInfo")
-	public String tmInfo(@RequestParam("member_key")int member_key,Model d){
-		d.addAttribute("tmInfo",service.tmFromMember(member_key));
+	  @RequestMapping("tmInfo")
+	public String tmInfo(Team_Member tm,Model d){
+		d.addAttribute("tmInfo",service.tmFromMember(tm));
 		  return "pageJsonReport";
 	  }
 	  // 팀원 삭제

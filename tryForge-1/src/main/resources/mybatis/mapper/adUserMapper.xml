@@ -2,14 +2,21 @@
 <!DOCTYPE mapper
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+	
 <mapper namespace="com.web.spring.admin.dao.AdUserDao">
-	<select id="tmFromMember" resultType="team_member" parameterType="int">
-		SELECT tm.* FROM TEAM_MEMBER tm 
-		JOIN MEMBER m ON tm.member_key = m.member_key WHERE m.MEMBER_KEY = #{member_key}
-	</select>	
+	<!-- member_key로 소속된 팀의 team_member 정보 가져오기-->
+	<select id="tmFromMember" resultType="team_member" parameterType="team_member">
+		SELECT p.PROJECT_KEY ,tm.TEAM_MEMBER_KEY, tm.MEMBER_KEY AS member_key1, tm.ROLE, tm.TEAM_KEY FROM TEAM_MEMBER tm 
+			JOIN MEMBER m ON tm.member_key = m.member_key 
+			JOIN team t ON t.TEAM_KEY = tm.TEAM_KEY 
+			JOIN PROJECT p ON p.PROJECT_KEY = t.PROJECT_KEY 
+		WHERE m.MEMBER_KEY = #{member_key1} and p.project_key = #{project_key}
+	</select>
+	<!--PL 지정-->
 	<update id="assignPL" parameterType="int">
 		update TRYFORGE.TEAM_MEMBER set role = 'PL' where TRYFORGE.TEAM_MEMBER.TEAM_MEMBER_KEY = #{team_Member_key}
 	</update>
+	<!--팀원 추가-->
 	<insert id="insNewTm" parameterType="team_member">
 		insert INTO TRYFORGE.TEAM_MEMBER values (teamMem_seq.nextval, #{member_key1}, 'TM', #{team_key})
 	</insert>

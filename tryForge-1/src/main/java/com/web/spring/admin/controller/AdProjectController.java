@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -20,7 +22,7 @@ import com.web.spring.vo.Team_Member;
 public class AdProjectController {
 	@Autowired(required = false)
 	private AdProjectService service;
-	// http://localhost:1111/projList.do
+	// http://localhost:1111/schMem
 	// 프로젝트 출력(진행중/완료 상태 view단에서 변경예정)
 	@RequestMapping("projList")
 	public String projList(Project p , Model d) {
@@ -33,6 +35,11 @@ public class AdProjectController {
 		public String schMem(@RequestParam(value="member_name", defaultValue = "")String member_name, Model d) {
 		    d.addAttribute("memList", service.schMem(member_name));
 		    return "pageJsonReport";
+		}
+		@RequestMapping("exceptSchMem")
+		public String exceptSchMem(@RequestParam(value="member_name", defaultValue = "")String member_name, Model d) {
+			d.addAttribute("memList02", service.exceptSchMem(member_name));
+			return "pageJsonReport";
 		}
 	
 	// 프로젝트 생성, 팀 생성, 팀원 등록, 팀 구성원수 변경 
@@ -61,7 +68,7 @@ public class AdProjectController {
 	}
 	
 	// 완료상태 변경
-	@RequestMapping("uptFin")
+	@RequestMapping("uptProjectFin")
 	public String uptFin(@RequestParam("project_key")String project_key, Model d) {
 		d.addAttribute("uptmsg",service.uptFin(project_key));
 		return "pageJsonReport"; 
@@ -74,5 +81,20 @@ public class AdProjectController {
 		uptTeam.setProject_key(project_key);
 		d.addAttribute("uptAllmsg",service.uptAll(uptPro, uptTeam));
 		return "pageJsonReport"; 
+	}
+	@PostMapping("insBookProject")
+	public String insBookProject(Project ins, Model d){
+		d.addAttribute("bookInsMsg",service.insBookProject(ins));
+		return "pageJsonReport";
+	}
+	@GetMapping("projectDetail")
+	public String projectDetail(@RequestParam("project_key")String project_key,Model d){
+		d.addAttribute("pjDetail",service.projectInfo(project_key));
+		return "pageJsonReport";
+	}
+	@PostMapping("convertProject")
+	public String convertProject(Project uptProject, Team insTeam, @RequestParam("member_key") List<String> member_key, Model d){
+		d.addAttribute("convertMsg",service.convertProject(uptProject,insTeam,member_key));
+		return "pageJsonReport";
 	}
 }

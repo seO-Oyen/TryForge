@@ -39,19 +39,16 @@ public class MainController {
 		if (session.getAttribute("loginMem") != null ) {
 			Member member = (Member)session.getAttribute("loginMem");
 			Project project = memberService.getUserProject(member);
+			List<Project> projectList = memberService.getUserProjectList(member);
 			if (project != null) {
 				session.setAttribute("projectMem", project);
+				d.addAttribute("projectList", projectList);
+			} else {
+				return "user/userIndexPjNo";
 			}
 		}
 
 		return "user/userIndex";
-	}
-
-	//마이페이지 출력
-	@GetMapping("myPage")
-	public String myPage(Model d) {
-		
-	    return "user/myPage";
 	}
 
 }

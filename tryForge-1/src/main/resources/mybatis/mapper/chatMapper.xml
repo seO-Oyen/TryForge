@@ -12,6 +12,12 @@
 		ORDER BY cl.LAST_TIME DESC
 	</select>
 	
+	<select id="getChatListNum" parameterType="String" resultType="int">
+		SELECT chatList_key
+		FROM CHAT_LIST
+		WHERE CHAT_CATEGORY = #{pjKey}
+	</select>
+	
 	<select id="getChatMemList" parameterType="int" resultType="int">
 		SELECT cm.member_key
 		FROM CHAT_MEMBER cm
@@ -56,5 +62,62 @@
 			LAST_TIME = TO_DATE(#{send_time}, 'YYYY-MM-DD HH24:MI')
 		WHERE CHATLIST_KEY = #{chatlist_key}
 	</update>
+	
+	<insert id="createChatRoom">
+	INSERT INTO chat_list
+	(
+	   chatList_key,
+	   chat_category,
+	   last_message,
+	   last_time
+	)
+	VALUES
+	(
+	   chatlist_seq.nextval,
+	   'PJ-' || project_seq.currval,
+	   ' ',
+	   sysdate
+	)
+	</insert>
+	
+	<insert id="createChatMem" parameterType="int">
+		INSERT INTO chat_member
+		(
+		   chatmember_key,
+		   chatlist_key	,
+		   member_key
+		)
+		VALUES
+		(
+		   chatmember_seq.nextval,
+		   chatlist_seq.currval,
+		   #{member_key}
+		)
+	</insert>
+	
+	<insert id="createChatRoomUser">
+		INSERT INTO chat_list
+		(
+		   chatList_key,
+		   chat_category,
+		   last_message,
+		   last_time
+		)
+		VALUES
+		(
+		   chatlist_seq.nextval,
+		   '',
+		   ' ',
+		   sysdate
+		)
+	</insert>
+	
+	<select id="schMem" resultType="member">
+		SELECT m.*
+		FROM MEMBER m 
+		WHERE m.MEMBER_NAME LIKE '%' || #{member_name} || '%'
+			AND m.member_key != #{member_key}
+		ORDER BY m.MEMBER_KEY
+	</select>
 
 </mapper>

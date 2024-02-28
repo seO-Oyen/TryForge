@@ -18,4 +18,6 @@ public interface FileDao {
 	int modifyFile(FileStorage file);
 
 	FileStorage getFileDetail(FileStorage file);
+	
+	FileStorage getProfile(int member_key);
 }

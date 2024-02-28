@@ -17,6 +17,16 @@ public class FileStorage {
 	private String project_key;
 	private String description;
 	private String member_name;
+	private FileUse fileUse;
+
+	public FileUse getFileUse() {
+		return fileUse;
+	}
+
+	public void setFileUse(FileUse fileUse) {
+		this.fileUse = fileUse;
+	}
+
 	@JsonIgnore
 	private MultipartFile[] files;
 
@@ -65,7 +75,7 @@ public class FileStorage {
 		// TODO Auto-generated constructor stub
 	}
 
-	public FileStorage(String file_key, String fname, String path, String ftype, String fsize, Date upload_time, String iconPath, MultipartFile[] files, int member_key, String project_key, String description, String member_name) {
+	public FileStorage(String file_key, String fname, String path, String ftype, String fsize, Date upload_time, String iconPath, int member_key, String project_key, String description, String member_name, FileUse fileUse, MultipartFile[] files) {
 		this.file_key = file_key;
 		this.fname = fname;
 		this.path = path;
@@ -73,11 +83,12 @@ public class FileStorage {
 		this.fsize = fsize;
 		this.upload_time = upload_time;
 		this.iconPath = iconPath;
-		this.files = files;
 		this.member_key = member_key;
 		this.project_key = project_key;
 		this.description = description;
 		this.member_name = member_name;
+		this.fileUse = fileUse;
+		this.files = files;
 	}
 
 	public FileStorage(String file_key, String fname, String path, String ftype, String fsize, String project_key, int member_key, String description) {

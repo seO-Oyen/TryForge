@@ -18,7 +18,7 @@
     if (proc !== "") {
         if (proc === "upt") {
             Swal.fire({
-                text: msg + "\n메인화면으로 이동하시겠습니까?",
+                text: msg + "\n조회화면으로 이동하시겠습니까?",
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: '확인',
@@ -32,7 +32,7 @@
         }
         if (proc === "del") {
             Swal.fire({
-                text: msg + "\n메인화면으로 이동합니다.",
+                text: msg + "\n조회화면으로 이동합니다.",
                 icon: 'warning',
                 confirmButtonColor: '#007FFF', 
             }).then(() => {

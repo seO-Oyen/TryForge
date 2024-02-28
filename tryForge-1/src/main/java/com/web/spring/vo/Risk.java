@@ -3,6 +3,7 @@ package com.web.spring.vo;
 import java.util.Date;
 
 public class Risk {
+	//RESPONSE_METHOD|STRATEGY
 	private int risk_key; // 리스크 키
 	private String project_key; // 프로젝트 키
 	private int task_key; // 업무 키
@@ -16,6 +17,10 @@ public class Risk {
 	private String title; // 프로젝트 이름
 	private Date reg_date; //  업무 등록일
 	private String status; // 상태(발생전, 발생, 처리중, 완료)
+	private String contact; // 리스크 담당자
+	private int risk_response_key; // 리스크 대응 키
+	private String response_method; // 대응방법상세
+	private String strategy; // 대응전략
 	public Risk() {
 		super();
 	}
@@ -126,4 +131,38 @@ public class Risk {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
+	public int getRisk_response_key() {
+		return risk_response_key;
+	}
+
+	public void setRisk_response_key(int risk_response_key) {
+		this.risk_response_key = risk_response_key;
+	}
+
+	public String getResponse_method() {
+		return response_method;
+	}
+
+	public void setResponse_method(String response_method) {
+		this.response_method = response_method;
+	}
+
+	public String getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(String strategy) {
+		this.strategy = strategy;
+	}
+	
+	
 }

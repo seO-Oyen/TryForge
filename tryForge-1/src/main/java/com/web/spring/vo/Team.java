@@ -1,4 +1,4 @@
-package com.web.spring.vo;
+package com.web.spring.vo;    
 
 import org.springframework.beans.factory.annotation.Autowired;
 

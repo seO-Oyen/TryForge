@@ -3,10 +3,12 @@ package com.web.spring.admin.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.tags.shaded.org.apache.xpath.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.web.spring.admin.dao.AdProjectDao;
+import com.web.spring.chat.dao.ChatDao;
 import com.web.spring.vo.Member;
 import com.web.spring.vo.Project;
 import com.web.spring.vo.Team;
@@ -18,6 +20,9 @@ import com.web.spring.vo.Team_Member;
 public class AdProjectService {
 	@Autowired(required = false)
 	private AdProjectDao dao;
+	@Autowired(required = false)
+	private ChatDao chatDao;
+	
 	// 프로젝트 출력
 	public List<Project> projList() {
 		return dao.projList();
@@ -28,6 +33,12 @@ public class AdProjectService {
 			member_name = "";
 		return dao.schMem(member_name);
 	}
+	// 할당안된 인간들만
+	public List<Member> exceptSchMem(String member_name) {
+		if (member_name == null)
+			member_name = "";
+		return dao.exceptSchMem(member_name);
+	}
 	// 프로젝트, 팀, 팀원 등록
 	public String insertAll(Project insProject, Team insTeam, List<String> member_key) {
 		String msg = "";
@@ -35,6 +46,10 @@ public class AdProjectService {
 		int insertTeam = dao.insertTeam(insTeam);
 		int insPjtoTask = dao.insPJtoTask(insProject);
 		int insertTm = 0;
+		
+		// 채팅방 리스트 생성
+		chatDao.createChatRoom();
+		
 		// 배열로 받아온 맴버키 문자열 타입을 숫자형으로 변환
 		// , 와 공백 제거 처리
 		for (String memberKeys : member_key) {
@@ -46,6 +61,9 @@ public class AdProjectService {
 					//여기서 auth 마저 뽑아서
 					//insertTm = dao.insertTm(memkey,auth);
 					insertTm = dao.insertTm(memkey);
+					
+					// 멤버 채팅 추가
+					chatDao.createChatMem(memkey);
 				} catch (NumberFormatException e) {
 					System.out.println("에러 1: " + e.getMessage());
 				} catch (Exception e) {
@@ -146,5 +164,52 @@ public class AdProjectService {
 			}
 		}
 		return uptmsg;
+	}
+	// 예약 프로젝트 생성
+	public String insBookProject(Project ins){
+		return dao.insBookProject(ins)>0?"프로젝트 예약 완료" : "프로젝트 예약 에러";
+	}
+
+	// 예약 프로젝트 진행프로젝트로 변경
+	public String convertProject(Project uptPro, Team insTeam, List<String> member_key) {
+		Boolean isPass = false;
+		int uptProject = dao.convertProject(uptPro);
+		int insertTeam = dao.convertTeam(insTeam);
+		int insPjtoTask = dao.insPJtoTask02(uptPro);
+		int insertTm = 0;
+
+		// 채팅방 리스트 생성
+		chatDao.createChatRoom();
+
+		for (String memberKeys : member_key) {
+			// 여기서 auth 한번 더 돌리고
+			String[] keys = memberKeys.replace(" ", "").split(",");
+			for (String key : keys) {
+				try {
+					int memkey = Integer.parseInt(key);
+					insertTm = dao.convertTm(memkey);
+					// 멤버 채팅 추가
+					chatDao.createChatMem(memkey);
+				} catch (NumberFormatException e) {
+					System.out.println("에러 1: " + e.getMessage());
+				} catch (Exception e) {
+					System.out.println("에러 2 : " + e.getMessage());
+				}
+			}
+		}
+
+		int uptCnt = dao.uptCnt();
+		if (uptProject > 0) {
+			if (insPjtoTask > 0) {
+				if (insertTeam > 0) {
+					if (insertTm > 0) {
+						if (uptCnt > 0) {
+							isPass = true;
+						}
+					}
+				}
+			}
+		}
+		return isPass ? "프로젝트 변경완료" : "프로젝트 변경에러";
 	}
 }

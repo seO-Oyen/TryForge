@@ -2,6 +2,7 @@ package com.web.spring.admin.controller;
 
 import java.util.List;
 
+import com.web.spring.vo.Project;
 import com.web.spring.vo.Risk_Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,15 @@ import com.web.spring.vo.Task;
 public class AdTaskController {
     @Autowired(required = false)
     private AdTaskService service;
+
+
+    @GetMapping("ganntProject")
+    public String ganntProject(@RequestParam("creater")int creater, Model d) {
+        d.addAttribute("ganntPlist",service.ganntProject(creater));
+        return "pageJsonReport";
+    }
+
+
 
     // 프로젝트 별로 구분
     @ModelAttribute("title")
