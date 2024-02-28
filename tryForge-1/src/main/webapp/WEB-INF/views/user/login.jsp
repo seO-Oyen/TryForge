@@ -27,6 +27,15 @@
 <link rel="stylesheet"
 	href="${path}/template/css/vertical-layout-light/style.css">
 <!-- endinject -->
+<!-- base:js -->
+<script src="${path}/template/vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- inject:js -->
+<script src="${path}/template/js/off-canvas.js"></script>
+<script src="${path}/template/js/hoverable-collapse.js"></script>
+<script src="${path}/template/js/template.js"></script>
+<script src="${path}/template/js/settings.js"></script>
+<script src="${path}/template/js/todolist.js"></script>
 <script>
 	var id = "${member.member_id}"
 	var sessId = "${loginMem.member_id}"
@@ -88,15 +97,7 @@
 		<!-- page-body-wrapper ends -->
 	</div>
 	<!-- container-scroller -->
-	<!-- base:js -->
-	<script src="${path}/template/vendors/js/vendor.bundle.base.js"></script>
-	<!-- endinject -->
-	<!-- inject:js -->
-	<script src="${path}/template/js/off-canvas.js"></script>
-	<script src="${path}/template/js/hoverable-collapse.js"></script>
-	<script src="${path}/template/js/template.js"></script>
-	<script src="${path}/template/js/settings.js"></script>
-	<script src="${path}/template/js/todolist.js"></script>
+	
 	<!-- endinject -->
 </body>
 
