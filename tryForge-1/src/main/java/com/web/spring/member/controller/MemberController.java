@@ -67,7 +67,6 @@ public class MemberController {
 	// 회원가입
 	@PostMapping("register")
 	public String register(Member member, Model d) {
-		
 		// 회원가입 성공 여부
 		d.addAttribute("insertResult", memberService.registerMember(member));
 		
@@ -128,7 +127,7 @@ public class MemberController {
 				+ "\n아래링크를 눌러 가입해주세요.\n\nhttp://211.63.89.67:1111/register");
 		d.addAttribute("msg", memberService.sendMail(mailVo, sendMem).equals("메일 발송 성공"));
 		
-		return "redirect:/insertUser";
+		return "pageJsonReport";
 		
 	}
 	

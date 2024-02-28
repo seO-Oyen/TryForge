@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.web.spring.file.dao.FileDao;
 import com.web.spring.member.dao.MemberDao;
+import com.web.spring.vo.FileStorage;
 import com.web.spring.vo.InviteMember;
 import com.web.spring.vo.MailSender;
 import com.web.spring.vo.Member;
@@ -25,6 +27,8 @@ public class MemberService {
 	private MemberDao memberDao;
 	@Autowired(required = false)
 	private JavaMailSender sender;
+	@Autowired(required = false)
+	private FileDao fileDao;
 
 	// 로그인
 	public Member loginMember(Member member) {
@@ -36,6 +40,9 @@ public class MemberService {
 		int result = memberDao.registerMember(member);
 		
 		if (result > 0) {
+			// 회원가입 성공했을때 가입여부 true로 바꾸기
+			memberDao.updateInviteMember(member.getMember_email());
+			
 			return true;
 		} else {
 			return false;
@@ -54,8 +61,13 @@ public class MemberService {
 	
 	// 이메일 초대되어 있는지 체크 여부
 	public boolean checkEmail(String email) {
-		if (email != null && memberDao.checkEmail(email) > 0) {
-			return true;
+		if (email != null) {
+			InviteMember invite = memberDao.checkEmail(email);
+			if (invite != null && !invite.isJoined()) {
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			return false;			
 		}
@@ -226,5 +238,11 @@ public class MemberService {
 		} 
 		
 		return msg;
+	}
+	
+	// 마이페이지 프로필사진 불러오기
+	public String getProfile(int memberKey) {
+		FileStorage file = fileDao.getProfile(memberKey);
+		return file.getFile_key() + "." + file.getFtype();
 	}
 }

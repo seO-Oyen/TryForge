@@ -1,22 +1,32 @@
 package com.web.spring.risk.service;
 
-import com.web.spring.risk.dao.Risk_ApprovalDao;
-import com.web.spring.vo.Risk;
-import com.web.spring.vo.Risk_Approval;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.web.spring.risk.dao.Risk_ApprovalDao;
+import com.web.spring.vo.FileStorage;
+import com.web.spring.vo.FileUse;
+import com.web.spring.vo.Risk;
+import com.web.spring.vo.Risk_Approval;
 
 @Service
 public class Risk_ApprovalService {
     @Autowired(required = false)
     private Risk_ApprovalDao dao;
-
-    public String insRiskApproval(Risk_Approval ins){
-        int insRiskApproval = dao.insRiskApproval(ins);
-        dao.insFileUse();
-        return insRiskApproval>0? "결재 완료":"결재 실패";
+    public int insFileUse(List<String> fileKeys){
+        int cnt = 0;
+        for(String fileKey : fileKeys) {
+            FileStorage file = new FileStorage();
+            file.setFile_key(fileKey);
+            cnt += dao.insFileUse(file);
+            System.out.println("###파일키??"+fileKey);
+        }
+        return cnt;
+    }
+    public int insRiskApproval(Risk_Approval ins){
+        return dao.insRiskApproval(ins);
     }
     // 리스크 결재 리스트 출력
     public List<Risk_Approval> riskApprovalInfo(){
@@ -34,9 +44,19 @@ public class Risk_ApprovalService {
     public Risk_Approval getRiskApprovalByrakey(int risk_approval_key) {
     	return dao.getRiskApprovalByrakey(risk_approval_key);
     }
-    public String reRiskApproval(Risk_Approval upt) {
-    	int reRiskApproval = dao.reRiskApproval(upt);
-    	dao.insFileUse();
-    	return reRiskApproval>0?"재상신 완료" : "재상신 에러";
+    public int reRiskApproval(Risk_Approval upt) {
+    	return dao.reRiskApproval(upt);
     }
+    
+    public int reRiskApprovalFileUse(List<String> fileKeys, Risk_Approval ra) {
+    	  int cnt = 0;
+          for(String fileKey : fileKeys) {
+              FileUse file = new FileUse();
+              file.setFile_key(fileKey);
+              file.setRisk_approval_key(ra.getRisk_approval_key());
+              cnt += dao.reRiskApprovalFileUse(file);
+          }
+          return cnt;
+      }
+   
 }

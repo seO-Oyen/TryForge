@@ -7,85 +7,21 @@
 <%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="path" value="${pageContext.request.contextPath }"/> --%>
-<jsp:include page="${path}/template/module/module_admain.jsp"
-	flush="true" />
+<jsp:include page="${path}/template/module/module_user.jsp" flush="true" />
+
 
 <script>
-    // 수정, 삭제 구분
-    var proc = "${proc}";
-    var msg = "${msg}";
 
-    if (proc !== "") {
-        if (proc === "upt") {
-            Swal.fire({
-                text: msg + "\n조회화면으로 이동하시겠습니까?",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: '확인',
-                cancelButtonText: '취소',
-                confirmButtonColor: '#007FFF',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    location.href = "${path}/noticeList";
-                }
-            });
-        }
-        if (proc === "del") {
-            Swal.fire({
-                text: msg + "\n조회화면으로 이동합니다.",
-                icon: 'warning',
-                confirmButtonColor: '#007FFF', 
-            }).then(() => {
-                location.href = "${path}/noticeList";
-            });
-        }
-    }
 
     // 세션값 확인하여 버튼 숨김
     $(document).ready(function() {
-        var writer = "${notice.notice_Writer}";
-        var sessName = "${loginMem.member_name}";
 
-        if (sessName !== writer) {
-            $("#uptBtn").hide();
-            $("#delBtn").hide();
-        }
-
-        
-        // 수정
-        $("#uptBtn").click(function() {
-            var noticeKey = "${notice.notice_Key}";
-            location.href = "${path}/updateNoticeFrm?notice_Key=" + noticeKey;
-        });
-
-        // 삭제
-        $("#delBtn").click(function() {
-            var no = "${notice.notice_Key}";
-            Swal.fire({
-                text: '삭제하시겠습니까?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#007FFF',
-                cancelButtonColor: '#d33',
-                confirmButtonText: '확인',
-                cancelButtonText: '취소',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    location.href = "${path}/deleteNotice?notice_Key=" + no;
-                }
-            });
-        });
     });
 </script>
 <div class="col-12 grid-margin" style="max-width: 85%; flex: 0 0 95%;">
 	<div class="card">
 		<div class="card-body">
-			<div style="display: flex; margin-left: 85%">
-				<button type="button" class="btn btn-inverse-info btn-fw"
-					id="uptBtn">수정</button>
-				<button type="button" class="btn btn-inverse-danger btn-fw"
-					style="margin-left: 10px" id="delBtn">삭제</button>
-			</div>
+			
 			<form class="form-sample" method="post" id="updateForm">
 
 			
@@ -129,7 +65,7 @@
 			</form>
 
 			<button type="button" class="btn btn-info btn-lg btn-block"
-				onclick="location.href='${path}/noticeList'"
+				onclick="location.href='${path}/notice'"
 				style="margin-left: 34%; height: 5%; margin-top: 2.3%; width: 30%; background: #007FFF;">이전페이지</button>
 		</div>
 	</div>

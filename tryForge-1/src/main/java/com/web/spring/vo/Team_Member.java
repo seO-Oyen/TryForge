@@ -11,6 +11,7 @@ public class Team_Member {
 	private Team team;
 	private int team_key;
 	private int member_key1;
+	private String project_key;
 	
 	public int getMember_key1() {
 		return member_key1;
@@ -85,6 +86,14 @@ public class Team_Member {
 
 	public void setTeam_key(int team_key) {
 		this.team_key = team_key;
+	}
+
+	public String getProject_key() {
+		return project_key;
+	}
+
+	public void setProject_key(String project_key) {
+		this.project_key = project_key;
 	}
 	
 }

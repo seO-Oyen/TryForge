@@ -51,7 +51,7 @@
     <script src="${path}/template/calendar/index.global.js"></script>
     <script src="${path}/template/gantt/codebase/dhtmlxgantt.js"></script>
     <script src="${path}/template/alert/sweetalert2.min.js"></script>
-   <!--chart.js-->
+    <!--chart.js-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
     <!-- End custom js for this page-->
     <script>
@@ -60,8 +60,11 @@
             if (sessId == "") {
                 alert("로그인을 하여야 현재화면을 볼 수 있습니다\n로그인 페이지 이동")
                 location.href = "${path}/login"
-            } else if ("${loginMem.member_role}" != "") {
+            } else if ("${loginMem.member_role}" != "EMP") {
                 $("#admin").css("display", "")
+            } else if ("${loginMem.member_role}" == "EMP") {
+                alert("일반 유저는 어드민 페이지로 올 수 없습니다.")
+                location.href = "${path}/userIndex"
             }
             function updateNavigation() {
                 var currentPage = window.location.pathname;
@@ -129,7 +132,14 @@
                         titleElement.text('AcceptRole')
                         detailElement.text('관리자페이지  >  권한요청관리')
                         break;
+                    case '/adRiskApprovalPlist':
+                        titleElement.text('RIsk')
+                        detailElement.text('관리자페이지  >  리스크 관리')
+                        break;
+
                     default:
+                        titleElement.text('Manage')
+                        detailElement.text('관리자페이지  >  관리페이지')
                         break;
                 }
             }
@@ -164,7 +174,12 @@
             <ul class="navbar-nav mr-lg-2">
                 <li class="nav-item nav-profile dropdown">
                     <a class="nav-link" href="#" data-toggle="dropdown" id="profileDropdown">
-                        <img src="${path}/template/images/faces/face5.jpg" alt="profile" />
+                        <c:if test="${profile ne ''}">
+                            <img src="${path}/FileStorage/${profile}" alt="profile"/>
+                        </c:if>
+                        <c:if test="${profile eq ''}">
+                            <img src="${path}/template/images/faces/face5.jpg" alt="profile"/>
+                        </c:if>
                         <span class="nav-profile-name">${loginMem.member_name} 님</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
@@ -191,85 +206,7 @@
                     </a>
                 </li>
 
-                <!-- 메세지(톱니바퀴모양) -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center"
-                       id="messageDropdown" href="#" data-toggle="dropdown">
-                        <i class="typcn typcn-cog-outline mx-0"></i>
-                        <span class="count"></span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-                         aria-labelledby="messageDropdown">
-                        <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
-                        <a class="dropdown-item preview-item">
-                            <div class="preview-thumbnail">
-                                <img src="${path}/template/images/faces/face4.jpg" alt="image"
-                                     class="profile-pic">
-                            </div>
-                            <div class="preview-item-content flex-grow">
-                                <h6 class="preview-subject ellipsis font-weight-normal">David Grey</h6>
-                                <p class="font-weight-light small-text text-muted mb-0">The meeting is cancelled</p>
-                            </div>
-                        </a>
-                        <a class="dropdown-item preview-item">
-                            <div class="preview-thumbnail">
-                                <img src="${path}/template/images/faces/face2.jpg" alt="image"
-                                     class="profile-pic">
-                            </div>
-                            <div class="preview-item-content flex-grow">
-                                <h6 class="preview-subject ellipsis font-weight-normal">Tim Cook</h6>
-                                <p class="font-weight-light small-text text-muted mb-0">
-                                    New product launch</p>
-                            </div>
-                        </a>
-                    </div>
-                </li>
 
-                <!-- 알림창 (종모양) -->
-                <li class="nav-item dropdown mr-0"><a
-                        class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center"
-                        id="notificationDropdown" href="#" data-toggle="dropdown">
-                    <i class="typcn typcn-bell mx-0"></i>
-                    <span class="count"></span>
-                </a>
-                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-                         aria-labelledby="notificationDropdown">
-                        <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-                        <a class="dropdown-item preview-item">
-                            <div class="preview-thumbnail">
-                                <div class="preview-icon bg-success">
-                                    <i class="typcn typcn-info mx-0"></i>
-                                </div>
-                            </div>
-                            <div class="preview-item-content">
-                                <h6 class="preview-subject font-weight-normal">Application Error</h6>
-                                <p class="font-weight-light small-text mb-0 text-muted">Just now</p>
-                            </div>
-                        </a>
-                        <a class="dropdown-item preview-item">
-                            <div class="preview-thumbnail">
-                                <div class="preview-icon bg-warning">
-                                    <i class="typcn typcn-cog-outline mx-0"></i>
-                                </div>
-                            </div>
-                            <div class="preview-item-content">
-                                <h6 class="preview-subject font-weight-normal">Settings</h6>
-                                <p class="font-weight-light small-text mb-0 text-muted">Private message</p>
-                            </div>
-                        </a>
-                        <a class="dropdown-item preview-item">
-                            <div class="preview-thumbnail">
-                                <div class="preview-icon bg-info">
-                                    <i class="typcn typcn-user mx-0"></i>
-                                </div>
-                            </div>
-                            <div class="preview-item-content">
-                                <h6 class="preview-subject font-weight-normal">New user registration</h6>
-                                <p class="font-weight-light small-text mb-0 text-muted">2 days ago</p>
-                            </div>
-                        </a>
-                    </div>
-                </li>
             </ul>
             <!-- 무슨 버튼인지 모르겠음. 화면상으론 안뜸 -->
             <!-- <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
@@ -313,12 +250,11 @@
         </div>
         <!-- 아이콘 버튼 -->
         <div class="navbar-links-wrapper d-flex align-items-stretch">
-            <div class="nav-link" style="border-right:none; flex-grow:0.1;">
-                <a onclick="location.href='${path}/adMain.do'"><i class="mdi mdi-desktop-mac"></i></a>
+            <div class="nav-link" style="border-right:none; flex-grow:0.1; margin-left:60%;">
+                <a onclick="location.href='${path}/adMain'">
+                    <i class="mdi mdi-desktop-mac"></i></a>
             </div>
-            <div class="nav-link" style="border-right:none;flex-grow:0.1;">
-                <a href="javascript:;"><i class="mdi mdi-brightness-5" style="margin-left:none;"></i></a>
-            </div>
+
 
         </div>
     </nav>
@@ -579,7 +515,7 @@
                         <i class="tpycn mdi mdi-account-plus menu-icon"></i>
                         <span class="menu-title">권한요청관리</span>
                     </a>
-               	</li>
+                </li>
                 <li class="nav-item"><a class="nav-link" href="${path}/insertUser">
                     <i class="tpycn mdi mdi-account-multiple-plus menu-icon"
                        style="width: 20px; height: 20px;"></i> <span class="menu-title">사용자 초대</span>

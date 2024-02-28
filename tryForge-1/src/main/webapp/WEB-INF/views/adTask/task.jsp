@@ -73,9 +73,11 @@
             var memberName = $(this).data("member-name");
             var memberKey = $(this).data("member-key");
             var projectKey = $(this).data("project-key");
+            var taskKey = $(this).data("task-key");
             $("#mname").val(memberName);
             $("#modalFrm [name=member_key]").val(memberKey);
             $("#modalFrm [name=project_key]").val(projectKey);
+            $("#modalFrm [name=parent]").val(taskKey);
             // 모달 열기
             $("#myModal").modal('show');
         });
@@ -217,6 +219,61 @@
             }
         });
     }
+
+    function ganntProject(){
+        var creater = "${loginMem.member_key}";
+        $.ajax({
+            url:"${path}/ganntProject",
+            data:"creater="+creater,
+            dataType:"json",
+            success:function (data){
+                console.log(data.ganntPlist)
+                var html = "";
+                if(data.ganntPlist!=null){
+                    html += "<select id='projectSelect' name='project_key02' class='form-control form-control-lg'>";
+                    html +="<option value=''>선택</option>";
+                    $(data.ganntPlist).each(function(idx,gp){
+                        console.log("키???"+gp.project_key)
+                        html += "<option value='" + gp.project_key + "'>" + gp.title + "</option>";
+                    })
+                    html +="</select>";
+                }
+                $("#plistSelect").html(html)
+                $("#myModal03").modal('show');
+                // 옵션 값의 변경 이벤트를 처리
+                $('#projectSelect').on('change', function() {
+                    var projectKey = $(this).val();
+                    goGantt(projectKey);
+                });
+
+            },
+            error:function (err){
+                console.log(err)
+            }
+        })
+    }
+
+
+
+    function goGantt(projectKey) {
+        alert(projectKey)
+        $.ajax({
+            url : "${path}/setPj",
+            type : "GET",
+            data : {
+                projectNum: projectKey
+            },
+            dataType : "json",
+            success : function(data) {
+              alert(data.project)
+                location.href = "${path}/gantt"
+            },
+            error : function(err) {
+                console.log(err)
+            }
+        })
+    }
+    
 </script>
 
 <div class="main-panel">
@@ -226,7 +283,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Task Management</h4>
-                        <button type="button" class="btn btn-"
+                        <button type="button" class="btn btn-" onclick="ganntProject()"
                                 style="background-color: white; color: #007FFF; margin-left: 87%; border-color:#007FFF ">간트차트 이동
                         </button>
                         <!-- 구성원 검색 -->
@@ -284,7 +341,7 @@
                                                     data-member-name="${mlist.member_name}"
                                                     data-member-key="${mlist.member_key}"
                                                     data-project-key="${mlist.project_key}"
-
+                                                    data-task-key="${mlist.task_key}"
                                                     style="background-color: #007FFF; color: white;">업무할당
                                             </button>
                                         </td>
@@ -327,6 +384,7 @@
             </div>
             <form class="forms-sample" id="modalFrm">
                 <input type="hidden" name="assignor" value="${loginMem.member_name}"/>
+                <input type="hidden" name="parent"/>
                 <input type="hidden" name="member_key"/> <input type="hidden"
                                                                 name="project_key"/>
                 <div class="form-group">
@@ -435,6 +493,38 @@
                             id="clsBtn02">닫기
                     </button>
                 </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- 재상신이유  -->
+<div class="modal" id="myModal03">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">프로젝트 선택</h4>
+            </div>
+
+            <!-- Modal body -->
+            <form id="modalFrm03">
+                <input type="hidden" name="creater" value="${loginMem.member_key}">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="exampleTextarea1">프로젝트 목록</label>
+                            <div id="plistSelect">
+
+                            </div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Modal footer -->
+
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="clsBtn03" style="width: 30%; margin-left: 33%;">Close</button>
             </div>
 
         </div>

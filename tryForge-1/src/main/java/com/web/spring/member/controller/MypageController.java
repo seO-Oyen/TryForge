@@ -3,6 +3,7 @@ package com.web.spring.member.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +17,17 @@ import jakarta.servlet.http.HttpSession;
 public class MypageController {
 	@Autowired(required = false) 
 	private MemberService memService;
+	
+	//마이페이지 출력
+	@GetMapping("myPage")
+	public String myPage(HttpSession session, Model d) {
+		if (session.getAttribute("loginMem") != null) {
+			Member member = (Member)session.getAttribute("loginMem");
+			d.addAttribute("profile", memService.getProfile(member.getMember_key()));
+		}
+		
+	    return "user/myPage";
+	}
 	
 	@GetMapping("chkPwd")
 	public ResponseEntity<Boolean> checkPwd(

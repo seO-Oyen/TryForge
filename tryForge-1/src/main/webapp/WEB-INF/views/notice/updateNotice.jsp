@@ -102,7 +102,7 @@ $(document).ready(function() {
 						name="notice_Detail">${notice.notice_Detail}</textarea>
 				</div>
 				<button id="regBtn" type="button" class="btn btn-info mr-2" style="background:#007FFF;">수정</button>
-				<button class="btn btn-light" id="mainBtn" onclick="location.href='${path}/noticeList'">취소</button>
+				<button type="button" class="btn btn-light" id="mainBtn" onclick="location.href='${path}/noticeList'">취소</button>
 			</form>
 		</div>
 	</div>

@@ -30,4 +30,15 @@
 				INNER JOIN FILE_STORAGE f ON m.MEMBER_KEY = f.MEMBER_KEY
 		WHERE f.FILE_KEY = #{file_key}
 	</select>
+	
+	<select id="getProfile" resultType="file">
+		SELECT *
+		FROM (
+			SELECT *
+			FROM FILE_STORAGE fs 
+			WHERE fs.MEMBER_KEY = #{member_key}
+			ORDER BY UPLOAD_TIME DESC
+		)
+		WHERE rownum = 1
+	</select>
 </mapper>

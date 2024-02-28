@@ -26,12 +26,10 @@ public class DashBoardController {
 		if (session.getAttribute("loginMem") != null ) {
         	
         	Project pj = service.getProject(pjNum);
-        	
-            if(session.getAttribute("projectMem") != null) {
-            	session.setAttribute("projectMem", pj);
-                Project project = (Project)session.getAttribute("projectMem");
-                d.addAttribute("project", project);
-            }
+
+			session.setAttribute("projectMem", pj);
+			Project project = (Project)session.getAttribute("projectMem");
+			d.addAttribute("project", project);
         }
 		return "pageJsonReport";
 	}

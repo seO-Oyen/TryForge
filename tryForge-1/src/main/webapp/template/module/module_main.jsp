@@ -77,7 +77,7 @@ $(document).ready(function(){
 			case '/notice':
 				Title.textContent = 'Notice';
 				break;
-			case '/task':
+			case '/getTask':
 				Title.textContent = 'Task';
 				break;
 			case '/taskReport':
@@ -553,7 +553,7 @@ $(document).ready(function(){
 						</div> -->
 					</li>
 					<li class="nav-item">
-					<a class="nav-link" href="${path}/getTask" >
+						<a class="nav-link" href="${path}/getTask" >
 						<i class="typcn mdi mdi-clipboard-outline menu-icon"></i>
 						<span class="menu-title">업무 관리</span>
 						<!-- <i class="menu-arrow"></i> -->
