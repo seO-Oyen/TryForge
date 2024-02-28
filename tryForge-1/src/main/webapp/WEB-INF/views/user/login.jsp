@@ -20,6 +20,7 @@
 	href="${path}/template/vendors/typicons/typicons.css">
 <link rel="stylesheet"
 	href="${path}/template/vendors/css/vendor.bundle.base.css">
+<link rel="stylesheet" href="${path}/template/vendors/mdi/css/materialdesignicons.min.css"/>
 <!-- endinject -->
 <!-- plugin css for this page -->
 <!-- End plugin css for this page -->
@@ -52,6 +53,15 @@
 		}
 		
 	}
+	$(document).ready(function() {
+		// 이전화면에서 요청된 내용을 선택하게 하게, 선택할 때, 서버에 언어 선택 내용 전달.
+		$("#dropdownMenuIconButton1").val("${param.lang}").change(function() {
+			var chVal = $(this).val()
+			if (chVal != '') {
+				location.href = "${path}/multiLang?lang=" + chVal
+			}
+		})
+	});
 </script>
 </head>
 
@@ -65,12 +75,26 @@
 							<div class="brand-logo">
 								<img src="${path}/template/images/try_forge01.jpg" alt="logo">
 							</div>
-							<h3>로그인</h3>
+							<div style="display: flex;">
+								<h3 style="width:100px; line-height:normal;">로그인</h3>
+								<button class="btn btn-outline-info dropdown-toggle" type="button" 
+									id="dropdownMenuIconButton1" data-toggle="dropdown" 
+									aria-haspopup="true" aria-expanded="false"
+									>
+	                            	<i class="typcn mdi mdi-translate"></i>
+	                          	</button>
+								<div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
+		                            <h6 class="dropdown-header">언어선택</h6>
+		                            <a class="dropdown-item" href="#">한국어</a>
+		                            <!-- <a class="dropdown-item" href="#">日本語</a> -->
+		                            <a class="dropdown-item" href="#">English</a>
+	                          	</div>
+                          	</div>
 							<!-- <h6 class="font-weight-light">Sign in to continue.</h6> -->
 							<form class="pt-3" method="post">
 								<div class="form-group">
 									<input type="text" class="form-control form-control-lg"
-										id="memberId" name="member_id" placeholder="ID" autocomplete="off">
+										id="memberId" name="member_id" placeholder='<spring:message code="id"/>' autocomplete="off">
 								</div>
 								<div class="form-group">
 									<input type="password" class="form-control form-control-lg"

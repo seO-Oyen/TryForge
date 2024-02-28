@@ -29,6 +29,6 @@ public class MultiLangController {
 		Locale locale = new Locale(lang);
 		localeResolver.setLocale(request, response, locale);
 		
-		return "a21_multilanguage";
+		return "user/login";
 	}
 }
