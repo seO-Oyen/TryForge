@@ -223,7 +223,7 @@ var exceptSchMlist=[];
         if(member_key.length==1){
         	 Swal.fire({
                  title: '구성원선택',
-                 text: '구성원은 한명이상 선택해주세요',
+                 text: '구성원은 두명이상 선택해주세요',
                  icon: 'error',
              });
              return "";

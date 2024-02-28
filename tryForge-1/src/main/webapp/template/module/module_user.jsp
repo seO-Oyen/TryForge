@@ -368,7 +368,7 @@ $(document).ready(function(){
 			<!-- 사이드바 -->
 			<!-- partial -->
 			<!-- partial:partials/_sidebar.html -->
-			<nav class="sidebar" id="sidebar" style="height: 130px; min-height: auto;">
+			<nav class="sidebar" id="sidebar" style="height: 175px; min-height: auto;">
 				<ul class="nav">
 					<li class="nav-item">
 						<a class="nav-link" href="${path}/userIndex">
