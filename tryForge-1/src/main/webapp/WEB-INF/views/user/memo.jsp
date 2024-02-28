@@ -155,7 +155,7 @@ function memoDelete(memoKeyNum) {
 										<tbody>
 											<c:if test="${memoList ne null}">
 											<c:forEach var="memo" items="${memoList}">
-												<tr ondblclick="memoDelete(${memo.memo_key})" style="cursor: pointer;">
+												<tr ondblclick="memoDelete(${memo.memo_key})" style="cursor: pointer;ㅈ">
 													<td class="memoDetail">${memo.memo_detail}</td>
 													<td>${memo.create_time}</td>
 												</tr>

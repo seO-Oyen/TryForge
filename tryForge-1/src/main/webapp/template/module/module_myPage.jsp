@@ -70,6 +70,20 @@ $(document).ready(function(){
 		})
 	}, 120000)
 })
+
+function getCurrentDate() {
+    var currentDate = new Date();
+    var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var month = monthNames[currentDate.getMonth()];
+    var day = currentDate.getDate();
+
+    return month + ' ' + day;
+}
+
+// 페이지 로딩 시 현재 날짜로 업데이트
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById('currentDate').innerText = 'Today: ' + getCurrentDate();
+});
 </script>
 <style>
 .sidebar {
@@ -128,47 +142,19 @@ $(document).ready(function(){
 				</ul>
 				<ul class="navbar-nav navbar-nav-right">
 					<!-- 달력 -->
-					<li class="nav-item nav-date dropdown">
-					<a class="nav-link d-flex justify-content-center align-items-center"
-						href="javascript:;">
-						<h6 class="date mb-0">Today : Mar 23</h6> 
-						<i class="typcn typcn-calendar"></i>
-					</a>
-					</li>
+	                <li class="nav-item nav-date dropdown">
+	                    <a class="nav-link d-flex justify-content-center align-items-center"
+	                       href="javascript:;">
+	                        <h6 class="date mb-0" id="currentDate"></h6>
+	                        <i class="typcn typcn-calendar"></i>
+	                    </a>
+	                </li>
 					
 				</ul>
 			</div>
 		</nav>
 		
 		<div class="container-fluid page-body-wrapper">
-			<!-- partial:partials/_settings-panel.html -->
-			<div class="theme-setting-wrapper">
-				<!--  -->
-				<!-- <div id="settings-trigger">
-					<i class="typcn typcn-cog-outline"></i>
-				</div> -->
-				<div id="theme-settings" class="settings-panel">
-					<i class="settings-close typcn typcn-times"></i>
-					<p class="settings-heading">SIDEBAR SKINS</p>
-					<div class="sidebar-bg-options selected" id="sidebar-light-theme">
-						<div class="img-ss rounded-circle bg-light border mr-3"></div>
-						Light
-					</div>
-					<div class="sidebar-bg-options" id="sidebar-dark-theme">
-						<div class="img-ss rounded-circle bg-dark border mr-3"></div>
-						Dark
-					</div>
-					<p class="settings-heading mt-2">HEADER SKINS</p>
-					<div class="color-tiles mx-0 px-4">
-						<div class="tiles success"></div>
-						<div class="tiles warning"></div>
-						<div class="tiles danger"></div>
-						<div class="tiles info"></div>
-						<div class="tiles dark"></div>
-						<div class="tiles default"></div>
-					</div>
-				</div>
-			</div>
 			
 			<!-- 사이드바 -->
 			<!-- partial -->
@@ -179,7 +165,6 @@ $(document).ready(function(){
 						<a class="nav-link" href="${path}/myPage">
 							<i class="typcn mdi mdi-account menu-icon"></i> <span
 							class="menu-title">마이페이지</span>
-							<!-- <div class="badge badge-danger">new</div> -->
 					</a></li>
 					
 					<li class="nav-item">
