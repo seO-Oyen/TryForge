@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.spring.dashboard.dao.DashBoardDao">
+	<resultMap type = "calendar" id="calRst">
+		<result column = "start1" property = "start"/>
+		<result column = "end1" property = "end"/>
+		<result column = "url" property = "urlLink"/>
+	</resultMap>
+	<resultMap type = "task" id="taskRst">
+		<result column = "task_key" property = "id"/>
+		<result column = "task_type" property = "type"/>
+		<result column = "task_open" property = "open"/>
+		<result column = "member_name" property = "owner"/>
+	</resultMap>
+
+	<select id="getCountCompleteTask" parameterType="String" resultType="int">
+		SELECT COUNT(TASK_KEY) FROM TASK
+		WHERE STATUS = '완료'
+		  AND PROJECT_KEY = #{project_key}
+	</select>
+
+	<select id="getCountIncompleteTask" parameterType="String" resultType="int">
+		SELECT COUNT(TASK_KEY) FROM TASK
+		WHERE STATUS = '진행중'
+		  AND PROJECT_KEY = #{project_key}
+	</select>
+
+	<select id="getProjectProgress" parameterType="String" resultType="float">
+		SELECT PROGRESS FROM TASK
+		WHERE TASK_TYPE = 'project'
+		  AND PROJECT_KEY = #{project_key}
+	</select>
+
+	<select id="getComingSchedule" parameterType="String" resultMap="calRst">
+		SELECT * FROM
+			(SELECT TITLE, START1 FROM CALENDAR
+				WHERE START1 >= SYSDATE
+				AND PROJECT_KEY = #{project_key}
+				ORDER BY START1 ASC)
+		sub WHERE ROWNUM &lt;= 3
+	</select>
+
+	<select id="getProjectElapsedDate" parameterType="String" resultType="int">
+		SELECT TRUNC(SYSDATE - START_DATE) FROM TASK
+		WHERE PROJECT_KEY = #{project_key}
+		  AND TASK_TYPE = 'project'
+	</select>
+
+	<select id="getProjectDday" parameterType="String" resultType="int">
+		SELECT CEIL(END_DATE - SYSDATE) FROM TASK
+		WHERE PROJECT_KEY = #{project_key}
+		  AND TASK_TYPE = 'project'
+	</select>
+
+	<select id="getProjectEndDate" parameterType="String" resultType="String">
+		SELECT END_DATE FROM TASK
+		WHERE PROJECT_KEY = #{project_key}
+		  AND TASK_TYPE = 'project'
+	</select>
+
+	<select id="getProjectElapsed" parameterType="String" resultType="int">
+		SELECT TRUNC((SYSDATE - START_DATE) / 7) AS WEEKS_ELAPSED
+		FROM TASK
+		WHERE PROJECT_KEY = #{project_key}
+		  AND TASK_TYPE = 'project'
+	</select>
+
+	<select id="getProjectStatusChart" parameterType="String" resultType="dashboard">
+		WITH project_tasks AS (
+			SELECT
+				t.task_key,
+				t.project_key,
+				t.start_date,
+				TRUNC((t.start_date - (SELECT MIN(start_date) FROM task WHERE project_key = t.project_key AND task_type = 'task')) / 7) + 1 AS task_week,
+				a.completion_date,
+				a.status
+			FROM
+				task t
+					LEFT JOIN approval a ON t.task_key = a.task_key
+			WHERE
+				t.project_key = #{project_key} AND
+				t.task_type = 'task'
+		),
+			 weeks AS (
+				 SELECT
+					 task_week,
+					 COUNT(*) AS total_tasks,
+					 COUNT(CASE WHEN status = '처리완료' THEN 1 END) AS completed_tasks,
+					 COUNT(CASE WHEN status IS NULL OR status != '처리완료' THEN 1 END) AS in_progress_tasks
+				 FROM project_tasks
+				 GROUP BY task_week
+			 ),
+			 cumulative_weeks AS (
+				 SELECT
+					 task_week,
+					 SUM(total_tasks) OVER (ORDER BY task_week) AS total_task,
+					 SUM(completed_tasks) OVER (ORDER BY task_week) AS completed_task,
+					 SUM(in_progress_tasks) OVER (ORDER BY task_week) AS inprogress_task
+				 FROM weeks
+			 )
+		SELECT * FROM cumulative_weeks
+		ORDER BY task_week
+	</select>
+</mapper>

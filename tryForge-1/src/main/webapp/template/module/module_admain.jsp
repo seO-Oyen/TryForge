@@ -132,11 +132,14 @@
                         titleElement.text('AcceptRole')
                         detailElement.text('관리자페이지  >  권한요청관리')
                         break;
+                    case '/insertUser':
+                        titleElement.text('InsertUser')
+                        detailElement.text('관리자페이지  >  사용자초대')
+                        break;
                     case '/adRiskApprovalPlist':
                         titleElement.text('RIsk')
                         detailElement.text('관리자페이지  >  리스크 관리')
                         break;
-
                     default:
                         titleElement.text('Manage')
                         detailElement.text('관리자페이지  >  관리페이지')
@@ -175,20 +178,20 @@
                 <li class="nav-item nav-profile dropdown">
                     <a class="nav-link" href="#" data-toggle="dropdown" id="profileDropdown">
                         <c:if test="${profile ne ''}">
-                            <img src="${path}/FileStorage/${profile}" alt="profile"/>
-                        </c:if>
-                        <c:if test="${profile eq ''}">
-                            <img src="${path}/template/images/faces/face5.jpg" alt="profile"/>
-                        </c:if>
+							<img src="${path}/FileStorage/${profile}" alt="profile"/>
+						</c:if>
+						<c:if test="${profile eq ''}">
+							<img src="${path}/template/images/faces/face5.jpg" alt="profile"/>
+						</c:if>
                         <span class="nav-profile-name">${loginMem.member_name} 님</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
                          aria-labelledby="profileDropdown">
                         <a class="dropdown-item" href="${path}/myPage">
-                            <i class="typcn typcn-cog-outline text-primary"></i> 마이페이지
+                            <i class="typcn typcn-cog-outline text-info"></i> 마이페이지
                         </a>
                         <a class="dropdown-item" href="${path}/login">
-                            <i class="typcn typcn-eject text-primary"></i> 로그아웃
+                            <i class="typcn typcn-eject text-info"></i> 로그아웃
                         </a>
                     </div>
                 </li>
@@ -208,11 +211,6 @@
 
 
             </ul>
-            <!-- 무슨 버튼인지 모르겠음. 화면상으론 안뜸 -->
-            <!-- <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
-                type="button" data-toggle="offcanvas">
-                <span class="typcn typcn-th-menu"></span>
-            </button> -->
         </div>
     </nav>
 
@@ -233,19 +231,7 @@
                     </div>
                 </li>
             </ul>
-            <!-- 검색창 => <ul>은 공간때문에 냅둠 -->
             <ul class="navbar-nav navbar-nav-right">
-                <!-- <li class="nav-item nav-search d-none d-md-block mr-0">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search..."
-                            aria-label="search" aria-describedby="search">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="search"> <i
-                                class="typcn typcn-zoom"></i>
-                            </span>
-                        </div>
-                    </div>
-                </li> -->
             </ul>
         </div>
         <!-- 아이콘 버튼 -->

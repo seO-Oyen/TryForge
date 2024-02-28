@@ -17,6 +17,7 @@ import com.web.spring.member.dao.MemberDao;
 import com.web.spring.vo.Chat;
 import com.web.spring.vo.ChatList;
 import com.web.spring.vo.Member;
+import com.web.spring.vo.Team;
 
 @Service
 public class ChatService {
@@ -40,10 +41,14 @@ public class ChatService {
 		
 		for (ChatList chat : chatList) {
 			if (chat.getChat_category() != null) {
-				String teamName = projectDao.teamInfo(chat.getChat_category()).getTeam_name();
-				List<String> teamNameList = new ArrayList<>();
-				teamNameList.add("팀 " + teamName);
-				chatMemMap.put(teamNameList, chat.getLast_message());
+				Team team = projectDao.teamInfo(chat.getChat_category());
+				if (team != null) {
+					String teamName = team.getTeam_name();
+					List<String> teamNameList = new ArrayList<>();
+					teamNameList.add("팀 " + teamName);
+					chatMemMap.put(teamNameList, chat.getLast_message());
+				}
+				
 			} else {
 				List<String> memberNameList = new ArrayList<>();
 				for (int memberKey : dao.getChatMemList(memKey, chat.getChatlist_key())){

@@ -38,6 +38,10 @@ public class MemberController {
 				session.removeAttribute("projectMem");
 				System.out.println("세션(멤버&프로젝트) 삭제");
 			}
+			if (session.getAttribute("profile") != null) {
+				session.removeAttribute("profile");
+				System.out.println("프로필사진 세션 삭제");
+			}
 		}
 
 		return "user/login";
@@ -51,6 +55,7 @@ public class MemberController {
 		// 로그인 여부
 		if (loginMember != null) {
 			session.setAttribute("loginMem", loginMember);
+			session.setAttribute("profile", memberService.getProfile(loginMember.getMember_key()));
 		}
 
 		return "user/login";
@@ -166,6 +171,7 @@ public class MemberController {
 				break;
 			} else {
 				d.addAttribute("result", memberService.requestRole(member_id, comment));
+				break;
 			}
 		}
 		

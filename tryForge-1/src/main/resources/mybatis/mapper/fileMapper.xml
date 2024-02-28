@@ -37,6 +37,7 @@
 			SELECT *
 			FROM FILE_STORAGE fs 
 			WHERE fs.MEMBER_KEY = #{member_key}
+				AND description = '프로필 사진'
 			ORDER BY UPLOAD_TIME DESC
 		)
 		WHERE rownum = 1

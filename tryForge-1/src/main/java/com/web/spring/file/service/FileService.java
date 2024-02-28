@@ -71,10 +71,8 @@ public class FileService {
             return "/icons/iso-icon.png";
         case "java":
             return "/icons/java-icon.png";
-        case "jpg":
+        case "jpg", "jpeg":
             return "/icons/jpg-icon.png";
-        case "jpeg":
-            return "/icons/jpeg-icon.png";
         case "js":
             return "/icons/js-icon.png";
         case "mp3":

@@ -243,6 +243,10 @@ public class MemberService {
 	// 마이페이지 프로필사진 불러오기
 	public String getProfile(int memberKey) {
 		FileStorage file = fileDao.getProfile(memberKey);
-		return file.getFile_key() + "." + file.getFtype();
+		if (file != null) {
+			System.out.println(file.getFile_key() + "." + file.getFtype());
+			return file.getFile_key() + "." + file.getFtype();
+		}	
+		return "";
 	}
 }

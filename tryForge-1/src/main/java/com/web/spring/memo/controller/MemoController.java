@@ -32,13 +32,24 @@ public class MemoController {
 	}
 	
 	@PostMapping("createMemo")
-	public String createChat(
+	public String createMemo(
 				@RequestParam("member_key") int member_key,
 				@RequestParam("memo_detail") String memo_detail,
 				Model d
 			) {
 		
 		d.addAttribute("result", memoService.createMemo(new Memo(member_key, memo_detail)));
+		
+		return "pageJsonReport";
+	}
+	
+	@GetMapping("deleteMemo")
+	public String deleteMemo(
+				@RequestParam("memoKey") int memoKey,
+				Model d
+			) {
+		
+		d.addAttribute("result", memoService.deleteMemo(memoKey));
 		
 		return "pageJsonReport";
 	}
