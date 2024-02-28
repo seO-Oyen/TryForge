@@ -19,12 +19,14 @@
 		SELECT COUNT(TASK_KEY) FROM TASK
 		WHERE STATUS = '완료'
 		  AND PROJECT_KEY = #{project_key}
+			AND TASK_TYPE = 'task'
 	</select>
 
 	<select id="getCountIncompleteTask" parameterType="String" resultType="int">
 		SELECT COUNT(TASK_KEY) FROM TASK
 		WHERE STATUS = '진행중'
 		  AND PROJECT_KEY = #{project_key}
+			AND TASK_TYPE = 'task'
 	</select>
 
 	<select id="getProjectProgress" parameterType="String" resultType="float">
