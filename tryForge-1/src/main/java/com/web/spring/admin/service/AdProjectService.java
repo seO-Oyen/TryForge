@@ -46,7 +46,6 @@ public class AdProjectService {
 		int insertTeam = dao.insertTeam(insTeam);
 		int insPjtoTask = dao.insPJtoTask(insProject);
 		int insertTm = 0;
-		
 		// 채팅방 리스트 생성
 		chatDao.createChatRoom();
 		
@@ -179,7 +178,7 @@ public class AdProjectService {
 		int insertTm = 0;
 
 		// 채팅방 리스트 생성
-		//chatDao.createChatRoom();
+		chatDao.createChatRoomConvert(uptPro.getProject_key());
 
 		for (String memberKeys : member_key) {
 			// 여기서 auth 한번 더 돌리고

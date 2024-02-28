@@ -28,6 +28,9 @@ public interface ChatDao {
 	// 프로젝트 생성시 채팅방 만드는것
 	int createChatRoom();
 	
+	// 프로젝트 예약 후 생성시 채팅방 만들기
+	int createChatRoomConvert(String projectKey);
+	
 	int createChatMem(int member_key);
 	
 	// 그냥 채팅방 생성
