@@ -5,6 +5,7 @@ public class FileUse {
     private String use_type;
     private int use_key;
     private int approval_key;
+    private int risk_approval_key;
 
     public FileUse() {
     }
@@ -47,4 +48,13 @@ public class FileUse {
     public void setUse_key(int use_key) {
         this.use_key = use_key;
     }
+
+	public int getRisk_approval_key() {
+		return risk_approval_key;
+	}
+
+	public void setRisk_approval_key(int risk_approval_key) {
+		this.risk_approval_key = risk_approval_key;
+	}
+    
 }

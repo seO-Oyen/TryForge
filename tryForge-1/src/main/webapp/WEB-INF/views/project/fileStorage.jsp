@@ -111,7 +111,7 @@
     white-space: nowrap;
     margin-top: 0.5rem;
     margin-bottom: 0;
-	  height: 100%;
+	height: 100%;
   }
   .file-size{
   	font-size: 13px;

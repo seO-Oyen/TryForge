@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     %>
-<jsp:include page="module/module_main.jsp" flush="true" />
+<jsp:include page="${path}/template/module/module_main.jsp" flush="true" />
 			
 		<!-- main 대시보드 내용 -->
 		<!-- partial -->

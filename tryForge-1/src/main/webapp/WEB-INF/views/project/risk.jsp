@@ -117,6 +117,8 @@
 		$("#regResBtn").show()
 		$("#appRiskBtn").hide()
 		$("#div01").hide()
+		$("#riskHeader").text("Risk Information")
+		$("#riskTitle").text("리스크 등록정보")
 
 	}
 
@@ -151,6 +153,8 @@
 					$("#appRiskBtn").hide()
 				}
 				$("#div01").show()
+				$("#riskHeader").text("Risk Response")
+				$("#riskTitle").text("리스크 대응정보")
 				$("#myModal").modal('show')
 
 			},
@@ -266,7 +270,7 @@
 
 					<!-- Modal Header -->
 					<div class="modal-header">
-						<h2 class="modal-title">Risk Response</h2>
+						<h2 class="modal-title" id="riskHeader">Risk Response</h2>
 
 						<button type="button" class="close" data-dismiss="modal" id="xBtn">×</button>
 					</div>
@@ -274,7 +278,7 @@
 					<!-- Modal body -->
 					<div class="modal-body">
 						<div style="display: flex;">
-							<h3 id=proTitle>리스크 대응</h3>
+							<h3 id="riskTitle">리스크 대응</h3>
 
 
 						</div>
@@ -371,9 +375,7 @@
 					<!-- Modal footer -->
 					<div class="modal-footer">
 						<div class="mx-auto">
-							<button type="button" class="btn btn-" id="appRiskBtn"
-									style="background-color: #007FFF; color: white;">리스크 결재
-							</button>
+						
 
 							<button type="button" class="btn btn-danger" data-dismiss="modal"
 									id="clsBtn">닫기

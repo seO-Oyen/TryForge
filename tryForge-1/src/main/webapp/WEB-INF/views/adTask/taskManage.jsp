@@ -322,7 +322,7 @@
     }
 
     function insRiskRes() {
-        alert($("#modalFrm").serialize())
+       
         $.ajax({
             url: "${path}/insertRiskResponse",
             data: $("#modalFrm").serialize(),
@@ -462,7 +462,7 @@
     }
 
     function uptRiskResponse(){
-        alert($("#modalFrm").serialize())
+        
         $.ajax({
             url:"${path}/uptRiskResponse",
             data:$("#modalFrm").serialize(),
