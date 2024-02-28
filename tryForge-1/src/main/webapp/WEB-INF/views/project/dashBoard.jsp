@@ -13,29 +13,25 @@
 	$(document).ready(function (){
 		getComingSchedule();
 		getTaskMem();
-		const titleArr = ['1주', '2주', '3주', '4주', '5주', '6주', '7주', '8주', '9주', '10주', '11주', '12주', '13주']; // x축 라벨
-		const riskTotResults = [1,2,3,4,5,6,7,8,9,10]; // 총 업무 개수
-		const risk01TotResults = [5, 15, 25, 35]; // 진행중인 업무
-		const risk02TotResults = [5, 10, 20, 30]; // 완료된 업무
-		createChart(titleArr, riskTotResults, risk01TotResults, risk02TotResults);
+		getProjectStatusChart();
 	});
 
-	function createChart(titleArr, riskTotResults, risk01TotResults, risk02TotResults) {
+	function createChart(projectWeekly, totalTask, inprogressTask, completedTask) {
 		const ctx = document.getElementById('projectStatus').getContext('2d');
 		new Chart(ctx, {
 			type: 'bar',
 			data: {
-				labels: titleArr,
+				labels: projectWeekly,
 				datasets: [{
 					label: '진행중인 업무',
-					data: risk01TotResults,
+					data: inprogressTask,
 					backgroundColor: 'rgba(255, 99, 132, 0.2)',
 					borderColor: 'rgba(255, 99, 132, 1)',
 					borderWidth: 1
 				},
 					{
 						label: '완료된 업무',
-						data: risk02TotResults,
+						data: completedTask,
 						backgroundColor: 'rgba(54, 162, 235, 0.2)',
 						borderColor: 'rgba(54, 162, 235, 1)',
 						borderWidth: 1
@@ -43,7 +39,7 @@
 					{
 						type: 'line',
 						label: '총 업무 개수',
-						data: riskTotResults,
+						data: totalTask,
 						borderColor: 'rgba(75, 192, 192, 1)',
 						borderWidth: 2,
 						fill: false
@@ -72,11 +68,53 @@
 					yAxes: [{
 						ticks: {
 							suggestedMin: 0,
-							suggestedMax: 100
+							suggestedMax: 25
+
 						}
 					}]
 				},
 			},
+		});
+	}
+
+	function getProjectStatusChart() {
+		$.ajax({
+			url: "${path}/getProjectStatusChart",
+			type: "GET",
+			dataType: "json",
+			success: function(response) {
+				const projectElapsed = response.projectElapsed;
+				let projectWeekly = [];
+				for (let i = 1; i <= projectElapsed; i++) {
+					projectWeekly.push(i+`주`);
+				}
+				// 배열 초기화
+				let totalTask = new Array(projectElapsed).fill(0);
+				let inprogressTask = new Array(projectElapsed).fill(0);
+				let completedTask = new Array(projectElapsed).fill(0);
+
+				// 데이터 처리
+				response.projectStatusData.forEach(data => {
+					const index = data.task_week - 1;
+					if(index !== -1) {
+						totalTask[index] = data.total_task;
+						inprogressTask[index] = data.inprogress_task;
+						completedTask[index] = data.completed_task;
+					}
+				});
+				for (let i = 1; i < projectElapsed; i++) { // 0번 인덱스는 첫 주차이므로, 1번 인덱스(두 번째 주차)부터 시작
+					if (totalTask[i] === 0) {
+						totalTask[i] = totalTask[i - 1]; // 이전 주차의 총 업무 개수를 현재 주차에 적용
+					}
+					if (inprogressTask[i] === 0) {
+						inprogressTask[i] = inprogressTask[i - 1]; // 이전 주차의 진행중인 업무 개수를 현재 주차에 적용
+					}
+				}
+				createChart(projectWeekly, totalTask, inprogressTask, completedTask);
+			},
+			error: function(error) {
+				msg("error", "차트데이터 로딩 실패", error)
+			}
 		});
 	}
 

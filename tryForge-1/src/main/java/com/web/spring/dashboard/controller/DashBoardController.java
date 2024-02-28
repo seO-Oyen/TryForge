@@ -86,6 +86,16 @@ public class DashBoardController {
 		return "pageJsonReport";
 	}
 
+	@GetMapping("getProjectStatusChart")
+	public String getProjectStatusChart(Model d, HttpSession session) {
+		Project project = sessionService.getProject(session);
+		if(project != null) {
+			d.addAttribute("projectStatusData", service.getProjectStatusChart(project.getProject_key()));
+			d.addAttribute("projectElapsed", service.getProjectElapsed(project.getProject_key()));
+		}
+		return "pageJsonReport";
+	}
+
     @GetMapping("goPjChat")
     public String pjChat(
 	    		@RequestParam("projectNum") String pjNum,

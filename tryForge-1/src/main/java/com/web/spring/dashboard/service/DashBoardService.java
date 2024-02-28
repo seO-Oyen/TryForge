@@ -4,16 +4,13 @@ import java.util.List;
 
 import com.web.spring.dashboard.dao.DashBoardDao;
 import com.web.spring.gantt.dao.GanttDao;
-import com.web.spring.vo.Calendar;
-import com.web.spring.vo.Task;
+import com.web.spring.vo.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.web.spring.chat.dao.ChatDao;
 import com.web.spring.member.dao.MemberDao;
-import com.web.spring.vo.Member;
-import com.web.spring.vo.Project;
 
 @Service
 public class DashBoardService {
@@ -71,4 +68,11 @@ public class DashBoardService {
 		return dashBoardDao.getComingSchedule(project_key);
 	}
 
+	public List<DashBoard> getProjectStatusChart(@Param("project_key") String project_key) {
+		return dashBoardDao.getProjectStatusChart(project_key);
+	}
+
+	public int getProjectElapsed(@Param("project_key") String project_key) {
+		return dashBoardDao.getProjectElapsed(project_key);
+	}
 }

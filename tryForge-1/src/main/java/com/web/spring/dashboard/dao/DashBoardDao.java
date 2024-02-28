@@ -1,6 +1,7 @@
 package com.web.spring.dashboard.dao;
 
 import com.web.spring.vo.Calendar;
+import com.web.spring.vo.DashBoard;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,4 +17,7 @@ public interface DashBoardDao {
 	String getProjectEndDate(@Param("project_key") String project_key);
 
 	List<Calendar> getComingSchedule(@Param("project_key") String project_key);
+
+	List<DashBoard> getProjectStatusChart(@Param("project_key") String project_key);
+	int getProjectElapsed(@Param("project_key") String project_key);
 }
