@@ -31,6 +31,7 @@ public class AdApprovalService {
     }
     // 결재 상태 변경 3개
     public String approvalStatusBefore(int approval_key){
+    	dao.taskUptFin(approval_key);
         return dao.approvalStatusBefore(approval_key)>0?"결재 확인 완료":"결재 확인 에러";
     }
     public String approvalStatusFin(int approval_key){

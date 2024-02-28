@@ -33,6 +33,15 @@
 	<update id="approvalStatusReturn" parameterType="approve">
 		update APPROVAL set STATUS = '재상신요청', COMPLETION_DATE = sysdate, REJECT_DETAIL = #{reject_detail} where APPROVAL_KEY = #{approval_key}
 	</update>
+	<update id="taskUptFin" parameterType="int">
+		UPDATE TASK
+		SET STATUS = '완료'
+		WHERE task_key = (
+			SELECT TASK_KEYs
+			FROM APPROVAL
+			WHERE APPROVAL_KEY = #{approval_key}
+		)
+	</update>
 	<!--리스크 결재-->
 	<select id="riskApprovalList" parameterType="String" resultType="risk_approval">
 		SELECT ra.*, t.text, r.TYPE, rr.contact, rr.STRATEGY, rr.RESPONSE_METHOD

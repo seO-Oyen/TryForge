@@ -31,5 +31,6 @@ public interface AdApprovalDao {
     int riskApprovalStatusFin(@Param("risk_approval_key")int risk_approval_key);
     int riskResponseFin(@Param("risk_approval_key")int risk_approval_key);
     int riskApprovalStatusReturn(Risk_Approval ins);
+	int taskUptFin(@Param("approval_key")int approval_kay);
 
 }
