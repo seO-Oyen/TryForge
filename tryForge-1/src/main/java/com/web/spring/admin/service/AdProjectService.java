@@ -179,7 +179,7 @@ public class AdProjectService {
 		int insertTm = 0;
 
 		// 채팅방 리스트 생성
-		chatDao.createChatRoom();
+		//chatDao.createChatRoom();
 
 		for (String memberKeys : member_key) {
 			// 여기서 auth 한번 더 돌리고
