@@ -93,6 +93,7 @@
                 // 각 회원에 대한 정보 처리
                 $.each(memberInfo, function (index, member) {
                     // getTeamInfo 함수 호출
+                    $("#selectMem").empty();
                     getTeamInfo(member.member_key, function (role, team_Member_key) {
                         var addhtml = ""; // 각 회원에 대한 HTML 행을 초기화
                         addhtml += "<tr><td>" + member.member_name + "</td>";
@@ -102,6 +103,7 @@
                         addhtml += "<td><button type='button' class='btn btn-' style='background-color: #007FFF; color: white;' onclick='changePL(" + team_Member_key + ")'>PL지정</button></td></tr>";
 
                         // 기존의 내용을 비우고 새로운 행을 추가
+                        
                         $("#selectMem").append(addhtml);
                         $("#uptBtn").show();
                         $("#detailBtn").show();
