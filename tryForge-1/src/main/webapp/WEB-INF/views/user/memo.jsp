@@ -25,6 +25,17 @@ $(document).ready(function() {
 
 function memoCreate() {
 	console.log("클릭")
+	if ($("[name=memo_detail]").val() == "") {
+		Swal.fire({
+            title: '빈칸입니다.',
+            text: '값을 채워주세요.',
+            icon: 'error',
+        })
+        
+		return false;
+	}
+	
+	
 	$.ajax({
         url: "${path}/createMemo",
         type: "POST",
