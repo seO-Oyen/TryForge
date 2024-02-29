@@ -47,6 +47,7 @@
 		SELECT * FROM TASK
 		WHERE MEMBER_KEY = #{member_key}
 		  AND TASK_KEY NOT IN (SELECT TASK_KEY FROM APPROVAL)
+		  AND TASK_TYPE = 'task'
 		ORDER BY START_DATE
 	</select>
 	<select id="getRejectApprovalList" parameterType="approve" resultMap="approve">
